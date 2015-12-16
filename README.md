@@ -3,12 +3,10 @@ Après l'avoir téléchargé, dans le dossier du paquet:
 
 > python3 setup.py develop
 
-----
 # Algos de détection de ruptures:
 
 Les methodes de détections de ruptures sont séparées selon la méthode de parcours de l'espace des partitions.
 
-----
 1. Programmation dynamique. Fonctions de coût:
     * [x] erreur quadratique, constant par morceaux
     * [x] erreur quadratique, constant par morceaux (version avec noyau)
@@ -26,7 +24,6 @@ Les methodes de détections de ruptures sont séparées selon la méthode de par
     * [ ] fused rigde
     * [x] pénalité L_0 (équivalent à PELT constant par morceau)
 
-----
 # Utilisation
 Chaque algorithme sera une classe avec une méthode "fit" pour calculer la segmentation.
 Des exemples d'utilisation existent dans le dossier **tests/**
