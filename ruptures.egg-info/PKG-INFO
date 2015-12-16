@@ -1,0 +1,19 @@
+Metadata-Version: 1.1
+Name: ruptures
+Version: 0.0.1
+Summary: Several segmentation algorithms
+Home-page: UNKNOWN
+Author: charles
+Author-email: charles.truong@cmla.ens-cachan.fr
+License: je ne sais pas
+Description: Miscellaneous functions.
+        -------------------------------------
+        This package contains functions to generate synthetic data.
+        
+        This version requires Python 3 or later.
+        
+Keywords: Miscellaneous,Toy data generator
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Computer Science
