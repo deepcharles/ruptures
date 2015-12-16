@@ -1,10 +1,10 @@
-#### Install
+# Install
 Après l'avoir téléchargé, dans le dossier du paquet:
 
 > python3 setup.py develop
 
 ----
-#### Algos de détection de ruptures:
+# Algos de détection de ruptures:
 
 Les methodes de détections de ruptures sont séparées selon la méthode de parcours de l'espace des partitions.
 
@@ -27,6 +27,7 @@ Les methodes de détections de ruptures sont séparées selon la méthode de par
     * [x] pénalité L_0 (équivalent à PELT constant par morceau)
 
 ----
+# Utilisation
 Chaque algorithme sera une classe avec une méthode "fit" pour calculer la segmentation.
 Des exemples d'utilisation existent dans le dossier **tests/**
 
