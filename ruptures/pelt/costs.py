@@ -22,13 +22,12 @@ def gaussmean(signal):
 
     @MemoizeDict
     def error_func(start, end):
-        n = s.shape[0]
-        assert 0 <= start <= end < n
+        assert 0 <= start <= end
 
-        if end - start <= 0:  # we need at least 2 points
+        if end - start < 2:  # we need at least 2 points
             raise NotEnoughPoints
-        ind = np.arange(start, end + 1)
-        sig = s[ind]
+
+        sig = s[start:end]
         m, v = sig.mean(), sig.var()
         if v == 0:
             return np.inf

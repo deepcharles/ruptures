@@ -3,33 +3,6 @@ import ruptures.pelt.Pelt as p
 import ruptures.pelt.costs as costs
 import sklearn.datasets.samples_generator as s_generator
 
-#
-# class signal(object):
-#     """dummy class for testing"""
-#
-#     def __init__(self, s):
-#         if s.ndim == 1:
-#             self.s = s.reshape(-1, 1)
-#         else:
-#             self.s = s
-#         self.n = self.s.shape[0]
-#
-#     def error_func(self, start, end):
-#         """
-#         - max log likelihood, univariate gaussian
-#         """
-#         assert 0 <= start <= end < self.n
-#         ind = np.arange(start, end + 1)
-#         sig = self.s[ind]
-#         m, v = 0, (sig ** 2).mean()
-#         if v == 0:
-#             return np.inf
-#         res = np.sum((sig - m) ** 2)
-#         res /= 2 * v
-#         res += (end - start + 1) / 2 * np.log(v)
-#         res += (end - start + 1) / 2 * np.log(2 * np.pi)
-#         return res
-
 
 def test_ruptures1D():
     n_ruptures = 5
