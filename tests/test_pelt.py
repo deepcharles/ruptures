@@ -12,13 +12,7 @@ def test_ruptures1D():
                                     n_features=n_features,
                                     cluster_std=stds,
                                     shuffle=False)
-    # vraies ruptures
-    # vraies_ruptures = [
-    # k + 1 for (k, (v, w)) in enumerate(zip(y[:-1], y[1:])) if v != w]
 
-    # import matplotlib.pyplot as plt
-    # plt.plot(sig)
-    # plt.show()
     c = costs.gaussmean(sig)
     for pen in np.logspace(0.1, 100, 20):
         pe = p.Pelt(c, penalty=pen, n=sig.shape[0], K=0)
