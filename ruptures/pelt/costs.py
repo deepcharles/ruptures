@@ -1,5 +1,4 @@
 import numpy as np
-from ruptures.utils.memoizedict import MemoizeDict
 from numpy.linalg import lstsq
 
 

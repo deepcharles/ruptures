@@ -49,7 +49,8 @@ def sanity_check(d, start, end, jump, min_size=1):
     :return: bool. True if there exists a potential configuration of
         breakpoints for the given parameters. False if it does not.
     """
-    l = end - start + 1  # signal length
+    # changements: l = end - start + 1  # signal length
+    l = end - start  # signal length
     return _sanity_check(d, l, jump, min_size)
 
 
@@ -77,28 +78,27 @@ def dynamic_prog(err_func, d, start, end, jump=1, min_size=1):
         return {(start, end): float("inf")}
     elif d == 2:  # two segments
         """ Initialization step. """
-        error_list = [(err_func(start, breakpoint), err_func(breakpoint + 1,
-                                                             end))
+        error_list = [(breakpoint,
+                       err_func(start, breakpoint),
+                       err_func(breakpoint, end))
                       for breakpoint in range(start + ceil(min_size / jump) *
-                                              jump - 1, end - min_size + 1,
+                                              jump, end - min_size + 1,
                                               jump)]
-        # breakpoint is the end of the first segment
-        best_bkp = argmin_index(map(sum, error_list))
-        errors = error_list[best_bkp]
-        best_bkp = best_bkp * jump + start + ceil(min_size / jump) * jump - 1
-        return {(start, best_bkp): errors[0], (best_bkp + 1, end): errors[1]}
+
+        best_bkp, left_error, right_error = min(
+            error_list, key=lambda z: z[1] + z[2])
+        return {(start, best_bkp): left_error, (best_bkp, end): right_error}
+
     else:
         current_min = None  # to store the current value of the maximum
         # to store the breaks corresponding to the current maximum
         current_breaks = None
-        for tmp_bkp in range(start + ceil(min_size / jump) * jump - 1, end -
+        for tmp_bkp in range(start + ceil(min_size / jump) * jump, end -
                              min_size + 1, jump):
-            if sanity_check(d - 1, tmp_bkp + 1, end, jump, min_size):
-                # tmp_bkp is the end of the first segment
-                # error on the first segment.
+            if sanity_check(d - 1, tmp_bkp, end, jump, min_size):
                 tmp_err = err_func(start, tmp_bkp)
                 tmp = dynamic_prog(
-                    err_func, d - 1, tmp_bkp + 1, end, jump, min_size)
+                    err_func, d - 1, tmp_bkp, end, jump, min_size)
                 tmp_min = sum(tmp.values()) + tmp_err
                 if current_min is None:
                     current_min = tmp_min
@@ -109,3 +109,24 @@ def dynamic_prog(err_func, d, start, end, jump=1, min_size=1):
                     current_breaks = tmp.copy()
                     current_breaks.update({(start, tmp_bkp): tmp_err})
         return current_breaks
+
+# Not run
+# if __name__ == '__main__':
+#     import numpy as np
+#     import matplotlib.pyplot as plt
+#
+#     n_samples = 200
+#     time = np.linspace(0, 12, n_samples)
+#     # 2 ruptures
+#     sig = np.sign(np.sin(0.7 * time))
+#     sig += 0.2 * np.random.normal(size=sig.shape)
+#
+#     def error_func(s, e):
+#         return np.var(sig[s:e]) * (e - s - 1)
+#
+#     res = dynamic_prog(error_func, 3, 0, len(sig) - 1, 1, 2)
+#     ruptures = [s for (s, e) in res.keys() if s != 0]
+#
+#     plt.plot(sig)
+#     plt.vlines(ruptures, ymin=np.min(sig), ymax=np.max(sig))
+#     plt.show()
