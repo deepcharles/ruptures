@@ -1,20 +1,9 @@
-from operator import itemgetter
-import ruptures.dynamic_programming.memoizedict as mem
+from ruptures.dynamic_programming import MemoizeDict
 from math import ceil
+from ruptures.base import BaseEstimator
 
 
-def argmin(pairs):
-    """ given an iterable of pairs return the key corresponding to the greatest
-    value"""
-    return min(pairs, key=itemgetter(1))[0]
-
-
-def argmin_index(values):
-    """Given an iterable of values return the index of the greatest value"""
-    return argmin(enumerate(values))
-
-
-@mem.MemoizeDict
+@MemoizeDict
 def _sanity_check(d, le, jump, min_size):
     """
     :param d: int. Number of regimes
@@ -54,7 +43,7 @@ def sanity_check(d, start, end, jump, min_size=1):
     return _sanity_check(d, l, jump, min_size)
 
 
-@mem.MemoizeDict
+@MemoizeDict
 def dynamic_prog(err_func, d, start, end, jump=1, min_size=1):
     """
     Optimisation using dynamic programming. Given a error function, it computes
@@ -110,23 +99,27 @@ def dynamic_prog(err_func, d, start, end, jump=1, min_size=1):
                     current_breaks.update({(start, tmp_bkp): tmp_err})
         return current_breaks
 
-# Not run
-# if __name__ == '__main__':
-#     import numpy as np
-#     import matplotlib.pyplot as plt
-#
-#     n_samples = 200
-#     time = np.linspace(0, 12, n_samples)
-#     # 2 ruptures
-#     sig = np.sign(np.sin(0.7 * time))
-#     sig += 0.2 * np.random.normal(size=sig.shape)
-#
-#     def error_func(s, e):
-#         return np.var(sig[s:e]) * (e - s - 1)
-#
-#     res = dynamic_prog(error_func, 3, 0, len(sig) - 1, 1, 2)
-#     ruptures = [s for (s, e) in res.keys() if s != 0]
-#
-#     plt.plot(sig)
-#     plt.vlines(ruptures, ymin=np.min(sig), ymax=np.max(sig))
-#     plt.show()
+
+class dynp(BaseEstimator):
+    """Wrapper qui sera utilisé pour appeler la fonction dynamic_prog.
+    Tous les paramètres sont définis dans __init__ et la méthode fit
+    calcule la segmentation et renvoie les temps de ruptures."""
+
+    def __init__(self, error_func, n, n_regimes, min_size=2, jump=1):
+        self.error_func = error_func
+        assert isinstance(n, int)
+        assert n > n_regimes  # at least three points
+        self.n = n
+        self.n_regimes = n_regimes
+        assert min_size > 0
+        self.min_size = min_size
+        self.jump = jump
+        self.chg = list()  # will contain the changepoint indexes.
+
+    def fit(self):
+        """Returns the changepoint indexes."""
+        self.chg = list()
+        dp = dynamic_prog(self.error_func, self.n_regimes, 0,
+                          self.n, self.jump, self.min_size)
+        self.chg = sorted([s for (s, e) in dp])
+        return self.chg

@@ -1,4 +1,3 @@
-from ruptures.pelt.costs import NotEnoughPoints
 from ruptures.utils.memoizedict import MemoizeDict
 
 
@@ -37,13 +36,11 @@ class Pelt(object):
             # epoch 1
             tmp = list()
             for dernier_debut in self.R[fin]:
-                try:
-                    c = self.error_func(dernier_debut, fin)
-                    tmp.append(
-                        (dernier_debut,
-                         self.F[dernier_debut] + c + self.penalty))
-                except NotEnoughPoints:
-                    print("pas assez de points")
+                c = self.error_func(dernier_debut, fin)
+                tmp.append(
+                    (dernier_debut,
+                     self.F[dernier_debut] + c + self.penalty))
+
             t_1, f = min(tmp, key=lambda x: x[1])
 
             # epoch 2

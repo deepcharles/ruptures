@@ -1,12 +1,13 @@
 import numpy as np
-from ruptures.pelt import Pelt
+from ruptures.dynamic_programming import dynp
 from ruptures.costs import gaussmean, linear_mse, NotEnoughPoints
 from ruptures.datasets import pw_linear, pw_constant
 from nose.tools import raises
 
 
 def test1_ruptures1D():
-    n_regimes = 5
+    """on vérifie que les algorithmes de programmation dynamique tournent."""
+    n_regimes = 3
     n_samples = 500
 
     # Piecewise constant signal
@@ -14,24 +15,30 @@ def test1_ruptures1D():
                                   min_size=50, noisy=True, snr=0.1)
 
     func_to_minimize = gaussmean(signal)  # - log likelihood
-    for pen in np.linspace(0.1, 100, 20):
-        pe = Pelt(func_to_minimize, penalty=pen, n=signal.shape[0], K=0)
-        pe.fit()
-
+    min_size, jump = 2, 1
+    dp1 = dynp(error_func=func_to_minimize,
+               n=n_samples, n_regimes=n_regimes,
+               min_size=min_size, jump=jump)
+    dp1.fit()
     # Piecewise linear signal
     signal, chg_pts = pw_linear(n=n_samples, clusters=n_regimes,
                                 min_size=50, noisy=True, snr=0.1)
 
     func_to_minimize = linear_mse(signal)  # mean squared error
-    for pen in np.linspace(0.1, 100, 20):
-        pe = Pelt(func_to_minimize, penalty=pen,
-                  n=signal.shape[0], K=0, min_size=3)
-        pe.fit()
+    min_size, jump = 3, 1
+    dp2 = dynp(error_func=func_to_minimize,
+               n=n_samples, n_regimes=n_regimes,
+               min_size=min_size, jump=jump)
+    dp2.fit()
+
+    return dp1, dp2
 
 
 @raises(NotEnoughPoints)
 def test2_ruptures1D():
-    n_regimes = 5
+    """On spécifie une min_size trop petite pour vérifier que la bonne
+    exception est appelée."""
+    n_regimes = 3
     n_samples = 500
 
     # Piecewise constant signal
@@ -39,24 +46,19 @@ def test2_ruptures1D():
                                   min_size=50, noisy=True, snr=0.1)
 
     func_to_minimize = gaussmean(signal)  # - log likelihood
-    pen = 10
-    pe = Pelt(func_to_minimize, penalty=pen,
-              n=signal.shape[0], K=0, min_size=1)
-    pe.fit()
-
-    # Piecewise linear signal
-    signal, chg_pts = pw_linear(n=n_samples, clusters=n_regimes,
-                                min_size=50, noisy=True, snr=0.1)
-
-    func_to_minimize = linear_mse(signal)  # mean squared error
-    for pen in np.linspace(0.1, 100, 20):
-        pe = Pelt(func_to_minimize, penalty=pen, n=signal.shape[0], K=0)
-        pe.fit()
+    min_size, jump = 1, 1
+    dp = dynp(error_func=func_to_minimize,
+              n=n_samples, n_regimes=n_regimes,
+              min_size=min_size, jump=jump)
+    dp.fit()
+    return dp
 
 
 @raises(NotEnoughPoints)
 def test3_ruptures1D():
-    n_regimes = 5
+    """On spécifie une min_size trop petite pour vérifier que la bonne
+    exception est appelée."""
+    n_regimes = 3
     n_samples = 500
 
     # Piecewise linear signal
@@ -64,14 +66,17 @@ def test3_ruptures1D():
                                 min_size=50, noisy=True, snr=0.1)
 
     func_to_minimize = linear_mse(signal)  # mean squared error
-    pen = 10
-    pe = Pelt(func_to_minimize, penalty=pen,
-              n=signal.shape[0], K=0, min_size=2)
-    pe.fit()
+    min_size, jump = 2, 1
+    dp = dynp(error_func=func_to_minimize,
+              n=n_samples, n_regimes=n_regimes,
+              min_size=min_size, jump=jump)
+    dp.fit()
+    return dp
 
 
 def test4_ruptures1D():
-    n_regimes = 5
+    """On vérifie dans un cas simple que la détection de ruptures est bonne."""
+    n_regimes = 3
     n_samples = 500
 
     # Piecewise constant signal
@@ -79,8 +84,11 @@ def test4_ruptures1D():
                                   min_size=50, noisy=True, snr=0.001)
 
     func_to_minimize = gaussmean(signal)  # - log likelihood
-    pen = 50
-    pe = Pelt(func_to_minimize, penalty=pen, n=signal.shape[0], K=0)
-    my_chg_pts = pe.fit()
+    min_size, jump = 2, 1
+    dp = dynp(error_func=func_to_minimize,
+              n=n_samples, n_regimes=n_regimes,
+              min_size=min_size, jump=jump)
+    my_chg_pts = dp.fit()
 
-    assert np.array_equal(np.sort(chg_pts), np.sort(my_chg_pts))
+    assert np.all(abs(a - b) < 3 for (a, b)
+                  in zip(sorted(chg_pts), sorted(my_chg_pts)))

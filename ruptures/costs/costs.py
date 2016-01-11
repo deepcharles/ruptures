@@ -1,11 +1,6 @@
 import numpy as np
 from numpy.linalg import lstsq
-
-
-class NotEnoughPoints(Exception):
-    """Raise this exception when there is not enough point to calculate a
-    cost function """
-    pass
+from ruptures.costs.exceptions import NotEnoughPoints
 
 
 def gaussmean(signal):
@@ -54,7 +49,7 @@ def linear_mse(signal):
     def error_func(start, end):
         assert 0 <= start <= end
 
-        if end - start < 2:  # we need at least 2 points
+        if end - start < 3:  # we need at least 3 points
             raise NotEnoughPoints
 
         sig = s[start:end]

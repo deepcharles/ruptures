@@ -10,6 +10,7 @@ def pw_linear(n=100, clusters=3,  min_size=None, noisy=False, snr=0.1):
     # taille minimale de segment
     if min_size is None:
         min_size = int(n / clusters / 2)
+    assert min_size > 1
     assert min_size * clusters <= n
 
     # segment sizes
