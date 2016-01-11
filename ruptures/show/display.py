@@ -27,10 +27,10 @@ def display(signal, true_chg_pts, computed_chg_pts=None, **kwargs):
     fig, ax = plt.subplots(figsize=figsize)
     color_cycle = ax._get_lines.prop_cycler
     # plot signal
-    ax.plot(signal)
+    ax.plot(range(signal.shape[0]), signal)
 
     # color each (true) regime
-    starts = np.sort(true_chg_pts)
+    starts = sorted(true_chg_pts)
     ends = np.append([t - 1 for t in starts if t != 0], signal.shape[0] - 1)
 
     for (s, e), c in zip(zip(starts, ends), color_cycle):
