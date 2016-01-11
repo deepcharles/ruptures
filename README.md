@@ -77,7 +77,7 @@ display(signal, chg, r)
 
 ```python
 # Linéaire par morceaux, avec Pelt
-# fonction de coût: - log likelihood de variables gaussiennes iid.
+# fonction de coût: mean squared error d'une approximation linéaire
 from ruptures.costs import linear_mse
 from ruptures.pelt import Pelt
 
