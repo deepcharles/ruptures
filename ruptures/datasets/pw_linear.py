@@ -2,7 +2,7 @@ import numpy as np
 from ruptures.datasets import uniform_with_constant_sum
 
 
-def pw_linear(n=100, clusters=3,  min_size=None, noisy=False, snr=0.1):
+def pw_linear(n=100, clusters=3, min_size=None, noisy=False, snr=0.1):
     """
     Piecewise constant signal.
     Returns the signal and the change point indexes (start of each regime).
@@ -30,7 +30,7 @@ def pw_linear(n=100, clusters=3,  min_size=None, noisy=False, snr=0.1):
         res = np.append(res, xx)
         intercept = xx[-1]
 
-    chg_pts = np.append([0], np.cumsum(segments)[:-1])
+    chg_pts = np.cumsum(segments)
 
     # additive noise
     if noisy:

@@ -1,2 +1,1 @@
-from .memoizedict import MemoizeDict
-from .dynamic_programming import dynp
+from .dynamic_programming import Dynp

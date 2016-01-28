@@ -30,8 +30,8 @@ def display(signal, true_chg_pts, computed_chg_pts=None, **kwargs):
     ax.plot(range(signal.shape[0]), signal)
 
     # color each (true) regime
-    starts = sorted(true_chg_pts)
-    ends = np.append([t - 1 for t in starts if t != 0], signal.shape[0] - 1)
+    ends = sorted(true_chg_pts)
+    starts = np.append(0, [t + 1 for t in ends[:-1]])
 
     for (s, e), c in zip(zip(starts, ends), color_cycle):
         ax.axvspan(s, e, facecolor=c["color"], alpha=alpha)

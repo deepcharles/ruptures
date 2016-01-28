@@ -2,7 +2,7 @@ import numpy as np
 from ruptures.datasets import uniform_with_constant_sum
 
 
-def pw_constant(n=100, clusters=3,  min_size=None, noisy=False, snr=0.1):
+def pw_constant(n=100, clusters=3, min_size=None, noisy=False, snr=0.1):
     """
     Piecewise constant signal.
     Returns the signal and the change point indexes (start of each regime).
@@ -23,7 +23,7 @@ def pw_constant(n=100, clusters=3,  min_size=None, noisy=False, snr=0.1):
 
     # we create the signal
     res = np.hstack([c] * length for c, length in zip(constantes, segments))
-    chg_pts = np.append([0], np.cumsum(segments)[:-1])
+    chg_pts = np.cumsum(segments)
     if noisy:
         std = snr * np.std(res, dtype=float)
         res = res + np.random.standard_normal(res.size) * std

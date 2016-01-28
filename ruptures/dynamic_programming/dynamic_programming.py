@@ -1,125 +1,141 @@
-from ruptures.dynamic_programming import MemoizeDict
 from math import ceil
-from ruptures.base import BaseEstimator
+from ruptures.base import BaseClass
+import abc
+from ruptures.utils.memoizedict import MemoizeDict
 
 
-@MemoizeDict
-def _sanity_check(d, le, jump, min_size):
+def sanity_check(n_samples, n_regimes, jump, min_size):
     """
-    :param d: int. Number of regimes
-    :param le: int. Length of the signal
-    :param jump: int. The start index of each regime can only be a multiple of
-        "jump" (and the end index = -1 modulo "jump")
-    :param min_size: int. The minimum size of a segment
-    :return: bool. True if there exists a potential configuration of
-        breakpoints for the given parameters. False if it does not.
+    Check if a partition if possible given the parameters.
+
+    Args:
+        n_samples (int): number of point in the signal
+        n_regimes (int): number of segments
+        jump (int): the start index of each regime can only be a multiple of
+            "jump" (and the end index = -1 modulo "jump").
+        min_size (int): the minimum size of a segment.
+
+    Returns:
+        bool: True if there exists a potential configuration of
+            breakpoints for the given parameters. False if it does not.
     """
-    assert isinstance(d, int)
-    assert isinstance(le, int)
+    assert isinstance(n_regimes, int)
+    assert isinstance(n_samples, int)
     assert isinstance(jump, int)
     assert isinstance(min_size, int)
 
-    q = int(le / jump)  # number of possible breakpoints
-    if d > q + 1:  # Are there enough points for the given number of regimes?
+    q = int(n_samples / jump)  # number of possible breakpoints
+
+    # Are there enough points for the given number of regimes?
+    if n_regimes > q + 1:
         return False
-    if (d - 1) * ceil(min_size / jump) * jump + min_size > le:
+    if (n_regimes - 1) * ceil(min_size / jump) * jump + min_size > n_samples:
         return False
     return True
 
 
-def sanity_check(d, start, end, jump, min_size=1):
-    """
-    :param d: int. Number of regimes
-    :param start: int. Index of the first point of the segment
-    :param end: int. Index of the last point of the segment
-    :param jump: int. The start index of each regime can only be a multiple of
-        "jump" (and the end index = -1 modulo "jump")
-    :param min_size: int. The minimum size of a segment
-    :return: bool. True if there exists a potential configuration of
-        breakpoints for the given parameters. False if it does not.
-    """
-    # changements: l = end - start + 1  # signal length
-    l = end - start  # signal length
-    return _sanity_check(d, l, jump, min_size)
+class Dynp(BaseClass, metaclass=abc.ABCMeta):
+    """Optimisation using dynamic programming. Given a error function, it computes
+        the best partition for which the sum of errors is minimum."""
 
+    def __init__(self):
+        super(Dynp, self).__init__()
 
-@MemoizeDict
-def dynamic_prog(err_func, d, start, end, jump=1, min_size=1):
-    """
-    Optimisation using dynamic programming. Given a error function, it computes
-        the best partition for which the sum of errors is minimum.
-    The error function returns the error on a segment (err_func(start, end)).
+    def reset_params(self, n_regimes=2, jump=1, min_size=2):
+        """Reset all the necessary parameters to compute a partition
 
-    :param err_func: function. error(start, end) must return the approximation
-        error on the segment [start, end]
-    :param d: int. The number of regimes (so there are d-1 breakpoints)
-    :param start: int. First index of the segment on which the computation is
-        made
-    :param end: int. Last index of the segment on which the computation is made
-    :param jump: int. The start index of each regime can only be a multiple of
-        "jump" (and the end index = -1 modulo "jump"). This allows to perform
-        less approximation error estimations.
-    :return: dictionary. Each key is a tuple (start, end) representing a
-        segment, each item is the approximation error. (so there are d items in
-        the dictionary).
-    """
-    if not sanity_check(d, start, end, jump, min_size):
-        return {(start, end): float("inf")}
-    elif d == 2:  # two segments
-        """ Initialization step. """
-        error_list = [(breakpoint,
-                       err_func(start, breakpoint),
-                       err_func(breakpoint, end))
-                      for breakpoint in range(start + ceil(min_size / jump) *
-                                              jump, end - min_size + 1,
-                                              jump)]
+        Args:
+            n_regimes (int): number of segments that are expected
+            jump (int): number of points between two potential changepoints
+            min_size (int): minimum size of a segment
 
-        best_bkp, left_error, right_error = min(
-            error_list, key=lambda z: z[1] + z[2])
-        return {(start, best_bkp): left_error, (best_bkp, end): right_error}
-
-    else:
-        current_min = None  # to store the current value of the maximum
-        # to store the breaks corresponding to the current maximum
-        current_breaks = None
-        for tmp_bkp in range(start + ceil(min_size / jump) * jump, end -
-                             min_size + 1, jump):
-            if sanity_check(d - 1, tmp_bkp, end, jump, min_size):
-                tmp_err = err_func(start, tmp_bkp)
-                tmp = dynamic_prog(
-                    err_func, d - 1, tmp_bkp, end, jump, min_size)
-                tmp_min = sum(tmp.values()) + tmp_err
-                if current_min is None:
-                    current_min = tmp_min
-                    current_breaks = tmp.copy()
-                    current_breaks.update({(start, tmp_bkp): tmp_err})
-                elif tmp_min < current_min:
-                    current_min = tmp_min
-                    current_breaks = tmp.copy()
-                    current_breaks.update({(start, tmp_bkp): tmp_err})
-        return current_breaks
-
-
-class dynp(BaseEstimator):
-    """Wrapper qui sera utilisé pour appeler la fonction dynamic_prog.
-    Tous les paramètres sont définis dans __init__ et la méthode fit
-    calcule la segmentation et renvoie les temps de ruptures."""
-
-    def __init__(self, error_func, n, n_regimes, min_size=2, jump=1):
-        self.error_func = error_func
-        assert isinstance(n, int)
-        assert n > n_regimes  # at least three points
-        self.n = n
+        Returns:
+            None:
+        """
         self.n_regimes = n_regimes
-        assert min_size > 0
-        self.min_size = min_size
         self.jump = jump
-        self.chg = list()  # will contain the changepoint indexes.
+        self.min_size = min_size
+        self.search_method = MemoizeDict(self.search_method.func)
 
-    def fit(self):
-        """Returns the changepoint indexes."""
-        self.chg = list()
-        dp = dynamic_prog(self.error_func, self.n_regimes, 0,
-                          self.n, self.jump, self.min_size)
-        self.chg = sorted([s for (s, e) in dp])
-        return self.chg
+    def search_method(self, start, end, n_regimes):
+        """Finds the best partition for the segment [startt:end]
+
+        Args:
+            start (int): start index.
+            end (int): end index.
+            n_regimes (int, optional): number of segments. Defaults to 2.
+            jump (int, optional): number of points between two potential
+            changepoints. Defaults to 1
+            min_size (int, optional): minimum size of a segment. Defaults to 2
+
+        Returns:
+            dict: {(start, end): cost value on the segment,...}
+        """
+        n = end - start
+        if not sanity_check(n, n_regimes, self.jump, self.min_size):
+            return {(start, end): float("inf")}
+
+        elif n_regimes == 2:  # two segments
+            """ Initialization step. """
+            # Admissible breakpoints
+            admissible_bkps = range(
+                start + ceil(self.min_size / self.jump) * self.jump,
+                end - self.min_size + 1,
+                self.jump)
+
+            error_list = [(bkp, self.error(start, bkp), self.error(bkp, end))
+                          for bkp in admissible_bkps]
+
+            best_bkp, left_error, right_error = min(
+                error_list, key=lambda z: z[1] + z[2])
+            return {(start, best_bkp): left_error,
+                    (best_bkp, end): right_error}
+
+        else:
+            # to store the current value of the minimum
+            current_min = None
+            # to store the breaks corresponding to the current minimum
+            current_breaks = None
+
+            # Admissible breakpoints
+            admissible_bkps = range(
+                start + ceil(self.min_size / self.jump) * self.jump,
+                end - self.min_size + 1,
+                self.jump)
+
+            for tmp_bkp in admissible_bkps:
+
+                if sanity_check(end - tmp_bkp, n_regimes - 1,
+                                self.jump, self.min_size):
+
+                    left_err = self.error(start, tmp_bkp)
+
+                    right_partition = self.search_method(
+                        tmp_bkp,
+                        end,
+                        n_regimes - 1)
+
+                    tmp_min = left_err + sum(right_partition.values())
+
+                    if current_min is None:
+                        current_min = tmp_min
+                        current_breaks = right_partition.copy()
+                        current_breaks.update({(start, tmp_bkp): left_err})
+                    elif tmp_min < current_min:
+                        current_min = tmp_min
+                        current_breaks = right_partition.copy()
+                        current_breaks.update({(start, tmp_bkp): left_err})
+
+            return current_breaks
+
+    def fit(self, signal, n_regimes, jump, min_size):
+        self.reset_params(n_regimes, jump, min_size)
+        self.signal = signal
+        n_samples = self.signal.shape[0]
+        self.partition = self.search_method(
+            0, n_samples, self.n_regimes)
+
+        # we return the end of each segment of the partition
+        self.bkps = sorted(e for (s, e) in self.partition)
+
+        return self.bkps

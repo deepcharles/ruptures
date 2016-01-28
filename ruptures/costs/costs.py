@@ -5,11 +5,18 @@ from ruptures.costs.exceptions import NotEnoughPoints
 
 def gaussmean(signal):
     """
-    Returns the cost function used in Pelt.
-    Here: - max log likelihood of a univariate gaussian random variable.
     Associated K (see Pelt.__init__): 0
 
-    signal: array of shape (n_points,) or (n_points, 1)
+    Args:
+        signal (array): array of shape (n_points, n_features) or (n_points, )
+
+    Raises:
+        NotEnoughPoints: if there are not enough point to compute the cost on
+        the segment (here, at least 2 points).
+
+    Returns:
+        function: cost function. Here: - max log likelihood of a univariate
+        gaussian random variable.
     """
     s = signal
     if s.ndim == 1:
@@ -36,11 +43,18 @@ def gaussmean(signal):
 
 def linear_mse(signal):
     """
-    Returns the cost function used in Pelt.
-    Here: mean squared error when approximating with a linear function.
     Associated K (see Pelt.__init__): 0
 
-    signal: array of shape (n_points,) or (n_points, 1) or (n_points, d)
+    Args:
+        signal (array): array of shape (n_points, n_features) or (n_points, )
+
+    Raises:
+        NotEnoughPoints: if there are not enough point to compute the cost on
+        the segment (here, at least 2 points).
+
+    Returns:
+        function: cost function. Here: mean squared error when approximating
+        with a linear function.
     """
     s = signal
     if s.ndim == 1:
