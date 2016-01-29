@@ -58,7 +58,7 @@ class Dynp(BaseClass, metaclass=abc.ABCMeta):
         self.search_method = MemoizeDict(self.search_method.func)
 
     def search_method(self, start, end, n_regimes):
-        """Finds the best partition for the segment [startt:end]
+        """Finds the best partition for the segment [start:end]
 
         Args:
             start (int): start index.

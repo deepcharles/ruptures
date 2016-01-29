@@ -5,7 +5,7 @@ from ruptures.datasets import uniform_with_constant_sum
 def pw_linear(n=100, clusters=3, min_size=None, noisy=False, snr=0.1):
     """
     Piecewise constant signal.
-    Returns the signal and the change point indexes (start of each regime).
+    Returns the signal and the change point indexes (end of each regime).
     """
     # taille minimale de segment
     if min_size is None:
