@@ -9,6 +9,7 @@ class BaseClass(metaclass=abc.ABCMeta):
     def __init__(self):
         self.error = MemoizeDict(self.error)
         self.search_method = MemoizeDict(self.search_method)
+        self.set_params = MemoizeDict(self.set_params)
 
     @property
     def signal(self):
@@ -19,6 +20,7 @@ class BaseClass(metaclass=abc.ABCMeta):
         # since signal has changed, we reset the search_method and error cache.
         self.search_method = MemoizeDict(self.search_method.func)
         self.error = MemoizeDict(self.error.func)
+        self.set_params = MemoizeDict(self.set_params.func)
         if s.ndim == 1:
             self._signal = s.reshape(-1, 1)
         else:
