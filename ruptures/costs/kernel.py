@@ -1,6 +1,8 @@
 import numpy as np
 from ruptures.costs.exceptions import NotEnoughPoints
 from scipy.spatial.distance import pdist, squareform
+from ruptures.search_methods import changepoint
+
 valid_kernels = ["rbf", "laplacian", "cosine", "linear"]
 
 
@@ -50,38 +52,58 @@ def cosine(x):
     return norm_vect, K
 
 
-def kernel_mean(signal, kernel="rbf"):
-    """
-    Returns the cost function.
-    Here:
-    \sum_{i} k(x_i, x_i) - \frac{1}{n} \sum_{i,j} k(x_i, x_j)
-    Associated K (see Pelt.__init__): 0
+KERNEL_DICT = {"rbf": rbf, "laplacian": laplacian, "cosine": cosine,
+               "linear": linear}
 
-    signal: array of shape (n_points,) or (n_points, 1)
-    """
-    s = signal
-    if s.ndim == 1:
-        s = s.reshape(-1, 1)
 
-    # on a une liste restreinte de noyaux possibles
-    assert kernel in valid_kernels
+@changepoint
+class KernelMSE(object):
+    """Kernel changepoint detection"""
 
-    # correspondance nom de noyau <-> fonction associée
-    func_dict = {"rbf": rbf,
-                 "laplacian": laplacian,
-                 "cosine": cosine,
-                 "linear": linear}
+    def __init__(self, kernel="rbf"):
+        super().__init__()
+        assert kernel in valid_kernels
+        self.kernel_str = kernel
+        self.kernel_func = KERNEL_DICT[kernel]
 
-    ker = func_dict[kernel]
-    norm_vect, K = ker(s)
+        # a boolean to keep track of the expensive computation of certain
+        # parameters
+        self._computed = False
 
-    def error_func(start, end):
+    def set_params(self):
+        """Computed the pairwise kernel matrix and the norm vector
+
+        Returns:
+            None: just set self.norm_vect and self.pairwise_mat, self._computed
+        """
+        self.norm_vect, self.pairwise_mat = self.kernel_func(self.signal)
+        self._computed = True
+
+    def error(self, start, end):
+        """Computes the error on the segment [start:end].
+        Here: \sum_{i} k(x_i, x_i) - \frac{1}{n} \sum_{i,j} k(x_i, x_j)
+
+        Args:
+            start (int): first index of the segment (index included)
+            end (int): last index of the segment (index excluded)
+
+        Raises:
+            NotEnoughPoints: if there are not enough points to compute the cost
+            for the specified segment (here, at least 3 points).
+
+        Returns:
+            float: cost on the given segment.
+        """
         assert 0 <= start <= end
+        if not self._computed:
+            self.set_params()
 
         if end - start < 2:  # we need at least 3 points
             raise NotEnoughPoints
-        res = np.sum(norm_vect[start:end])
-        res -= K[start:end, start:end].sum() / (end - start)
+        res = np.sum(self.norm_vect[start:end])
+        res -= self.pairwise_mat[start:end, start:end].sum() / (end - start)
         return res
 
-    return error_func
+    @property
+    def K(self):
+        return 0

@@ -28,7 +28,7 @@ class BaseClass(metaclass=abc.ABCMeta):
         self.n = self.signal.shape[0]
 
     @abc.abstractmethod
-    def set_params(self):
+    def set_params(self, *args, **kwargs):
         """In case some parameters have to be set before computing the cost on a
         segment.
 
