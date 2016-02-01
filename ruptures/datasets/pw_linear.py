@@ -20,6 +20,7 @@ def pw_linear(n=100, clusters=3, min_size=None, noisy=False, snr=0.1):
     # slopes
     assert clusters > 1
     slopes = np.arange(clusters) - clusters / 2
+    slopes *= np.abs(slopes)  # we square the slopes to enhance the differences
     np.random.shuffle(slopes)
 
     # we create the signal
