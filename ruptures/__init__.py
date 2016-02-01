@@ -1,1 +1,2 @@
-AVAILABLE_METHODS = ["dynamic_programming", "pelt"]
+from .costs import NotEnoughPoints
+from .search_methods import METHODS
