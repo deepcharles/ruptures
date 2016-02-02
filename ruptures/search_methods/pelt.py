@@ -1,6 +1,6 @@
 import numpy as np
 import abc
-from ruptures.base import BaseClass
+from ruptures.search_methods import BaseClass
 from ruptures.search_methods import MemoizeDict
 from ruptures.costs import NotEnoughPoints
 

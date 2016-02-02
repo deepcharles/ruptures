@@ -1,5 +1,5 @@
 from math import ceil
-from ruptures.base import BaseClass
+from ruptures.search_methods import BaseClass
 import abc
 from ruptures.search_methods import MemoizeDict
 from ruptures.search_methods import sanity_check

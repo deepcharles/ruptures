@@ -1,5 +1,5 @@
 import abc
-from ruptures.utils.memoizedict import MemoizeDict
+from ruptures.search_methods.memoizedict import MemoizeDict
 
 
 class BaseClass(metaclass=abc.ABCMeta):
