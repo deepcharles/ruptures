@@ -54,22 +54,23 @@ class Pelt(BaseClass, metaclass=abc.ABCMeta):
         for bkp, previous_bkp in zip(bkps[1:], bkps[:-1]):
 
             # we get the potential last breakpoints of the segment [0:end]
-            R_tmp = [t for t in self.R[previous_bkp]]
+            R_tmp = [t for t in self.R[previous_bkp]
+                     if self.min_size <= bkp - t]
             R_tmp.extend(t for t in bkps if self.min_size <=
                          bkp - t < self.min_size + self.jump)
+
+            if len(R_tmp) == 0:
+                self.F[bkp] = self.F[previous_bkp]
+                self.R[bkp] = self.R[previous_bkp]
+                continue
 
             # calcul des quantités F(t) + error(t:bkp)
             error_list = list()
             costs_list = list()
             for t in R_tmp:
 
-                try:
-                    tmp_error = self.error(t, bkp)
-                    tmp_cost = tmp_error + sum(self.F[t].values())
-                except NotEnoughPoints:
-                    tmp_error = np.inf
-                    tmp_cost = np.inf
-
+                tmp_error = self.error(t, bkp)
+                tmp_cost = tmp_error + sum(self.F[t].values())
                 error_list.append(tmp_error)
                 costs_list.append(tmp_cost)
 
