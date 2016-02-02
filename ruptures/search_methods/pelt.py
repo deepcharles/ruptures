@@ -94,7 +94,7 @@ class Pelt(BaseClass, metaclass=abc.ABCMeta):
 
         return self.F[self.n]
 
-    def fit(self, signal, penalty, jump, min_size):
+    def fit(self, signal, penalty, jump=1, min_size=2):
         self.reset_params(penalty, jump, min_size)
         self.signal = signal
         self.partition = self.search_method()

@@ -4,7 +4,7 @@ setup(
     name='ruptures',
     version='0.0.1',
     packages=find_packages(),
-    install_requires=['numpy', 'scipy', 'scikit-learn', 'matplotlib'],
+    install_requires=['numpy', 'scipy', 'matplotlib'],
     url='',
     license='je ne sais pas',
     author='charles',

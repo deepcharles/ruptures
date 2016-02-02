@@ -100,7 +100,7 @@ class Dynp(BaseClass, metaclass=abc.ABCMeta):
 
             return current_breaks
 
-    def fit(self, signal, n_regimes, jump, min_size):
+    def fit(self, signal, n_regimes, jump=1, min_size=2):
         self.reset_params(jump, min_size)
         self.n_regimes = n_regimes
         self.signal = signal
