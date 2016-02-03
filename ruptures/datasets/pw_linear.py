@@ -1,5 +1,6 @@
 import numpy as np
 from ruptures.datasets import uniform_with_constant_sum
+from math import ceil
 
 
 def pw_linear(n=100, clusters=3, dim=1, min_size=None, noisy=False, snr=0.1):
@@ -9,8 +10,7 @@ def pw_linear(n=100, clusters=3, dim=1, min_size=None, noisy=False, snr=0.1):
     """
 # taille minimale de segment
     if min_size is None:
-        min_size = int(n / clusters)
-    assert min_size >= 2, "There must be at least two points per segment"
+        min_size = ceil(n / clusters / 2)
     assert isinstance(n, int)
     assert isinstance(clusters, int)
     assert isinstance(min_size, int)
@@ -20,7 +20,7 @@ def pw_linear(n=100, clusters=3, dim=1, min_size=None, noisy=False, snr=0.1):
     # segment sizes
     segments = uniform_with_constant_sum(clusters, n - min_size * clusters)
     segments += min_size
-
+    assert all(k >= min_size for k in segments)
     assert clusters > 1, "There must be at least two regimes."
 
     signals = list()

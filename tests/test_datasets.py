@@ -21,19 +21,6 @@ def test_constant(method, n_samples, dim, n_regimes, noisy, snr):
     assert len(bkps) == n_regimes
     assert bkps[-1] == n_samples
 
-# @pytest.mark.parametrize('n_samples, n_regimes, noisy, snr',
-#                          product(range(20, 1000, 200),
-#                                  range(2, 10, 3),
-#                                  [True, False],
-#                                  np.linspace(0, 1, 3)))
-# def test_linear(n_samples, n_regimes, noisy, snr):
-#     signal, bkps = pw_linear(n=n_samples,
-#                              clusters=n_regimes,
-#                              noisy=noisy,
-#                              snr=snr)
-#     assert signal.shape[0] == n_samples
-#     assert len(bkps) == n_regimes
-
 
 @pytest.mark.parametrize('method', [pw_constant, pw_linear])
 def test_exceptions(method):

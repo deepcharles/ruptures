@@ -60,10 +60,11 @@ class GaussMLE:
             raise NotEnoughPoints
 
         sig = self.signal[start:end]
-        v = sig.var()
-        if v == 0:
+        v = sig.var(axis=0)
+        if np.sum(np.abs(v)) == 0:
             return np.inf
         res = 1 + np.log(2 * np.pi * v)
+        res = res.sum()
         res *= (end - start) / 2
         return res
 
