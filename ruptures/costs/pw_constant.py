@@ -25,7 +25,7 @@ class ConstantMSE:
             raise NotEnoughPoints
 
         sig = self.signal[start:end]
-        v = sig.var()
+        v = sig.var(axis=0).sum()
         return v * (end - start)
 
     def set_params(self):
