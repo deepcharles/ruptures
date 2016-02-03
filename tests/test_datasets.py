@@ -6,9 +6,9 @@ import numpy as np
 
 @pytest.mark.parametrize('n_samples, n_regimes, noisy, snr',
                          product(range(20, 1000, 200),
-                                 range(2, 10, 2),
+                                 range(2, 10, 3),
                                  [True, False],
-                                 np.linspace(0, 1, 10)))
+                                 np.linspace(0, 1, 3)))
 def test_constant(n_samples, n_regimes, noisy, snr):
     signal, bkps = pw_constant(n=n_samples,
                                clusters=n_regimes,
@@ -20,7 +20,7 @@ def test_constant(n_samples, n_regimes, noisy, snr):
 
 @pytest.mark.parametrize('n_samples, n_regimes, noisy, snr',
                          product(range(20, 1000, 200),
-                                 range(2, 10, 2),
+                                 range(2, 10, 3),
                                  [True, False],
                                  np.linspace(0, 1, 3)))
 def test_linear(n_samples, n_regimes, noisy, snr):
