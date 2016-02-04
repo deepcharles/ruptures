@@ -5,11 +5,11 @@ from ruptures.costs import NotEnoughPoints
 
 
 @changepoint
-class LinearMSE:
+class LinearMLE:
 
     def error(self, start, end):
         """
-        Cost: Squared error when approximating with the best linear fit.
+        Cost: - max likelihood when approximating with the best linear fit.
         Associated K (see Pelt): 0
 
         Args:
@@ -37,9 +37,10 @@ class LinearMSE:
         assert res_lstsq[1].shape[0] == sig.shape[1]
 
         # mean squared error
-        res = np.sum(res_lstsq[1]) / sig.shape[0]
-
-        return res
+        sigmas = res_lstsq[1] / (end - start)
+        res = np.log(sigmas) + np.log(2 * np.pi) + 1
+        res *= (end - start) / 2
+        return res.sum()
 
     def set_params(self):
         pass

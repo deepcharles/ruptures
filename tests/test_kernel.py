@@ -12,9 +12,11 @@ PENALTIES = np.linspace(0.1, 100, 10)
 def signal_bkps():
     n_samples = 300
     n_regimes = 3
+    dim = 3
     signal, bkps = pw_constant(n=n_samples,
                                clusters=n_regimes,
                                noisy=True,
+                               dim=dim,
                                snr=.01)
     return signal, bkps
 

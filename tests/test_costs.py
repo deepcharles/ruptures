@@ -1,19 +1,21 @@
 import pytest
 import numpy as np
 from itertools import product
-from ruptures.costs import ConstantMSE, GaussMLE, LinearMSE
+from ruptures.costs import ConstantMSE, GaussMLE, LinearMLE
 from ruptures.datasets import pw_constant
 from ruptures.costs import NotEnoughPoints
 PENALTIES = np.linspace(0.1, 100, 10)
-ALGOS = [ConstantMSE, GaussMLE, LinearMSE]
+ALGOS = [ConstantMSE, GaussMLE, LinearMLE]
 
 
 @pytest.fixture(scope="module")
 def signal_bkps():
     n_samples = 300
     n_regimes = 3
+    dim = 3
     signal, bkps = pw_constant(n=n_samples,
                                clusters=n_regimes,
+                               dim=dim,
                                noisy=True,
                                snr=.01)
     return signal, bkps
