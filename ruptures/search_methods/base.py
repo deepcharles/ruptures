@@ -1,5 +1,5 @@
 import abc
-from ruptures.search_methods.memoizedict import MemoizeDict
+from functools import lru_cache
 
 
 class BaseClass(metaclass=abc.ABCMeta):
@@ -7,9 +7,9 @@ class BaseClass(metaclass=abc.ABCMeta):
     algorithms."""
 
     def __init__(self):
-        self.error = MemoizeDict(self.error)
-        self.search_method = MemoizeDict(self.search_method)
-        self.set_params = MemoizeDict(self.set_params)
+        self.error = lru_cache(maxsize=None)(self.error)
+        self.search_method = lru_cache(maxsize=None)(self.search_method)
+        self.set_params = lru_cache(maxsize=None)(self.set_params)
 
     @property
     def signal(self):
@@ -18,9 +18,9 @@ class BaseClass(metaclass=abc.ABCMeta):
     @signal.setter
     def signal(self, s):
         # since signal has changed, we reset the search_method and error cache.
-        self.search_method = MemoizeDict(self.search_method.func)
-        self.error = MemoizeDict(self.error.func)
-        self.set_params = MemoizeDict(self.set_params.func)
+        self.search_method.cache_clear()
+        self.error.cache_clear()
+        self.set_params.cache_clear()
         if s.ndim == 1:
             self._signal = s.reshape(-1, 1)
         else:

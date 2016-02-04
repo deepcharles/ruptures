@@ -1,7 +1,6 @@
 from math import ceil
 from ruptures.search_methods import BaseClass
 import abc
-from ruptures.search_methods import MemoizeDict
 from ruptures.search_methods import sanity_check
 
 
@@ -27,7 +26,7 @@ class Dynp(BaseClass, metaclass=abc.ABCMeta):
         self.min_size = min_size
         # do not forget to reset the self.search_method if important attributes
         # have been changed.
-        self.search_method = MemoizeDict(self.search_method.func)
+        self.search_method.cache_clear()
 
     def search_method(self, start, end, n_regimes):
         """Finds the best partition for the segment [start:end]

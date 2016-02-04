@@ -1,8 +1,6 @@
 import numpy as np
 import abc
 from ruptures.search_methods import BaseClass
-from ruptures.search_methods import MemoizeDict
-from ruptures.costs import NotEnoughPoints
 
 
 class Pelt(BaseClass, metaclass=abc.ABCMeta):
@@ -32,7 +30,7 @@ class Pelt(BaseClass, metaclass=abc.ABCMeta):
         self.min_size = min_size
         # do not forget to reset the self.search_method if important attributes
         # have been changed.
-        self.search_method = MemoizeDict(self.search_method.func)
+        self.search_method.cache_clear()
 
     def search_method(self):
         """Search the partition space for segmentation which minimize the
