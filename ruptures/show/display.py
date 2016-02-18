@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from itertools import cycle
+COLOR_CYCLE = ["r", "c", "m", "y", "k", "b", "g"]
 
 
 def display(signal, true_chg_pts, computed_chg_pts=None, **kwargs):
@@ -34,7 +36,7 @@ def display(signal, true_chg_pts, computed_chg_pts=None, **kwargs):
         axarr = [axarr]
 
     for ax, sig in zip(axarr, s.T):
-        color_cycle = ax._get_lines.prop_cycler
+        color_cycle = cycle(COLOR_CYCLE)
         # plot s
         ax.plot(range(s.shape[0]), sig)
 
@@ -43,7 +45,7 @@ def display(signal, true_chg_pts, computed_chg_pts=None, **kwargs):
         starts = np.append(0, [t + 1 for t in ends[:-1]])
 
         for (start, end), c in zip(zip(starts, ends), color_cycle):
-            ax.axvspan(start, end, facecolor=c["color"], alpha=alpha)
+            ax.axvspan(start, end, facecolor=c, alpha=alpha)
 
         # vertical lines to mark the computed_chg_pts
         if computed_chg_pts is not None:
