@@ -76,8 +76,8 @@ class Pelt(BaseClass, metaclass=abc.ABCMeta):
                 zip(R_tmp, costs_list, error_list), key=lambda z: z[1])
 
             # on met self.F à jour
-            self.F[bkp] = {**self.F[min_cost_index],
-                           **{(min_cost_index, bkp): min_error + self.penalty}}
+            self.F[bkp] = self.F[min_cost_index].copy()
+            self.F[bkp].update({(min_cost_index, bkp): min_error + self.penalty})
 
             # on met self.R à jour
             F_bkp = sum(self.F[bkp].values())
