@@ -1,46 +1,44 @@
 import numpy as np
 from ruptures.costs.exceptions import NotEnoughPoints
-from np.fft import rfftfreq
+from ruptures.search_methods import changepoint
 
 
-def sinus_mse(signal):
-    """
-    Returns the cost function.
-    Here:
-    Mean squared error when doing a regression against waves at the fourier
-    frequencies (i / n for n in range(n / 2))
-    Associated K (see Pelt.__init__): 0
+@changepoint
+class HarmonicMSE:
 
-    signal: array of shape (n_points,) or (n_points, 1)
-    """
-    s = signal
-    if s.ndim == 1:
-        s = s.reshape(-1, 1)
+    def error(self, start, end):
 
-    def error_func(start, end):
         assert 0 <= start <= end
 
         if end - start < 20:  # we need at least 20 points
             raise NotEnoughPoints
 
-        # we only consider signals with an even number of points.
-        n = ((end - start) // 2) * 2
-        sig = s[start:(start + n)]
+        sig = self.signal[start:end]
 
-        # frequencies at which we do the regression
-        freqs = np.fft.rfftfreq(n)
-        temps = np.arange(n) * np.pi * 2
+        # Fourier transform
+        fourier = np.fft.rfft(sig.flatten())
 
-        regressors = [np.column_stack((np.cos(w * temps), np.sin(w * temps)))
-                      for w in freqs[1:-1]]
+        # coefficient of the biggest harmonic (except the DC)
+        k, coef_max = max(enumerate(fourier[1:], start=1),
+                          key=lambda z: abs(z[1]))
+        # DC component
+        coef_dc = fourier[0]
 
-        X = np.column_stack([np.ones(n)] + regressors +
-                            [np.cos(freqs[-1] * temps)])
+        # we put all other components to zero
+        fourier_sparse = np.zeros(fourier.shape, dtype=complex)
+        fourier_sparse[0] = coef_dc
+        fourier_sparse[k] = coef_max
 
-        hat_matrix = np.diag([1] + [2] * (n - 2) + [1]) / n
-        beta = hat_matrix.dot(X.T).dot(sig)
-        residuals = sig.reshape(-1, 1) - X.dot(beta)
+        # we reconstruct a periodic signal
+        sig_reconstruct = np.fft.irfft(fourier_sparse, len(sig))
 
-        return residuals.mean()
+        residuals = sig - sig_reconstruct.reshape(sig.shape)
 
-    return error_func
+        return abs(residuals).sum()
+
+    def set_params(self):
+        pass
+
+    @property
+    def K(self):
+        return 0
