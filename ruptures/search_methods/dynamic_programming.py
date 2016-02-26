@@ -115,7 +115,8 @@ class Dynp(BaseClass, metaclass=abc.ABCMeta):
                 discarded.
 
         Returns:
-            list: list of list of indexes (end of each regime).
+            list: list of list of indexes (end of each regime) or list of
+                indexes (same depth as n_regimes).
         """
         self.reset_params(jump, min_size)
         self.signal = signal

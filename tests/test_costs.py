@@ -4,7 +4,7 @@ from itertools import product
 from ruptures.costs import ConstantMSE, GaussMLE, LinearMLE, HarmonicMSE
 from ruptures.datasets import pw_constant
 from ruptures.costs import NotEnoughPoints
-PENALTIES = np.linspace(0.1, 100, 10)
+PENALTIES = [np.linspace(0.1, 100, 10), [np.linspace(0.1, 100, 10)]]
 ALGOS = [ConstantMSE, GaussMLE, LinearMLE, HarmonicMSE]
 
 
@@ -38,6 +38,11 @@ def test_dynp(signal_bkps, algo):
     n_regimes = len(bkps)
     method = "dynp"
     a = algo(method)
+    a.fit(signal, n_regimes=n_regimes, jump=5, min_size=20)
+    assert a.bkps[-1] == signal.shape[
+        0], "The last breakpoint must be equal to the signal length"
+
+    n_regimes = range(2, n_regimes + 1)
     a.fit(signal, n_regimes=n_regimes, jump=5, min_size=20)
     assert a.bkps[-1] == signal.shape[
         0], "The last breakpoint must be equal to the signal length"

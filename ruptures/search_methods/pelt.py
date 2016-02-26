@@ -1,6 +1,7 @@
 import numpy as np
 import abc
 from ruptures.search_methods import BaseClass
+import collections
 
 
 class Pelt(BaseClass, metaclass=abc.ABCMeta):
@@ -95,9 +96,37 @@ class Pelt(BaseClass, metaclass=abc.ABCMeta):
         return self.F[self.n]
 
     def fit(self, signal, penalty, jump=1, min_size=2):
-        self.reset_params(penalty, jump, min_size)
-        self.signal = signal
-        self.partition = self.search_method()
-        self.bkps = sorted(e for (s, e) in self.partition)
+        """Computes the segmentation for a given penalty using PELT (or a list
+        of penalties).
 
-        return self.bkps
+        Args:
+            signal (array): signal to segment. Shape (n_samples,  n_features)
+                or (n_samples,).
+            penalty (float or iterable): penalty or list of penalties to use.
+            jump (int, optional): number of points between two potential
+                breakpoints.
+            min_size (int, optional): regimes shorter than min_size are
+                discarded.
+
+        Returns:
+            list: list of list of indexes (end of each regime) or list of
+                indexes (same depth as penalty).
+        """
+        self.signal = signal
+
+        if not isinstance(penalty, collections.Iterable):
+            penalty_list = [penalty]
+        else:
+            penalty_list = penalty
+
+        bkps_list = list()
+
+        for pen in penalty_list:
+            self.reset_params(penalty, jump, min_size)
+            self.partition = self.search_method()
+            self.bkps = sorted(e for (s, e) in self.partition)
+            bkps_list.append(self.bkps)
+
+        if not isinstance(penalty, collections.Iterable):
+            return self.bkps
+        return bkps_list
