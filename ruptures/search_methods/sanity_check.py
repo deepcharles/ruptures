@@ -1,4 +1,5 @@
 from math import ceil
+import numpy as np
 
 
 def sanity_check(n_samples, n_regimes, jump, min_size):
@@ -16,7 +17,9 @@ def sanity_check(n_samples, n_regimes, jump, min_size):
         bool: True if there exists a potential configuration of
             breakpoints for the given parameters. False if it does not.
     """
-    assert isinstance(n_regimes, int)
+    assert isinstance(
+        n_regimes, (int, np.integer)), "n_regimes: {} (type {})".format(
+        n_regimes, type(n_regimes))
     assert isinstance(n_samples, int)
     assert isinstance(jump, int)
     assert isinstance(min_size, int)

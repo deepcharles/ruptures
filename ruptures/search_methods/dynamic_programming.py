@@ -2,6 +2,8 @@ from math import ceil
 from ruptures.search_methods import BaseClass
 import abc
 from ruptures.search_methods import sanity_check
+import numpy as np
+import collections
 
 
 class Dynp(BaseClass, metaclass=abc.ABCMeta):
@@ -100,14 +102,44 @@ class Dynp(BaseClass, metaclass=abc.ABCMeta):
             return current_breaks
 
     def fit(self, signal, n_regimes, jump=1, min_size=2):
+        """Computes the segmentation of a signal
+
+        Args:
+            signal (array): signal to segment. Shape (n_samples,  n_features)
+                or (n_samples,).
+            n_regimes (int or iterable): number of regimes. If iterable (of
+                integers), computes the segmentation for all integers.
+            jump (int, optional): number of points between two potential
+                breakpoints.
+            min_size (int, optional): regimes shorter than min_size are
+                discarded.
+
+        Returns:
+            list: list of list of indexes (end of each regime).
+        """
         self.reset_params(jump, min_size)
-        self.n_regimes = n_regimes
         self.signal = signal
         n_samples = self.signal.shape[0]
-        self.partition = self.search_method(
-            0, n_samples, self.n_regimes)
 
-        # we return the end of each segment of the partition
-        self.bkps = sorted(e for (s, e) in self.partition)
+        assert isinstance(n_regimes, (int, np.integer)) or \
+            isinstance(n_regimes, collections.Iterable),\
+            "Wrong type: {}".format(type(n_regimes))
 
-        return self.bkps
+        res_bkps = list()
+        if isinstance(n_regimes, (int, np.integer)):
+            regimes_list = [int(n_regimes)]
+        else:
+            regimes_list = n_regimes
+
+        for n_reg in regimes_list:
+            self.n_regimes = n_reg
+            self.partition = self.search_method(
+                0, n_samples, self.n_regimes)
+            # we return the end of each segment of the partition
+            self.bkps = sorted(e for (s, e) in self.partition)
+            res_bkps.append(self.bkps)
+
+        if isinstance(n_regimes, (int, np.integer)):
+            return res_bkps[0]
+
+        return res_bkps
