@@ -6,7 +6,18 @@ from math import ceil
 def pw_constant(n=100, clusters=3, dim=1, min_size=None, noisy=False, snr=0.1):
     """
     Piecewise constant signal.
-    Returns the signal and the change point indexes (end of each regime).
+
+    Args:
+        n (int, optional): signal length
+        clusters (int, optional): number of regimes
+        dim (int, optional): dimension of the signal
+        min_size (int or None, optional): minimum size of a regime. If None,
+            automatically computed.
+        noisy (bool, optional): If True, noise is added
+        snr (float, optional): signal-to-noise ratio (between 0 and 1)
+
+    Returns:
+        tuple: (change point indexes (end of each regime), signal)
     """
     # taille minimale de segment
     if min_size is None:

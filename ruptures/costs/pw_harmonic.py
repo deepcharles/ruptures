@@ -7,7 +7,18 @@ from ruptures.search_methods import changepoint
 class HarmonicMSE:
 
     def error(self, start, end):
+        """Cost between on the self.signal[start:end] signal
 
+        Args:
+            start (int): start index
+            end (int): end index
+
+        Raises:
+            NotEnoughPoints: if there are not enough points
+
+        Returns:
+            float: the cost
+        """
         assert 0 <= start <= end
 
         if end - start < 20:  # we need at least 20 points
@@ -19,22 +30,19 @@ class HarmonicMSE:
             # Fourier transform
             fourier = np.fft.rfft(sig.flatten())
 
+            # We want to calculate the difference between the signal and a
+            # signal reconstructed from the DC component and the biggest
+            # harmonic. The difference is the residuals.
+
             # coefficient of the biggest harmonic (except the DC)
-            k, coef_max = max(enumerate(fourier[1:], start=1),
-                              key=lambda z: abs(z[1]))
-            # DC component
-            coef_dc = fourier[0]
+            k_max, _ = max(enumerate(fourier[1:], start=1),
+                           key=lambda z: abs(z[1]))
 
-            # we put all other components to zero
-            fourier_sparse = np.zeros(fourier.shape, dtype=complex)
-            fourier_sparse[0] = coef_dc
-            fourier_sparse[k] = coef_max
+            fourier[0] = 0  # DC component to 0
+            fourier[k_max] = 0  # biggest harmonic to zero.
 
-            # we reconstruct a periodic signal
-            sig_reconstruct = np.fft.irfft(fourier_sparse, len(sig))
-
-            residuals = sig - sig_reconstruct.reshape(sig.shape)
-            res += abs(residuals).sum()
+            residuals = np.fft.irfft(fourier, len(sig))
+            res += abs(residuals**2).sum()
 
         return res
 

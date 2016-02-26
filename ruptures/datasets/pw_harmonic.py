@@ -4,11 +4,11 @@ from math import ceil
 
 
 def pw_harmonic(n=100, clusters=3, dim=1, min_size=None,
-                min_wave_per_segment=5,
-                min_points_per_wave=20,
+                min_wave_per_segment=3,
+                min_points_per_wave=10,
                 noisy=False, snr=0.1):
     """
-    Piecewise constant signal.
+    Piecewise periodic signal.
 
     Args:
         n (int, optional): signal length
@@ -29,6 +29,8 @@ def pw_harmonic(n=100, clusters=3, dim=1, min_size=None,
     # taille minimale de segment
     if min_size is None:
         min_size = ceil(n / clusters / 2)
+        min_size = max(min_size, min_points_per_wave * min_wave_per_segment)
+
     assert isinstance(n, int)
     assert isinstance(clusters, int)
     assert isinstance(min_size, int)
@@ -38,7 +40,7 @@ def pw_harmonic(n=100, clusters=3, dim=1, min_size=None,
     assert min_size * clusters <= n, "The minimum size is too great."
     # tailles de segments
     segments = uniform_with_constant_sum(clusters, n - min_size * clusters)
-    segments += max(min_size, min_points_per_wave * min_wave_per_segment)
+    segments += min_size
 
     signals1D_list = list()  # list of 1D signals
     for _ in range(dim):
@@ -51,8 +53,9 @@ def pw_harmonic(n=100, clusters=3, dim=1, min_size=None,
             A *= (1 - abs(last_previous_point))
             A += abs(last_previous_point)
             # period
-            nb_of_waves = np.random.randint(min_wave_per_segment,
-                                            s // min_points_per_wave + 1)
+            nb_of_waves = np.random.randint(
+                min_wave_per_segment,
+                s // min_points_per_wave + 1)
             period = s // nb_of_waves
             # phase (to ensure continuity)
             phase = np.arcsin(last_previous_point / A)
