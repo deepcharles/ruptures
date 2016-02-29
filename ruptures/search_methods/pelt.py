@@ -23,9 +23,12 @@ class Pelt(BaseClass, metaclass=abc.ABCMeta):
         Returns:
             None:
         """
-        assert penalty >= 0
         assert min_size > 0
-        assert penalty > self.K
+        if isinstance(penalty, collections.Iterable):
+            assert all(p > self.K and p >= 0 for p in penalty)
+        else:
+            assert penalty >= 0
+            assert penalty > self.K
         self.penalty = penalty
         self.jump = jump
         self.min_size = min_size
