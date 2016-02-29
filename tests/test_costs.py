@@ -4,7 +4,7 @@ from itertools import product
 from ruptures.costs import ConstantMSE, GaussMLE, LinearMLE, HarmonicMSE
 from ruptures.datasets import pw_constant
 from ruptures.costs import NotEnoughPoints
-PENALTIES = [np.linspace(0.1, 100, 10), [np.linspace(0.1, 100, 10)]]
+PENALTIES = [*np.linspace(0.1, 100, 10), np.linspace(0.1, 100, 10)]
 ALGOS = [ConstantMSE, GaussMLE, LinearMLE, HarmonicMSE]
 
 
