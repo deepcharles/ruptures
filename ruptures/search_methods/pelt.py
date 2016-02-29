@@ -86,12 +86,8 @@ class Pelt(BaseClass, metaclass=abc.ABCMeta):
 
             # on met self.R à jour
             F_bkp = sum(self.F[bkp].values())
-            self.R[bkp] = [
-                t for t,
-                v in zip(
-                    R_tmp,
-                    costs_list) if v +
-                self.K < F_bkp]
+            self.R[bkp] = [t for t, v in zip(R_tmp, costs_list) if v +
+                           self.K < F_bkp]
 
             if len(self.R[bkp]) == 0:
                 self.R[bkp] = [0]
