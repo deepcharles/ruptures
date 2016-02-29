@@ -121,7 +121,7 @@ class Pelt(BaseClass, metaclass=abc.ABCMeta):
         bkps_list = list()
 
         for pen in penalty_list:
-            self.reset_params(penalty, jump, min_size)
+            self.reset_params(pen, jump, min_size)
             self.partition = self.search_method()
             self.bkps = sorted(e for (s, e) in self.partition)
             bkps_list.append(self.bkps)
