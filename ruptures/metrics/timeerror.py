@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.spatial.distance import cdist
+from ruptures.metrics.sanity_check import sanity_check
 
 
 def meantime(true_bkps, my_bkps):
@@ -16,11 +17,12 @@ def meantime(true_bkps, my_bkps):
     Returns:
         float: mean time error.
     """
-    true_bkps_arr = np.array(true_bkps).reshape(-1, 1)
-    my_bkps_arr = np.array(my_bkps).reshape(-1, 1)
+    sanity_check(true_bkps, my_bkps)
+    true_bkps_arr = np.array(true_bkps[:-1]).reshape(-1, 1)
+    my_bkps_arr = np.array(my_bkps[:-1]).reshape(-1, 1)
     pw_dist = cdist(true_bkps_arr, my_bkps_arr)
 
     dist_from_true = pw_dist.min(axis=0)
-    assert len(dist_from_true) == len(my_bkps)
+    assert len(dist_from_true) == len(my_bkps) - 1
 
     return dist_from_true.mean()

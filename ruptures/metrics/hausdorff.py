@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.spatial.distance import cdist
+from ruptures.metrics.sanity_check import sanity_check
 
 
 def hausdorff(bkps1, bkps2):
@@ -12,8 +13,9 @@ def hausdorff(bkps1, bkps2):
     Returns:
         float: Hausdorff distance.
     """
-    bkps1_arr = np.array(bkps1).reshape(-1, 1)
-    bkps2_arr = np.array(bkps2).reshape(-1, 1)
+    sanity_check(bkps1, bkps2)
+    bkps1_arr = np.array(bkps1[:-1]).reshape(-1, 1)
+    bkps2_arr = np.array(bkps2[:-1]).reshape(-1, 1)
     pw_dist = cdist(bkps1_arr, bkps2_arr)
     res = max(pw_dist.min(axis=0).max(), pw_dist.min(axis=1).max())
     return res

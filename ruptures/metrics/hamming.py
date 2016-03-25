@@ -1,4 +1,5 @@
 from itertools import product
+from ruptures.metrics.sanity_check import sanity_check
 
 
 def in_same_cluster(bkps):
@@ -22,8 +23,7 @@ def hamming(bkps1, bkps2):
     Returns:
         float: Hamming distance.
     """
-    assert max(bkps1) == max(
-        bkps2), "The two partitions do not share the last breakpoint."
+    sanity_check(bkps1, bkps1)
     n = max(bkps1)
     membership1 = in_same_cluster(bkps1)
     membership2 = in_same_cluster(bkps2)
