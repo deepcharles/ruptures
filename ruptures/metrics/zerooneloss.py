@@ -11,5 +11,5 @@ def zero_one_loss(bkps1, bkps2):
     Returns:
         int: 0 or 1
     """
-    sanity_check(bkps1, bkps1)
+    sanity_check(bkps1, bkps2)
     return int(len(bkps1) == len(bkps2))

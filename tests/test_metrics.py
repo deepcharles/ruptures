@@ -1,3 +1,4 @@
+import numpy as np
 import pytest
 from ruptures.metrics import hamming, meantime, precision_recall
 from ruptures.metrics import hausdorff, zero_one_loss
@@ -29,8 +30,11 @@ def test_exception(bkps, metric):
     true_bkps, my_bkps = bkps
     with pytest.raises(BadPartitions):
         m = metric(true_bkps, [])
+    with pytest.raises(BadPartitions):
         m = metric([], my_bkps)
+    with pytest.raises(BadPartitions):
         m = metric([10, 10, 500], [10, 500])
+    with pytest.raises(BadPartitions):
         m = metric([10, 500], [10, 501])
 
 
@@ -49,8 +53,10 @@ def test_pr_re(bkps):
     # with a delta
     for delta in range(2, 15):
         my_bkps = [b + delta for b in true_bkps[:-1]] + [true_bkps[-1]]
+        # delta too small
         assert precision_recall(true_bkps, my_bkps,
                                 margin=delta) == (0, 0)
+        # delta too great
         assert precision_recall(true_bkps, my_bkps,
                                 margin=delta + 1) == (1, 1)
 
@@ -64,3 +70,57 @@ def test_pr_re(bkps):
     pr, re = precision_recall(my_bkps, true_bkps, margin=10)
     assert pr == 1
     assert re == 4 / 249
+
+
+def test_zerooneloss(bkps):
+    true_bkps, my_bkps = [100, 200, 300, 400, 500], [101, 201, 301, 401, 500]
+    assert zero_one_loss(true_bkps, my_bkps)
+
+    true_bkps, my_bkps = [100, 200, 300, 500], [101, 201, 301, 401, 500]
+    assert not zero_one_loss(true_bkps, my_bkps)
+
+    true_bkps, my_bkps = np.arange(10), np.arange(10)
+    assert zero_one_loss(true_bkps, my_bkps)
+
+    true_bkps, my_bkps = np.arange(100, step=9), np.arange(100)
+    assert not zero_one_loss(true_bkps, my_bkps)
+
+
+def test_hausdorff(bkps):
+    true_bkps, my_bkps = [100, 200, 300, 400, 500], [101, 201, 301, 401, 500]
+    assert hausdorff(true_bkps, my_bkps) == 1
+
+    true_bkps, my_bkps = [100, 200, 300, 400, 500], [100, 200, 300, 405, 500]
+    assert hausdorff(true_bkps, my_bkps) == 5
+
+    true_bkps, my_bkps = [100, 200, 300, 500], [100, 200, 300, 405, 500]
+    assert hausdorff(true_bkps, my_bkps) == 105
+
+    assert hausdorff(true_bkps, true_bkps) == 0
+
+
+def test_timeerror():
+    true_bkps, my_bkps = [100, 200, 300, 400, 500], [101, 201, 301, 401, 500]
+    assert meantime(true_bkps, my_bkps) == 1
+
+    true_bkps, my_bkps = [100, 200, 300, 400, 500], [101, 201, 301, 401, 500]
+    assert meantime(true_bkps, true_bkps) == 0
+
+    true_bkps, my_bkps = [100, 200, 300, 400, 500], [104, 200, 300, 400, 500]
+    assert meantime(true_bkps, my_bkps) == 1
+
+    true_bkps, my_bkps = np.array([100, 200, 300, 400, 500]), np.array([
+        101, 201, 301, 401, 500])
+    assert meantime(true_bkps, my_bkps) == 1
+
+    true_bkps, my_bkps = [400, 500], [100, 200, 300, 500]
+    assert meantime(my_bkps, true_bkps) == 100
+
+    true_bkps, my_bkps = [100, 200, 300, 500], [450, 500]
+    assert meantime(my_bkps, true_bkps) == 250
+
+
+def test_hamming(bkps):
+    # TODO: faire des tests pour hamming
+    true_bkps, my_bkps = bkps
+    assert hamming(true_bkps, true_bkps) == 0

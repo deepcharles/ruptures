@@ -23,7 +23,7 @@ def hamming(bkps1, bkps2):
     Returns:
         float: Hamming distance.
     """
-    sanity_check(bkps1, bkps1)
+    sanity_check(bkps1, bkps2)
     n = max(bkps1)
     membership1 = in_same_cluster(bkps1)
     membership2 = in_same_cluster(bkps2)
