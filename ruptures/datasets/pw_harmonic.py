@@ -31,11 +31,7 @@ def pw_harmonic(n=100, clusters=3, dim=1, min_size=None,
         min_size = ceil(n / clusters / 2)
         min_size = max(min_size, min_points_per_wave * min_wave_per_segment)
 
-    assert isinstance(n, int)
-    assert isinstance(clusters, int)
-    assert isinstance(min_size, int)
     assert isinstance(noisy, bool)
-    assert isinstance(dim, int)
     assert clusters > 1, "There must be at least two regimes."
     assert min_size * clusters <= n, "The minimum size is too great."
     # tailles de segments

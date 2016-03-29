@@ -22,11 +22,7 @@ def pw_constant(n=100, clusters=3, dim=1, min_size=None, noisy=False, snr=0.1):
     # taille minimale de segment
     if min_size is None:
         min_size = ceil(n / clusters / 2)
-    assert isinstance(n, int)
-    assert isinstance(clusters, int)
-    assert isinstance(min_size, int)
     assert isinstance(noisy, bool)
-    assert isinstance(dim, int)
     assert min_size * clusters <= n, "The minimum size is too great."
     # tailles de segments
     segments = uniform_with_constant_sum(clusters, n - min_size * clusters)
