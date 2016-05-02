@@ -1,13 +1,11 @@
-from itertools import product
 from ruptures.metrics.sanity_check import sanity_check
+from scipy.sparse import block_diag
+import numpy as np
 
 
-def in_same_cluster(bkps):
-    bkps_sorted = sorted(bkps)
-
-    def res_func(x, y):
-        return all(not min(x, y) < b <= max(x, y) for b in bkps_sorted)
-    return res_func
+def membership_mat(bkps):
+    return block_diag([np.ones((k, k)) for k in [bkps[0]] +
+                       list(np.diff(bkps))], dtype=bool)
 
 
 def hamming(bkps1, bkps2):
@@ -25,10 +23,7 @@ def hamming(bkps1, bkps2):
     """
     sanity_check(bkps1, bkps2)
     n = max(bkps1)
-    membership1 = in_same_cluster(bkps1)
-    membership2 = in_same_cluster(bkps2)
-    disagreement = sum(membership1(i, j) != membership2(i, j)
-                       for i, j in product(range(n), range(n))
-                       if i != j)
+
+    disagreement = abs(membership_mat(bkps1) - membership_mat(bkps2)).sum()
     disagreement /= n * (n - 1)  # scaling
     return disagreement
