@@ -25,16 +25,6 @@ class BaseClass(metaclass=abc.ABCMeta):
         self.n = self.signal.shape[0]
 
     @abc.abstractmethod
-    def set_params(self, *args, **kwargs):
-        """In case some parameters have to be set before computing the cost on a
-        segment.
-
-        Returns:
-            None: Returns nothing, just set the relevant attributes
-        """
-        pass
-
-    @abc.abstractmethod
     def error(self, start, end):
         """Compute the cost to minimize on the segment start:end
 
@@ -44,21 +34,6 @@ class BaseClass(metaclass=abc.ABCMeta):
 
         Returns:
             float: the cost value
-        """
-        pass
-
-    @abc.abstractmethod
-    def search_method(self, start, end, *args, **kwargs):
-        """Search the partition space for the best partition
-
-        Args:
-            start (int): start index of the segment
-            end (int): end index of the segment
-            *args: arguments
-            **kwargs: arguments
-
-        Returns:
-            dict: {(start, end): cost value associated with the partition }
         """
         pass
 
