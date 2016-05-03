@@ -3,13 +3,12 @@ from functools import lru_cache
 
 
 class BaseClass(metaclass=abc.ABCMeta):
+
     """Base class for the class which will hold the changepoint detection
     algorithms."""
 
     def __init__(self):
-        self.error = lru_cache(maxsize=None)(self.error)
-        self.search_method = lru_cache(maxsize=None)(self.search_method)
-        self.set_params = lru_cache(maxsize=None)(self.set_params)
+        self.cache = lru_cache(maxsize=None)(self.cache)
 
     @property
     def signal(self):
@@ -17,10 +16,8 @@ class BaseClass(metaclass=abc.ABCMeta):
 
     @signal.setter
     def signal(self, s):
-        # since signal has changed, we reset the search_method and error cache.
-        self.search_method.cache_clear()
-        self.error.cache_clear()
-        self.set_params.cache_clear()
+        # since signal has changed, we reset the cache.
+        self.cache.cache_clear()
         if s.ndim == 1:
             self._signal = s.reshape(-1, 1)
         else:
