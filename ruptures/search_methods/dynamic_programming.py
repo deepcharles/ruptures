@@ -15,6 +15,7 @@ class Dynp(BaseClass, metaclass=abc.ABCMeta):
 
     def __init__(self):
         super(Dynp, self).__init__()
+        self._partition = None  # to hold the current best partition
 
     def reset_params(self, jump=1, min_size=2):
         pass
@@ -93,7 +94,7 @@ class Dynp(BaseClass, metaclass=abc.ABCMeta):
         params = Params(n_regimes=int(n_regimes),
                         start=0, end=self.signal.shape[0],
                         jump=int(jump), min_size=int(min_size))
-        partition = self.cache(params)
+        self._partition = self.cache(params)
         # we return the end of each segment of the partition
-        bkps = sorted(e for (s, e) in partition)
+        bkps = sorted(e for (s, e) in self._partition)
         return bkps
