@@ -1,8 +1,7 @@
-import numpy as np
 import abc
 from ruptures.search_methods import BaseClass
 import collections
-from math import ceil
+from math import floor
 
 # container for the parameters of the cache method.
 Params = collections.namedtuple("Params", ["start", "end"])
@@ -51,11 +50,11 @@ class Pelt(BaseClass, metaclass=abc.ABCMeta):
         admissible = []
 
         # Recursion
-        ind = [k for k in range(0, n_samples, jump) if k > min_size]
+        ind = [k for k in range(0, n_samples, jump) if k >= min_size]
         ind += [n_samples]
         for bkp in ind:
             # adding a point to the admissible set from the previous loop.
-            new_adm_pt = ceil((bkp - min_size) / jump) - 1
+            new_adm_pt = floor((bkp - min_size) / jump)
             new_adm_pt *= jump
             admissible.append(new_adm_pt)
 
@@ -63,7 +62,10 @@ class Pelt(BaseClass, metaclass=abc.ABCMeta):
             for t in admissible:
                 p = Params(start=t, end=bkp)
                 # left partition
-                tmp_partition = partitions[t].copy()
+                try:
+                    tmp_partition = partitions[t].copy()
+                except KeyError:  # no partition of 0..t exists
+                    continue
                 # we update with the right partition
                 tmp_partition.update({(t, bkp): self.cache(p) + penalty})
                 subproblems.append(tmp_partition)
