@@ -26,8 +26,8 @@ def test_pelt(signal_bkps, penalty, kernel):
     signal, bkps = signal_bkps
     method = "pelt"
     a = KernelMSE(method, kernel)
-    a.fit(signal, penalty=penalty, jump=5, min_size=3)
-    assert a.bkps[-1] == signal.shape[
+    my_bkps = a.fit(penalty=penalty, signal=signal, jump=5, min_size=3)
+    assert my_bkps[-1] == signal.shape[
         0], "The last breakpoint must be equal to the signal length"
 
 
@@ -37,8 +37,8 @@ def test_dynp(signal_bkps, kernel):
     n_regimes = len(bkps)
     method = "dynp"
     a = KernelMSE(method, kernel)
-    a.fit(signal, n_regimes=n_regimes, jump=5, min_size=2)
-    assert a.bkps[-1] == signal.shape[
+    my_bkps = a.fit(n_regimes=n_regimes, signal=signal, jump=5, min_size=2)
+    assert my_bkps[-1] == signal.shape[
         0], "The last breakpoint must be equal to the signal length"
 
 
@@ -50,9 +50,9 @@ def test_exceptions(signal_bkps, kernel):
     method = "dynp"
     a = KernelMSE(method, kernel)
     with pytest.raises(NotEnoughPoints):
-        a.fit(signal, n_regimes=n_regimes, min_size=1)
+        a.fit(signal=signal, n_regimes=n_regimes, min_size=1)
 
     method = "pelt"
     a = KernelMSE(method, kernel)
     with pytest.raises(NotEnoughPoints):
-        a.fit(signal, penalty=1, min_size=1)
+        a.fit(signal=signal, penalty=1, min_size=1)
