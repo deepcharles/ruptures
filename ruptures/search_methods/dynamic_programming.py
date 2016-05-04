@@ -2,7 +2,6 @@ from ruptures.search_methods import BaseClass
 import abc
 from ruptures.search_methods import sanity_check
 import collections
-
 # container for the parameters needed to segment.
 Params = collections.namedtuple(
     "Params", ["n_regimes", "start", "end", "jump", "min_size"])
@@ -46,12 +45,12 @@ class Dynp(BaseClass, metaclass=abc.ABCMeta):
                 # first check if left subproblem is possible
                 if sanity_check(n_samples, n_regimes - 1, jump, min_size):
                     # second check if the right subproblem has enough points
-                    if end - bkp > min_size:
+                    if end - bkp >= min_size:
                         admissible_bkps.append(bkp)
 
             assert len(
-                admissible_bkps) > 0, "No admissible last breakpoints found."
-            " Parameters: {}".format(params)
+                admissible_bkps) > 0, "No admissible last breakpoints found.\
+             Parameters: {}".format(params)
 
             # Compute the subproblems
             sub_problems = list()
@@ -90,6 +89,13 @@ class Dynp(BaseClass, metaclass=abc.ABCMeta):
                 assert False, "You must define a signal."
         else:
             self.signal = signal
+        n_samples = self.signal.shape[0]
+
+        assert sanity_check(
+            n_samples,
+            n_regimes,
+            jump,
+            min_size), "Change n_regimes, jump or min_size."
 
         params = Params(n_regimes=int(n_regimes),
                         start=0, end=self.signal.shape[0],
