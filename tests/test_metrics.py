@@ -11,7 +11,7 @@ def bkps():
     return [100, 200, 300, 400, 500], [101, 201, 301, 401, 500]
 
 
-@pytest.mark.parametrize("metric", METRICS)
+@pytest.mark.parametrize("metric", [hamming, meantime, precision_recall, hausdorff])
 def test_simple(bkps, metric):
     true_bkps, my_bkps = bkps
     m = metric(true_bkps, my_bkps)
@@ -74,16 +74,16 @@ def test_pr_re(bkps):
 
 def test_zerooneloss(bkps):
     true_bkps, my_bkps = [100, 200, 300, 400, 500], [101, 201, 301, 401, 500]
-    assert zero_one_loss(true_bkps, my_bkps)
+    assert zero_one_loss(true_bkps, my_bkps) == 0
 
     true_bkps, my_bkps = [100, 200, 300, 500], [101, 201, 301, 401, 500]
-    assert not zero_one_loss(true_bkps, my_bkps)
+    assert zero_one_loss(true_bkps, my_bkps) == 1
 
     true_bkps, my_bkps = np.arange(10), np.arange(10)
-    assert zero_one_loss(true_bkps, my_bkps)
+    assert zero_one_loss(true_bkps, my_bkps) == 0
 
     true_bkps, my_bkps = np.arange(100, step=9), np.arange(100)
-    assert not zero_one_loss(true_bkps, my_bkps)
+    assert zero_one_loss(true_bkps, my_bkps) == 1
 
 
 def test_hausdorff(bkps):
