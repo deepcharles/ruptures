@@ -23,6 +23,9 @@ def precision_recall(true_bkps, my_bkps, margin=10):
     assert margin > 0, "Margin of error must be positive (margin = {})".format(
         margin)
 
+    if len(my_bkps) == 1:
+        return 0, 0
+
     used = set()
     true_pos = set(true_b
                    for true_b, my_b in product(true_bkps[:-1], my_bkps[:-1])
