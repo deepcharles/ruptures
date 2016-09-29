@@ -4,7 +4,7 @@ from ruptures.search_methods import changepoint
 
 
 @changepoint
-class HarmonicMSE:
+class HarmonicL2:
 
     def error(self, start, end):
         """Cost between on the self.signal[start:end] signal

@@ -1,11 +1,12 @@
 import pytest
 import numpy as np
 from itertools import product, accumulate
-from ruptures.costs import ConstantMSE, GaussMLE, LinearMLE, HarmonicMSE
+from ruptures.costs import LinearMLE, LinearL2, HarmonicL2
+from ruptures.costs import ConstantL1, ConstantL2, GaussMLE
 from ruptures.datasets import pw_constant
 from ruptures.costs import NotEnoughPoints
 PENALTIES = np.linspace(0.1, 100, 10)
-ALGOS = [ConstantMSE, GaussMLE, LinearMLE, HarmonicMSE]
+ALGOS = [ConstantL2, GaussMLE, LinearMLE, HarmonicL2, ConstantL1, LinearL2]
 
 
 @pytest.fixture(scope="module")

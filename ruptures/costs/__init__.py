@@ -1,5 +1,5 @@
 from .exceptions import NotEnoughPoints
-from .pw_constant import ConstantMSE, GaussMLE
-from .pw_linear import LinearMLE
+from .pw_constant import ConstantL2, GaussMLE, ConstantL1
+from .pw_linear import LinearMLE, LinearL2
 from .kernel import KernelMSE
-from .pw_harmonic import HarmonicMSE
+from .pw_harmonic import HarmonicL2
