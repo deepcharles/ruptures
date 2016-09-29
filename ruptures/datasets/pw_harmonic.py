@@ -21,7 +21,7 @@ def pw_harmonic(n=100, clusters=3, dim=1, min_size=None,
         min_points_per_wave (int, optional): minimum number of points per
             period
         noisy (bool, optional): If True, noise is added
-        snr (float, optional): signal-to-noise ratio (between 0 and 1)
+        snr (float, optional): signal-to-noise ratio (in dB)
 
     Returns:
         tuple: (list of changepoint indexes, signal)
@@ -65,7 +65,8 @@ def pw_harmonic(n=100, clusters=3, dim=1, min_size=None,
         signal1d = np.vstack(signal1d)
 
         if noisy:
-            noise = snr * signal1d.std() * np.random.randn(signal1d.size)
+            noise = signal1d.std() * 10**(
+                -snr / 10) * np.random.randn(signal1d.size)
             signal1d += noise.reshape(-1, 1)
 
         signals1D_list.append(signal1d)

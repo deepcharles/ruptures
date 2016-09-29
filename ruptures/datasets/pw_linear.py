@@ -5,10 +5,25 @@ from math import ceil
 
 def pw_linear(n=100, clusters=3, dim=1, min_size=None, noisy=False, snr=0.1):
     """
-    Piecewise constant signal.
-    Returns the signal and the change point indexes (end of each regime).
+    Piecewise linear signal.
+
+    Args:
+        n (int, optional): signal length
+        clusters (int, optional): number of regimes
+        dim (int, optional): dimension of the signal
+        min_size (int or None, optional): minimum size of a regime. If None,
+            automatically computed.
+        min_wave_per_segment (int, optional): minimum number of periods per
+            regime
+        min_points_per_wave (int, optional): minimum number of points per
+            period
+        noisy (bool, optional): If True, noise is added
+        snr (float, optional): signal-to-noise ratio (in dB)
+
+    Returns:
+        tuple: (list of changepoint indexes, signal)
     """
-# taille minimale de segment
+    # taille minimale de segment
     if min_size is None:
         min_size = ceil(n / clusters / 2)
     assert isinstance(noisy, bool)
@@ -37,7 +52,7 @@ def pw_linear(n=100, clusters=3, dim=1, min_size=None, noisy=False, snr=0.1):
 
         # additive noise
         if noisy:
-            std = snr * np.std(signal1d, dtype=float)
+            std = np.std(signal1d, dtype=float) * 10**(-snr / 10)
             signal1d = signal1d + \
                 np.random.standard_normal(signal1d.size) * std
 
