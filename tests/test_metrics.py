@@ -94,7 +94,10 @@ def test_hausdorff(bkps):
     assert hausdorff(true_bkps, my_bkps) == 5
 
     true_bkps, my_bkps = [100, 200, 300, 500], [100, 200, 300, 405, 500]
-    assert hausdorff(true_bkps, my_bkps) == 105
+    assert hausdorff(true_bkps, my_bkps) == 95
+
+    true_bkps, my_bkps = [100, 200, 300, 500], [500]
+    assert hausdorff(true_bkps, my_bkps) == 400
 
     assert hausdorff(true_bkps, true_bkps) == 0
 
