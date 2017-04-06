@@ -1,7 +1,8 @@
-from ruptures.search_methods import BaseClass
 import abc
-from ruptures.search_methods import sanity_check
 import collections
+
+from ruptures.search_methods import BaseClass
+from ruptures.search_methods import sanity_check
 # container for the parameters needed to segment.
 Params = collections.namedtuple(
     "Params", ["n_regimes", "start", "end", "jump", "min_size"])
