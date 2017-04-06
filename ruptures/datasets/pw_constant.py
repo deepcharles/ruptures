@@ -1,54 +1,47 @@
+"""Simulates piecewise constant function of given length and dimension."""
+
 import numpy as np
-from ruptures.datasets import uniform_with_constant_sum
-from math import ceil
+from numpy import random as rd
+
+from ruptures.utils import draw_bkps
 
 
-def pw_constant(n=100, clusters=3, dim=1, min_size=None, noisy=False, snr=0.1):
-    """
-    Piecewise constant signal.
+def pw_constant(n_samples, n_features=1, n_bkps=3, noisy=False, sigma=1.,
+                delta=(1, 10)):
+    """Return a piecewise constant signal.
+
+    Each regime length is drawn at random. Each mean shift amplitude is drawn uniformly from the
+    interval delta.
 
     Args:
-        n (int, optional): signal length
-        clusters (int, optional): number of regimes
-        dim (int, optional): dimension of the signal
-        min_size (int or None, optional): minimum size of a regime. If None,
-            automatically computed.
+        n_samples (int): signal length
+        n_features (int, optional): number of dimensions
+        n_bkps (int, optional): number of changepoints
         noisy (bool, optional): If True, noise is added
-        snr (float, optional): signal-to-noise ratio (in dB)
+        sigma (float, optional): noise std
+        delta (tuple, optional): (delta_min, delta_max) max and min jump values
 
     Returns:
-        tuple: (change point indexes (end of each regime), signal)
+        tuple: signal1d of shape (n_samples, n_features), list of breakpoints
+
     """
-    # taille minimale de segment
-    if min_size is None:
-        min_size = ceil(n / clusters / 2)
-    assert isinstance(noisy, bool)
-    assert min_size * clusters <= n, "The minimum size is too great."
-    # tailles de segments
-    segments = uniform_with_constant_sum(clusters, n - min_size * clusters)
-    segments += min_size
-    assert all(k >= min_size for k in segments)
-    assert clusters > 1, "There must be at least two regimes."
+    # breakpoints
+    bkps = draw_bkps(n_samples, n_bkps)
+    # we create the signal
+    signal = np.empty((n_samples, n_features), dtype=float)
+    tt = np.arange(n_samples)
+    delta_min, delta_max = delta
+    # mean value
+    center = np.zeros(n_features)
+    for ind in np.split(tt, bkps):
+        # jump value
+        jump = rd.uniform(delta_min, delta_max, size=n_features)
+        spin = rd.choice([-1, 1], n_features)
+        center += jump * spin
+        signal[ind] = center
 
-    signals = list()
-    for _ in range(dim):
-        # constantes
-        constantes = list(range((int(clusters))))
-        np.random.shuffle(constantes)
+    if noisy:
+        noise = rd.normal(size=signal.shape) * sigma
+        signal = signal + noise
 
-        # we create the signal
-        signal1d = np.hstack(
-            [c] * length for c,
-            length in zip(
-                constantes,
-                segments))
-        if noisy:
-            std = np.std(signal1d, dtype=float) * 10**(-snr / 10)
-            signal1d = signal1d + \
-                np.random.standard_normal(signal1d.size) * std
-
-        signals.append(signal1d.reshape(-1, 1))
-
-    res = np.hstack(signals)
-    chg_pts = np.cumsum(segments)
-    return res, chg_pts
+    return signal, bkps
