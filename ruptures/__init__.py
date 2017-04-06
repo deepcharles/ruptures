@@ -1,4 +1,4 @@
 from .costs import NotEnoughPoints
 from .search_methods import METHODS
-from .costs import ConstantL2, GaussMLE, LinearMLE, LinearL2, KernelMSE
-from .costs import HarmonicL2, ConstantL1
+from .costs import constantl1, constantl2, LinearMLE, LinearL2, KernelMSE
+from .costs import HarmonicL2
