@@ -2,11 +2,9 @@
 
 """
 from functools import lru_cache
-import numpy as np
-from scipy.spatial.distance import pdist, squareform
 
 from ruptures.search_methods import sanity_check
-from ruptures.costs import constantl1, constantl2
+from ruptures.costs import Cost
 
 
 class Dynp:
@@ -33,12 +31,10 @@ class Dynp:
         self.model = model
         self.min_size = min_size
         self.jump = jump
-        self.signal = None  # signal à segmenter
         self.seg = lru_cache(maxsize=None)(
             self._seg)  # dynamic programming dans cette fonction.
-
-        if self.model == "rbf":
-            self.gram = None
+        self.cost = Cost(model=self.model)
+        self.n_samples = None
 
     def _seg(self, start, end, n_bkps):
         """Reccurence to find best partition of signale[start:end].
@@ -56,13 +52,7 @@ class Dynp:
         jump, min_size = self.jump, self.min_size
 
         if n_bkps == 0:
-            sig = self.signal[start:end]
-            if self.model == "constantl2":
-                cost = constantl2(sig)
-            elif self.model == "constantl1":
-                cost = constantl1(sig)
-            elif self.model == "rbf":
-                cost = -self.gram[start:end, start:end].sum() / (end - start)
+            cost = self.cost.error(start, end)
             return {(start, end): cost}
         elif n_bkps > 0:
             # Let's fill the list of admissible last breakpoints
@@ -105,18 +95,16 @@ class Dynp:
         Returns:
             self
         """
-        if signal.ndim == 1:
-            self.signal = signal.reshape(-1, 1)
-        else:
-            self.signal = signal
         # clear cache
         self.seg.cache_clear()
         # update some params
-        if self.model == "rbf":
-            pairwise_dists = pdist(self.signal, 'sqeuclidean')
-            pairwise_dists /= np.median(pairwise_dists)  # scaling
-            self.gram = squareform(np.exp(-pairwise_dists))
-            np.fill_diagonal(self.gram, 1)
+        self.cost.fit(signal)
+        if signal.ndim == 1:
+            n_samples, = signal.shape
+        else:
+            n_samples, _ = signal.shape
+        self.n_samples = n_samples
+
         return self
 
     def predict(self, n_bkps):
@@ -131,8 +119,7 @@ class Dynp:
         Returns:
             list: sorted list of breakpoints
         """
-        n_samples, _ = self.signal.shape
-        partition = self.seg(0, n_samples, n_bkps)
+        partition = self.seg(0, self.n_samples, n_bkps)
         bkps = sorted(e for s, e in partition.keys())
         return bkps
 
