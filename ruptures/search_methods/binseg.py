@@ -7,7 +7,7 @@ Fast but approximate.
 """
 
 from ruptures.costs import Cost
-from ruptures.utils import pairwise
+from ruptures.utils import pairwise, Bnode
 
 
 class Binseg:
@@ -32,6 +32,22 @@ class Binseg:
         self.jump = jump
         self.cost = Cost(model=self.model)
         self.n_samples = None
+        self.root = None
+
+    def grow_tree(self):
+        """Grow the entire binary tree."""
+        root = Bnode(start=0, end=self.n_samples,
+                     val=self.cost.error(0, self.n_samples))
+        leaves = [root]
+        stop = False
+        while not stop:
+            new_leaves = list()
+            for node in leaves:
+                if self.single_bkp(node) is not None:
+                    new_leaves += [node.left, node.right]
+            stop = len(new_leaves) == 0
+            leaves = list(new_leaves)
+        return root
 
     def seg(self, n_bkps=None, pen=None, epsilon=None):
         """Computes the binary segmentation.
@@ -48,58 +64,46 @@ class Binseg:
         """
 
         # initialization
+        leaves = [self.root]
         stop = False
-        bkps = [0, self.n_samples]
-        old_cost = sum(self.cost.error(start, end)
-                       for start, end in pairwise(bkps))
         while not stop:
-            bkp_to_add = list()
-            for (start, end) in pairwise(bkps):
-                single_bkp = self.single_bkp(start, end)
-                if single_bkp is None:
-                    continue
-                bkp, cost = single_bkp
-                gain = self.cost.error(start, end) - cost
-                if abs(gain) > 1e-8:
-                    bkp_to_add.append((bkp, gain))
-            bkp_to_add.sort(key=lambda x: x[-1], reverse=True)
+            stop = True
+            node = min(leaves, key=lambda x: x.loss)  # best segment to split
 
-            # stopping rules
-            if len(bkp_to_add) > 0:
-                for bkp, gain in bkp_to_add:
-                    stop = True
-                    if n_bkps is not None and len(bkps) - 2 < n_bkps:
-                        bkps.append(bkp)
-                        stop = False
-                    elif pen is not None and abs(gain) > pen:
-                        bkps.append(bkp)
-                        stop = False
-                    elif epsilon is not None and old_cost - gain > epsilon:
-                        bkps.append(bkp)
-                        old_cost -= gain
-                        stop = False
-                # update partition
-                bkps.sort()
-                old_cost = sum(self.cost.error(start, end)
-                               for start, end in pairwise(bkps))
-            else:
+            if node.left is None or node.right is None:  # We've reach the bottom of the tree
                 stop = True
+            elif n_bkps is not None:
+                if len(leaves) < n_bkps + 1:
+                    stop = False
+            elif pen is not None:
+                if node.val - (node.left.val + node.right.val) > pen:
+                    stop = False
+            elif epsilon is not None:
+                if sum(leaf.val for leaf in leaves) > epsilon:
+                    stop = False
 
-        partition = {(start, end): self.cost.error(start, end)
-                     for start, end in pairwise(bkps)}
+            if not stop:
+                leaves.remove(node)
+                leaves += [node.left, node.right]
+
+        partition = {(leaf.start, leaf.end): leaf.val for leaf in leaves}
         return partition
 
-    def single_bkp(self, start, end):
+    def single_bkp(self, node):
         """Return the optimal 2-regime partition of [start:end] (if it exists)."""
         bkps = list()
+        start, end = node.start, node.end
         for bkp in range(start, end):
             if bkp % self.jump == 0:
-                if (bkp - start > self.min_size) and (end - bkp > self.min_size):
-                    cost = self.cost.error(start, bkp)  # left
-                    cost += self.cost.error(bkp, end)  # right
-                    bkps += [(bkp, cost)]
+                if (bkp - start >= self.min_size) and (end - bkp >= self.min_size):
+                    left_cost = self.cost.error(start, bkp)  # left
+                    right_cost = self.cost.error(bkp, end)  # right
+                    bkps += [(bkp, left_cost, right_cost)]
         if len(bkps) > 0:
-            return min(bkps, key=lambda x: x[1])
+            bkp, left_cost, right_cost = min(bkps, key=lambda x: x[1] + x[2])
+            node.left = Bnode(start=start, end=bkp, val=left_cost)
+            node.right = Bnode(start=bkp, end=end, val=right_cost)
+            return node.left, node.right
         else:
             return None
 
@@ -119,6 +123,7 @@ class Binseg:
         else:
             n_samples, _ = signal.shape
         self.n_samples = n_samples
+        self.root = self.grow_tree()
         return self
 
     def predict(self, n_bkps=None, pen=None, epsilon=None):
