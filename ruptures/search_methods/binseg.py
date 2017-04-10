@@ -7,7 +7,7 @@ Fast but approximate.
 """
 
 from ruptures.costs import Cost
-from ruptures.utils import pairwise, Bnode
+from ruptures.utils import Bnode
 
 
 class Binseg:
