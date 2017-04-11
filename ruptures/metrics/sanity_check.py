@@ -1,4 +1,9 @@
+"""Helper function to check if two breakpoints list are comparable."""
+
+
 class BadPartitions(Exception):
+
+    """Exception raised when the partition is bad."""
     pass
 
 
@@ -16,9 +21,9 @@ def sanity_check(bkps1, bkps2):
         None:
     """
     # checks if empty.
-    for s, bkps in zip(("first", "second"), (bkps1, bkps2)):
+    for nom, bkps in zip(("first", "second"), (bkps1, bkps2)):
         if len(bkps) == 0:
-            raise BadPartitions("The {} partition is empty.".format(s))
+            raise BadPartitions("The {} partition is empty.".format(nom))
     # checks if both ends with the same index.
     if max(bkps1) != max(bkps2):
         raise BadPartitions(

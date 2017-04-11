@@ -26,3 +26,8 @@ def draw_bkps(n_samples, n_bkps):
         mask[bkp - min_size:bkp + min_size] = False
         bkps.append(bkp)
     return sorted(bkps)
+
+
+def unzip(seq):
+    """Reverse zip"""
+    return zip(*seq)
