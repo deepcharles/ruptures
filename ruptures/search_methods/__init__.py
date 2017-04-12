@@ -5,6 +5,8 @@ from .dynp import Dynp
 from .pelt import Pelt
 from .binseg import Binseg
 from .omp import Omp
+from .bottomup import BottomUp
+
 METHODS = {"dynp": Dynp,
            "pelt": Pelt}
 
