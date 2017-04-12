@@ -68,7 +68,7 @@ class Binseg:
         stop = False
         while not stop:
             stop = True
-            node = min(leaves, key=lambda x: x.loss)  # best segment to split
+            node = max(leaves, key=lambda x: x.gain)  # best segment to split
 
             if node.left is None or node.right is None:  # We've reach the bottom of the tree
                 stop = True
@@ -76,7 +76,7 @@ class Binseg:
                 if len(leaves) < n_bkps + 1:
                     stop = False
             elif pen is not None:
-                if node.val - (node.left.val + node.right.val) > pen:
+                if node.gain > pen:
                     stop = False
             elif epsilon is not None:
                 if sum(leaf.val for leaf in leaves) > epsilon:
