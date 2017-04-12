@@ -1,6 +1,10 @@
+"""Display module"""
+from itertools import cycle
+
 import matplotlib.pyplot as plt
 import numpy as np
-from itertools import cycle
+
+from ruptures.utils import pairwise
 COLOR_CYCLE = ["r", "c", "m", "y", "k", "b", "g"]
 
 
@@ -9,12 +13,10 @@ def display(signal, true_chg_pts, computed_chg_pts=None, **kwargs):
     Display a signal and the change points provided.
     """
     if signal.ndim == 1:
-        s = signal.reshape(-1, 1)
-    else:
-        s = signal
-
+        signal = signal.reshape(-1, 1)
+    n_samples, n_features = signal.shape
     # let's set all options
-    figsize = (20, 10 * s.shape[1])  # figure size
+    figsize = (20, 10 * n_features)  # figure size
     alpha = 0.2  # transparency of the colored background
     color = "k"  # color of the lines indicating the computed_chg_pts
     linewidth = 3   # linewidth of the lines indicating the computed_chg_pts
@@ -31,29 +33,31 @@ def display(signal, true_chg_pts, computed_chg_pts=None, **kwargs):
     if "linestyle" in kwargs:
         linestyle = kwargs["linestyle"]
 
-    fig, axarr = plt.subplots(s.shape[1], figsize=figsize, sharex=True)
-    if s.shape[1] == 1:
+    fig, axarr = plt.subplots(n_features, figsize=figsize, sharex=True)
+    if n_features == 1:
         axarr = [axarr]
 
-    for ax, sig in zip(axarr, s.T):
+    for axe, sig in zip(axarr, signal.T):
         color_cycle = cycle(COLOR_CYCLE)
         # plot s
-        ax.plot(range(s.shape[0]), sig)
+        axe.plot(range(n_samples), sig)
 
         # color each (true) regime
-        starts = [0] + sorted(true_chg_pts[:-1])
-        ends = sorted(true_chg_pts)
+        bkps = [0] + sorted(true_chg_pts)
 
-        for (start, end), c in zip(zip(starts, ends), color_cycle):
-            ax.axvspan(start, end, facecolor=c, alpha=alpha)
+        for (start, end), color in zip(pairwise(bkps), color_cycle):
+            axe.axvspan(max(0, start - 0.5),
+                        end - 0.5,
+                        facecolor=color, alpha=alpha)
 
         # vertical lines to mark the computed_chg_pts
         if computed_chg_pts is not None:
-            starts = np.sort(computed_chg_pts)
-            for start in starts:
-                if start != 0:  # no need to put a vertical line at x=0
-                    ax.axvline(x=start, color=color, linewidth=linewidth,
-                               linestyle=linestyle)
+            for bkp in computed_chg_pts:
+                if bkp != 0 and bkp < n_samples:
+                    axe.axvline(x=bkp - 0.5,
+                                color=color,
+                                linewidth=linewidth,
+                                linestyle=linestyle)
 
     fig.tight_layout()
 
