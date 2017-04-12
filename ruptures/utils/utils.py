@@ -16,7 +16,7 @@ def pairwise(iterable):
 def draw_bkps(n_samples, n_bkps):
     """Return a set of random breakpoint indexes."""
     bkps = [n_samples]
-    min_size = n_samples // (2 * n_bkps)
+    min_size = n_samples // 50
     ind = np.arange(n_samples)
     mask = np.ones(n_samples, dtype=bool)
     mask[:min_size] = False

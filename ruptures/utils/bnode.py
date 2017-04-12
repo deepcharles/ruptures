@@ -1,5 +1,4 @@
 """Binary node."""
-import numpy as np
 
 
 class Bnode:
@@ -10,16 +9,19 @@ class Bnode:
 
     """
 
-    def __init__(self, start, end, val, left=None, right=None):
+    def __init__(self, start, end, val, left=None, right=None, parent=None):
         self.start = start
         self.end = end
         self.val = val
         self.left = left
         self.right = right
+        self.parent = parent
 
     @property
-    def loss(self):
-        """Return the cost loss when splitting this node."""
+    def gain(self):
+        """Return the cost decrease when splitting this node."""
         if self.left is None or self.right is None:
-            return np.inf
-        return (self.left.val + self.right.val) / self.val
+            return 0
+        elif abs(self.val) < 1e-8:
+            return 0
+        return self.val - (self.left.val + self.right.val)
