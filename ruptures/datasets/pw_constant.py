@@ -34,12 +34,12 @@ def pw_constant(n_samples, n_features=1, n_bkps=3, noisy=False, sigma=1.,
     # mean value
     center = np.zeros(n_features)
     for ind in np.split(tt_, bkps):
-        # jump value
-        jump = rd.uniform(delta_min, delta_max, size=n_features)
-        spin = rd.choice([-1, 1], n_features)
-        center += jump * spin
-        print(ind.dtype)
-        signal[ind] = center
+        if ind.size > 0:
+            # jump value
+            jump = rd.uniform(delta_min, delta_max, size=n_features)
+            spin = rd.choice([-1, 1], n_features)
+            center += jump * spin
+            signal[ind] = center
 
     if noisy:
         noise = rd.normal(size=signal.shape) * sigma
