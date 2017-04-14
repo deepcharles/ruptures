@@ -45,10 +45,10 @@ def display(signal, true_chg_pts, computed_chg_pts=None, **kwargs):
         # color each (true) regime
         bkps = [0] + sorted(true_chg_pts)
 
-        for (start, end), color in zip(pairwise(bkps), color_cycle):
+        for (start, end), col in zip(pairwise(bkps), color_cycle):
             axe.axvspan(max(0, start - 0.5),
                         end - 0.5,
-                        facecolor=color, alpha=alpha)
+                        facecolor=col, alpha=alpha)
 
         # vertical lines to mark the computed_chg_pts
         if computed_chg_pts is not None:
