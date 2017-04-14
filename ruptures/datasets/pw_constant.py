@@ -29,11 +29,11 @@ def pw_constant(n_samples, n_features=1, n_bkps=3, noisy=False, sigma=1.,
     bkps = draw_bkps(n_samples, n_bkps)
     # we create the signal
     signal = np.empty((n_samples, n_features), dtype=float)
-    tt = np.arange(n_samples)
+    tt_ = np.arange(n_samples, dtype=int)
     delta_min, delta_max = delta
     # mean value
     center = np.zeros(n_features)
-    for ind in np.split(tt, bkps):
+    for ind in np.split(tt_, bkps):
         # jump value
         jump = rd.uniform(delta_min, delta_max, size=n_features)
         spin = rd.choice([-1, 1], n_features)
