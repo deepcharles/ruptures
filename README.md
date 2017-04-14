@@ -1,75 +1,63 @@
-# Install
-Après l'avoir téléchargé, dans le dossier du paquet:
+## Install
+Download package and inside the folder:
+> python3 setup.py install
 
+or
 > python3 setup.py develop
 
-# Algos de détection de ruptures:
+## Algorithmes
+* [x] nombre de ruptures connu: *_dynp_* (dynamic programming)
+* [x] nombre de ruptures inconnu: *_pelt_* (méthode penalisée)
 
-Les methodes de détections de ruptures sont séparées selon la méthode de parcours de l'espace des partitions.
+## Modèles de régime
+* [x] Constant par morceaux:
+  * erreur L1
+  * erreur L2
+  * vraisemblance gaussienne
+* [x] Linéaire par morceaux:
+  * erreur L2
+  * vraisemblance gaussienne
+* [x] Périodique par morceaux:
+  * erreur L2
+* [x] i.i.d par morceaux:
+  * erreur L2 dans RKHS (Les kernels disponibles sont: 'rbf', 'laplacian', 'cosine', 'linear'.)
 
-1. Programmation dynamique. Fonctions de coût:
-    * [x] erreur quadratique, constant par morceaux
-    * [x] erreur quadratique, constant par morceaux (version avec noyau)
-    * [x] erreur quadratique, sinusoïde
-    * [ ] erreur quadratique, linéaire par morceaux
+TODO: finir le README
 
-2. PELT. Fonctions de coût:
-    * [x] vraissemblance gaussienne (variance constante)
-    * [ ] vraissemblance gaussienne (moyenne et variance variable)
-    * [ ] erreur quadratique, constant par morceaux
-    * [ ] erreur quadratique, linéaire par morceaux
-
-3. Régressions pénalisées. Pénalités:
-    * [ ] fused lasso (équivalent à PELT constant par morceau)
-    * [ ] fused rigde
-    * [x] pénalité L_0 (équivalent à PELT constant par morceau)
-
-# Utilisation
+## Utilisation
 Chaque algorithme sera une classe avec une méthode "fit" pour calculer la segmentation.
 Des exemples d'utilisation existent dans le dossier **tests/**
 
 ```python
 import matplotlib.pyplot as plt
-from ruptures.datasets import pw_constant, pw_linear
+from ruptures.datasets import pw_constant
 from ruptures.show import display
 n_samples = 1000 # nombre de points
 dim = 3  # dimension du signal
-n_regimes = 7  # nombre de régimes
-min_size = 50  # taille minimale de segment
-snr = 0.1  # signal to noise ratio: 0 --> pas de bruit.
+n_bkps = 7  # nombre de ruptures
 # Constant par morceaux
-# signal: le signal (array), chg: liste contenant les fins de chaque régime.
-signal, chg = pw_constant(n=n_samples, clusters=n_regimes, dim=dim, min_size=min_size, noisy=True, snr=snr)
-fig, ax = display(signal, chg)
-plt.show()
-```
-
-![Constant par morceaux](images/pw_constant.png)
-
-```python
-# Linéaire par morceaux
-signal, bkps = pw_linear(n=n_samples, clusters=n_regimes, dim=dim, min_size=min_size, noisy=True, snr=snr)
+signal, bkps = pw_constant(n_samples, dim, n_bkps, noisy=True, sigma=2, delta=(1, 2))
 fig, ax = display(signal, chg)
 plt.show()
 print(bkps)
-# > [ 293  385  471  639  705  947 1000]
+# > [196, 281, 368, 572, 746, 818, 916, 1000]
 ```
-
-![piecewise constant](images/pw_linear.png)
+![Constant par morceaux](images/pw_constant.png)
 
 Pour détecter des ruptures, on choisit un algorithme de parcours des partitions et une fonction de coût:
 
 ```python
-from ruptures.costs import ConstantMSE, GaussMLE, LinearMLE, KernelMSE
+from ruptures.search_methods import Dynp, Pelt, Binseg, Omp, BottomUp
 
-p = LinearMLE("pelt")  # PELT
-d = LinearMLE("dynp")  # Dynamic programming
-p.fit(signal, penalty=10 * dim, jump=2, min_size=5)
+model = "constantl2"  # or "constantl1" or "rbf"
 
-fig, axarr = display(signal[:, 0], bkps, p.bkps)
-axarr[0].set_title("True: ({} ruptures) {}. Found: ({} ruptures) {} ".format(len(bkps), bkps, len(p.bkps), p.bkps
+p = Pelt(model, min_size=2, jump=1).fit(signal)  # pelt method
+d = Dynp(model, min_size=2, jump=1).fit(signal)  # dynamic programming
+
+my_bkps = d.predict(pen=100)
+fig, axarr = display(signal[:, 0], bkps, my_bkps)
 ```
-![Ruptures avec programmation dynamique](images/pw_linearpelt.png)
+![Ruptures avec programmation dynamique](images/pw_constantdp.png)
 
 
 ```python
