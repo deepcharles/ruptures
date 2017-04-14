@@ -29,7 +29,7 @@ def pw_constant(n_samples, n_features=1, n_bkps=3, noisy=False, sigma=1.,
     bkps = draw_bkps(n_samples, n_bkps)
     # we create the signal
     signal = np.empty((n_samples, n_features), dtype=float)
-    tt_ = np.arange(n_samples, dtype=np.int8)
+    tt_ = np.arange(n_samples)
     delta_min, delta_max = delta
     # mean value
     center = np.zeros(n_features)
@@ -38,6 +38,7 @@ def pw_constant(n_samples, n_features=1, n_bkps=3, noisy=False, sigma=1.,
         jump = rd.uniform(delta_min, delta_max, size=n_features)
         spin = rd.choice([-1, 1], n_features)
         center += jump * spin
+        print(ind.dtype)
         signal[ind] = center
 
     if noisy:
