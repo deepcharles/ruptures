@@ -14,8 +14,8 @@ def hausdorff(bkps1, bkps2):
         float: Hausdorff distance.
     """
     sanity_check(bkps1, bkps2)
-    bkps1_arr = np.array(bkps1).reshape(-1, 1)
-    bkps2_arr = np.array(bkps2).reshape(-1, 1)
+    bkps1_arr = np.array(bkps1[:-1]).reshape(-1, 1)
+    bkps2_arr = np.array(bkps2[:-1]).reshape(-1, 1)
     pw_dist = cdist(bkps1_arr, bkps2_arr)
     res = max(pw_dist.min(axis=0).max(), pw_dist.min(axis=1).max())
     return res
