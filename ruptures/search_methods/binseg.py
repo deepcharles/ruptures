@@ -5,9 +5,9 @@ Binary changepoint detection.
 Fast but approximate.
 
 """
-
+import numpy as np
 from ruptures.costs import Cost
-from ruptures.utils import Bnode
+from ruptures.utils import pairwise, admissible_filter
 
 
 class Binseg:
@@ -20,34 +20,19 @@ class Binseg:
         Detailled description
 
         Args:
-            model (str): constantl1|constantl2|rbf
+            model (str): constantl1|constantl2|rbf, defaults to constantl2
             min_size (int, optional): minimum segment length
             jump (int, optional): subsample (one every "jump" points)
 
         Returns:
             self
         """
-        self.model = model
+        self.model = model  # not used
         self.min_size = min_size
         self.jump = jump
-        self.cost = Cost(model=self.model)
+        self.cost = Cost(model="constantl2")
         self.n_samples = None
-        self.root = None
-
-    def grow_tree(self):
-        """Grow the entire binary tree."""
-        root = Bnode(start=0, end=self.n_samples,
-                     val=self.cost.error(0, self.n_samples))
-        leaves = [root]
-        stop = False
-        while not stop:
-            new_leaves = list()
-            for node in leaves:
-                if self.single_bkp(node) is not None:
-                    new_leaves += [node.left, node.right]
-            stop = len(new_leaves) == 0
-            leaves = list(new_leaves)
-        return root
+        self.signal = None
 
     def seg(self, n_bkps=None, pen=None, epsilon=None):
         """Computes the binary segmentation.
@@ -64,48 +49,57 @@ class Binseg:
         """
 
         # initialization
-        leaves = [self.root]
+        bkps = [self.n_samples]
+        keep_in_mind = dict()
         stop = False
         while not stop:
             stop = True
-            node = max(leaves, key=lambda x: x.gain)  # best segment to split
+            pot = list()  # potential breakpoints
+            for start, end in pairwise([0] + bkps):
+                if (start, end) in keep_in_mind:
+                    bkp, gain = keep_in_mind[(start, end)]
+                else:
+                    bkp, gain = self.single_bkp(start, end)
+                    keep_in_mind[(start, end)] = (bkp, gain)
+                pot.append((bkp, gain))
 
-            if node.left is None or node.right is None:  # We've reach the bottom of the tree
-                stop = True
-            elif n_bkps is not None:
-                if len(leaves) < n_bkps + 1:
+            bkp, gain = max(pot, key=lambda x: x[1])
+            stop = True
+            if n_bkps is not None:
+                if len(bkps) - 1 < n_bkps:
                     stop = False
             elif pen is not None:
-                if node.gain > pen:
+                if gain > pen:
                     stop = False
             elif epsilon is not None:
-                if sum(leaf.val for leaf in leaves) > epsilon:
+                error = sum(self.cost.error(start, end)
+                            for start, end in pairwise([0] + bkps))
+                if error > epsilon:
                     stop = False
 
             if not stop:
-                leaves.remove(node)
-                leaves += [node.left, node.right]
-
-        partition = {(leaf.start, leaf.end): leaf.val for leaf in leaves}
+                bkps.append(bkp)
+                bkps.sort()
+        partition = {(start, end): self.cost.error(start, end)
+                     for start, end in pairwise([0] + bkps)}
         return partition
 
-    def single_bkp(self, node):
-        """Return the optimal 2-regime partition of [start:end] (if it exists)."""
-        bkps = list()
-        start, end = node.start, node.end
-        for bkp in range(start, end):
-            if bkp % self.jump == 0:
-                if (bkp - start >= self.min_size) and (end - bkp >= self.min_size):
-                    left_cost = self.cost.error(start, bkp)  # left
-                    right_cost = self.cost.error(bkp, end)  # right
-                    bkps += [(bkp, left_cost, right_cost)]
-        if len(bkps) > 0:
-            bkp, left_cost, right_cost = min(bkps, key=lambda x: x[1] + x[2])
-            node.left = Bnode(start=start, end=bkp, val=left_cost)
-            node.right = Bnode(start=bkp, end=end, val=right_cost)
-            return node.left, node.right
-        else:
-            return None
+    def single_bkp(self, start, end):
+        """Return the optimal breakpoint of [start:end] (if it exists)."""
+        filtre = admissible_filter(start, end, self.jump, self.min_size)
+
+        subsignal = self.signal[
+            start:end] - self.signal[start:end].mean(axis=0)
+        objective = np.sum(subsignal.cumsum(axis=0)**2, axis=1)
+        sub_sampling = ((ind, val) for ind, val in enumerate(objective, start=start + 1)
+                        if filtre(ind))
+        try:
+            bkp, _ = max(sub_sampling, key=lambda x: x[1])
+        except ValueError:  # if empty sub_sampling
+            return None, 0
+        gain = self.cost.error(start, end)
+        gain -= self.cost.error(start, bkp) + self.cost.error(bkp, end)
+        return bkp, gain
 
     def fit(self, signal):
         """Compute params to segment signal.
@@ -117,13 +111,13 @@ class Binseg:
             self
         """
         # update some params
-        self.cost.fit(signal)
         if signal.ndim == 1:
-            n_samples, = signal.shape
+            self.signal = signal.reshape(-1, 1)
         else:
-            n_samples, _ = signal.shape
-        self.n_samples = n_samples
-        self.root = self.grow_tree()
+            self.signal = signal
+        self.n_samples, _ = self.signal.shape
+        self.cost.fit(signal)
+
         return self
 
     def predict(self, n_bkps=None, pen=None, epsilon=None):
