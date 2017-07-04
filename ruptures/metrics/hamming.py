@@ -9,8 +9,10 @@ from ruptures.utils import pairwise
 
 def membership_mat(bkps):
     """Return membership matrix for the given segmentation."""
-    m_mat = block_diag([np.ones((e - s, e - s))
-                        for s, e in pairwise([0] + bkps)])
+    n_samples = bkps[-1]
+    m_mat = np.zeros((n_samples, n_samples))
+    for start, end in pairwise([0] + bkps):
+        m_mat[start:end, start:end] = 1
     return m_mat
 
 
@@ -30,7 +32,7 @@ def hamming(bkps1, bkps2):
     sanity_check(bkps1, bkps2)
     n_samples = max(bkps1)
 
-    disagreement = membership_mat(bkps1) != membership_mat(bkps2)
+    disagreement = abs(membership_mat(bkps1) - membership_mat(bkps2))
     disagreement = triu(disagreement, k=1).sum() * 1.
     disagreement /= n_samples * n_samples / 2  # scaling
     return disagreement
