@@ -1,20 +1,19 @@
 """
 
-Sliding-window changepoint detection.
+Sliding-window changepoint detection with Mmd test.
 
 Fast and approximate.
 
 """
 import numpy as np
-from scipy.ndimage import convolve as sconv
+from scipy.signal import fftconvolve
 
-from ruptures.costs import Cost
 from ruptures.utils import pairwise
 
 
-class Window:
+class WinMmd:
 
-    """Window sliding method."""
+    """Window sliding method for the Mmd test."""
 
     def __init__(self, width=100):
         """Instanciate with window length.
@@ -26,12 +25,15 @@ class Window:
             self
         """
         self.width = 2 * (width // 2)
-        # window
-        self.win = np.sign(np.linspace(-1, 1, self.width)).reshape(-1, 1)
         self.n_samples = None
-        self.signal = None
-        self.cost = Cost(model="constantl2")
+        self.gram = None
         self.score = None
+        # window
+        halfw = self.width // 2
+        self.win = np.ones((self.width, self.width))
+        self.win[halfw:, :halfw] = -1
+        self.win[:halfw, halfw:] = -1
+        self.win /= halfw**2
 
     def seg(self, n_bkps=None, pen=None, epsilon=None):
         """Computes the binary segmentation.
@@ -50,55 +52,40 @@ class Window:
         # initialization
         bkps = [self.n_samples]
         stop = False
-        error = self.cost.error(0, self.n_samples)
 
         while not stop:
             stop = True
-            _, bkp = max((v, k) for k, v in enumerate(self.score, start=1)
+            _, bkp = max((v, k) for k, v in enumerate(self.score, start=self.width // 2)
                          if not any(abs(k - b) < self.width // 2 for b in bkps[:-1]))
 
             if n_bkps is not None:
                 if len(bkps) - 1 < n_bkps:
                     stop = False
             elif pen is not None:
-                new_error = sum(self.cost.error(start, end)
-                                for start, end in pairwise(sorted([0, bkp] + bkps)))
-                gain = error - new_error
-                if gain > pen:
-                    stop = False
-                    error = sum(self.cost.error(start, end)
-                                for start, end in pairwise([0] + bkps))
+                pass
             elif epsilon is not None:
-                if error > epsilon:
-                    stop = False
-                    error = sum(self.cost.error(start, end)
-                                for start, end in pairwise([0] + bkps))
+                pass
 
             if not stop:
                 bkps.append(bkp)
                 bkps.sort()
         return bkps
 
-    def fit(self, signal):
+    def fit(self, gram):
         """Compute params to segment signal.
 
         Args:
-            signal (array): signal to segment. Shape (n_samples, n_features) or (n_samples,).
+            gram (array): gram matrix to segment. Shape (n_samples, n_samples).
 
         Returns:
             self
         """
+        assert gram.shape[0] == gram.shape[1], "Not a square matrix."
         # update some params
-        if signal.ndim == 1:
-            self.signal = signal.reshape(-1, 1)
-        else:
-            self.signal = signal
-        self.n_samples, _ = self.signal.shape
-
-        self.cost.fit(signal)
-        # compute score
-        convolution = sconv(self.signal, self.win, mode='mirror')
-        self.score = np.sum(convolution**2, axis=1)
+        self.gram = gram
+        self.n_samples, _ = self.gram.shape
+        # convolution
+        self.score = np.diag(fftconvolve(self.gram, self.win, mode='valid'))
         return self
 
     def predict(self, n_bkps=None, pen=None, epsilon=None):
@@ -122,7 +109,7 @@ class Window:
         bkps = self.seg(n_bkps=n_bkps, pen=pen, epsilon=epsilon)
         return bkps
 
-    def fit_predict(self, signal, n_bkps=None, pen=None, epsilon=None):
+    def fit_predict(self, gram, n_bkps=None, pen=None, epsilon=None):
         """Helper method to call fit and predict once."""
-        self.fit(signal)
+        self.fit(gram)
         return self.predict(n_bkps=n_bkps, pen=pen, epsilon=epsilon)

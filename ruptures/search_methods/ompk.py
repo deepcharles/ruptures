@@ -5,13 +5,14 @@ Orthogonal matching pursuit for changepoint detection.
 Fast but approximate.
 
 """
+from itertools import product
+
 import numpy as np
-from numpy.linalg import norm
 
 from ruptures.utils import pairwise
 
 
-class Omp:
+class OmpK:
 
     """Contient l'algorithme de parcours des partitions."""
 
@@ -31,7 +32,7 @@ class Omp:
         self.min_size = min_size  # not used
         self.jump = jump  # not used
         self.n_samples = None
-        self.signal = None
+        self.gram = None
 
     def seg(self, n_bkps=None, pen=None, epsilon=None):
         """Computes the binary segmentation.
@@ -48,23 +49,41 @@ class Omp:
         """
         stop = False
         bkps = [self.n_samples]
-        residual = self.signal
-        inds = np.arange(1, self.n_samples)
-        correction = 1 / inds + 1 / inds[::-1]
+        inds = np.arange(1, self.n_samples + 1)
+        csum = self.gram.cumsum(axis=0).cumsum(axis=1)
+        residual = csum[-1, -1]
 
         while not stop:
-            res_norm = norm(residual)
             # greedy search
-            raw_corr = np.sum(residual.cumsum(axis=0)**2, axis=1)
-            correlation = raw_corr[:-1].flatten() * correction
-            bkp_opt, _ = max(
-                enumerate(correlation, start=1), key=lambda x: x[1])
+            correlation = np.diag(csum) * self.n_samples * self.n_samples
+            correlation += inds**2 * csum[-1, -1]
+            correlation -= 2 * self.n_samples * inds * csum[-1]
+            correlation /= inds * inds[::-1]
+            bkp = np.argmax(correlation) + 1
 
-            # orthogonal projection
-            proj = np.zeros(self.signal.shape)
-            for (start, end) in pairwise(sorted([0, bkp_opt] + bkps)):
-                proj[start:end] = self.signal[start:end].mean(axis=0)
-            residual = self.signal - proj
+            # orthogonal projection (matrix form)
+            # adj = np.zeros(self.gram.shape)  # adjacency matrix
+            # for start, end in pairwise(sorted([0, bkp] + bkps)):
+            #     duree = end - start
+            #     adj[start:end, start:end] = np.ones(duree, duree) / duree
+            # gram_new = self.gram + adj @ self.gram @ adj - adj @ self.gram - self.gram @ adj
+            # csum = gram_new.cumsum(axis=0).cumsum(axis=1)
+
+            # orthogonal projection (vectorized form)
+            gram_new = self.gram.copy()
+            # cross product
+            cross_g = np.zeros(self.gram.shape)
+            for start, end in pairwise(sorted([0, bkp] + bkps)):
+                val = self.gram[:, start:end].mean(axis=1).reshape(-1, 1)
+                cross_g[:, start:end] = val
+            gram_new -= cross_g + cross_g.T
+            # products of segment means
+            for p, q in product(pairwise(sorted([0, bkp] + bkps)), repeat=2):
+                start1, end1 = p
+                start2, end2 = q
+                gram_new[start1:end1, start2:end2] += self.gram[
+                    start1:end1, start2:end2].mean()
+            csum = gram_new.cumsum(axis=0).cumsum(axis=1)
 
             # stopping criterion
             stop = True
@@ -72,35 +91,32 @@ class Omp:
                 if len(bkps) - 1 < n_bkps:
                     stop = False
             elif pen is not None:
-                if res_norm - norm(residual) > pen:
+                if residual - csum[-1, -1] > pen:
                     stop = False
             elif epsilon is not None:
-                if norm(residual) > epsilon:
+                if csum[-1, -1] > epsilon:
                     stop = False
             # update
             if not stop:
-                res_norm = norm(residual)
-                bkps.append(bkp_opt)
+                residual = csum[-1, -1]
+                bkps.append(bkp)
 
         bkps.sort()
         return bkps
 
-    def fit(self, signal):
+    def fit(self, gram):
         """Compute params to segment signal.
 
         Args:
-            signal (array): signal to segment. Shape (n_samples, n_features) or (n_samples,).
+            gram (array): Gram matrix of signal to segment. Shape (n_samples, n_samples).
 
         Returns:
             self
         """
+        assert gram.shape[0] == gram.shape[1], "Not a square matrix."
         # update some params
-        if signal.ndim == 1:
-            self.signal = signal.reshape(-1, 1)
-        else:
-            self.signal = signal
-        self.signal = self.signal - self.signal.mean(axis=0)
-        self.n_samples, _ = self.signal.shape
+        self.gram = gram
+        self.n_samples, _ = self.gram.shape
 
         return self
 
@@ -125,7 +141,7 @@ class Omp:
         bkps = self.seg(n_bkps=n_bkps, pen=pen, epsilon=epsilon)
         return bkps
 
-    def fit_predict(self, signal, n_bkps=None, pen=None, epsilon=None):
+    def fit_predict(self, gram, n_bkps=None, pen=None, epsilon=None):
         """Helper method to call fit and predict once."""
-        self.fit(signal)
+        self.fit(gram)
         return self.predict(n_bkps=n_bkps, pen=pen, epsilon=epsilon)

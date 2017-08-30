@@ -1,20 +1,22 @@
 """
 
-Sliding-window changepoint detection.
-
-Fast and approximate.
+Sliding-window changepoint detection with likelihood ratio for multivariate gaussian.
 
 """
 import numpy as np
-from scipy.ndimage import convolve as sconv
-
-from ruptures.costs import Cost
-from ruptures.utils import pairwise
+from numpy import cov
+from numpy.linalg import det
 
 
-class Window:
+class WinLr:
 
-    """Window sliding method."""
+    """Window sliding method for the Box's M test (for two multivariate gaussian variables)."""
+
+    @staticmethod
+    def stat(left, right):
+        """Computes likelihood ratio."""
+        cleft, cright = cov(left), cov(right)
+        return det((cleft + cright) / 2)**2 / det(cleft) / det(cright)
 
     def __init__(self, width=100):
         """Instanciate with window length.
@@ -26,11 +28,8 @@ class Window:
             self
         """
         self.width = 2 * (width // 2)
-        # window
-        self.win = np.sign(np.linspace(-1, 1, self.width)).reshape(-1, 1)
         self.n_samples = None
         self.signal = None
-        self.cost = Cost(model="constantl2")
         self.score = None
 
     def seg(self, n_bkps=None, pen=None, epsilon=None):
@@ -40,8 +39,8 @@ class Window:
 
         Args:
             n_bkps (int): number of breakpoints to find before stopping.
-            penalty (float): penalty value (>0)
-            penalty (float): penalty value
+            penalty (float): penalty value (>0) (not used)
+            epsilon (float): error budget (not used)
 
         Returns:
             list: breakpoint index list
@@ -50,29 +49,19 @@ class Window:
         # initialization
         bkps = [self.n_samples]
         stop = False
-        error = self.cost.error(0, self.n_samples)
 
         while not stop:
             stop = True
-            _, bkp = max((v, k) for k, v in enumerate(self.score, start=1)
+            _, bkp = max((v, k) for k, v in enumerate(self.score, start=self.width // 2)
                          if not any(abs(k - b) < self.width // 2 for b in bkps[:-1]))
 
             if n_bkps is not None:
                 if len(bkps) - 1 < n_bkps:
                     stop = False
             elif pen is not None:
-                new_error = sum(self.cost.error(start, end)
-                                for start, end in pairwise(sorted([0, bkp] + bkps)))
-                gain = error - new_error
-                if gain > pen:
-                    stop = False
-                    error = sum(self.cost.error(start, end)
-                                for start, end in pairwise([0] + bkps))
+                pass
             elif epsilon is not None:
-                if error > epsilon:
-                    stop = False
-                    error = sum(self.cost.error(start, end)
-                                for start, end in pairwise([0] + bkps))
+                pass
 
             if not stop:
                 bkps.append(bkp)
@@ -93,12 +82,15 @@ class Window:
             self.signal = signal.reshape(-1, 1)
         else:
             self.signal = signal
-        self.n_samples, _ = self.signal.shape
-
-        self.cost.fit(signal)
-        # compute score
-        convolution = sconv(self.signal, self.win, mode='mirror')
-        self.score = np.sum(convolution**2, axis=1)
+        self.n_samples, dim = self.signal.shape
+        # score
+        shape = (self.n_samples - self.width + 1, dim, self.width)
+        strides = (self.signal.strides[
+                   0], self.signal.strides[1], self.signal.strides[0])
+        traj = np.lib.stride_tricks.as_strided(
+            self.signal, shape=shape, strides=strides)
+        self.score = [self.stat(x[:, :self.width // 2], x[:, self.width // 2:])
+                      for x in traj]
         return self
 
     def predict(self, n_bkps=None, pen=None, epsilon=None):
@@ -110,8 +102,8 @@ class Window:
 
         Args:
             n_bkps (int): number of breakpoints to find before stopping.
-            penalty (float): penalty value (>0)
-            penalty (float): penalty value
+            penalty (float): penalty value (>0) (not used)
+            epsilon (float): error budget (not used)
 
         Returns:
             list: sorted list of breakpoints
