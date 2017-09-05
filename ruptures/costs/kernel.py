@@ -1,7 +1,6 @@
 import numpy as np
 from ruptures.costs.exceptions import NotEnoughPoints
 from scipy.spatial.distance import pdist, squareform
-from ruptures.search_methods import changepoint
 
 valid_kernels = ["rbf", "laplacian", "cosine", "linear"]
 
@@ -56,8 +55,8 @@ KERNEL_DICT = {"rbf": rbf, "laplacian": laplacian, "cosine": cosine,
                "linear": linear}
 
 
-@changepoint
 class KernelMSE(object):
+
     """Kernel changepoint detection"""
 
     def __init__(self, kernel="rbf"):

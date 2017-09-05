@@ -1,10 +1,8 @@
 import numpy as np
 from numpy.linalg import lstsq
-from ruptures.search_methods import changepoint
 from ruptures.costs import NotEnoughPoints
 
 
-@changepoint
 class LinearMLE:
 
     def error(self, start, end):
@@ -50,7 +48,6 @@ class LinearMLE:
         return 0
 
 
-@changepoint
 class LinearL2:
 
     def error(self, start, end):

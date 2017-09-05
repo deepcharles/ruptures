@@ -1,9 +1,7 @@
 import numpy as np
 from ruptures.costs.exceptions import NotEnoughPoints
-from ruptures.search_methods import changepoint
 
 
-@changepoint
 class HarmonicL2:
 
     def error(self, start, end):
