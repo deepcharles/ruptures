@@ -1,5 +1,6 @@
-"""The :mod:`ruptures.detection` module implements the change point detection methods."""
-
+r"""
+The :mod:`ruptures.detection` module implements the change point detection methods.
+"""
 # Exact methods
 # ==================================================================================================
 # - Least squares estimation
@@ -33,7 +34,7 @@ from .omp import Omp
 from .ompk import OmpK
 from .pelt import Pelt
 from .window import Window
-from .window_lr_cov import WinLr
+from .window_lr import WinLr
 from .window_mmd import WinMmd
 from .greedyar import GreedyAR
 from .greedylinear import GreedyLinear

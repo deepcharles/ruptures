@@ -2,7 +2,7 @@
 .. _greedy-ar:
 
 Autoregressive model
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 
 Greedy change point detection for piecewise autoregressive signals.
 Sequential algorithm.

@@ -1,19 +1,15 @@
-"""
-For a given model, the change point detection problem amounts to
-minimize the penalized approximation error over all the potential breakpoint repartitions
-The penalty is proportional to the number of change points.
-The higher the penalty value, the less change points are predicted.
-
-Formally,
-
-.. math:: \widehat{\mathbf{p}}_{\\beta} = \\arg \min_{\mathbf{p}} \sum_{i=1}^{|\mathbf{p}|} c(y_{p_i})\quad + \\beta |\mathbf{p}|.
-
+r"""
 The method is implemented in :class:`ruptures.detection.Pelt`.
 
-Available cost functions:
-----------------------------------------------------------------------------------------------------
+Because the enumeration of all possible partitions impossible, the algorithm relies on a pruning
+rule. Many indexes are discarded, greatly reducing the computational cost while retaining the
+ability to find the optimal segmentation.
+The implementation follows :cite:`b-Killick2012a`. In addition, under certain conditions on the change
+point repartition, the computational complexity is linear on average.
 
-For the list of available costs functions, see :ref:`sec-costs`.
+When calling :meth:`ruptures.detection.Pelt.__init__`, the minimum distance between change points
+can be set through the keyword ``'min_size'``; through the parameter ``'jump'``, only change
+point indexes multiple of a particular value are considered.
 
 
 Examples
@@ -31,7 +27,7 @@ Examples
 
     # change point detection
     model = "constantl1"  # "constantl2", "rbf"
-    algo = rpt.Pelt(model="constantl1", min_size=3, jump=5).fit(signal)
+    algo = rpt.Pelt(model=model, min_size=3, jump=5).fit(signal)
     my_bkps = algo.predict(pen=3)
 
     # show results
@@ -45,23 +41,34 @@ Code explanation
     :members:
     :special-members: __init__
 
+.. rubric:: References
+
+.. bibliography:: ../biblio.bib
+    :style: alpha
+    :cited:
+    :labelprefix: B
+    :keyprefix: b-
 """
 from math import floor
 
+from ruptures.base import BaseEstimator
 from ruptures.costs import Cost
 
 
-class Pelt:
+class Pelt(BaseEstimator):
 
-    """Contient l'algorithme de parcours des partitions."""
+    """Penalized change point detection.
+
+    For a given model and penalty level, computes the segmentation which minimizes the constrained
+    sum of approximation errors.
+
+    """
 
     def __init__(self, model="constantl2", min_size=2, jump=1):
-        """One line description
-
-        Detailled description
+        """Creates a Pelt instance.
 
         Args:
-            model (str): constantl1|constantl2|rbf
+            model (str): segment model, ["constantl1", "constantl2", "rbf"].
             min_size (int, optional): minimum segment length
             jump (int, optional): subsample (one every *jump* points)
 

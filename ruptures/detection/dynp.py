@@ -1,44 +1,23 @@
-"""
-For a given model and known number of change points, the change point detection problem amounts to
-minimize the approximation error over all the potential breakpoint repartitions.
-Thanks to the additive nature of the change point detection problem, a dynamic programming
-algorithm is able to find the optimal partition which minimizes a sum of costs measuring
-approximation error.
-Formally,
-
-.. math:: \widehat{\mathbf{p}}_K = \\arg \min_{\mathbf{p}} \sum_{i=1}^{K} c(y_{p_i}).
-
+r"""
 The method is implemented in :class:`ruptures.detection.Dynp`.
 
-.. _sec-costs:
+Roughly speaking, it computes the cost of all subsequences of a given signal.
+The number of computed costs is of the order :math:`\mathcal{O}(Kn^2)`, where :math:`K` is the number
+of change points and :math:`n` the number of samples.
+This has to be multiplied by the computational cost of computing the approximation error on one
+sub-sequence.
+Consequently, piecewise constant models are significantly faster than linear or autoregressive
+models.
 
-Available cost functions:
-----------------------------------------------------------------------------------------------------
-
-- Squared residuals:
-    .. math:: c(y_{p_i}) = \sum_{t\in p_i} \|y_t - \\bar{y}\|^2_2
-
-    where :math:`\\bar{y}=\\frac{1}{|p_i|} \sum\limits_{t\in p_i} y_t`.
-
-    This cost function is suited to approximate piecewise constant signals corrupted with noise.
-
-- Absolute deviation:
-    .. math:: c(y_{p_i}) = \min_u \sum_{t\in p_i} \|y_t - u\|_1
-
-    This cost function is suited to approximate piecewise constant signals corrupted with
-    non-Gaussian noise (following for instance a heavy-tailed distribution).
-
-- Negative maximum log-likelihood (Gaussian density):
-    .. math:: c(y_{p_i}) = |p_i| \log\det\widehat{\Sigma}_i
-
-    where :math:`\widehat{\Sigma} = \\frac{1}{|p_i|}\sum\limits_{t\in p_i} (y_t - \\bar{y}) (y_t - \\bar{y})^T`.
-
-    This cost function is suited to approximate piecewise i.i.d. Gaussian variables, for instance
-    mean-shifts and scale-shifts.
+Computational cost is drastically reduced when considering only a subsample of possible change
+points.
+When calling :meth:`ruptures.detection.Dynp.__init__`, the minimum distance between change points
+can be set through the keyword ``'min_size'``; through the parameter ``'jump'``, only change
+point indexes multiple of a particular value are considered.
 
 
-Examples
-----------------------------------------------------------------------------------------------------
+.. rubric:: Examples
+
 .. code-block:: python
 
     import numpy as np
@@ -47,16 +26,16 @@ Examples
 
     # creation of data
     n, dim = 500, 3
-    n_bkps, sigma = 3, 1
-    signal, b = rpt.pw_constant(n, dim, n_bkps, noisy=True, sigma=sigma)
+    n_bkps, sigma = 3, 5
+    signal, bkps = rpt.pw_constant(n, dim, n_bkps, noisy=True, sigma=sigma)
 
     # change point detection
     model = "constantl1"  # "constantl2", "rbf"
-    algo = rpt.Dynp(model="constantl1", min_size=3, jump=5).fit(signal)
+    algo = rpt.Dynp(model=model, min_size=3, jump=5).fit(signal)
     my_bkps = algo.predict(n_bkps=3)
 
     # show results
-    fig, (ax,) = rpt.display(signal, bkps, my_bkps, figsize=(10, 6))
+    rpt.show.display(signal, bkps, my_bkps, figsize=(10, 6))
     plt.show()
 
 Code explanation
@@ -75,19 +54,17 @@ from ruptures.costs import Cost
 
 class Dynp:
 
-    """ Find exact changepoints using dynamic programming.
+    """ Find optimal change points using dynamic programming.
 
-    Given a error function, it computes the best partition for which the sum of errors is minimum.
+    Given a segment model, it computes the best partition for which the sum of errors is minimum.
 
     """
 
     def __init__(self, model="constantl2", min_size=2, jump=1):
-        """One line description
-
-        Detailled description
+        """Creates a Dynp instance.
 
         Args:
-            model (str): constantl1|constantl2|rbf
+            model (str): segment model, ["constantl1", "constantl2", "rbf"].
             min_size (int, optional): minimum segment length
             jump (int, optional): subsample (one every *jump* points)
 
@@ -102,7 +79,7 @@ class Dynp:
         self.n_samples = None
 
     def _seg(self, start, end, n_bkps):
-        """Reccurence to find best partition of signal[start:end].
+        """Recurrence to find the optimal partition of signal[start:end].
 
         This method is to be memoized and then used.
 
@@ -150,9 +127,8 @@ class Dynp:
     def fit(self, signal):
         """Create the cache associated with the signal.
 
-        Dynamic programming is a recurrence. Therefore intermediate results are cached to speed up
+        Dynamic programming is a recurrence; intermediate results are cached to speed up
         computations. This method sets up the cache.
-
 
         Args:
             signal (array): signal. Shape (n_samples, n_features) or (n_samples,).

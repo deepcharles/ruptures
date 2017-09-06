@@ -1,6 +1,6 @@
 """
 
-Orthogonal matching pursuit for changepoint detection.
+Kernel orthogonal matching pursuit for changepoint detection.
 
 Fast but approximate.
 
