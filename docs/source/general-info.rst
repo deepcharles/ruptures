@@ -1,9 +1,10 @@
 License
 ----------------------------------------------------------------------------------------------------
-This project is under **LICENSE**.
+
+This project is under `MIT License <https://en.wikipedia.org/wiki/MIT_License>`_.
 
 
-Instalation
+Installation
 ----------------------------------------------------------------------------------------------------
 
 With `pip3 <https://pypi.python.org/pypi/pip>`_ from terminal: ``$ pip3 install ruptures``.

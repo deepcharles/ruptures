@@ -9,16 +9,16 @@ Welcome to :mod:`ruptures`
 :mod:`ruptures` is designed to perform offline change point algorithms within the Python language.
 Also in this library, new methods are presented.
 
-Introduction
+Overview
 ====================================================================================================
 General formulation. Available models.
 
 
-General
+Getting started
 ====================================================================================================
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
     :titlesonly:
 
     general-info
@@ -31,10 +31,13 @@ The complete documentation can be found here.
 
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3
     :titlesonly:
 
     exact-detection/index
+    approximate-detection/index
+    datasets/index
+    metrics/index
 
 Contact
 ====================================================================================================
@@ -48,3 +51,5 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+.. .. include:: zreferences.rst
