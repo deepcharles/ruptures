@@ -30,7 +30,7 @@ class BaseEstimator(metaclass=abc.ABCMeta):
         pass
 
 
-class BaseCost(metaclass=abc.ABCMeta):
+class BaseCost(object, metaclass=abc.ABCMeta):
 
     """Base class for all segment cost classes.
 
@@ -63,3 +63,8 @@ class BaseCost(metaclass=abc.ABCMeta):
         soc = sum(self.error(start, end)
                   for start, end in pairwise([0] + bkps))
         return soc
+
+    @property
+    @abc.abstractmethod
+    def model(self):
+        pass

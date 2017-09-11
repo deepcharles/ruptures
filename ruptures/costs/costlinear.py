@@ -1,0 +1,126 @@
+"""Cost function for piecewise linear functions."""
+from numpy.linalg import lstsq
+
+from ruptures.base import BaseCost
+from ruptures.costs import NotEnoughPoints
+
+
+class CostLinear(BaseCost):
+
+    r"""Computes the approximation error when the signal is assumed to be piecewise linear.
+    Formally, for a signal :math:`\{y_t\}_t` on an interval :math:`I`,
+
+    .. math:: c(y_{I}) = \min_{\beta} \sum_{t\in I} \|y_t - \beta\cdot x_t \|_2^2
+
+    where :math:`x_t` is a signal of covariates.
+    """
+
+    model = "linear"
+
+    def __init__(self):
+        self.signal = None
+        self.covar = None
+        self.min_size = 2
+
+    def fit(self, signal):
+        """Sets parameters of the instance.
+        The first column contains the response variable.
+        The other columns contains the covariates.
+
+        Args:
+            signal (array): signal. Shape (n_samples, n_features+1)
+
+        Returns:
+            self
+        """
+        assert signal.ndim > 1, "Not enough dimensions"
+
+        self.signal = signal[:, 0].reshape(-1, 1)
+        self.covar = signal[:, 1:]
+        return self
+
+    def error(self, start, end):
+        """Returns the approximation cost on the segment [start:end].
+
+        Args:
+            start (int): start of the segment
+            end (int): end of the segment
+
+        Returns:
+            float: segment cost
+
+        Raises:
+            NotEnoughPoints: when the segment is too short (less than ``'min_size'`` samples).
+        """
+        if end - start < self.min_size:
+            raise NotEnoughPoints
+        y, X = self.signal[start:end], self.covar[start:end]
+        _, residual, _, _ = lstsq(X, y)
+        return residual.sum()
+
+
+# class Cost(BaseCost):
+
+#     """Compute error (in different norms) when approximating a signal with a constant value."""
+
+#     def __init__(self, model="l2"):
+#         assert model in [
+#             "l1", "l2", "rbf"], "Choose different model."
+#         self.model = model
+#         if self.model in ["l1", "l2", "rbf"]:
+#             self.min_size = 2
+
+#         self.signal = None
+#         self.gram = None
+
+#     def fit(self, signal):
+#         """Update the parameters of the instance to fit the signal.
+
+#         Detailled description
+
+#         Args:
+# signal (array): signal of shape (n_samples, n_features) of (n_samples,)
+
+#         Returns:
+#             self:
+#         """
+#         if signal.ndim == 1:
+#             self.signal = signal.reshape(-1, 1)
+#         else:
+#             self.signal = signal
+
+#         if self.model == "rbf":
+#             pairwise_dists = pdist(self.signal, 'sqeuclidean')
+# pairwise_dists /= np.median(pairwise_dists)  # scaling
+#             self.gram = squareform(np.exp(-pairwise_dists))
+#             np.fill_diagonal(self.gram, 1)
+#         elif self.model == "l2":
+#             self.gram = self.signal.dot(self.signal.T)
+
+#         return self
+
+#     def error(self, start, end):
+#         """Return squared error on the interval start:end
+
+#         Detailled description
+
+#         Args:
+#             start (int): start index (inclusive)
+#             end (int): end index (exclusive)
+
+#         Returns:
+#             float: error
+
+#         Raises:
+#             NotEnoughPoints: when not enough points
+#         """
+#         if end - start < self.min_size:
+#             raise NotEnoughPoints
+#         if self.model in ["l2", "rbf"]:
+#             sub_gram = self.gram[start:end, start:end]
+#             cost = np.diagonal(sub_gram).sum()
+#             cost -= sub_gram.sum() / (end - start)
+#         elif self.model == "l1":
+#             med = np.median(self.signal[start:end], axis=0)
+#             cost = abs(self.signal[start:end] - med).sum()
+#         return cost
