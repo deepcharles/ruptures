@@ -16,13 +16,13 @@ class OmpK:
 
     """Contient l'algorithme de parcours des partitions."""
 
-    def __init__(self, min_size=2, jump=1):
+    def __init__(self, min_size=2, jump=5):
         """One line description
 
         Detailled description
 
         Args:
-            model (str): constantl1|constantl2|rbf
+            model (str): l1|l2|rbf
             min_size (int, optional): minimum segment length
             jump (int, optional): subsample (one every "jump" points)
 

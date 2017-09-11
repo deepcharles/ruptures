@@ -16,7 +16,7 @@ def display(signal, true_chg_pts, computed_chg_pts=None, **kwargs):
         signal = signal.reshape(-1, 1)
     n_samples, n_features = signal.shape
     # let's set all options
-    figsize = (20, 10 * n_features)  # figure size
+    figsize = (10, 2 * n_features)  # figure size
     alpha = 0.2  # transparency of the colored background
     color = "k"  # color of the lines indicating the computed_chg_pts
     linewidth = 3   # linewidth of the lines indicating the computed_chg_pts
