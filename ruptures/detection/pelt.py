@@ -26,7 +26,7 @@ Examples
     signal, b = rpt.pw_constant(n, dim, n_bkps, noisy=True, sigma=sigma)
 
     # change point detection
-    model = "constantl1"  # "constantl2", "rbf"
+    model = "l1"  # "l2", "rbf"
     algo = rpt.Pelt(model=model, min_size=3, jump=5).fit(signal)
     my_bkps = algo.predict(pen=3)
 
@@ -51,8 +51,8 @@ Code explanation
 """
 from math import floor
 
-from ruptures.base import BaseEstimator
-from ruptures.costs import Cost
+from ruptures.costs import cost_factory
+from ruptures.base import BaseCost, BaseEstimator
 
 
 class Pelt(BaseEstimator):
@@ -64,21 +64,24 @@ class Pelt(BaseEstimator):
 
     """
 
-    def __init__(self, model="constantl2", min_size=2, jump=1):
-        """Creates a Pelt instance.
+    def __init__(self, model="l2", custom_cost=None, min_size=2, jump=5):
+        """Initialize a Pelt instance.
 
         Args:
-            model (str): segment model, ["constantl1", "constantl2", "rbf"].
-            min_size (int, optional): minimum segment length
-            jump (int, optional): subsample (one every *jump* points)
+            model (str, optional): segment model, ["l1", "l2", "rbf"]. Not used if ``'custom_cost'`` is not None.
+            custom_cost (BaseCost, optional): custom cost function. Defaults to None.
+            min_size (int, optional): minimum segment length.
+            jump (int, optional): subsample (one every *jump* points).
 
         Returns:
             self
         """
-        self.model = model
-        self.min_size = min_size
+        if custom_cost is not None and isinstance(custom_cost, BaseCost):
+            self.cost = custom_cost
+        else:
+            self.cost = cost_factory(model=model)
+        self.min_size = max(min_size, self.cost.min_size)
         self.jump = jump
-        self.cost = Cost(model=self.model)
         self.n_samples = None
 
     def _seg(self, pen):

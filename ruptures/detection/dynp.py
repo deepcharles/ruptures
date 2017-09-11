@@ -30,7 +30,7 @@ point indexes multiple of a particular value are considered.
     signal, bkps = rpt.pw_constant(n, dim, n_bkps, noisy=True, sigma=sigma)
 
     # change point detection
-    model = "constantl1"  # "constantl2", "rbf"
+    model = "l1"  # "l2", "rbf"
     algo = rpt.Dynp(model=model, min_size=3, jump=5).fit(signal)
     my_bkps = algo.predict(n_bkps=3)
 
@@ -49,10 +49,11 @@ Code explanation
 from functools import lru_cache
 
 from ruptures.utils import sanity_check
-from ruptures.costs import Cost
+from ruptures.costs import cost_factory
+from ruptures.base import BaseCost, BaseEstimator
 
 
-class Dynp:
+class Dynp(BaseEstimator):
 
     """ Find optimal change points using dynamic programming.
 
@@ -60,22 +61,25 @@ class Dynp:
 
     """
 
-    def __init__(self, model="constantl2", min_size=2, jump=1):
+    def __init__(self, model="l2", custom_cost=None, min_size=2, jump=5):
         """Creates a Dynp instance.
 
         Args:
-            model (str): segment model, ["constantl1", "constantl2", "rbf"].
-            min_size (int, optional): minimum segment length
-            jump (int, optional): subsample (one every *jump* points)
+            model (str, optional): segment model, ["l1", "l2", "rbf"]. Not used if ``'custom_cost'`` is not None.
+            custom_cost (BaseCost, optional): custom cost function. Defaults to None.
+            min_size (int, optional): minimum segment length.
+            jump (int, optional): subsample (one every *jump* points).
 
         Returns:
             self
         """
-        self.model = model
-        self.min_size = min_size
-        self.jump = jump
         self.seg = lru_cache(maxsize=None)(self._seg)  # dynamic programming
-        self.cost = Cost(model=self.model)
+        if custom_cost is not None and isinstance(custom_cost, BaseCost):
+            self.cost = custom_cost
+        else:
+            self.cost = cost_factory(model=model)
+        self.min_size = max(min_size, self.cost.min_size)
+        self.jump = jump
         self.n_samples = None
 
     def _seg(self, start, end, n_bkps):
@@ -140,12 +144,7 @@ class Dynp:
         self.seg.cache_clear()
         # update some params
         self.cost.fit(signal)
-        if signal.ndim == 1:
-            n_samples, = signal.shape
-        else:
-            n_samples, _ = signal.shape
-        self.n_samples = n_samples
-
+        self.n_samples = signal.shape[0]
         return self
 
     def predict(self, n_bkps):
