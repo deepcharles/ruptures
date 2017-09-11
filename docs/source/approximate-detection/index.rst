@@ -14,4 +14,19 @@ Instead of searching among the (rather large) set of partitions, approximate met
     window
     greedy/index
 
+.. _sec-approx-formulation:
+
+General formulation
+****************************************************************************************************
+
+Sequential algorithms.
+
+
+.. _sec-stopping-rule:
+
+Stopping rules
+****************************************************************************************************
+
+Penalty. Reconstruction budget. Number of change points.
+
 
