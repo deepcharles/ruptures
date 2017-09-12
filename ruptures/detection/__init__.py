@@ -34,8 +34,6 @@ from .omp import Omp
 from .ompk import OmpK
 from .pelt import Pelt
 from .window import Window
-from .window_lr import WinLr
-from .window_mmd import WinMmd
 from .greedyar import GreedyAR
 from .greedylinear import GreedyLinear
 
