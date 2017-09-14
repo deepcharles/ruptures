@@ -35,7 +35,6 @@ The complete documentation can be found here.
     :maxdepth: 1
     :titlesonly:
 
-    introduction
     cpd
     detection/index
     costs/index
@@ -54,5 +53,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
-.. .. include:: zreferences.rst
