@@ -11,7 +11,8 @@ Also in this library, new methods are presented.
 
 Overview
 ====================================================================================================
-General formulation. Available models.
+
+Concepts: search algorithm, cost, data sets, metrics.
 
 
 Getting started
@@ -31,11 +32,13 @@ The complete documentation can be found here.
 
 
 .. toctree::
-    :maxdepth: 3
+    :maxdepth: 1
     :titlesonly:
 
-    exact-detection/index
-    approximate-detection/index
+    introduction
+    cpd
+    detection/index
+    costs/index
     datasets/index
     metrics/index
 

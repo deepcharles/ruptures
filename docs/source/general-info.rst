@@ -15,4 +15,4 @@ Or download you can download the source codes from **LINK**
 Tutorials
 ----------------------------------------------------------------------------------------------------
 
-All related tutorials are created as Jupyter notebooks. You can find them in **LINK**.
+Advanced tutorials are created as Jupyter notebooks. You can find them in **LINK**.
