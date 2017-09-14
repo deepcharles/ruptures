@@ -64,7 +64,7 @@ the ``'pen'`` parameter or a threshold on the residual norm using ``'epsilon'``.
     # or
     my_bkps = algo.predict(epsilon=3*n*sigma**2)
 
-See also :ref:`sec-stopping-rule` for more information about stopping rules of sequential
+See also :ref:`sec-stopping-rules` for more information about stopping rules of sequential
 algorithms.
 
 

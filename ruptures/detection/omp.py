@@ -11,20 +11,19 @@ import numpy as np
 from numpy.linalg import norm
 
 from ruptures.utils import pairwise
+from ruptures.base import BaseEstimator
 
 
-class Omp:
+class Omp(BaseEstimator):
 
     """Contient l'algorithme de parcours des partitions."""
 
     def __init__(self, min_size=2, jump=5):
-        """One line description
-
-        Detailled description
+        """Initialize an Omp instance
 
         Args:
-            min_size (int, optional): minimum segment length
-            jump (int, optional): subsample (one every "jump" points)
+            min_size (int, optional): minimum segment length. Defaults to 2 samples.
+            jump (int, optional): subsample (one every "jump" points). Defaults to 5 samples.
 
         Returns:
             self
