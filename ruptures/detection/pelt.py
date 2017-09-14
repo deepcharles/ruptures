@@ -1,4 +1,10 @@
 r"""
+Exact segmentation: Pelt
+====================================================================================================
+
+Description
+----------------------------------------------------------------------------------------------------
+
 The method is implemented in :class:`ruptures.detection.Pelt`.
 
 Because the enumeration of all possible partitions impossible, the algorithm relies on a pruning
@@ -12,8 +18,9 @@ can be set through the keyword ``'min_size'``; through the parameter ``'jump'``,
 point indexes multiple of a particular value are considered.
 
 
-Examples
+Usage
 ----------------------------------------------------------------------------------------------------
+
 .. code-block:: python
 
     import numpy as np
@@ -34,8 +41,9 @@ Examples
     fig, (ax,) = rpt.display(signal, bkps, my_bkps, figsize=(10, 6))
     plt.show()
 
+
 Code explanation
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 
 .. autoclass:: ruptures.detection.Pelt
     :members:

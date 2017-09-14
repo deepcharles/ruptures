@@ -1,4 +1,10 @@
-"""Cost function for piecewise constant functions."""
+r"""
+Mean absolute deviation
+====================================================================================================
+
+Cost function for piecewise constant functions.
+
+"""
 import numpy as np
 
 from ruptures.base import BaseCost

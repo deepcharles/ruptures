@@ -2,7 +2,7 @@
 .. _sec-bottup:
 
 Bottom-up segmentation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+====================================================================================================
 
 Bottom-up change point detection is used to perform fast signal segmentation and is implemented in
 :class:`ruptures.detection.BottomUp`.
@@ -24,10 +24,11 @@ whether the number of regimes is known beforehand or not.
 
    Schematic view of the bottom-up segmentation algorithm.
 
-See also: :ref:`sec-binseg`.
+.. seealso:: :ref:`sec-binseg`.
 
 Usage
-****************************************************************************************************
+----------------------------------------------------------------------------------------------------
+
 Start with the usual imports and create a signal.
 
 .. code-block:: python
@@ -76,7 +77,7 @@ The higher it is, the faster the prediction is achieved (at the expense of preci
 
 
 Code explanation
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 
 .. autoclass:: ruptures.detection.BottomUp
     :members:

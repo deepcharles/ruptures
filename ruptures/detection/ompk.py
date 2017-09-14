@@ -22,7 +22,6 @@ class OmpK:
         Detailled description
 
         Args:
-            model (str): l1|l2|rbf
             min_size (int, optional): minimum segment length
             jump (int, optional): subsample (one every "jump" points)
 
@@ -34,7 +33,7 @@ class OmpK:
         self.n_samples = None
         self.gram = None
 
-    def seg(self, n_bkps=None, pen=None, epsilon=None):
+    def _seg(self, n_bkps=None, pen=None, epsilon=None):
         """Computes the binary segmentation.
 
         The stopping rule depends on the parameter passed to the function.
@@ -138,7 +137,7 @@ class OmpK:
         msg = "Give a parameter."
         assert any(param is not None for param in (n_bkps, pen, epsilon)), msg
 
-        bkps = self.seg(n_bkps=n_bkps, pen=pen, epsilon=epsilon)
+        bkps = self._seg(n_bkps=n_bkps, pen=pen, epsilon=epsilon)
         return bkps
 
     def fit_predict(self, gram, n_bkps=None, pen=None, epsilon=None):

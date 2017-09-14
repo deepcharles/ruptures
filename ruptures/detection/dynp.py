@@ -1,4 +1,10 @@
 r"""
+Exact segmentation: dynamic programming
+====================================================================================================
+
+Description
+----------------------------------------------------------------------------------------------------
+
 The method is implemented in :class:`ruptures.detection.Dynp`.
 
 Roughly speaking, it computes the cost of all subsequences of a given signal.
@@ -16,7 +22,8 @@ can be set through the keyword ``'min_size'``; through the parameter ``'jump'``,
 point indexes multiple of a particular value are considered.
 
 
-.. rubric:: Examples
+Usage
+----------------------------------------------------------------------------------------------------
 
 .. code-block:: python
 
@@ -38,9 +45,9 @@ point indexes multiple of a particular value are considered.
     rpt.show.display(signal, bkps, my_bkps, figsize=(10, 6))
     plt.show()
 
-Code explanation
-====================================================================================================
 
+Code explanation
+----------------------------------------------------------------------------------------------------
 .. autoclass:: ruptures.detection.Dynp
     :members:
     :special-members: __init__

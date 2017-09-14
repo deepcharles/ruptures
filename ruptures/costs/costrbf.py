@@ -1,4 +1,10 @@
-"""Cost function for piecewise constant signal in a Hilbert space."""
+r"""
+Cost function for kernel change point detection
+====================================================================================================
+
+Cost function for piecewise constant signal in a Hilbert space.
+
+"""
 import numpy as np
 from scipy.spatial.distance import pdist, squareform
 

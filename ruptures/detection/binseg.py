@@ -2,7 +2,10 @@ r"""
 .. _sec-binseg:
 
 Binary segmentation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+====================================================================================================
+
+Description
+----------------------------------------------------------------------------------------------------
 
 Binary change point detection is used to perform fast signal segmentation and is implemented in
 :class:`ruptures.detection.BinSeg`.
@@ -22,10 +25,12 @@ whether the number of regimes is known beforehand or not.
    Schematic view of the binary segmentation algorithm.
 
 
-See also: :ref:`sec-bottup`.
+.. seealso:: :ref:`sec-bottup`.
+
 
 Usage
-****************************************************************************************************
+----------------------------------------------------------------------------------------------------
+
 Start with the usual imports and create a signal.
 
 .. code-block:: python
@@ -61,8 +66,7 @@ the ``'pen'`` parameter or a threshold on the residual norm using ``'epsilon'``.
     # or
     my_bkps = algo.predict(epsilon=3*n*sigma**2)
 
-See also :ref:`sec-stopping-rule` for more information about stopping rules of sequential
-algorithms.
+.. seealso:: :ref:`sec-stopping-rules` for more information about stopping rules of sequential algorithms.
 
 
 For faster predictions, one can modify the ``'jump'`` parameter during initialization.
@@ -74,7 +78,7 @@ The higher it is, the faster the prediction is achieved (at the expense of preci
 
 
 Code explanation
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 
 .. autoclass:: ruptures.detection.Binseg
     :members:

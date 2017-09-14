@@ -1,4 +1,10 @@
-"""Cost function for piecewise constant functions."""
+r"""
+Cost function for piecewise Gaussian signals
+====================================================================================================
+
+Cost function for piecewise constant functions.
+
+"""
 import numpy as np
 from numpy.linalg import det
 

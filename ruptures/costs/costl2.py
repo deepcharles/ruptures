@@ -1,4 +1,10 @@
-"""Cost functions for piecewise constant functions."""
+r"""
+Mean squared deviation
+====================================================================================================
+
+Cost functions for piecewise constant functions.
+
+"""
 from ruptures.costs import NotEnoughPoints
 
 from ruptures.base import BaseCost

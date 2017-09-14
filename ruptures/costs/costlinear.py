@@ -1,4 +1,10 @@
-"""Cost function for piecewise linear functions."""
+r"""
+Cost for piecewise linear signals
+====================================================================================================
+
+Cost function for piecewise linear functions.
+
+"""
 from numpy.linalg import lstsq
 
 from ruptures.base import BaseCost

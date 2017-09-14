@@ -2,7 +2,10 @@ r"""
 .. _sec-window:
 
 Window-based change point detection
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+====================================================================================================
+
+Description
+----------------------------------------------------------------------------------------------------
 
 Window-based change point detection is used to perform fast signal segmentation and is implemented in
 :class:`ruptures.detection.Window`.
@@ -40,10 +43,12 @@ whether the number of regimes is known beforehand or not.
 
    Schematic view of the window sliding algorithm.
 
-See also: :ref:`sec-binseg`, :ref:`sec-bottup`.
+.. seealso:: :ref:`sec-binseg`, :ref:`sec-bottup`.
+
 
 Usage
-****************************************************************************************************
+----------------------------------------------------------------------------------------------------
+
 Start with the usual imports and create a signal.
 
 .. code-block:: python
@@ -82,8 +87,7 @@ the ``'pen'`` parameter or a threshold on the residual norm using ``'epsilon'``.
     # or
     my_bkps = algo.predict(epsilon=3*n*sigma**2)
 
-See also :ref:`sec-stopping-rule` for more information about stopping rules of sequential
-algorithms.
+.. seealso:: :ref:`sec-stopping-rules` for more information about stopping rules of sequential algorithms.
 
 
 For faster predictions, one can modify the ``'jump'`` parameter during initialization.
@@ -95,7 +99,7 @@ The higher it is, the faster the prediction is achieved (at the expense of preci
 
 
 Code explanation
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 
 .. autoclass:: ruptures.detection.Window
     :members:
@@ -120,7 +124,7 @@ class Window(BaseEstimator):
         """Instanciate with window length.
 
         Args:
-            width (int, optional): window lenght. Defaults to 100 samples.
+            width (int, optional): window length. Defaults to 100 samples.
             model (str, optional): segment model, ["l1", "l2", "rbf"]. Not used if
             ``'custom_cost'`` is not None.
             custom_cost (BaseCost, optional): custom cost function. Defaults to None.
