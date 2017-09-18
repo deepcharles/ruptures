@@ -25,9 +25,6 @@ whether the number of regimes is known beforehand or not.
    Schematic view of the binary segmentation algorithm.
 
 
-.. seealso:: :ref:`sec-bottup`.
-
-
 Usage
 ----------------------------------------------------------------------------------------------------
 

@@ -1,8 +1,65 @@
 r"""
-Cost function for piecewise Gaussian signals
+.. _sec-normal:
+
+Maximum Gaussian likelihood
 ====================================================================================================
 
-Cost function for piecewise constant functions.
+Description
+----------------------------------------------------------------------------------------------------
+
+This cost function detects change in the mean and scale of a Gaussian time series.
+Formally, for a signal :math:`\{y_t\}_t` on an interval :math:`I`,
+
+    .. math:: c(y_{I}) = |I| \log\det\widehat{\Sigma}_I
+
+where :math:`\widehat{\Sigma}_I` is the empirical covariance matrix of the sub-signal :math:`\{y_t\}_{t\in I}`.
+
+
+Usage
+----------------------------------------------------------------------------------------------------
+
+Start with the usual imports and create a signal.
+
+.. code-block:: python
+
+    import numpy as np
+    import matplotlib.pylab as plt
+    import ruptures as rpt
+    # creation of data
+    n, dim = 500, 3  # number of samples, dimension
+    n_bkps, sigma = 3, 5  # number of change points, noise standart deviation
+    signal, bkps = rpt.pw_constant(n, dim, n_bkps, noisy=True, sigma=sigma)
+
+Then create a :class:`CostNormal` instance and print the cost of the sub-signal :code:`signal[50:150]`.
+
+.. code-block:: python
+
+    c = rpt.costs.CostNormal().fit(signal)
+    print(c.error(50, 150))
+
+You can also compute the sum of costs for a given list of change points.
+
+.. code-block:: python
+
+    print(c.sum_of_costs(bkps))
+    print(c.sum_of_costs([10, 100, 200, 250, n]))
+
+
+In order to use this cost class in a change point detection algorithm (inheriting from :class:`BaseEstimator`), either pass a :class:`CostNormal` instance (through the argument ``'custom_cost'``) or set :code:`model="normal"`.
+
+.. code-block:: python
+
+    c = rpt.costs.CostNormal(); algo = rpt.Dynp(custom_cost=c)
+    # is equivalent to
+    algo = rpt.Dynp(model="normal")
+
+
+Code explanation
+----------------------------------------------------------------------------------------------------
+
+.. autoclass:: ruptures.costs.CostNormal
+    :members:
+    :special-members: __init__
 
 """
 import numpy as np
@@ -14,14 +71,7 @@ from ruptures.costs import NotEnoughPoints
 
 class CostNormal(BaseCost):
 
-    r"""Computes the approximation error when the signal is assumed to be piecewise i.i.d with
-    Gaussian density.
-    Formally, for a signal :math:`\{y_t\}_t` on an interval :math:`I`,
-
-    .. math:: c(y_{I}) = |I| \log\det\widehat{\Sigma}_I
-
-    where :math:`\widehat{\Sigma}_I` is the empirical covariance matrix of the sub-signal :math:`\{y_t\}_{t\in I}`.
-    """
+    """Maximum Gaussian likelihood."""
 
     model = "normal"
 
@@ -30,7 +80,7 @@ class CostNormal(BaseCost):
         self.min_size = 2
 
     def fit(self, signal):
-        """Sets parameters of the instance.
+        """Set parameters of the instance.
 
         Args:
             signal (array): signal. Shape (n_samples,) or (n_samples, n_features)
@@ -46,7 +96,7 @@ class CostNormal(BaseCost):
         return self
 
     def error(self, start, end):
-        """Returns the approximation cost on the segment [start:end].
+        """Return the approximation cost on the segment [start:end].
 
         Args:
             start (int): start of the segment
