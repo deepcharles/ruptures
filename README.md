@@ -49,10 +49,10 @@ Pour détecter des ruptures, on choisit un algorithme de parcours des partitions
 ```python
 from ruptures.search_methods import Dynp, Pelt, Binseg, Omp, BottomUp
 
-model = "constantl2"  # or "constantl1" or "rbf"
+model = "l2"  # or "l1" or "rbf"
 
-p = Pelt(model, min_size=2, jump=1).fit(signal)  # pelt method
-d = Dynp(model, min_size=2, jump=1).fit(signal)  # dynamic programming
+p = Pelt(model, min_size=2, jump=5).fit(signal)  # pelt method
+d = Dynp(model, min_size=2, jump=5).fit(signal)  # dynamic programming
 
 my_bkps = d.predict(pen=100)
 fig, axarr = display(signal[:, 0], bkps, my_bkps)
