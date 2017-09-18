@@ -63,7 +63,7 @@ Code explanation
 
 """
 import numpy as np
-from numpy.linalg import det
+from numpy.linalg import slogdet
 
 from ruptures.base import BaseCost
 from ruptures.costs import NotEnoughPoints
@@ -113,8 +113,8 @@ class CostNormal(BaseCost):
         sub = self.signal[start:end]
 
         if self.signal.shape[1] > 1:
-            cov = det(np.cov(sub.T))
+            cov = np.cov(sub.T)
         else:
-            cov = sub.var()
-
-        return np.log(cov) * (end - start)
+            cov = np.array([[sub.var()]])
+        _, val = slogdet(cov)
+        return val * (end - start)
