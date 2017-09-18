@@ -1,0 +1,3 @@
+[submodule "docs"]
+	path = docs
+	url = git@bitbucket.org:tinquiete/ruptures-docs.git
