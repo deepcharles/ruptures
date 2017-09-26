@@ -1,8 +1,103 @@
 r"""
-Cost for piecewise linear signals
+
+.. _sec-linear:
+
+Change in a linear model
 ====================================================================================================
 
-Cost function for piecewise linear functions.
+Description
+----------------------------------------------------------------------------------------------------
+
+Let :math:`0<t_1<t_2<\dots<n` be unknown change points indexes.
+Consider the following multiple linear regression model
+
+.. math::
+
+    y_t = z_t' \delta_j + \varepsilon_t, \quad \forall t=t_j,\dots,t_{j+1}-1
+
+for :math:`j>1`.
+Here, the observed dependant variable is :math:`y_t\in\mathbb{R}`, the covariate vector is
+:math:`x_t \in\mathbb{R}^p`, the disturbance is :math:`\varepsilon_t\in\mathbb{R}`.
+The vectors :math:`\delta_j\in\mathbb{R}^p` are the paramater vectors (or regression coefficients).
+
+The least-squares estimates of the break dates is obtained by minimiming the sum of squared
+residuals :cite:`cl-Bai2003`.
+Formally, the associated cost function on an interval :math:`I` is
+
+    .. math:: c(y_{I}) = \min_{\delta\in\mathbb{R}^p} \sum_{t\in I} \|y_t - \delta' x_t \|_2^2
+
+
+Usage
+----------------------------------------------------------------------------------------------------
+
+Start with the usual imports and create a signal with piecewise linear trends.
+
+.. code-block:: python
+
+    import numpy as np
+    import matplotlib.pylab as plt
+    import ruptures as rpt
+    # creation of data
+    n, n_reg = 2000, 3  # number of samples, number of regressors (including intercept)
+    n_bkps, sigma = 3, 5  # number of change points, noise standart deviation
+    # regressors
+    tt = np.linspace(0, 10*np.pi, n)
+    X = np.vstack((np.sin(tt), np.sin(5*tt), np.ones(n))).T
+    # parameter vectors
+    deltas, bkps = rpt.pw_constant(n, n_reg, n_bkps, noisy=False, delta=(1, 3))
+    # observed signal
+    y = np.sum(X*deltas, axis=1)
+    y += np.random.normal(size=signal.shape)
+    # display signal
+    rpt.show.display(y, bkps, figsize=(10, 6))
+    plt.show()
+
+Then create a :class:`CostLinear` instance and print the cost of the sub-signal
+:code:`signal[50:150]`.
+
+.. code-block:: python
+
+    # stack observed signal and regressors.
+    # first dimension is the observed signal.
+    signal = np.column_stack((y.reshape(-1, 1), X))
+    c = rpt.costs.CostLinear().fit(signal)
+    print(c.error(50, 150))
+
+
+You can also compute the sum of costs for a given list of change points.
+
+.. code-block:: python
+
+    print(c.sum_of_costs(bkps))
+    print(c.sum_of_costs([10, 100, 200, 250, n]))
+
+
+In order to use this cost class in a change point detection algorithm (inheriting from
+:class:`BaseEstimator`), either pass a :class:`CostLinear` instance (through the argument
+``'custom_cost'``) or set :code:`model="linear"`.
+
+.. code-block:: python
+
+    c = rpt.costs.CostLinear(); algo = rpt.Dynp(custom_cost=c)
+    # is equivalent to
+    algo = rpt.Dynp(model="linear")
+
+
+Code explanation
+----------------------------------------------------------------------------------------------------
+
+.. autoclass:: ruptures.costs.CostLinear
+    :members:
+    :special-members: __init__
+
+
+.. rubric:: References
+
+.. bibliography:: ../biblio.bib
+    :style: alpha
+    :cited:
+    :labelprefix: CL
+    :keyprefix: cl-
 
 """
 from numpy.linalg import lstsq
@@ -13,12 +108,8 @@ from ruptures.costs import NotEnoughPoints
 
 class CostLinear(BaseCost):
 
-    r"""Computes the approximation error when the signal is assumed to be piecewise linear.
-    Formally, for a signal :math:`\{y_t\}_t` on an interval :math:`I`,
-
-    .. math:: c(y_{I}) = \min_{\beta} \sum_{t\in I} \|y_t - \beta\cdot x_t \|_2^2
-
-    where :math:`x_t` is a signal of covariates.
+    r"""
+    Least-squares estimate for linear changes.
     """
 
     model = "linear"
@@ -29,12 +120,12 @@ class CostLinear(BaseCost):
         self.min_size = 2
 
     def fit(self, signal):
-        """Sets parameters of the instance.
-        The first column contains the response variable.
+        """Set parameters of the instance.
+        The first column contains the observed variable.
         The other columns contains the covariates.
 
         Args:
-            signal (array): signal. Shape (n_samples, n_features+1)
+            signal (array): signal. Shape (n_samples, n_regressors+1)
 
         Returns:
             self
@@ -46,7 +137,7 @@ class CostLinear(BaseCost):
         return self
 
     def error(self, start, end):
-        """Returns the approximation cost on the segment [start:end].
+        """Return the approximation cost on the segment [start:end].
 
         Args:
             start (int): start of the segment

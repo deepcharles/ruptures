@@ -65,7 +65,6 @@ the ``'pen'`` parameter or a threshold on the residual norm using ``'epsilon'``.
 
 .. seealso:: :ref:`sec-stopping-rules` for more information about stopping rules of sequential algorithms.
 
-
 For faster predictions, one can modify the ``'jump'`` parameter during initialization.
 The higher it is, the faster the prediction is achieved (at the expense of precision).
 

@@ -120,7 +120,7 @@ class Window(BaseEstimator):
 
     """Window sliding method."""
 
-    def __init__(self, width=100, model="l2", custom_cost=None, min_size=2, jump=5):
+    def __init__(self, width=100, model="l2", custom_cost=None, min_size=2, jump=5, params=None):
         """Instanciate with window length.
 
         Args:
@@ -130,6 +130,7 @@ class Window(BaseEstimator):
             custom_cost (BaseCost, optional): custom cost function. Defaults to None.
             min_size (int, optional): minimum segment length.
             jump (int, optional): subsample (one every *jump* points).
+            params (dict, optional): a dictionary of parameters for the cost instance.
 
         Returns:
             self
@@ -143,7 +144,10 @@ class Window(BaseEstimator):
         if custom_cost is not None and isinstance(custom_cost, BaseCost):
             self.cost = custom_cost
         else:
-            self.cost = cost_factory(model=model)
+            if params is None:
+                self.cost = cost_factory(model=model)
+            else:
+                self.cost = cost_factory(model=model, **params)
         self.score = list()
 
     def _seg(self, n_bkps=None, pen=None, epsilon=None):

@@ -68,7 +68,7 @@ class Dynp(BaseEstimator):
 
     """
 
-    def __init__(self, model="l2", custom_cost=None, min_size=2, jump=5):
+    def __init__(self, model="l2", custom_cost=None, min_size=2, jump=5, params=None):
         """Creates a Dynp instance.
 
         Args:
@@ -76,6 +76,7 @@ class Dynp(BaseEstimator):
             custom_cost (BaseCost, optional): custom cost function. Defaults to None.
             min_size (int, optional): minimum segment length.
             jump (int, optional): subsample (one every *jump* points).
+            params (dict, optional): a dictionary of parameters for the cost instance.
 
         Returns:
             self
@@ -84,7 +85,10 @@ class Dynp(BaseEstimator):
         if custom_cost is not None and isinstance(custom_cost, BaseCost):
             self.cost = custom_cost
         else:
-            self.cost = cost_factory(model=model)
+            if params is None:
+                self.cost = cost_factory(model=model)
+            else:
+                self.cost = cost_factory(model=model, **params)
         self.min_size = max(min_size, self.cost.min_size)
         self.jump = jump
         self.n_samples = None

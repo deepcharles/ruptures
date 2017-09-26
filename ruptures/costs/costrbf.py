@@ -1,8 +1,10 @@
 r"""
-Cost function for kernel change point detection
+.. _sec-kernel:
+
+Kernelized least-squares
 ====================================================================================================
 
-Cost function for piecewise constant signal in a Hilbert space.
+
 
 """
 import numpy as np
