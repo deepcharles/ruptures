@@ -25,3 +25,4 @@ from .costl2 import CostL2
 from .costlinear import CostLinear
 from .costrbf import CostRbf
 from .costnormal import CostNormal
+from .costautoregressive import CostAR
