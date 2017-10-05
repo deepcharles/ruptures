@@ -7,7 +7,7 @@ Maximum Gaussian likelihood
 Description
 ----------------------------------------------------------------------------------------------------
 
-This cost function detects change in the mean and scale of a Gaussian time series.
+This cost function detects changes in the mean and scale of a Gaussian time series.
 Formally, for a signal :math:`\{y_t\}_t` on an interval :math:`I`,
 
     .. math:: c(y_{I}) = |I| \log\det\widehat{\Sigma}_I
