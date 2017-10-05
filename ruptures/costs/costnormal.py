@@ -1,7 +1,7 @@
 r"""
 .. _sec-normal:
 
-Maximum Gaussian likelihood
+Gaussian process change
 ====================================================================================================
 
 Description

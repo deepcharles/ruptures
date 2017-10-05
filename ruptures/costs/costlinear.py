@@ -2,7 +2,7 @@ r"""
 
 .. _sec-linear:
 
-Change in a linear model
+Linear model change
 ====================================================================================================
 
 Description

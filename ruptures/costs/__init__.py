@@ -12,8 +12,9 @@ Available models
     costl1
     costl2
     costnormal
-    costlinear
     costrbf
+    costlinear
+    costautoregressive
     costcustom
 
 """

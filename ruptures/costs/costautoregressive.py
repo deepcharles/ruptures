@@ -2,7 +2,7 @@ r"""
 
 .. _sec-autoregressive:
 
-Change in a autoregressive model
+Autoregressive model change
 ====================================================================================================
 
 Description
