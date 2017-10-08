@@ -27,7 +27,7 @@ Start with the usual imports and create a signal.
     # creation of data
     n, dim = 500, 3  # number of samples, dimension
     n_bkps, sigma = 3, 5  # number of change points, noise standart deviation
-    signal, bkps = rpt.pw_constant(n, dim, n_bkps, noisy=True, sigma=sigma)
+    signal, bkps = rpt.pw_constant(n, dim, n_bkps, noise_std=sigma)
 
 Then create a :class:`CostL2` instance and print the cost of the sub-signal :code:`signal[50:150]`.
 

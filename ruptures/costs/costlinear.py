@@ -24,7 +24,7 @@ The least-squares estimates of the break dates is obtained by minimiming the sum
 residuals :cite:`cl-Bai2003`.
 Formally, the associated cost function on an interval :math:`I` is
 
-    .. math:: c(y_{I}) = \min_{\delta\in\mathbb{R}^p} \sum_{t\in I} \|y_t - \delta' x_t \|_2^2
+    .. math:: c(y_{I}) = \min_{\delta\in\mathbb{R}^p} \sum_{t\in I} \|y_t - \delta' z_t \|_2^2
 
 
 Usage
@@ -44,7 +44,7 @@ Start with the usual imports and create a signal with piecewise linear trends.
     tt = np.linspace(0, 10*np.pi, n)
     X = np.vstack((np.sin(tt), np.sin(5*tt), np.ones(n))).T
     # parameter vectors
-    deltas, bkps = rpt.pw_constant(n, n_reg, n_bkps, noisy=False, delta=(1, 3))
+    deltas, bkps = rpt.pw_constant(n, n_reg, n_bkps, noise_std=None, delta=(1, 3))
     # observed signal
     y = np.sum(X*deltas, axis=1)
     y += np.random.normal(size=signal.shape)

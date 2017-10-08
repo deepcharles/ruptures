@@ -8,6 +8,21 @@ Autoregressive model change
 Description
 ----------------------------------------------------------------------------------------------------
 
+Let :math:`0<t_1<t_2<\dots<n` be unknown change points indexes.
+Consider the following piecewise autoregressive model
+
+.. math::
+
+    y_t = z_t' \delta_j + \varepsilon_t, \quad \forall t=t_j,\dots,t_{j+1}-1
+
+where :math:`j>1` is the segment number, :math:`z_t=[y_{t-1}, y_{t-2},\dots,y_{t-p}]` is the lag vector,and :math:`p>0` is the order of the process.
+
+The least-squares estimates of the break dates is obtained by minimiming the sum of squared
+residuals :cite:`ar-Bai2000`.
+Formally, the associated cost function on an interval :math:`I` is
+
+    .. math:: c(y_{I}) = \min_{\delta\in\mathbb{R}^p} \sum_{t\in I} \|y_t - \delta' z_t \|_2^2
+
 
 Usage
 ----------------------------------------------------------------------------------------------------
@@ -107,8 +122,7 @@ class CostAR(BaseCost):
 
     def fit(self, signal):
         """Set parameters of the instance.
-        The first column contains the observed variable.
-        The other columns contains the covariates.
+        The signal must be 1D.
 
         Args:
             signal (array): 1d signal. Shape (n_samples, 1) or (n_samples,).
