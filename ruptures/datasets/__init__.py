@@ -1,23 +1,22 @@
 """
-:mod:`ruptures` comes with a few standard datasets that do not require to download any file from
-some external website.
+====================================================================================================
+Synthetic signals
+====================================================================================================
 
-Mean and scale shifts
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+:mod:`ruptures.datasets` is designed to simplify synthetic signal generation.
 
-Piecewise i.i.d.
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. toctree::
+    :glob:
+    :maxdepth: 1
 
-Piecewise linear signal
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Piecewise autoregressive signal
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+    pw_constant
+    pw_normal
+    pw_linear
+    pw_wavy
 
 """
 
-from .utils import uniform_with_constant_sum
 from .pw_constant import pw_constant
+from .pw_normal import pw_normal
 from .pw_linear import pw_linear
-from .pw_harmonic import pw_harmonic
+from .pw_wavy import pw_wavy

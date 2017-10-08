@@ -1,63 +1,67 @@
+r"""
+.. _sec-pw-linear:
+
+Shift in linear model
+====================================================================================================
+
+Description
+----------------------------------------------------------------------------------------------------
+
+This function simulates a piecewise linear model (see :ref:`sec-linear`).
+The covariates standard Gaussian random variables.
+The response variable is a (piecewise) linear combination of the covariates.
+
+Usage
+----------------------------------------------------------------------------------------------------
+
+Start with the usual imports and create a signal.
+
+.. code-block:: python
+
+    import numpy as np
+    import matplotlib.pylab as plt
+    import ruptures as rpt
+    # creation of data
+    n, dim = 500, 3  # number of samples, dimension of the covariates
+    n_bkps, sigma = 3, 5  # number of change points, noise standart deviation
+    signal, bkps = rpt.pw_linear(n, dim, n_bkps, noise_std=sigma)
+    rpt.display(signal, bkps)
+
+Code explanation
+----------------------------------------------------------------------------------------------------
+
+.. autofunction:: ruptures.datasets.pw_linear.pw_linear
+
+
+
+"""
 import numpy as np
-from ruptures.datasets import uniform_with_constant_sum
-from math import ceil
+from numpy.random import normal
+
+from . import pw_constant
+from ruptures.utils import draw_bkps
 
 
-def pw_linear(n=100, clusters=3, dim=1, min_size=None, noisy=False, snr=0.1):
+def pw_linear(n_samples=200, n_features=1, n_bkps=3, noise_std=None):
     """
-    Piecewise linear signal.
+    Return piecewise linear signal and the associated changepoints.
 
     Args:
-        n (int, optional): signal length
-        clusters (int, optional): number of regimes
-        dim (int, optional): dimension of the signal
-        min_size (int or None, optional): minimum size of a regime. If None,
-            automatically computed.
-        min_wave_per_segment (int, optional): minimum number of periods per
-            regime
-        min_points_per_wave (int, optional): minimum number of points per
-            period
-        noisy (bool, optional): If True, noise is added
-        snr (float, optional): signal-to-noise ratio (in dB)
-
+        n_samples (int, optional): signal length
+        n_features (int, optional): number of covariates
+        n_bkps (int, optional): number of change points
+        noise_std (float, optional): noise std. If None, no noise is added
     Returns:
-        tuple: (list of changepoint indexes, signal)
+        tuple: signal of shape (n_samples, n_features+1), list of breakpoints
     """
-    # taille minimale de segment
-    if min_size is None:
-        min_size = ceil(n / clusters / 2)
-    assert isinstance(noisy, bool)
-    assert min_size * clusters <= n, "The minimum size is too great."
-    # segment sizes
-    segments = uniform_with_constant_sum(clusters, n - min_size * clusters)
-    segments += min_size
-    assert all(k >= min_size for k in segments)
-    assert clusters > 1, "There must be at least two regimes."
 
-    signals = list()
-    for _ in range(dim):
-        # slopes
-        slopes = np.arange(clusters) - clusters / 2
-        # we square the slopes to enhance the differences
-        slopes *= np.abs(slopes)
-        np.random.shuffle(slopes)
-
-        # we create the signal
-        signal1d = np.array([], dtype=float)
-        intercept = 0
-        for s, length in zip(slopes, segments):
-            xx = intercept + np.arange(length) * s
-            signal1d = np.append(signal1d, xx)
-            intercept = xx[-1]
-
-        # additive noise
-        if noisy:
-            std = np.std(signal1d, dtype=float) * 10**(-snr / 10)
-            signal1d = signal1d + \
-                np.random.standard_normal(signal1d.size) * std
-
-        signals.append(signal1d.reshape(-1, 1))
-
-    res = np.hstack(signals)
-    chg_pts = np.cumsum(segments)
-    return res, chg_pts
+    covar = normal(size=(n_samples, n_features))
+    linear_coeff, bkps = pw_constant(n_samples=n_samples,
+                                     n_bkps=n_bkps,
+                                     n_features=n_features,
+                                     noise_std=None)
+    var = np.sum(linear_coeff * covar, axis=1)
+    if noise_std is not None:
+        var += normal(scale=noise_std, size=var.shape)
+    signal = np.c_[var, covar]
+    return signal, bkps
