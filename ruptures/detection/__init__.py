@@ -51,6 +51,3 @@ from .pelt import Pelt
 from .window import Window
 from .greedyar import GreedyAR
 from .greedylinear import GreedyLinear
-
-METHODS = {"dynp": Dynp,
-           "pelt": Pelt}

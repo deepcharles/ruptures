@@ -34,7 +34,7 @@ Usage
     # creation of data
     n, dim = 500, 3
     n_bkps, sigma = 3, 5
-    signal, bkps = rpt.pw_constant(n, dim, n_bkps, noisy=True, sigma=sigma)
+    signal, bkps = rpt.pw_constant(n, dim, n_bkps, noise_std=sigma)
 
     # change point detection
     model = "l1"  # "l2", "rbf"

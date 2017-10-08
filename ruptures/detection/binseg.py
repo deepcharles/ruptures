@@ -36,9 +36,9 @@ Start with the usual imports and create a signal.
     import matplotlib.pylab as plt
     import ruptures as rpt
     # creation of data
-    n, dim = 500, 3  # number of samples, dimension
+    n = 500  # number of samples
     n_bkps, sigma = 3, 5  # number of change points, noise standart deviation
-    signal, bkps = rpt.pw_constant(n, dim, n_bkps, noisy=True, sigma=sigma)
+    signal, bkps = rpt.pw_constant(n, dim, n_bkps, noise_std=sigma)
 
 To perform a binary segmentation of a signal, initialize a :class:`ruptures.detection.BinSeg`
 instance.
