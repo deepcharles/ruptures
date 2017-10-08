@@ -1,23 +1,17 @@
-"""
-:mod:`ruptures` provides evaluation to evaluate change point detection performance.
+r"""
+====================================================================================================
+Evaluation metrics
+====================================================================================================
 
-.. _sec-hausdorff:
+:mod:`ruptures.metrics` provides metrics to evaluate change point detection performances.
 
-Hausdorff metric
-----------------------------------------------------------------------------------------------------
+.. toctree::
+    :glob:
+    :maxdepth: 1
 
-.. _sec-randindex:
-
-Rand index
-----------------------------------------------------------------------------------------------------
-
-
-.. _sec-precision:
-
-Precision and Recall
-----------------------------------------------------------------------------------------------------
-
-Also PR curve and AUC.
+    hausdorff
+    randindex
+    precision
 
 """
 from .hausdorff import hausdorff
