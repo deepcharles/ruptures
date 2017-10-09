@@ -2,14 +2,14 @@ from setuptools import setup, find_packages
 
 setup(
     name='ruptures',
-    version='0.0.1',
+    version='0.1',
     packages=find_packages(),
     install_requires=['numpy', 'scipy', 'matplotlib'],
     url='',
-    license='je ne sais pas',
-    author='charles',
-    author_email='charles.truong@cmla.ens-cachan.fr',
-    description='Several segmentation algorithms',
+    license='MIT License',
+    author='Charles Truong',
+    author_email='truong@cmla.ens-cachan.fr',
+    description='Offline change point detection for Python',
     download_url='',
     keywords=["Miscellaneous", "Toy data generator"],
     classifiers=[
@@ -18,9 +18,13 @@ setup(
         "Topic :: Computer Science",
     ],
     long_description="""\
-Miscellaneous functions.
+Offline change point detection for Python.
 -------------------------------------
-This package contains functions to generate synthetic data.
+This package contains:
+    - algorithms to detect change points in signals,
+    - functions to evaluate the estimated change points,
+    - functions to display the estimated change points,
+    - function to generate toy signals.
 
 This version requires Python 3 or later.
 """
