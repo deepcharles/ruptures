@@ -170,7 +170,9 @@ class Window(BaseEstimator):
         error = self.cost.sum_of_costs(bkps)
         # peak search
         peak_inds_shifted, = argrelmax(self.score,
-                                       order=max(self.width, self.min_size) // (2 * self.jump))
+                                       order=max(self.width, self.min_size) // (
+                                           2 * self.jump),
+                                       mode="wrap")
         gains = np.take(self.score, peak_inds_shifted)
         peak_inds_arr = np.take(self.inds, peak_inds_shifted)
         # sort according to score value
