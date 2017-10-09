@@ -11,6 +11,12 @@ This function simulates a sum-of-sine signal :math:`y_t=\sin(2\pi f_1 t)+\sin(2\
 The frequency vector :math:`[f_1, f_2]` alternates between :math:`[0.075, 0.1]` and :math:`[0.1, 0.125]` at each change point index.
 Gaussian white noise can be added to the signal.
 
+.. figure:: /images/sum_of_sines.png
+   :scale: 50 %
+   :alt: Signal example
+
+   Top: signal example. Bottom: associated spectrogram.
+
 Usage
 ----------------------------------------------------------------------------------------------------
 

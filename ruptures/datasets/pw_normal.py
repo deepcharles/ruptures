@@ -9,6 +9,12 @@ Description
 
 This function simulates a 2D signal of Gaussian i.i.d. random variables with zero mean and covariance matrix alternating between :math:`[[1, 0.9], [0.9, 1]]` and :math:`[[1, -0.9], [-0.9, 1]]` at every change point.
 
+.. figure:: /images/correlation_shift.png
+   :scale: 50 %
+   :alt: Signal example
+
+   Top and middle: 2D signal example. Bottom: Scatter plot for each regime type.
+
 Usage
 ----------------------------------------------------------------------------------------------------
 
