@@ -92,19 +92,3 @@ def precision_recall(true_bkps, my_bkps, margin=10):
     precision = tp_ / (len(my_bkps) - 1)
     recall = tp_ / (len(true_bkps) - 1)
     return precision, recall
-
-
-def pr_curve(true_bkps, list_of_bkps, margin=10):
-    """Sorted list of precision and recall."""
-    pr_list = list()
-    for my_bkps in list_of_bkps:
-        pr_list.append(precision_recall(true_bkps, my_bkps, margin))
-
-    # To avoid several precision values for one recall value;
-    # pr_list = list()
-    # for rec, g in groupby(res, key=lambda x: x[1]):
-    #     prec = max(v for v, _ in g)
-    #     pr_list.append((prec, rec))
-    pr_list.sort(key=lambda x: (x[1], -x[0]))
-    precision, recall = unzip(pr_list)
-    return list(recall), list(precision)
