@@ -1,5 +1,7 @@
+"""Mean time error."""
 import numpy as np
 from scipy.spatial.distance import cdist
+
 from ruptures.metrics.sanity_check import sanity_check
 
 
