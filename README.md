@@ -36,7 +36,7 @@ n_samples = 1000 # nombre de points
 dim = 3  # dimension du signal
 n_bkps = 7  # nombre de ruptures
 # Constant par morceaux
-signal, bkps = pw_constant(n_samples, dim, n_bkps, noisy=True, sigma=2, delta=(1, 2))
+signal, bkps = pw_constant(n_samples, dim, n_bkps, noise_std=2, delta=(1, 2))
 fig, ax = display(signal, chg)
 plt.show()
 print(bkps)

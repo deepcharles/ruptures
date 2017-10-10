@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from ruptures.utils import pairwise
-COLOR_CYCLE = ["#4286f4", "#b8cef2"]
+COLOR_CYCLE = ["#4286f4", "#f44174"]
 
 
 def display(signal, true_chg_pts, computed_chg_pts=None, **kwargs):
