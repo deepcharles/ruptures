@@ -15,6 +15,7 @@ Available models
     costrbf
     costlinear
     costautoregressive
+    costml
     costcustom
 
 """
@@ -27,3 +28,4 @@ from .costlinear import CostLinear
 from .costrbf import CostRbf
 from .costnormal import CostNormal
 from .costautoregressive import CostAR
+from .costml import CostMl
