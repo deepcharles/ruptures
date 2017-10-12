@@ -14,7 +14,7 @@ The :mod:`ruptures.detection` module implements the change point detection metho
     binseg
     bottomup
     window
-    greedy/index
+.. greedy/index
 """
 # Exact methods
 # ==================================================================================================
