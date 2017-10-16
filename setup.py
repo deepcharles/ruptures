@@ -6,23 +6,27 @@ setup(
     packages=find_packages(),
     install_requires=['numpy', 'scipy', 'matplotlib'],
     url='',
-    license='MIT License',
+    license='BSD License',
     author='Charles Truong',
     author_email='truong@cmla.ens-cachan.fr',
-    description='Offline change point detection for Python',
+    description='Change point detection for Python',
     download_url='',
-    keywords=["Miscellaneous", "Toy data generator"],
+    keywords=["change point detection", "signal segmentation",
+              "computer science", "machine learning"],
     classifiers=[
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
-        "Topic :: Computer Science",
+        "Topic :: Scientific/Engineering :: Mathematics",
+        "Intended Audience :: Science/Research",
+        "License :: OSI Approved :: BSD License"
     ],
     long_description="""\
 Offline change point detection for Python.
 -------------------------------------
+
 This package contains:
     - algorithms to detect change points in signals,
-    - functions to evaluate the estimated change points,
+    - functions to evaluate methods' performances,
     - functions to display the estimated change points,
     - function to generate toy signals.
 
