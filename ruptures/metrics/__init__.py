@@ -1,9 +1,10 @@
 r"""
 ====================================================================================================
-Evaluation metrics
+Evaluation
 ====================================================================================================
 
-:mod:`ruptures.metrics` provides metrics to evaluate change point detection performances.
+:mod:`ruptures.metrics` provides metrics to evaluate change point detection performances and
+:mod:`ruptures.show` provides a display function for visual inspection.
 
 .. toctree::
     :glob:
@@ -12,6 +13,7 @@ Evaluation metrics
     hausdorff
     randindex
     precision
+    display
 
 """
 from .hausdorff import hausdorff

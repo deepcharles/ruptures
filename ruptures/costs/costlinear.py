@@ -47,7 +47,7 @@ Start with the usual imports and create a signal with piecewise linear trends.
     deltas, bkps = rpt.pw_constant(n, n_reg, n_bkps, noise_std=None, delta=(1, 3))
     # observed signal
     y = np.sum(X*deltas, axis=1)
-    y += np.random.normal(size=signal.shape)
+    y += np.random.normal(size=y.shape)
     # display signal
     rpt.show.display(y, bkps, figsize=(10, 6))
     plt.show()
