@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='ruptures',
-    version='0.1',
+    version='1.0',
     packages=find_packages(),
     install_requires=['numpy', 'scipy', 'matplotlib'],
     url='',
@@ -12,7 +12,7 @@ setup(
     description='Change point detection for Python',
     download_url='',
     keywords=["change point detection", "signal segmentation",
-              "computer science", "machine learning"],
+              "computer science", "machine learning", "kernel methods", "time series"],
     classifiers=[
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
