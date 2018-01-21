@@ -10,7 +10,7 @@ In addition, thanks to its modular structure, different algorithms and models ca
 - Website (and documentation): [ctruong.perso.math.cnrs.fr/ruptures](http://ctruong.perso.math.cnrs.fr/ruptures "Link to documentation").
 - Statement of purpose: 
     _Truong, C., Oudre, L., & Vayatis, N. (2018). ruptures: change point detection in Python. ArXiv E-Prints arXiv:1801.00826, 1–5, [arXiv:1801.00826](https://arxiv.org/abs/1801.00826)._
-- Official repository: [https://reine.cmla.ens-cachan.fr/c.truong/ruptures/repository/latest/archive.zip](reine.cmla.ens-cachan.fr/c.truong/ruptures/repository/latest/archive.zip).
+- Official repository: [reine.cmla.ens-cachan.fr/c.truong/ruptures/repository/latest/archive.zip](https://reine.cmla.ens-cachan.fr/c.truong/ruptures/repository/latest/archive.zip).
 - ML Open Source repository: [mloss.org/software/view/700/](http://mloss.org/software/view/700/)
 - Pypi package index: [pypi.python.org/pypi/ruptures](https://pypi.python.org/pypi/ruptures)
 
