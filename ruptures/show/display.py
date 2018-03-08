@@ -69,6 +69,10 @@ def display(signal, true_chg_pts, computed_chg_pts=None, **kwargs):
         tuple: (figure, axarr) with a :class:`matplotlib.figure.Figure` object and an array of Axes objects.
 
     """
+    if type(signal) != np.ndarray:
+        # Try to get array from Pandas dataframe
+        signal = signal.values
+
     if signal.ndim == 1:
         signal = signal.reshape(-1, 1)
     n_samples, n_features = signal.shape
