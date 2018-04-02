@@ -107,9 +107,9 @@ class CostRbf(BaseCost):
             K = pdist(signal.reshape(-1, 1), metric="sqeuclidean")
         else:
             K = pdist(signal, metric="sqeuclidean")
-        K /= -np.median(K)
-        np.clip(K, 1e-3, 1e3, K)
-        self.gram = np.exp(squareform(K))
+        K /= np.median(K)
+        np.clip(K, 1e-2, 1e2, K)
+        self.gram = np.exp(squareform(-K))
         return self
 
     def error(self, start, end):
