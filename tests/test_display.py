@@ -1,5 +1,6 @@
 from ruptures.datasets import pw_constant
 from ruptures.show import display
+from ruptures.show.display import matplotlib_is_installed
 import pytest
 
 
@@ -10,6 +11,8 @@ def signal_bkps():
 
 
 def test_display(signal_bkps):
+    if not matplotlib_is_installed:
+        pytest.skip('matplotlib is not installed')
     signal, bkps = signal_bkps
     fig, axarr = display(signal, bkps)
     fig, axarr = display(signal, bkps, bkps)

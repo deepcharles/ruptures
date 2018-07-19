@@ -4,7 +4,10 @@ setup(
     name='ruptures',
     version='1.0a1',
     packages=find_packages(exclude=['docs', 'tests*', 'images']),
-    install_requires=['numpy', 'scipy', 'matplotlib'],
+    install_requires=['numpy', 'scipy'],
+    extras_require={
+        'display': ['matplotlib']
+    },
     python_requires='>=3',
     # url='ctruong.perso.math.cnrs.fr/ruptures',
     license='BSD License',

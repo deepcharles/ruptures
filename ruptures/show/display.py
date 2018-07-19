@@ -47,8 +47,13 @@ Code explanation
 
 from itertools import cycle
 
-import matplotlib.pyplot as plt
 import numpy as np
+
+try:
+    import matplotlib.pyplot as plt
+    matplotlib_is_installed = True
+except ImportError:
+    matplotlib_is_installed = False
 
 from ruptures.utils import pairwise
 
@@ -69,6 +74,9 @@ def display(signal, true_chg_pts, computed_chg_pts=None, **kwargs):
         tuple: (figure, axarr) with a :class:`matplotlib.figure.Figure` object and an array of Axes objects.
 
     """
+    if not matplotlib_is_installed:
+        raise RuntimeError(
+            'This features requires the optional dependency matpotlib, you can install it using `pip install matplotlib`.')
     if type(signal) != np.ndarray:
         # Try to get array from Pandas dataframe
         signal = signal.values
