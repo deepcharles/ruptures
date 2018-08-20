@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/deepcharles/ruptures.svg?style=svg)](https://circleci.com/gh/deepcharles/ruptures)
+
 # ruptures
 
 `ruptures` is a Python library for off-line change point detection.
