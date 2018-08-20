@@ -47,12 +47,15 @@ Code explanation
 
 from itertools import cycle
 
-import matplotlib.pyplot as plt
 import numpy as np
 
 from ruptures.utils import pairwise
 
 COLOR_CYCLE = ["#4286f4", "#f44174"]
+
+
+class MatplotlibMissingError(RuntimeError):
+    pass
 
 
 def display(signal, true_chg_pts, computed_chg_pts=None, **kwargs):
@@ -69,6 +72,12 @@ def display(signal, true_chg_pts, computed_chg_pts=None, **kwargs):
         tuple: (figure, axarr) with a :class:`matplotlib.figure.Figure` object and an array of Axes objects.
 
     """
+    try:
+        import matplotlib.pyplot as plt
+    except ImportError:
+        raise MatplotlibMissingError(
+            'This feature requires the optional dependency matpotlib, you can install it using `pip install matplotlib`.')
+
     if type(signal) != np.ndarray:
         # Try to get array from Pandas dataframe
         signal = signal.values
