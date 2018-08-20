@@ -32,7 +32,10 @@ jobs:
           command: |
             python3 -m venv venv
             . venv/bin/activate
-            pip install -r requirements.txt
+            pip3 install -r requirements.txt
+            pip3 install -r requirements-test.txt
+            python3 setup.py install
+
 
       - save_cache:
           paths:
@@ -49,7 +52,7 @@ jobs:
           command: |
             . venv/bin/activate
             mkdir test-reports
-            pytest --junitxml=test-reports/junit.xml
+            py.test --junitxml=test-reports/junit.xml tests/
 
       - store_test_results:
           path: test-reports
