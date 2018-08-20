@@ -18,7 +18,7 @@ In addition, thanks to its modular structure, different algorithms and models ca
 # Dependencies and install
 
 `ruptures` is tested to work under Python >= 3.4.
-It is written in pure Python and depends on the following libraries: `numpy`, `scipy` and `matplotlib`.
+It is written in pure Python and depends on the following libraries: `numpy`, `scipy` and `matplotlib` (optional).
 
 - With **pip**:
     > pip3 install ruptures
