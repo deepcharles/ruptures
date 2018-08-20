@@ -71,3 +71,4 @@ ruptures.sublime-project
 ruptures.sublime-workspace
 test.ipynb
 ruptures/detection/.circleci/run-build-locally.sh
+.circleci/run-build-locally.sh
