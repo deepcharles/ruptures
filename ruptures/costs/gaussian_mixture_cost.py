@@ -1,3 +1,5 @@
+import warnings
+
 from ruptures.base import BaseCost
 from sklearn.mixture import GaussianMixture
 
@@ -9,6 +11,7 @@ class GaussianMixtureCost(BaseCost):
     def __init__(self, n_components):
         self.n_components = n_components
         self.model = GaussianMixture(n_components=n_components)
+        self.signal = []
 
     def fit(self, signal):
         """Set the internal parameter."""
@@ -26,6 +29,7 @@ class GaussianMixtureCost(BaseCost):
             float: segment cost
         """
         sub = self.signal[start:end]
-
-        fitted_model = self.model.fit(sub)
-        return - fitted_model.score(sub)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            fitted_model = self.model.fit(sub)
+        return - fitted_model.score(sub) * len(sub)
