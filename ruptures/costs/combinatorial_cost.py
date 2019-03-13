@@ -37,4 +37,4 @@ class CombinatorialCost(BaseCost):
         total_error = 0
         for i in range(len(self.costs)):
             total_error += self.costs[i].error(start, end)
-        return total_error
+        return total_error / len(self.costs)

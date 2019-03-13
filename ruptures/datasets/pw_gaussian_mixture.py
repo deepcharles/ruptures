@@ -14,19 +14,23 @@ def select_mean_and_standard_deviation(ratio):
 def get_gaussian_mixture_segment(n_features, ratio, means, standard_deviations, length):
     result = np.empty((length, n_features), dtype=float)
     for i in range(length):
-        mean_index = select_mean_and_standard_deviation(ratio)
-        result[i] = rd.normal(means[mean_index], standard_deviations[mean_index])
+        for j in range(n_features):
+            mean_index = select_mean_and_standard_deviation(ratio)
+            result[i][j] = rd.normal(means[mean_index][j], standard_deviations[mean_index][j])
     return result
 
 
-def generate_means_and_standard_deviations(n_components, noise_std, mean_range):
-    means = [0] * n_components
-    standard_deviations = [0] * n_components
+def generate_means_and_standard_deviations(n_features, n_components, noise_std, mean_range):
+    means = []
+    standard_deviations = []
     mean_min, mean_max = mean_range
     for i in range(n_components):
-        means[i] = rd.random() * (mean_max - mean_min)
-        if noise_std is not None:
-            standard_deviations[i] = rd.random() * noise_std
+        means.append([0] * n_features)
+        standard_deviations.append([0] * n_features)
+        for j in range(n_features):
+            means[i][j] = rd.random() * (mean_max - mean_min)
+            if noise_std is not None:
+                standard_deviations[i][j] = rd.random() * noise_std
     return means, standard_deviations
 
 
@@ -57,7 +61,7 @@ def pw_gaussian_mixture(n_samples=200, n_features=1, n_bkps=3, noise_std=None, n
     for subarray in np.split(indices, breakpoints):
         if subarray.size > 0:
             subsection += 1
-            means, standard_deviations = generate_means_and_standard_deviations(n_components, noise_std, mean_range)
+            means, standard_deviations = generate_means_and_standard_deviations(n_features, n_components, noise_std, mean_range)
             gaussian_mixture_segment = get_gaussian_mixture_segment(n_features, ratio, means, standard_deviations,
                                                                     subarray.size)
             signal[subarray] = gaussian_mixture_segment
