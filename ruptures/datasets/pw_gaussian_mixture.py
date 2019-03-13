@@ -14,8 +14,8 @@ def select_mean_and_standard_deviation(ratio):
 def get_gaussian_mixture_segment(n_features, ratio, means, standard_deviations, length):
     result = np.empty((length, n_features), dtype=float)
     for i in range(length):
+        mean_index = select_mean_and_standard_deviation(ratio)
         for j in range(n_features):
-            mean_index = select_mean_and_standard_deviation(ratio)
             result[i][j] = rd.normal(means[mean_index][j], standard_deviations[mean_index][j])
     return result
 
@@ -32,6 +32,13 @@ def generate_means_and_standard_deviations(n_features, n_components, noise_std, 
             if noise_std is not None:
                 standard_deviations[i][j] = rd.random() * noise_std
     return means, standard_deviations
+
+def get_random_breakpoints(n_samples, n_breakpoints):
+    breakpoints = np.empty(n_breakpoints, dtype=int)
+    for i in range(len(breakpoints)):
+        breakpoints[i] = int(rd.random() * n_samples)
+    breakpoints.sort()
+    return breakpoints
 
 
 def pw_gaussian_mixture(n_samples=200, n_features=1, n_bkps=3, noise_std=None, n_components=2, ratio=[0.8, 0.2],
@@ -51,7 +58,7 @@ def pw_gaussian_mixture(n_samples=200, n_features=1, n_bkps=3, noise_std=None, n
         tuple: signal of shape (n_samples, n_features), list of breakpoints
 
     """
-    breakpoints = draw_bkps(n_samples, n_bkps)
+    breakpoints = get_random_breakpoints(n_samples, n_bkps)
     # we create the signal
     signal = np.empty((n_samples, n_features), dtype=float)
     indices = np.arange(n_samples)
