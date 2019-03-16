@@ -14,6 +14,8 @@ class CombinatorialCost(BaseCost):
     def fit(self, signal):
         """Set the internal parameter."""
         self.signal = signal
+        length, n_dimensions = signal.shape
+        assert n_dimensions == len(self.costs)
         for i in range(len(self.costs)):
             ith_row = self.get_ith_row(self.signal, i)
             self.costs[i].fit(ith_row)

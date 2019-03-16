@@ -14,13 +14,10 @@ class GaussianMixtureCost(BaseCost):
         self.n_components = n_components
         self.model = GaussianMixture(n_components=n_components)
         self.signal = []
-        self.fitted_models = []
 
     def fit(self, signal):
         """Set the internal parameter."""
         self.signal = signal
-        signal_length = len(signal)
-        self.fitted_models = np.empty((signal_length, signal_length), dtype=object)
         return self
 
     def error(self, start, end):
