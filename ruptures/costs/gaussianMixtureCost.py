@@ -1,7 +1,5 @@
 import warnings
 
-import numpy as np
-
 from ruptures.base import BaseCost
 from sklearn.mixture import GaussianMixture
 
@@ -31,11 +29,7 @@ class GaussianMixtureCost(BaseCost):
             float: segment cost
         """
         sub = self.signal[start:end]
-        if self.fitted_models[start][end - 1] is not None:
-            fitted_model = self.fitted_models[start][end - 1]
-        else:
-            with warnings.catch_warnings():
-                warnings.simplefilter("ignore")
-                fitted_model = self.model.fit(sub)
-                self.fitted_models[start][end - 1] = fitted_model
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            fitted_model = self.model.fit(sub)
         return - fitted_model.score(sub) * len(sub)
