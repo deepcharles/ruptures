@@ -173,6 +173,9 @@ class Window(BaseEstimator):
                                        order=max(self.width, self.min_size) // (
                                            2 * self.jump),
                                        mode="wrap")
+
+        if peak_inds_shifted.size == 0:  # no peaks if the score is constant
+            return bkps
         gains = np.take(self.score, peak_inds_shifted)
         peak_inds_arr = np.take(self.inds, peak_inds_shifted)
         # sort according to score value

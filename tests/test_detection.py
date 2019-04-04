@@ -20,6 +20,12 @@ def signal_bkps_1D():
     return signal, bkps
 
 
+@pytest.fixture(scope="module")
+def signal_bkps_1D_constant():
+    signal, bkps = np.zeros(200), [200]
+    return signal, bkps
+
+
 @pytest.mark.parametrize("algo", [Binseg, BottomUp, Dynp, Pelt, Window])
 def test_empty(signal_bkps_1D, algo):
     signal, bkps = signal_bkps_1D
@@ -38,6 +44,12 @@ def test_model_1D(signal_bkps_1D, algo, model):
 @pytest.mark.parametrize("algo, model", product([Dynp, Pelt], ["l1", "l2", "ar", "normal", "rbf"]))
 def test_model_1D_bis(signal_bkps_1D, algo, model):
     signal, bkps = signal_bkps_1D
+    algo().fit_predict(signal, 1)
+
+
+@pytest.mark.parametrize("algo, model", product([Dynp, Pelt, Binseg, BottomUp, Window], ["l1", "l2", "ar", "normal", "rbf"]))
+def test_model_1D_constant(signal_bkps_1D_constant, algo, model):
+    signal, bkps = signal_bkps_1D_constant
     algo().fit_predict(signal, 1)
 
 
