@@ -70,7 +70,10 @@ def pw_wavy(n_samples=200, n_bkps=3, noise_std=None):
     for sub, val in zip(np.split(freqs, bkps[:-1]), cycle([f1, f2])):
         sub += val
     tt = np.arange(n_samples)
-    signal = np.sum((np.sin(2 * np.pi * tt * f) for f in freqs.T))
+
+    # DeprecationWarning: Calling np.sum(generator) is deprecated
+    # Use np.sum(np.from_iter(generator)) or the python sum builtin instead.
+    signal = np.sum([np.sin(2 * np.pi * tt * f) for f in freqs.T], axis=0)
 
     if noise_std is not None:
         noise = normal(scale=noise_std, size=signal.shape)

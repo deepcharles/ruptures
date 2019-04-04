@@ -152,7 +152,7 @@ class CostLinear(BaseCost):
         if end - start < self.min_size:
             raise NotEnoughPoints
         y, X = self.signal[start:end], self.covar[start:end]
-        _, residual, _, _ = lstsq(X, y)
+        _, residual, _, _ = lstsq(X, y, rcond=None)
         return residual.sum()
 
 
