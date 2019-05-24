@@ -62,11 +62,18 @@ def display(signal, true_chg_pts, computed_chg_pts=None, **kwargs):
     """
     Display a signal and the change points provided in alternating colors. If another set of change
     point is provided, they are displayed with dashed vertical dashed lines.
+    The following matplotlib subplots options are set by default, but can be changed when calling `display`):
+    - "figsize": (10, 2 * n_features),  # figure size
+    - "alpha": 0.2,  # transparency of the colored background
+    - "color": "k",  # color of the lines indicating the computed_chg_pts
+    - "linewidth": 3,  # linewidth of the lines indicating the computed_chg_pts
+    - "linestyle": "--"  # linestyle of the lines indicating the computed_chg_pts
 
     Args:
         signal (array): signal array, shape (n_samples,) or (n_samples, n_features).
         true_chg_pts (list): list of change point indexes.
         computed_chg_pts (list, optional): list of change point indexes.
+        **kwargs : all additional keyword arguments are passed to the plt.subplots call.
 
     Returns:
         tuple: (figure, axarr) with a :class:`matplotlib.figure.Figure` object and an array of Axes objects.
@@ -85,25 +92,21 @@ def display(signal, true_chg_pts, computed_chg_pts=None, **kwargs):
     if signal.ndim == 1:
         signal = signal.reshape(-1, 1)
     n_samples, n_features = signal.shape
-    # let's set all options
-    figsize = (10, 2 * n_features)  # figure size
-    alpha = 0.2  # transparency of the colored background
-    color = "k"  # color of the lines indicating the computed_chg_pts
-    linewidth = 3   # linewidth of the lines indicating the computed_chg_pts
-    linestyle = "--"   # linestyle of the lines indicating the computed_chg_pts
 
-    if "figsize" in kwargs:
-        figsize = kwargs["figsize"]
-    if "alpha" in kwargs:
-        alpha = kwargs["alpha"]
-    if "color" in kwargs:
-        color = kwargs["color"]
-    if "linewidth" in kwargs:
-        linewidth = kwargs["linewidth"]
-    if "linestyle" in kwargs:
-        linestyle = kwargs["linestyle"]
+    # let's set sensible defaut plot options
+    matplotlib_options = {
+        "figsize": (10, 2 * n_features),  # figure size
+        "alpha": 0.2,  # transparency of the colored background
+        "color": "k",  # color of the lines indicating the computed_chg_pts
+        "linewidth": 3,  # linewidth of the lines indicating the computed_chg_pts
+        "linestyle": "--"  # linestyle of the lines indicating the computed_chg_pts
+    }
+    # add/update the options given by the user
+    matplotlib_options.update(kwargs)
 
-    fig, axarr = plt.subplots(n_features, figsize=figsize, sharex=True)
+    # create plots
+    fig, axarr = plt.subplots(
+        n_features, figsize=figsize, sharex=True, **matplotlib_options)
     if n_features == 1:
         axarr = [axarr]
 
