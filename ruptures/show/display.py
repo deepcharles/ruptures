@@ -62,12 +62,8 @@ def display(signal, true_chg_pts, computed_chg_pts=None, **kwargs):
     """
     Display a signal and the change points provided in alternating colors. If another set of change
     point is provided, they are displayed with dashed vertical dashed lines.
-    The following matplotlib subplots options are set by default, but can be changed when calling `display`):
+    The following matplotlib subplots options is set by default, but can be changed when calling `display`):
     - "figsize": (10, 2 * n_features),  # figure size
-    - "alpha": 0.2,  # transparency of the colored background
-    - "color": "k",  # color of the lines indicating the computed_chg_pts
-    - "linewidth": 3,  # linewidth of the lines indicating the computed_chg_pts
-    - "linestyle": "--"  # linestyle of the lines indicating the computed_chg_pts
 
     Args:
         signal (array): signal array, shape (n_samples,) or (n_samples, n_features).
@@ -93,20 +89,15 @@ def display(signal, true_chg_pts, computed_chg_pts=None, **kwargs):
         signal = signal.reshape(-1, 1)
     n_samples, n_features = signal.shape
 
-    # let's set sensible defaut plot options
+    # let's set a sensible defaut size for the subplots
     matplotlib_options = {
         "figsize": (10, 2 * n_features),  # figure size
-        "alpha": 0.2,  # transparency of the colored background
-        "color": "k",  # color of the lines indicating the computed_chg_pts
-        "linewidth": 3,  # linewidth of the lines indicating the computed_chg_pts
-        "linestyle": "--"  # linestyle of the lines indicating the computed_chg_pts
     }
     # add/update the options given by the user
     matplotlib_options.update(kwargs)
 
     # create plots
-    fig, axarr = plt.subplots(
-        n_features, figsize=figsize, sharex=True, **matplotlib_options)
+    fig, axarr = plt.subplots(n_features, sharex=True, **matplotlib_options)
     if n_features == 1:
         axarr = [axarr]
 
@@ -117,12 +108,16 @@ def display(signal, true_chg_pts, computed_chg_pts=None, **kwargs):
 
         # color each (true) regime
         bkps = [0] + sorted(true_chg_pts)
+        alpha = 0.2  # transparency of the colored background
 
         for (start, end), col in zip(pairwise(bkps), color_cycle):
             axe.axvspan(max(0, start - 0.5),
                         end - 0.5,
                         facecolor=col, alpha=alpha)
 
+        color = "k"  # color of the lines indicating the computed_chg_pts
+        linewidth = 3  # linewidth of the lines indicating the computed_chg_pts
+        linestyle = "--"  # linestyle of the lines indicating the computed_chg_pts
         # vertical lines to mark the computed_chg_pts
         if computed_chg_pts is not None:
             for bkp in computed_chg_pts:
