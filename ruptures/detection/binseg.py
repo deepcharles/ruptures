@@ -155,7 +155,6 @@ class Binseg(BaseEstimator):
             if bkp is None:  # all possible configuration have been explored.
                 break
 
-            stop = True
             if n_bkps is not None:
                 if len(bkps) - 1 < n_bkps:
                     stop = False
