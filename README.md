@@ -8,7 +8,7 @@ This package provides methods for the analysis and segmentation of non-stationar
 In addition, thanks to its modular structure, different algorithms and models can be connected and extended within this package.
 
 If you use `ruptures` in a scientific publication, we would appreciate citations to the following paper:
-- C. Truong, L. Oudre, N. Vayatis. Selective review of offline change point detection methods. _Signal Processing_, 167:107299, 2020. [[pdf]](http://www.laurentoudre.fr/publis/TOG-SP-19.pdf)
+- C. Truong, L. Oudre, N. Vayatis. Selective review of offline change point detection methods. _Signal Processing_, 167:107299, 2020. [[journal]](https://doi.org/10.1016/j.sigpro.2019.107299) [[pdf]](http://www.laurentoudre.fr/publis/TOG-SP-19.pdf)
 
 ## Important links
 
