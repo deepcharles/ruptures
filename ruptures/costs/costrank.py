@@ -75,6 +75,7 @@ Code explanation
 import numpy as np
 # from scipy.stats import rankdata
 from scipy.stats.mstats import rankdata
+from numpy.linalg import inv
 
 from ruptures.base import BaseCost
 from ruptures.costs import NotEnoughPoints
@@ -90,6 +91,7 @@ class CostRank(BaseCost):
     def __init__(self):
         self.sigma = None
         self.ranks = None
+        self.min_size = 2
 
     def fit(self, signal):
         """Set parameters of the instance.
@@ -100,6 +102,9 @@ class CostRank(BaseCost):
         Returns:
             self
         """
+        if signal.ndim == 1:
+            signal = signal.reshape(-1, 1)
+
         def func(row):
             row = np.reshape((row + 0.5), (-1, 1))
             return row @ row.T
@@ -109,10 +114,10 @@ class CostRank(BaseCost):
 
         sigma = np.apply_along_axis(
             func,
-            0,
+            1,
             centered_ranks
         )
-        sigma = np.sum(sigma, axis=1)
+        sigma = np.sum(sigma, axis=0)
 
         self.sigma = sigma
         self.ranks = centered_ranks
@@ -132,5 +137,8 @@ class CostRank(BaseCost):
         Raises:
             NotEnoughPoints: when the segment is too short (less than ``'min_size'`` samples).
         """
-        mean = np.mean(self.ranks[start:end])
-        return -(end - start) * mean.T * self.sigma[start:end] * mean
+        if end - start < self.min_size:
+            raise NotEnoughPoints
+
+        mean = np.reshape(np.mean(self.ranks[start:end], axis=0), (-1, 1))
+        return -(end - start) * mean.T @ inv(self.sigma) @ mean / len(self.ranks)
