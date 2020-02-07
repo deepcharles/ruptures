@@ -29,3 +29,4 @@ from .costrbf import CostRbf
 from .costnormal import CostNormal
 from .costautoregressive import CostAR
 from .costml import CostMl
+from .costrank import CostRank

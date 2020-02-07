@@ -1,7 +1,6 @@
-import numpy as np
 import pytest
 
-from ruptures.costs import CostAR, CostL1, CostL2, CostLinear, CostNormal, CostRbf, cost_factory
+from ruptures.costs import CostAR, CostL1, CostL2, CostLinear, CostNormal, CostRbf, CostRank, cost_factory
 from ruptures.datasets import pw_constant
 from ruptures.exceptions import NotEnoughPoints
 
@@ -30,7 +29,11 @@ def signal_bkps_5D_noisy():
     return signal, bkps
 
 
-@pytest.mark.parametrize("cost", [CostAR, CostL1, CostL2, CostNormal, CostRbf])
+cost_classes = [CostAR, CostL1, CostL2, CostNormal, CostRbf, CostRank]
+cost_names = ["ar", "l1", "l2", "normal", "rbf", "rank"]
+
+
+@pytest.mark.parametrize("cost", cost_classes)
 def test_costs_1D(signal_bkps_1D, cost):
     signal, bkps = signal_bkps_1D
     cost.fit(signal)
@@ -43,7 +46,7 @@ def test_costs_1D(signal_bkps_1D, cost):
         cost.error(1, 2)
 
 
-@pytest.mark.parametrize("cost", [CostAR, CostL1, CostL2, CostNormal, CostRbf])
+@pytest.mark.parametrize("cost", cost_classes)
 def test_costs_1D_noisy(signal_bkps_1D_noisy, cost):
     signal, bkps = signal_bkps_1D_noisy
     cost.fit(signal)
@@ -56,7 +59,7 @@ def test_costs_1D_noisy(signal_bkps_1D_noisy, cost):
         cost.error(1, 2)
 
 
-@pytest.mark.parametrize("cost", [CostLinear, CostL1, CostL2, CostNormal, CostRbf])
+@pytest.mark.parametrize("cost", cost_classes)
 def test_costs_5D(signal_bkps_5D, cost):
     signal, bkps = signal_bkps_5D
     cost.fit(signal)
@@ -68,7 +71,7 @@ def test_costs_5D(signal_bkps_5D, cost):
         cost.error(1, 2)
 
 
-@pytest.mark.parametrize("cost", [CostLinear, CostL1, CostL2, CostNormal, CostRbf])
+@pytest.mark.parametrize("cost", cost_classes)
 def test_costs_5D_noisy(signal_bkps_5D_noisy, cost):
     signal, bkps = signal_bkps_5D_noisy
     cost.fit(signal)
@@ -80,7 +83,7 @@ def test_costs_5D_noisy(signal_bkps_5D_noisy, cost):
         cost.error(1, 2)
 
 
-@pytest.mark.parametrize("cost_name", ["ar", "l1", "l2", "normal", "rbf"])
+@pytest.mark.parametrize("cost_name", cost_names)
 def test_costs_1D(signal_bkps_1D, cost_name):
     signal, bkps = signal_bkps_1D
     cost = cost_factory(cost_name)
@@ -94,7 +97,7 @@ def test_costs_1D(signal_bkps_1D, cost_name):
         cost.error(1, 2)
 
 
-@pytest.mark.parametrize("cost_name", ["ar", "l1", "l2", "normal", "rbf"])
+@pytest.mark.parametrize("cost_name", cost_names)
 def test_costs_1D_noisy(signal_bkps_1D_noisy, cost_name):
     signal, bkps = signal_bkps_1D_noisy
     cost = cost_factory(cost_name)
@@ -108,7 +111,7 @@ def test_costs_1D_noisy(signal_bkps_1D_noisy, cost_name):
         cost.error(1, 2)
 
 
-@pytest.mark.parametrize("cost_name", ["linear", "l1", "l2", "normal", "rbf"])
+@pytest.mark.parametrize("cost_name", cost_names)
 def test_costs_5D(signal_bkps_5D, cost_name):
     signal, bkps = signal_bkps_5D
     cost = cost_factory(cost_name)
@@ -121,7 +124,7 @@ def test_costs_5D(signal_bkps_5D, cost_name):
         cost.error(1, 2)
 
 
-@pytest.mark.parametrize("cost_name", ["linear", "l1", "l2", "normal", "rbf"])
+@pytest.mark.parametrize("cost_name", cost_names)
 def test_costs_5D_noisy(signal_bkps_5D_noisy, cost_name):
     signal, bkps = signal_bkps_5D_noisy
     cost = cost_factory(cost_name)
