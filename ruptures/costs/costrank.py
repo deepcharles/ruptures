@@ -1,19 +1,13 @@
 r"""
-.. _sec-costl1:
+.. _sec-costrank:
 
-Least absolute deviation
+Centered rank signal
 ====================================================================================================
 
 Description
 ----------------------------------------------------------------------------------------------------
 
-This cost function detects changes in the median of a signal.
-Overall, it is a robust estimator of a shift in the central point (mean, median, mode) of a distribution :cite:`c1-Bai1995`.
-Formally, for a signal :math:`\{y_t\}_t` on an interval :math:`I`,
-
-    .. math:: c(y_{I}) = \sum_{t\in I} \|y_t - \bar{y}\|_1
-
-where :math:`\bar{y}` is the componentwise median of :math:`\{y_t\}_{t\in I}`.
+This cost function detects changes in the mean rank of the segment
 
 Usage
 ----------------------------------------------------------------------------------------------------
@@ -27,14 +21,14 @@ Start with the usual imports and create a signal.
     import ruptures as rpt
     # creation of data
     n, dim = 500, 3  # number of samples, dimension
-    n_bkps, sigma = 3, 5  # number of change points, noise standart deviation
+    n_bkps, sigma = 3, 5  # number of change points, noise standard deviation
     signal, bkps = rpt.pw_constant(n, dim, n_bkps, noise_std=sigma)
 
-Then create a :class:`CostL1` instance and print the cost of the sub-signal :code:`signal[50:150]`.
+Then create a :class:`CostRank` instance and print the cost of the sub-signal :code:`signal[50:150]`.
 
 .. code-block:: python
 
-    c = rpt.costs.CostL1().fit(signal)
+    c = rpt.costs.CostRank().fit(signal)
     print(c.error(50, 150))
 
 
@@ -46,30 +40,21 @@ You can also compute the sum of costs for a given list of change points.
     print(c.sum_of_costs([10, 100, 200, 250, n]))
 
 
-In order to use this cost class in a change point detection algorithm (inheriting from :class:`BaseEstimator`), either pass a :class:`CostL1` instance (through the argument ``'custom_cost'``) or set :code:`model="l1"`.
+In order to use this cost class in a change point detection algorithm (inheriting from :class:`BaseEstimator`), either pass a :class:`CostRank` instance (through the argument ``'custom_cost'``) or set :code:`model="rank"`.
 
 .. code-block:: python
 
-    c = rpt.costs.CostL1(); algo = rpt.Dynp(custom_cost=c)
+    c = rpt.costs.CostRank(); algo = rpt.Dynp(custom_cost=c)
     # is equivalent to
-    algo = rpt.Dynp(model="l1")
+    algo = rpt.Dynp(model="rank")
 
 
 Code explanation
 ----------------------------------------------------------------------------------------------------
 
-.. autoclass:: ruptures.costs.CostL1
+.. autoclass:: ruptures.costs.CostRank
     :members:
     :special-members: __init__
-
-
-.. rubric:: References
-
-.. bibliography:: ../biblio.bib
-    :style: alpha
-    :cited:
-    :labelprefix: C1
-    :keyprefix: c1-
 
 """
 import numpy as np
@@ -83,7 +68,7 @@ from ruptures.costs import NotEnoughPoints
 
 class CostRank(BaseCost):
     r"""
-    Least absolute deviation.
+    Centered rank signal
     """
 
     model = "rank"
