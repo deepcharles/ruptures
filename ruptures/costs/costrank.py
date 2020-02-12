@@ -8,6 +8,13 @@ Description
 ----------------------------------------------------------------------------------------------------
 
 This cost function detects changes in the mean rank of the segment
+Formally, for a signal :math:`\{y_t\}_t` on an interval :math:`[a, b]`,
+
+    .. math:: c_{rank}(a, b) = -(b - a) \bar{r_{a, b}}' \hat{\sigma_r^{-1}} \bar{r_{a, b}}
+
+where :math:`\bar{r_{a, b}}` is the empirical mean of the sub-signal
+:math:`\{r_t\}_{t=a+1}^b`, and :math:`\hat{sigma_r}` is the covariance matrix of the
+overall rank signal :math:`r`.
 
 Usage
 ----------------------------------------------------------------------------------------------------
@@ -58,8 +65,6 @@ Code explanation
 
 """
 import numpy as np
-# from scipy.stats import rankdata
-from scipy.stats.mstats import rankdata
 from numpy.linalg import inv
 
 from ruptures.base import BaseCost
@@ -74,7 +79,7 @@ class CostRank(BaseCost):
     model = "rank"
 
     def __init__(self):
-        self.sigma = None
+        self.cov = None
         self.ranks = None
         self.min_size = 2
 
@@ -90,21 +95,16 @@ class CostRank(BaseCost):
         if signal.ndim == 1:
             signal = signal.reshape(-1, 1)
 
-        def func(row):
-            row = np.reshape((row + 0.5), (-1, 1))
-            return row @ row.T
+        # argsort gives us 0-based ranks
+        ranks = np.argsort(signal, axis=0) + 1
+        # normalise ranks into the range [0, 1)
+        norm_ranks = ranks / len(signal)
+        # Center the ranks into the range [-0.5, 0.5)
+        centered_ranks = (norm_ranks - (1 / 2)).astype(int)
+        # Sigma is the covariance of these ranks
+        cov = np.cov(centered_ranks)
 
-        ranks = np.argsort(signal, axis=0)
-        centered_ranks = (ranks - len(signal) / 2).astype(int)
-
-        sigma = np.apply_along_axis(
-            func,
-            1,
-            centered_ranks
-        )
-        sigma = np.sum(sigma, axis=0)
-
-        self.sigma = sigma
+        self.cov = cov
         self.ranks = centered_ranks
 
         return self
@@ -126,4 +126,7 @@ class CostRank(BaseCost):
             raise NotEnoughPoints
 
         mean = np.reshape(np.mean(self.ranks[start:end], axis=0), (-1, 1))
-        return -(end - start) * mean.T @ inv(self.sigma) @ mean / len(self.ranks)
+
+        # Possibly the inversion could be done more efficiently with the knowledge that
+        # the cov matrix is positive semidefinite
+        return -(end - start) * mean.T @ inv(self.cov) @ mean / len(self.ranks)
