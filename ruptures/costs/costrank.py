@@ -65,7 +65,7 @@ Code explanation
 
 """
 import numpy as np
-from numpy.linalg import inv
+from numpy.linalg import inv, LinAlgError
 
 from ruptures.base import BaseCost
 from ruptures.costs import NotEnoughPoints
@@ -108,6 +108,12 @@ class CostRank(BaseCost):
         # Possibly the inversion could be done more efficiently with the knowledge that
         # the cov matrix is positive semidefinite
         self.inv_cov = inv(cov)
+        try:
+            self.inv_cov = inv(cov)
+        except LinAlgError as e:
+            raise LinAlgError(
+                "The covariance matrix of the rank signal is not invertible."
+            ) from e
         self.ranks = centered_ranks
 
         return self
