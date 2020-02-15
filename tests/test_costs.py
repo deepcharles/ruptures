@@ -58,8 +58,8 @@ def test_costs_1D_noisy(signal_bkps_1D_noisy, cost):
     with pytest.raises(NotEnoughPoints):
         cost.error(1, 2)
 
-# Skip this test for the rank cost due to the high chance of collinearity
-@pytest.mark.parametrize("cost", cost_classes - {CostRank})
+
+@pytest.mark.parametrize("cost", cost_classes)
 def test_costs_5D(signal_bkps_5D, cost):
     signal, bkps = signal_bkps_5D
     cost.fit(signal)
@@ -111,8 +111,7 @@ def test_costs_1D_noisy(signal_bkps_1D_noisy, cost_name):
         cost.error(1, 2)
 
 
-# Skip this test for the rank cost due to the high chance of collinearity
-@pytest.mark.parametrize("cost_name", cost_names - {"rank"})
+@pytest.mark.parametrize("cost_name", cost_names)
 def test_costs_5D(signal_bkps_5D, cost_name):
     signal, bkps = signal_bkps_5D
     cost = cost_factory(cost_name)

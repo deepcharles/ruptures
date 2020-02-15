@@ -65,7 +65,7 @@ Code explanation
 
 """
 import numpy as np
-from numpy.linalg import inv, LinAlgError
+from numpy.linalg import inv, pinv, LinAlgError
 
 from ruptures.base import BaseCost
 from ruptures.costs import NotEnoughPoints
@@ -97,7 +97,8 @@ class CostRank(BaseCost):
 
         obs, vars = signal.shape
 
-        # argsort gives us 0-based ranks in the range [0, n-1]. Add one to put it in the range [1, n]
+        # argsort gives us 0-based ranks in the range [0, n-1].
+        # Add one to put it in the range [1, n]
         ranks = np.argsort(signal, axis=0) + 1
         # Center the ranks into the range [-(n+1)/2, (n+1)/2]
         centered_ranks = (ranks - ((obs + 1) / 2)).astype(int)
@@ -105,15 +106,12 @@ class CostRank(BaseCost):
         # If it's a scalar, reshape it into a 1x1 matrix
         cov = np.cov(centered_ranks, rowvar=False, bias=True).reshape(vars, vars)
 
-        # Possibly the inversion could be done more efficiently with the knowledge that
-        # the cov matrix is positive semidefinite
-        self.inv_cov = inv(cov)
+        # Use the pseudoinverse if we have linear dependency
+        # see Lung-Yut-Fong, A., Lévy-Leduc, C., & Cappé, O. (2015)
         try:
             self.inv_cov = inv(cov)
-        except LinAlgError as e:
-            raise LinAlgError(
-                "The covariance matrix of the rank signal is not invertible."
-            ) from e
+        except LinAlgError:
+            self.inv_cov = pinv(cov)
         self.ranks = centered_ranks
 
         return self
