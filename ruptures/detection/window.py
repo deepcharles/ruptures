@@ -169,9 +169,10 @@ class Window(BaseEstimator):
         stop = False
         error = self.cost.sum_of_costs(bkps)
         # peak search
+        # forcing order to be above one in case jump is too large (issue #16)
+        order = max(max(self.width, self.min_size) // (2 * self.jump), 1)
         peak_inds_shifted, = argrelmax(self.score,
-                                       order=max(self.width, self.min_size) // (
-                                           2 * self.jump),
+                                       order=order,
                                        mode="wrap")
 
         if peak_inds_shifted.size == 0:  # no peaks if the score is constant
