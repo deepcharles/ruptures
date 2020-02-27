@@ -1,20 +1,20 @@
 r"""
 .. _sec-costrank:
 
-Centered rank signal
+Rank-based cost function
 ====================================================================================================
 
 Description
 ----------------------------------------------------------------------------------------------------
 
-This cost function detects changes in the mean rank of the segment
+This cost function detects general distribution changes in multivariate signals, using a rank transformation :cite:`rank-Lung-Yut-Fong2015`.
 Formally, for a signal :math:`\{y_t\}_t` on an interval :math:`[a, b)`,
 
-    .. math:: c_{rank}(a, b) = -(b - a) \bar{r}_{a.b}' \hat{\Sigma}_r^{-1} \bar{r}_{a.b}
+    .. math:: c_{rank}(a, b) = -(b - a) \bar{r}_{a..b}' \hat{\Sigma}_r^{-1} \bar{r}_{a..b}
 
-where :math:`\bar{r}_{a.b}` is the empirical mean of the sub-signal
+where :math:`\bar{r}_{a..b}` is the empirical mean of the sub-signal
 :math:`\{r_t\}_{t=a+1}^b`, and :math:`\hat{\Sigma}_r` is the covariance matrix of the
-overall rank signal :math:`r`.
+complete rank signal :math:`r`.
 
 Usage
 ----------------------------------------------------------------------------------------------------
@@ -63,6 +63,14 @@ Code explanation
     :members:
     :special-members: __init__
 
+
+.. rubric:: References
+
+.. bibliography:: ../biblio.bib
+    :style: alpha
+    :cited:
+    :labelprefix: RA
+    :keyprefix: rank-
 """
 import numpy as np
 from numpy.linalg import pinv, LinAlgError
@@ -74,7 +82,7 @@ from ruptures.costs import NotEnoughPoints
 
 class CostRank(BaseCost):
     r"""
-    Centered rank signal
+    Rank-based cost function
     """
 
     model = "rank"
@@ -104,7 +112,8 @@ class CostRank(BaseCost):
         centered_ranks = (ranks - ((obs + 1) / 2))
         # Sigma is the covariance of these ranks.
         # If it's a scalar, reshape it into a 1x1 matrix
-        cov = np.cov(centered_ranks, rowvar=False, bias=True).reshape(vars, vars)
+        cov = np.cov(centered_ranks, rowvar=False,
+                     bias=True).reshape(vars, vars)
 
         # Use the pseudoinverse to handle linear dependencies
         # see Lung-Yut-Fong, A., Lévy-Leduc, C., & Cappé, O. (2015)
