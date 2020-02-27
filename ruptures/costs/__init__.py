@@ -16,6 +16,7 @@ Cost functions
     costlinear
     costautoregressive
     costml
+    costrank
     costcustom
 
 """
