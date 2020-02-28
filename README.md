@@ -25,6 +25,9 @@ It is written in pure Python and depends on the following libraries: `numpy`, `s
 - With **pip**:
     > pip3 install ruptures
 
+- With **conda**:
+    > conda install -c conda-forge ruptures
+   
 - From source: download the archive and run from inside the **ruptures** directory:
     
     > python3 setup.py install
