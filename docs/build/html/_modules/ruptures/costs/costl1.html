@@ -1,0 +1,327 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>ruptures.costs.costl1 &mdash; ruptures  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> ruptures
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../general-info.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../general-info.html#installation">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../general-info.html#user-guide">User guide</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../cpd.html">Change point detection: a general formulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../detection/index.html">Search methods</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../costs/index.html">Cost functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../datasets/index.html">Synthetic signals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../metrics/index.html">Evaluation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">ruptures</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>ruptures.costs.costl1</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for ruptures.costs.costl1</h1><div class="highlight"><pre>
+<span></span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">.. _sec-costl1:</span>
+
+<span class="sd">Least absolute deviation</span>
+<span class="sd">====================================================================================================</span>
+
+<span class="sd">Description</span>
+<span class="sd">----------------------------------------------------------------------------------------------------</span>
+
+<span class="sd">This cost function detects changes in the median of a signal.</span>
+<span class="sd">Overall, it is a robust estimator of a shift in the central point (mean, median, mode) of a distribution :cite:`c1-Bai1995`.</span>
+<span class="sd">Formally, for a signal :math:`\{y_t\}_t` on an interval :math:`I`,</span>
+
+<span class="sd">    .. math:: c(y_{I}) = \sum_{t\in I} \|y_t - \bar{y}\|_1</span>
+
+<span class="sd">where :math:`\bar{y}` is the componentwise median of :math:`\{y_t\}_{t\in I}`.</span>
+
+<span class="sd">Usage</span>
+<span class="sd">----------------------------------------------------------------------------------------------------</span>
+
+<span class="sd">Start with the usual imports and create a signal.</span>
+
+<span class="sd">.. code-block:: python</span>
+
+<span class="sd">    import numpy as np</span>
+<span class="sd">    import matplotlib.pylab as plt</span>
+<span class="sd">    import ruptures as rpt</span>
+<span class="sd">    # creation of data</span>
+<span class="sd">    n, dim = 500, 3  # number of samples, dimension</span>
+<span class="sd">    n_bkps, sigma = 3, 5  # number of change points, noise standart deviation</span>
+<span class="sd">    signal, bkps = rpt.pw_constant(n, dim, n_bkps, noise_std=sigma)</span>
+
+<span class="sd">Then create a :class:`CostL1` instance and print the cost of the sub-signal :code:`signal[50:150]`.</span>
+
+<span class="sd">.. code-block:: python</span>
+
+<span class="sd">    c = rpt.costs.CostL1().fit(signal)</span>
+<span class="sd">    print(c.error(50, 150))</span>
+
+
+<span class="sd">You can also compute the sum of costs for a given list of change points.</span>
+
+<span class="sd">.. code-block:: python</span>
+
+<span class="sd">    print(c.sum_of_costs(bkps))</span>
+<span class="sd">    print(c.sum_of_costs([10, 100, 200, 250, n]))</span>
+
+
+<span class="sd">In order to use this cost class in a change point detection algorithm (inheriting from :class:`BaseEstimator`), either pass a :class:`CostL1` instance (through the argument ``&#39;custom_cost&#39;``) or set :code:`model=&quot;l1&quot;`.</span>
+
+<span class="sd">.. code-block:: python</span>
+
+<span class="sd">    c = rpt.costs.CostL1(); algo = rpt.Dynp(custom_cost=c)</span>
+<span class="sd">    # is equivalent to</span>
+<span class="sd">    algo = rpt.Dynp(model=&quot;l1&quot;)</span>
+
+
+<span class="sd">Code explanation</span>
+<span class="sd">----------------------------------------------------------------------------------------------------</span>
+
+<span class="sd">.. autoclass:: ruptures.costs.CostL1</span>
+<span class="sd">    :members:</span>
+<span class="sd">    :special-members: __init__</span>
+
+
+<span class="sd">.. rubric:: References</span>
+
+<span class="sd">.. bibliography:: ../biblio.bib</span>
+<span class="sd">    :style: alpha</span>
+<span class="sd">    :cited:</span>
+<span class="sd">    :labelprefix: C1</span>
+<span class="sd">    :keyprefix: c1-</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">ruptures.base</span> <span class="kn">import</span> <span class="n">BaseCost</span>
+<span class="kn">from</span> <span class="nn">ruptures.costs</span> <span class="kn">import</span> <span class="n">NotEnoughPoints</span>
+
+
+<div class="viewcode-block" id="CostL1"><a class="viewcode-back" href="../../../costs/costl1.html#ruptures.costs.CostL1">[docs]</a><span class="k">class</span> <span class="nc">CostL1</span><span class="p">(</span><span class="n">BaseCost</span><span class="p">):</span>
+
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Least absolute deviation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">model</span> <span class="o">=</span> <span class="s2">&quot;l1&quot;</span>
+
+<div class="viewcode-block" id="CostL1.__init__"><a class="viewcode-back" href="../../../costs/costl1.html#ruptures.costs.CostL1.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signal</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_size</span> <span class="o">=</span> <span class="mi">2</span></div>
+
+<div class="viewcode-block" id="CostL1.fit"><a class="viewcode-back" href="../../../costs/costl1.html#ruptures.costs.CostL1.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signal</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set parameters of the instance.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            signal (array): signal. Shape (n_samples,) or (n_samples, n_features)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            self</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">signal</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">signal</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">signal</span> <span class="o">=</span> <span class="n">signal</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="CostL1.error"><a class="viewcode-back" href="../../../costs/costl1.html#ruptures.costs.CostL1.error">[docs]</a>    <span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the approximation cost on the segment [start:end].</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            start (int): start of the segment</span>
+<span class="sd">            end (int): end of the segment</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            float: segment cost</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            NotEnoughPoints: when the segment is too short (less than ``&#39;min_size&#39;`` samples).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_size</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">NotEnoughPoints</span>
+        <span class="n">sub</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">signal</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span>
+        <span class="n">med</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">sub</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">sub</span> <span class="o">-</span> <span class="n">med</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, ENS Paris-Saclay, CNRS
+      <span class="lastupdated">
+        Last updated on Mar 20, 2020.
+      </span>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
