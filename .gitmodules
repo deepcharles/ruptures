@@ -1,6 +1,0 @@
-[submodule "docs/build"]
-	path = docs/build
-	url = git@bitbucket.org:tinquiete/ruptures-docs.git
-[submodule "docs"]
-	path = docs
-	url = git@bitbucket.org:tinquiete/ruptures-docs.git
