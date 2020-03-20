@@ -54,6 +54,7 @@ coverage.xml
 
 # Sphinx documentation
 docs/_build/
+docs/build/
 
 # PyBuilder
 target/
@@ -72,3 +73,11 @@ ruptures.sublime-workspace
 test.ipynb
 ruptures/detection/.circleci/run-build-locally.sh
 .circleci/run-build-locally.sh
+
+# OS generated files 
+.DS_Store
+.DS_Store?
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
