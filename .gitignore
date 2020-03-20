@@ -75,6 +75,7 @@ ruptures/detection/.circleci/run-build-locally.sh
 
 # OS generated files 
 .DS_Store
+./**/.DS_Store
 .DS_Store?
 .Spotlight-V100
 .Trashes
