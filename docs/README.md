@@ -1,16 +1,16 @@
 Documentation for the `ruptures` package.
 
 
-Avant de générer la documentation, il faut installer les packages suivants :
+In order to generate the documentation, the following packages are needed:
 ```
 pip install sphinx
 pip install sphinx_rtd_theme
 pip install sphinxcontrib-bibtex
 ```
 
-Sphinx utilise un `import ruptures` pour générer la documentation, donc il faut s'assurer que la bonne version de ruptures est importée par cette commande. Pour cela, on peut relancer un `python setup.py install develop` (en étant dans le bon repertoire).
+Make sure that the correct version of `ruptures` is installed. (The most probable situation is: you need the documentation for a local version of the `ruptures` library, therefore simply execute `python setup.py develop` in the top directory.)
 
-Ensuite il suffit de 
+Then, you only need to 
 ```
 make clean
 make html
