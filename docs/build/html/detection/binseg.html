@@ -1,0 +1,382 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Binary segmentation &mdash; ruptures  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Bottom-up segmentation" href="bottomup.html" />
+    <link rel="prev" title="Exact segmentation: Pelt" href="pelt.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> ruptures
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../general-info.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../general-info.html#installation">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../general-info.html#user-guide">User guide</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../cpd.html">Change point detection: a general formulation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Search methods</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="dynp.html">Exact segmentation: dynamic programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pelt.html">Exact segmentation: Pelt</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Binary segmentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bottomup.html">Bottom-up segmentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="window.html">Window-based change point detection</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../costs/index.html">Cost functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../datasets/index.html">Synthetic signals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/index.html">Evaluation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ruptures</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Search methods</a> &raquo;</li>
+        
+      <li>Binary segmentation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/detection/binseg.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <span class="target" id="module-ruptures.detection.binseg"></span><div class="section" id="binary-segmentation">
+<span id="sec-binseg"></span><h1>Binary segmentation<a class="headerlink" href="#binary-segmentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>Binary change point detection is used to perform fast signal segmentation and is implemented in
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ruptures.detection.BinSeg</span></code>.
+It is a sequential approach: first, one change point is detected in the complete input signal, then
+series is split around this change point, then the operation is repeated on the two resulting
+sub-signals. See for instance <a class="bibtex reference internal" href="#bs-bai1997" id="id1">[BSBai97]</a> and <a class="bibtex reference internal" href="#bs-fryzlewicz2014" id="id2">[BSFry14]</a> for a theoretical and
+algorithmic analysis of <code class="xref py py-class docutils literal notranslate"><span class="pre">ruptures.detection.BinSeg</span></code>.
+The benefits of binary segmentation includes low complexity (of the order of
+<span class="math notranslate nohighlight">\(\mathcal{O}(n\log n)\)</span>, where <span class="math notranslate nohighlight">\(n\)</span> is the number of samples), the fact that it can extend
+any single change point detection method to detect multiple changes points and that it can work
+whether the number of regimes is known beforehand or not.</p>
+<div class="figure align-default" id="id3">
+<a class="reference internal image-reference" href="../_images/schema_binseg.png"><img alt="Schematic view of the binary segmentation algorithm" src="../_images/schema_binseg.png" style="width: 1500.0px; height: 750.0px;" /></a>
+<p class="caption"><span class="caption-text">Schematic view of the binary segmentation algorithm.</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
+</div>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>Start with the usual imports and create a signal.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pylab</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">ruptures</span> <span class="k">as</span> <span class="nn">rpt</span>
+<span class="c1"># creation of data</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">500</span>  <span class="c1"># number of samples</span>
+<span class="n">n_bkps</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span>  <span class="c1"># number of change points, noise standart deviation</span>
+<span class="n">signal</span><span class="p">,</span> <span class="n">bkps</span> <span class="o">=</span> <span class="n">rpt</span><span class="o">.</span><span class="n">pw_constant</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">n_bkps</span><span class="p">,</span> <span class="n">noise_std</span><span class="o">=</span><span class="n">sigma</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To perform a binary segmentation of a signal, initialize a <code class="xref py py-class docutils literal notranslate"><span class="pre">ruptures.detection.BinSeg</span></code>
+instance.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># change point detection</span>
+<span class="n">model</span> <span class="o">=</span> <span class="s2">&quot;l2&quot;</span>  <span class="c1"># &quot;l1&quot;, &quot;rbf&quot;, &quot;linear&quot;, &quot;normal&quot;, &quot;ar&quot;</span>
+<span class="n">algo</span> <span class="o">=</span> <span class="n">rpt</span><span class="o">.</span><span class="n">Binseg</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+<span class="n">my_bkps</span> <span class="o">=</span> <span class="n">algo</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">n_bkps</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># show results</span>
+<span class="n">rpt</span><span class="o">.</span><span class="n">show</span><span class="o">.</span><span class="n">display</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">bkps</span><span class="p">,</span> <span class="n">my_bkps</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In the situation in which the number of change points is unknown, one can specify a penalty using
+the <code class="docutils literal notranslate"><span class="pre">'pen'</span></code> parameter or a threshold on the residual norm using <code class="docutils literal notranslate"><span class="pre">'epsilon'</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">my_bkps</span> <span class="o">=</span> <span class="n">algo</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">pen</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">*</span><span class="n">dim</span><span class="o">*</span><span class="n">sigma</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="c1"># or</span>
+<span class="n">my_bkps</span> <span class="o">=</span> <span class="n">algo</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="mi">3</span><span class="o">*</span><span class="n">n</span><span class="o">*</span><span class="n">sigma</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="../cpd.html#sec-general-formulation"><span class="std std-ref">Change point detection: a general formulation</span></a> for more information about stopping rules of sequential algorithms.</p>
+</div>
+<p>For faster predictions, one can modify the <code class="docutils literal notranslate"><span class="pre">'jump'</span></code> parameter during initialization.
+The higher it is, the faster the prediction is achieved (at the expense of precision).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">algo</span> <span class="o">=</span> <span class="n">rpt</span><span class="o">.</span><span class="n">Binseg</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">jump</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="code-explanation">
+<h2>Code explanation<a class="headerlink" href="#code-explanation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="ruptures.detection.Binseg">
+<em class="property">class </em><code class="sig-prename descclassname">ruptures.detection.</code><code class="sig-name descname">Binseg</code><span class="sig-paren">(</span><em class="sig-param">model='l2'</em>, <em class="sig-param">custom_cost=None</em>, <em class="sig-param">min_size=2</em>, <em class="sig-param">jump=5</em>, <em class="sig-param">params=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ruptures/detection/binseg.html#Binseg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ruptures.detection.Binseg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Binary segmentation.</p>
+<dl class="method">
+<dt id="ruptures.detection.Binseg.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">model='l2'</em>, <em class="sig-param">custom_cost=None</em>, <em class="sig-param">min_size=2</em>, <em class="sig-param">jump=5</em>, <em class="sig-param">params=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ruptures/detection/binseg.html#Binseg.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ruptures.detection.Binseg.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a Binseg instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (<em>str</em><em>, </em><em>optional</em>) – segment model, [“l1”, “l2”, “rbf”,…]. Not used if <code class="docutils literal notranslate"><span class="pre">'custom_cost'</span></code> is not None.</p></li>
+<li><p><strong>custom_cost</strong> (<em>BaseCost</em><em>, </em><em>optional</em>) – custom cost function. Defaults to None.</p></li>
+<li><p><strong>min_size</strong> (<em>int</em><em>, </em><em>optional</em>) – minimum segment length. Defaults to 2 samples.</p></li>
+<li><p><strong>jump</strong> (<em>int</em><em>, </em><em>optional</em>) – subsample (one every <em>jump</em> points). Defaults to 5 samples.</p></li>
+<li><p><strong>params</strong> (<em>dict</em><em>, </em><em>optional</em>) – a dictionary of parameters for the cost instance.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="ruptures.detection.Binseg.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">signal</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ruptures/detection/binseg.html#Binseg.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ruptures.detection.Binseg.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute params to segment signal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>signal</strong> (<em>array</em>) – signal to segment. Shape (n_samples, n_features) or (n_samples,).</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="ruptures.detection.Binseg.fit_predict">
+<code class="sig-name descname">fit_predict</code><span class="sig-paren">(</span><em class="sig-param">signal</em>, <em class="sig-param">n_bkps=None</em>, <em class="sig-param">pen=None</em>, <em class="sig-param">epsilon=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ruptures/detection/binseg.html#Binseg.fit_predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ruptures.detection.Binseg.fit_predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit to the signal and return the optimal breakpoints.</p>
+<p>Helper method to call fit and predict once</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>signal</strong> (<em>array</em>) – signal. Shape (n_samples, n_features) or (n_samples,).</p></li>
+<li><p><strong>n_bkps</strong> (<em>int</em>) – number of breakpoints.</p></li>
+<li><p><strong>penalty</strong> (<em>float</em>) – penalty value (&gt;0)</p></li>
+<li><p><strong>epsilon</strong> (<em>float</em>) – reconstruction budget (&gt;0)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>sorted list of breakpoints</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="ruptures.detection.Binseg.predict">
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">n_bkps=None</em>, <em class="sig-param">pen=None</em>, <em class="sig-param">epsilon=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ruptures/detection/binseg.html#Binseg.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ruptures.detection.Binseg.predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the optimal breakpoints.</p>
+<p>Must be called after the fit method. The breakpoints are associated with the signal passed
+to fit().
+The stopping rule depends on the parameter passed to the function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_bkps</strong> (<em>int</em>) – number of breakpoints to find before stopping.</p></li>
+<li><p><strong>penalty</strong> (<em>float</em>) – penalty value (&gt;0)</p></li>
+<li><p><strong>epsilon</strong> (<em>float</em>) – reconstruction budget (&gt;0)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>sorted list of breakpoints</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p class="rubric">References</p>
+<p id="bibtex-bibliography-detection/binseg-0"><dl class="citation">
+<dt class="bibtex label" id="bs-bai1997"><span class="brackets"><a class="fn-backref" href="#id1">BSBai97</a></span></dt>
+<dd><p>J. Bai. Estimating multiple breaks one at a time. <em>Econometric Theory</em>, 13(3):315–352, 1997.</p>
+</dd>
+<dt class="bibtex label" id="bs-fryzlewicz2014"><span class="brackets"><a class="fn-backref" href="#id2">BSFry14</a></span></dt>
+<dd><p>P. Fryzlewicz. Wild binary segmentation for multiple change-point detection. <em>The Annals of Statistics</em>, 42(6):2243–2281, 2014. <a class="reference external" href="https://doi.org/10.1214/14-AOS1245">doi:10.1214/14-AOS1245</a>.</p>
+</dd>
+</dl>
+</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="bottomup.html" class="btn btn-neutral float-right" title="Bottom-up segmentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pelt.html" class="btn btn-neutral float-left" title="Exact segmentation: Pelt" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, ENS Paris-Saclay, CNRS
+      <span class="lastupdated">
+        Last updated on Mar 20, 2020.
+      </span>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

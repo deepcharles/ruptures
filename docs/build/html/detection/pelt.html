@@ -1,0 +1,350 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Exact segmentation: Pelt &mdash; ruptures  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Binary segmentation" href="binseg.html" />
+    <link rel="prev" title="Exact segmentation: dynamic programming" href="dynp.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> ruptures
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../general-info.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../general-info.html#installation">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../general-info.html#user-guide">User guide</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../cpd.html">Change point detection: a general formulation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Search methods</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="dynp.html">Exact segmentation: dynamic programming</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Exact segmentation: Pelt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="binseg.html">Binary segmentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bottomup.html">Bottom-up segmentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="window.html">Window-based change point detection</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../costs/index.html">Cost functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../datasets/index.html">Synthetic signals</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../metrics/index.html">Evaluation</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ruptures</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Search methods</a> &raquo;</li>
+        
+      <li>Exact segmentation: Pelt</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/detection/pelt.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <span class="target" id="module-ruptures.detection.pelt"></span><div class="section" id="exact-segmentation-pelt">
+<h1>Exact segmentation: Pelt<a class="headerlink" href="#exact-segmentation-pelt" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>The method is implemented in <a class="reference internal" href="#ruptures.detection.Pelt" title="ruptures.detection.Pelt"><code class="xref py py-class docutils literal notranslate"><span class="pre">ruptures.detection.Pelt</span></code></a>.</p>
+<p>Because the enumeration of all possible partitions impossible, the algorithm relies on a pruning
+rule. Many indexes are discarded, greatly reducing the computational cost while retaining the
+ability to find the optimal segmentation.
+The implementation follows <a class="bibtex reference internal" href="#b-killick2012a" id="id1">[BKFE12]</a>. In addition, under certain conditions on the change
+point repartition, the computational complexity is linear on average.</p>
+<p>When calling <a class="reference internal" href="#ruptures.detection.Pelt.__init__" title="ruptures.detection.Pelt.__init__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ruptures.detection.Pelt.__init__()</span></code></a>, the minimum distance between change points
+can be set through the keyword <code class="docutils literal notranslate"><span class="pre">'min_size'</span></code>; through the parameter <code class="docutils literal notranslate"><span class="pre">'jump'</span></code>, only change
+point indexes multiple of a particular value are considered.</p>
+</div>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pylab</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">ruptures</span> <span class="k">as</span> <span class="nn">rpt</span>
+
+<span class="c1"># creation of data</span>
+<span class="n">n</span><span class="p">,</span> <span class="n">dim</span> <span class="o">=</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">3</span>
+<span class="n">n_bkps</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span>
+<span class="n">signal</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">rpt</span><span class="o">.</span><span class="n">pw_constant</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">n_bkps</span><span class="p">,</span> <span class="n">noise_std</span><span class="o">=</span><span class="n">sigma</span><span class="p">)</span>
+
+<span class="c1"># change point detection</span>
+<span class="n">model</span> <span class="o">=</span> <span class="s2">&quot;l1&quot;</span>  <span class="c1"># &quot;l2&quot;, &quot;rbf&quot;</span>
+<span class="n">algo</span> <span class="o">=</span> <span class="n">rpt</span><span class="o">.</span><span class="n">Pelt</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">min_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">jump</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+<span class="n">my_bkps</span> <span class="o">=</span> <span class="n">algo</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">pen</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># show results</span>
+<span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax</span><span class="p">,)</span> <span class="o">=</span> <span class="n">rpt</span><span class="o">.</span><span class="n">display</span><span class="p">(</span><span class="n">signal</span><span class="p">,</span> <span class="n">bkps</span><span class="p">,</span> <span class="n">my_bkps</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="code-explanation">
+<h2>Code explanation<a class="headerlink" href="#code-explanation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="ruptures.detection.Pelt">
+<em class="property">class </em><code class="sig-prename descclassname">ruptures.detection.</code><code class="sig-name descname">Pelt</code><span class="sig-paren">(</span><em class="sig-param">model='l2'</em>, <em class="sig-param">custom_cost=None</em>, <em class="sig-param">min_size=2</em>, <em class="sig-param">jump=5</em>, <em class="sig-param">params=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ruptures/detection/pelt.html#Pelt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ruptures.detection.Pelt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Penalized change point detection.</p>
+<p>For a given model and penalty level, computes the segmentation which minimizes the constrained
+sum of approximation errors.</p>
+<dl class="method">
+<dt id="ruptures.detection.Pelt.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">model='l2'</em>, <em class="sig-param">custom_cost=None</em>, <em class="sig-param">min_size=2</em>, <em class="sig-param">jump=5</em>, <em class="sig-param">params=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ruptures/detection/pelt.html#Pelt.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ruptures.detection.Pelt.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a Pelt instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (<em>str</em><em>, </em><em>optional</em>) – segment model, [“l1”, “l2”, “rbf”]. Not used if <code class="docutils literal notranslate"><span class="pre">'custom_cost'</span></code> is not None.</p></li>
+<li><p><strong>custom_cost</strong> (<em>BaseCost</em><em>, </em><em>optional</em>) – custom cost function. Defaults to None.</p></li>
+<li><p><strong>min_size</strong> (<em>int</em><em>, </em><em>optional</em>) – minimum segment length.</p></li>
+<li><p><strong>jump</strong> (<em>int</em><em>, </em><em>optional</em>) – subsample (one every <em>jump</em> points).</p></li>
+<li><p><strong>params</strong> (<em>dict</em><em>, </em><em>optional</em>) – a dictionary of parameters for the cost instance.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="ruptures.detection.Pelt.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param">signal</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ruptures/detection/pelt.html#Pelt.fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ruptures.detection.Pelt.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set params.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>signal</strong> (<em>array</em>) – signal to segment. Shape (n_samples, n_features) or (n_samples,).</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="ruptures.detection.Pelt.fit_predict">
+<code class="sig-name descname">fit_predict</code><span class="sig-paren">(</span><em class="sig-param">signal</em>, <em class="sig-param">pen</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ruptures/detection/pelt.html#Pelt.fit_predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ruptures.detection.Pelt.fit_predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit to the signal and return the optimal breakpoints.</p>
+<p>Helper method to call fit and predict once</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>signal</strong> (<em>array</em>) – signal. Shape (n_samples, n_features) or (n_samples,).</p></li>
+<li><p><strong>pen</strong> (<em>float</em>) – penalty value (&gt;0)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>sorted list of breakpoints</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="ruptures.detection.Pelt.predict">
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">pen</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ruptures/detection/pelt.html#Pelt.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ruptures.detection.Pelt.predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the optimal breakpoints.</p>
+<p>Must be called after the fit method. The breakpoints are associated with the signal passed
+to fit().</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>pen</strong> (<em>float</em>) – penalty value (&gt;0)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>sorted list of breakpoints</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p class="rubric">References</p>
+<p id="bibtex-bibliography-detection/pelt-0"><dl class="citation">
+<dt class="bibtex label" id="b-killick2012a"><span class="brackets"><a class="fn-backref" href="#id1">BKFE12</a></span></dt>
+<dd><p>R. Killick, P. Fearnhead, and I. Eckley. Optimal detection of changepoints with a linear computational cost. <em>Journal of the American Statistical Association</em>, 107(500):1590–1598, 2012.</p>
+</dd>
+</dl>
+</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="binseg.html" class="btn btn-neutral float-right" title="Binary segmentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="dynp.html" class="btn btn-neutral float-left" title="Exact segmentation: dynamic programming" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, ENS Paris-Saclay, CNRS
+      <span class="lastupdated">
+        Last updated on Mar 20, 2020.
+      </span>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
