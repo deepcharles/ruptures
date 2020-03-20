@@ -1,0 +1,1 @@
+.. automodule:: ruptures.costs.costrbf
