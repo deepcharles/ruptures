@@ -95,13 +95,11 @@ Code explanation
 
 """
 import heapq
-
 from bisect import bisect_left
 from functools import lru_cache
 
 from ruptures.base import BaseCost, BaseEstimator
 from ruptures.costs import cost_factory
-
 from ruptures.utils import Bnode, pairwise
 
 
@@ -205,7 +203,8 @@ class BottomUp(BaseEstimator):
                 # It's cheaper to do this here than during the initial merge.
                 while leaf.left in removed or leaf.right in removed:
                     gain, leaf = heapq.heappop(merged)
-            except IndexError:  # if merged is empty (all nodes have been merged).
+            # if merged is empty (all nodes have been merged).
+            except IndexError:
                 break
 
             if n_bkps is not None:
@@ -219,23 +218,22 @@ class BottomUp(BaseEstimator):
                     stop = False
 
             if not stop:
+                # updates the list of leaves (i.e. segments of the partitions)
+                # find the merged segments indexes
                 keys = [leaf.start for leaf in leaves]
-                idx = bisect_left(keys, leaf.left.start)
-                assert leaf.left is leaves[idx]
+                left_idx = bisect_left(keys, leaf.left.start)
+                leaves[left_idx] = leaf  # replace leaf.left
+                del leaves[left_idx + 1]  # remove leaf.right
+                # add to the set of removed segments.
                 removed.add(leaf.left)
-                leaves[idx] = leaf  # replace leaf.left
-                
-                if idx < len(leaves) - 1:
-                    assert leaf.right is leaves[idx + 1]
-                    removed.add(leaf.right)
-                    del leaves[idx + 1]  # remove leaf.right
-
-                if idx > 0:
-                    left_candidate = self.merge(leaves[idx - 1], leaf)
+                removed.add(leaf.right)
+                # add new merge candidates
+                if left_idx > 0:
+                    left_candidate = self.merge(leaves[left_idx - 1], leaf)
                     heapq.heappush(merged,
                                    (left_candidate.gain, left_candidate))
-                if idx < len(leaves) - 1:
-                    right_candidate = self.merge(leaf, leaves[idx + 1])
+                if left_idx < len(leaves) - 1:
+                    right_candidate = self.merge(leaf, leaves[left_idx + 1])
                     heapq.heappush(merged,
                                    (right_candidate.gain, right_candidate))
 
