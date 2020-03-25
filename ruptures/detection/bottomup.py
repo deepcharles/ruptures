@@ -94,11 +94,12 @@ Code explanation
     :keyprefix: bu-
 
 """
+import heapq
+from bisect import bisect_left
 from functools import lru_cache
 
 from ruptures.base import BaseCost, BaseEstimator
 from ruptures.costs import cost_factory
-
 from ruptures.utils import Bnode, pairwise
 
 
@@ -184,34 +185,57 @@ class BottomUp(BaseEstimator):
         Returns:
             dict: partition dict {(start, end): cost value,...}
         """
-        leaves = list(self.leaves)
+        leaves = sorted(self.leaves)
+        removed = set()
+        merged = []
+        for left, right in pairwise(leaves):
+            candidate = self.merge(left, right)
+            heapq.heappush(merged, (candidate.gain, candidate))
         # bottom up fusion
         stop = False
         while not stop:
             stop = True
-            leaves.sort(key=lambda n: n.start)
-            merged = (self.merge(left, right)
-                      for left, right in pairwise(leaves))
-            # find segment to merge
+
             try:
-                leaf = min(merged, key=lambda n: n.gain)
-            except ValueError:  # if merged is empty (all nodes have been merged).
+                gain, leaf = heapq.heappop(merged)
+                # Ignore any merge candidates whose left or right children
+                # no longer exist (because they were merged with another node).
+                # It's cheaper to do this here than during the initial merge.
+                while leaf.left in removed or leaf.right in removed:
+                    gain, leaf = heapq.heappop(merged)
+            # if merged is empty (all nodes have been merged).
+            except IndexError:
                 break
 
             if n_bkps is not None:
                 if len(leaves) > n_bkps + 1:
                     stop = False
             elif pen is not None:
-                if leaf.gain < pen:
+                if gain < pen:
                     stop = False
             elif epsilon is not None:
                 if sum(leaf_tmp.val for leaf_tmp in leaves) < epsilon:
                     stop = False
 
             if not stop:
-                leaves.remove(leaf.left)
-                leaves.remove(leaf.right)
-                leaves += [leaf]
+                # updates the list of leaves (i.e. segments of the partitions)
+                # find the merged segments indexes
+                keys = [leaf.start for leaf in leaves]
+                left_idx = bisect_left(keys, leaf.left.start)
+                leaves[left_idx] = leaf  # replace leaf.left
+                del leaves[left_idx + 1]  # remove leaf.right
+                # add to the set of removed segments.
+                removed.add(leaf.left)
+                removed.add(leaf.right)
+                # add new merge candidates
+                if left_idx > 0:
+                    left_candidate = self.merge(leaves[left_idx - 1], leaf)
+                    heapq.heappush(merged,
+                                   (left_candidate.gain, left_candidate))
+                if left_idx < len(leaves) - 1:
+                    right_candidate = self.merge(leaf, leaves[left_idx + 1])
+                    heapq.heappush(merged,
+                                   (right_candidate.gain, right_candidate))
 
         partition = {(leaf.start, leaf.end): leaf.val for leaf in leaves}
         return partition

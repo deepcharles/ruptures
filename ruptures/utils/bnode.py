@@ -1,6 +1,8 @@
 """Binary node."""
+import functools
 
 
+@functools.total_ordering
 class Bnode:
 
     """Binary node.
@@ -25,3 +27,12 @@ class Bnode:
         elif abs(self.val) < 1e-8:
             return 0
         return self.val - (self.left.val + self.right.val)
+
+    def __lt__(self, other):
+        return self.start < other.start
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.start == other.start and self.end == other.end
+
+    def __hash__(self):
+        return hash((self.__class__, self.start, self.end))
