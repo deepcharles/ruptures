@@ -47,12 +47,15 @@ from numpy import random as rd
 from ruptures.utils import draw_bkps
 
 
-def pw_normal(n_samples=200, n_bkps=3):
+def pw_normal(n_samples=200, n_bkps=3, n_noisy_features=0):
     """Return a 2D piecewise Gaussian signal and the associated changepoints.
 
     Args:
         n_samples (int, optional): signal length
         n_bkps (int, optional): number of change points
+        add_noise (int, optional):  number of noisy dimensions. If not zero,
+            total dimensions of the signal will be 2 + `n_noisy_features` and
+            the last `n_noisy_features` demensions will be noise.
 
     Returns:
         tuple: signal of shape (n_samples, 2), list of breakpoints
@@ -67,5 +70,9 @@ def pw_normal(n_samples=200, n_bkps=3):
     for sub, cov in zip(np.split(signal, bkps), cycle((cov1, cov2))):
         n_sub, _ = sub.shape
         sub += rd.multivariate_normal([0, 0], cov, size=n_sub)
+
+    # Add noise
+    if n_noisy_features > 0:
+        signal = np.hstack((signal, np.random.randn(n_samples, n_noisy_features)))
 
     return signal, bkps
