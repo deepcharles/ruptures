@@ -122,14 +122,9 @@ class CostQResiduals(BaseCost):
         sub = self.signal[start:end]
 
         pca = PCA(self.n_components).fit(sub)
-
-        # loading vectors
-        P = pca.components_.T
-        # compute residuals
-        X = sub - np.mean(sub, axis=0)
-        Q = X @ (np.eye(sub.shape[1]) - P @ P.T) @ X.T
+        sub_reconstruct = pca.inverse_transform(pca.transform(sub))
         
-        return np.sum(np.diag(Q))
+        return np.sum((sub - sub_reconstruct)**2)
 
 
 
