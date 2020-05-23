@@ -4,7 +4,7 @@ setup(
     name='ruptures',
     version='1.0.3',
     packages=find_packages(exclude=['docs', 'tests*', 'images']),
-    install_requires=['numpy', 'scipy'],
+    install_requires=['numpy', 'scipy', 'scikit-learn'],
     extras_require={
         'display': ['matplotlib']
     },
