@@ -13,7 +13,7 @@ If you use `ruptures` in a scientific publication, we would appreciate citations
 
 ## Important links
 
-- Documentation: [link](http://ctruong.perso.math.cnrs.fr/ruptures "Link to documentation").
+- Documentation: ~[link](http://ctruong.perso.math.cnrs.fr/ruptures "Link to documentation").~ In the process of moving the documentation ([temporary link](https://deepcharles.github.io/ruptures)).
 - Pypi package index: [link](https://pypi.python.org/pypi/ruptures)
 
 
