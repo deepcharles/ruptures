@@ -76,10 +76,11 @@ from sklearn.decomposition import PCA
 from ruptures.base import BaseCost
 from ruptures.costs import NotEnoughPoints
 
+
 class CostTSquared(BaseCost):
-    
+
     """Hotelling's T-Squared."""
-    
+
     model = "t2"
 
     def __init__(self, n_components=2):
@@ -122,8 +123,5 @@ class CostTSquared(BaseCost):
 
         pca = PCA(self.n_components)
         sub_tr = pca.fit_transform(sub)
-        
+
         return np.sum(np.diag(sub_tr @ sub_tr.T))
-
-
-

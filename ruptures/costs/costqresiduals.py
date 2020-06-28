@@ -70,17 +70,16 @@ Code explanation
 
 
 import numpy as np
-from numpy.linalg import svd, eig
 from sklearn.decomposition import PCA
-from sklearn.preprocessing import scale
 
 from ruptures.base import BaseCost
 from ruptures.costs import NotEnoughPoints
 
+
 class CostQResiduals(BaseCost):
-    
+
     """Q residuals."""
-    
+
     model = "qresid"
 
     def __init__(self, n_components=2):
@@ -123,8 +122,5 @@ class CostQResiduals(BaseCost):
 
         pca = PCA(self.n_components).fit(sub)
         sub_reconstruct = pca.inverse_transform(pca.transform(sub))
-        
+
         return np.sum((sub - sub_reconstruct)**2)
-
-
-
