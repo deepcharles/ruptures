@@ -124,4 +124,4 @@ class CostTSquared(BaseCost):
         pca = PCA(self.n_components)
         sub_tr = pca.fit_transform(sub)
 
-        return np.sum(np.diag(sub_tr @ sub_tr.T))
+        return np.linalg.norm(sub_tr)**2
