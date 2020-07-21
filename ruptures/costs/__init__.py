@@ -18,7 +18,7 @@ Cost functions
     costml
     costrank
     costqresiduals
-    costt2
+    costtsquared
     costcustom
 
 """
@@ -34,4 +34,4 @@ from .costautoregressive import CostAR
 from .costml import CostMl
 from .costrank import CostRank
 from .costqresiduals import CostQResiduals
-from .costt2 import CostTSquared
+from .costtsquared import CostTSquared
