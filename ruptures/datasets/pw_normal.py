@@ -8,6 +8,7 @@ Description
 ----------------------------------------------------------------------------------------------------
 
 This function simulates a 2D signal of Gaussian i.i.d. random variables with zero mean and covariance matrix alternating between :math:`[[1, 0.9], [0.9, 1]]` and :math:`[[1, -0.9], [-0.9, 1]]` at every change point.
+Users can also append `noisy` dimensions (i.e. without change points).
 
 .. figure:: /images/correlation_shift.png
    :scale: 50 %
@@ -49,6 +50,7 @@ from ruptures.utils import draw_bkps
 
 def pw_normal(n_samples=200, n_bkps=3, n_noisy_features=0):
     """Return a 2D piecewise Gaussian signal and the associated changepoints.
+    Users can also append `noisy` dimensions (i.e. without change points).
 
     Args:
         n_samples (int, optional): signal length
