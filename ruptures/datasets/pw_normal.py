@@ -53,9 +53,10 @@ def pw_normal(n_samples=200, n_bkps=3, n_noisy_features=0):
     Args:
         n_samples (int, optional): signal length
         n_bkps (int, optional): number of change points
-        add_noise (int, optional):  number of noisy dimensions. If not zero,
-            total dimensions of the signal will be 2 + `n_noisy_features` and
-            the last `n_noisy_features` demensions will be noise.
+        n_noisy_features (int, optional): number of noisy dimensions. If not
+            zero, total dimensions of the signal will be 2 + `n_noisy_features`
+            and the last `n_noisy_features` dimensions will be white noise only
+            (no change point).
 
     Returns:
         tuple: signal of shape (n_samples, 2), list of breakpoints
@@ -73,6 +74,6 @@ def pw_normal(n_samples=200, n_bkps=3, n_noisy_features=0):
 
     # Add noise
     if n_noisy_features > 0:
-        signal = np.hstack((signal, np.random.randn(n_samples, n_noisy_features)))
+        signal = np.c_[signal, np.random.randn(n_samples, n_noisy_features)]
 
     return signal, bkps
