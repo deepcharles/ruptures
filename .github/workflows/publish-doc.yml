@@ -7,10 +7,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Install dependencies
+    - name: Set up Python 3.x
+      uses: actions/setup-python@v2
+      with:
+        # Semantic version range syntax or exact version of a Python version
+        python-version: '3.x' 
+    # You can test your matrix by printing the current Python version
+    - name: Display Python version
+      run: python -c "import sys; print(sys.version)"
+    - name: Install ruptures
       run: |
         python -m pip install --upgrade pip
-        if [ -f docs/requirements.txt ]; then pip install -r docs/requirements.txt; fi
+        pip install -e .
     - uses: ammaraskar/sphinx-action@master
       with:
         docs-folder: "docs/"
+    - uses: actions/upload-artifact@v1
+      with:
+        name: DocumentationHTML
+        path: docs/build/html/
