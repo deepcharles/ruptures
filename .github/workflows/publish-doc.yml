@@ -11,6 +11,9 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         if [ -f docs/requirements.txt ]; then pip install -r docs/requirements.txt; fi
+    - name: Install ruptures
+      run: |
+        pip install -e .
     - uses: ammaraskar/sphinx-action@master
       with:
         docs-folder: "docs/"
