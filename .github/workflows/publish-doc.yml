@@ -23,6 +23,10 @@ jobs:
       with:
         build-command: "sphinx-build -b html source _build"
         docs-folder: "docs/"
+    - name: Display folders
+      run: |
+        ls .
+        ls docs/ 
     - uses: actions/upload-artifact@v1
       with:
         name: DocumentationHTML
