@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='ruptures',
-    version='1.0.3',
+    version='1.0.4',
     packages=find_packages(exclude=['docs', 'tests*', 'images']),
     install_requires=['numpy', 'scipy'],
     extras_require={
