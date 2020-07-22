@@ -20,8 +20,6 @@ jobs:
         python -m pip install --upgrade pip
         if [ -f docs/requirements.txt ]; then pip install -r docs/requirements.txt; fi
         pip install -e .
-        with:
-          python-version: '3.x'
     - uses: ammaraskar/sphinx-action@master
       with:
         docs-folder: "docs/"
