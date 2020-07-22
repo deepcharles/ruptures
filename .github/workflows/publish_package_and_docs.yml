@@ -1,4 +1,5 @@
-name: Upload Python Package
+name: Publish python package
+# Publish package to Pypi and commit documentation changes 
 
 on:
   release:
