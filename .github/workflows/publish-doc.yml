@@ -21,13 +21,12 @@ jobs:
         pip install -e .
     - uses: ammaraskar/sphinx-action@master
       with:
-        build-command: "sphinx-build -b html source _build"
         docs-folder: "docs/"
     - name: Display folders
       run: |
-        ls docs/_build
-        ls docs/_build/html
+        ls docs/build
+        ls docs/build/html
     - uses: actions/upload-artifact@v1
       with:
         name: DocumentationHTML
-        path: docs/_build/html/
+        path: docs/build/html/
