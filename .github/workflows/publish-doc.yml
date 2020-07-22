@@ -25,8 +25,8 @@ jobs:
         docs-folder: "docs/"
     - name: Display folders
       run: |
-        ls .
-        ls docs/ 
+        ls docs/_build
+        ls docs/_build/html
     - uses: actions/upload-artifact@v1
       with:
         name: DocumentationHTML
