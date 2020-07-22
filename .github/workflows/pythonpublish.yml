@@ -5,7 +5,7 @@ on:
     types: [created]
 
 jobs:
-  deploy:
+  deploy_to_pypi:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -24,3 +24,55 @@ jobs:
       run: |
         python setup.py sdist bdist_wheel
         twine upload dist/*
+
+  commit_docs_changes:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.x
+      uses: actions/setup-python@v2
+      with:
+        # Semantic version range syntax or exact version of a Python version
+        python-version: '3.x' 
+    # You can test your matrix by printing the current Python version
+    - name: Install ruptures and doc dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e .
+        pip install -r docs/requirements.txt
+    - name: Build documentation
+      run: |
+        cd docs
+        make html
+    - uses: EndBug/add-and-commit@v4 # You can change this to use a specific version
+      with:
+        # The arguments for the `git add` command (see the paragraph below for more info)
+        # Default: '.'
+        add: 'docs/build/'
+        # The name of the user that will be displayed as the author of the commit
+        # Default: author of the commit that triggered the run
+        author_name: deepcharles
+        # The email of the user that will be displayed as the author of the commit
+        # Default: author of the commit that triggered the run
+        author_email: charles@doffy.net
+        # The local path to the directory where your repository is located. You should use actions/checkout first to set it up
+        # Default: '.'
+        # cwd: './path/to/the/repo'
+        # Whether to use the --force option on `git add`, in order to bypass eventual gitignores
+        # Default: false
+        force: true
+        # The message for the commit
+        # Default: 'Commit from GitHub Actions'
+        message: 'Update documentation'
+        # Name of the branch to use, if different from the one that triggered the workflow
+        # Default: the branch that triggered the workflow (from GITHUB_REF)
+        # ref: 'someOtherBranch'
+        # The arguments for the `git rm` command (see the paragraph below for more info)
+        # Default: ''
+        # remove: "./dir/old_file.js"
+        # Name of the tag to add to the new commit (see the paragraph below for more info)
+        # Default: ''
+        # tag: "v1.0.0"
+      env:
+        # This is necessary in order to push a commit to the repo
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Leave this line unchanged
