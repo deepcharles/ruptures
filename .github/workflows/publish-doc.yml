@@ -21,6 +21,7 @@ jobs:
         pip install -e .
     - uses: ammaraskar/sphinx-action@master
       with:
+        build-command: "sphinx-build -b html source _build"
         docs-folder: "docs/"
     - uses: actions/upload-artifact@v1
       with:
