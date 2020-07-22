@@ -22,10 +22,6 @@ jobs:
     - uses: ammaraskar/sphinx-action@master
       with:
         docs-folder: "docs/"
-    - name: Display folders
-      run: |
-        ls docs/build
-        ls docs/build/html
     - uses: actions/upload-artifact@v1
       with:
         name: DocumentationHTML
