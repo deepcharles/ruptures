@@ -31,5 +31,5 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.DOC_PUSHER_ACCESS_TOKEN }}
         COMMIT_FILES: docs/build/html/*
-        REPO_FULLNAME: centre-borelli/ruptures
+        REPO_FULLNAME: centre-borelli/ruptures-docs
         BRANCH: master
