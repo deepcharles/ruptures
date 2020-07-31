@@ -26,10 +26,10 @@ jobs:
       run: |
         cd docs
         make html
-    - name: Publish
+    - name: Publish documentation to remote
       uses: selenehyun/gh-push@master
       env:
         GITHUB_TOKEN: ${{ secrets.DOC_PUSHER_ACCESS_TOKEN }}
         COMMIT_FILES: docs/build/html/*
-        REPO_FULLNAME: deepcharles/dest-action-test
+        REPO_FULLNAME: centre-borelli/ruptures
         BRANCH: master
