@@ -1,0 +1,35 @@
+name: "Pull Request Docs Check"
+on: 
+- pull_request
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.x
+      uses: actions/setup-python@v2
+      with:
+        # Semantic version range syntax or exact version of a Python version
+        python-version: '3.x' 
+    # You can test your matrix by printing the current Python version
+    - name: Display Python version
+      run: python -c "import sys; print(sys.version)"
+    - name: Install ruptures
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e .
+    - name: Install dependencies
+      run: |
+        pip install -r docs/requirements.txt
+    - name: Build documentation
+      run: |
+        cd docs
+        make html
+    - name: Publish
+      uses: selenehyun/gh-push@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.DOC_PUSHER_ACCESS_TOKEN }}
+        COMMIT_FILES: docs/build/html/*
+        REPO_FULLNAME: deepcharles/dest-action-test
+        BRANCH: master
