@@ -30,6 +30,6 @@ jobs:
       uses: selenehyun/gh-push@master
       env:
         GITHUB_TOKEN: ${{ secrets.DOC_PUSHER_ACCESS_TOKEN }}
-        COMMIT_FILES: docs/build/html/*
+        COMMIT_FILES: docs/*
         REPO_FULLNAME: centre-borelli/ruptures-docs
         BRANCH: master
