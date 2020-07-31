@@ -72,6 +72,7 @@ ruptures.sublime-workspace
 test.ipynb
 ruptures/detection/.circleci/run-build-locally.sh
 .circleci/run-build-locally.sh
+docs/build/
 
 # OS generated files 
 .DS_Store
