@@ -83,6 +83,14 @@ class CostQResiduals(BaseCost):
     model = "qresid"
 
     def __init__(self, n_components=2):
+        """Create a new instance.
+
+        Args:
+            n_components (int, optional):  number of components to keep in signal in each segment.
+
+        Returns:
+            self
+        """
         self.min_size = 2
         self.signal = None
         self.n_components = n_components
