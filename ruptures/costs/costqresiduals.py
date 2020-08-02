@@ -8,7 +8,7 @@ Q reconstruction error based cost function
 Description
 ----------------------------------------------------------------------------------------------------
 
-This cost function detects change of the correlation between the variables with ignoring noisy demension.
+This cost function detects change of the correlation between the variables with ignoring noisy demension :cite:`qresiduals-Banko2011`.
 Formally, for a signal :math:`\{y_t\}_t` on an interval :math:`I`, the cost function is equal to
 
     .. math:: c(y_{I}) = \sum_{t\in I} \|y_t - \bar{y_t}\|_2
@@ -66,6 +66,13 @@ Code explanation
     :members:
     :special-members: __init__
 
+.. rubric:: References
+
+.. bibliography:: ../biblio.bib
+    :style: alpha
+    :cited:
+    :labelprefix: RA
+    :keyprefix: qresiduals-
 """
 
 
