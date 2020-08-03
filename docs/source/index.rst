@@ -58,13 +58,14 @@ How to cite
 
 If you use ruptures in a scientific publication, we would appreciate citations to the following paper:
 
-- C. Truong, L. Oudre, N. Vayatis. Selective review of offline change point detection methods. Signal Processing, 167:107299, 2020. `[journal] <https://doi.org/10.1016/j.sigpro.2019.107299>`_ `[pdf] <http://www.laurentoudre.fr/publis/TOG-SP-19.pdf>`_
+- C\. Truong, L. Oudre, N. Vayatis. Selective review of offline change point detection methods. Signal Processing, 167:107299, 2020. `[abstract] <https://deepcharles.github.io/publication/sp-review-2020>`_ `[doi] <https://doi.org/10.1016/j.sigpro.2019.107299>`_ `[pdf] <https://charles.doffy.net/files/sp-review-2020.pdf>`_
 
 
 Contact
 ====================================================================================================
 
-Charles Truong.
+Concerning this package, its use and bugs, use the `issue page <https://github.com/deepcharles/ruptures/issues>`_ of the `ruptures` repository.
+For other inquiries, you can contact me `here <https://charles.doffy.net/contact/>`_.
 
 
 Indices and tables

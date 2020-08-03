@@ -1,2 +1,2 @@
-sphinx_rtd_theme
+sphinx_press_theme
 sphinxcontrib-bibtex
