@@ -64,7 +64,8 @@ If you use ruptures in a scientific publication, we would appreciate citations t
 Contact
 ====================================================================================================
 
-Charles Truong.
+Concerning this package, its use and bugs, use the `issue page<https://github.com/deepcharles/ruptures/issues>_` of the `ruptures` repository.
+For other inquiries, you can contact me `here<https://charles.doffy.net/contact/>_`.
 
 
 Indices and tables
