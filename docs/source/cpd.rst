@@ -4,7 +4,7 @@
 Change point detection: a general formulation
 ====================================================================================================
 
-A general framework is introduced in this `review of methods <https://arxiv.org/abs/1801.00718>`_ :cite:`cpd-Truong2018`.
+A general framework is introduced in this `review of methods <https://arxiv.org/abs/1801.00718>`_ :cite:`cpd-TRUONG2020107299`.
 
 
 .. rubric:: References
