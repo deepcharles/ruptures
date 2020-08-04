@@ -1,28 +1,32 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='ruptures',
-    version='1.0.5',
-    packages=find_packages(exclude=['docs', 'tests*', 'images']),
-    install_requires=['numpy', 'scipy'],
-    extras_require={
-        'display': ['matplotlib']
-    },
-    python_requires='>=3',
+    name="ruptures",
+    version="1.0.5",
+    packages=find_packages(exclude=["docs", "tests*", "images"]),
+    install_requires=["numpy", "scipy"],
+    extras_require={"display": ["matplotlib"]},
+    python_requires=">=3",
     # url='ctruong.perso.math.cnrs.fr/ruptures',
-    license='BSD License',
-    author='Charles Truong, Laurent Oudre, Nicolas Vayatis',
-    author_email='truong@cmla.ens-cachan.fr',
-    description='Change point detection for signals, in Python',
-    download_url='https://reine.cmla.ens-cachan.fr/c.truong/ruptures/repository/latest/archive.zip',
-    keywords=["change point detection", "signal segmentation",
-              "computer science", "machine learning", "kernel methods", "time series"],
+    license="BSD License",
+    author="Charles Truong, Laurent Oudre, Nicolas Vayatis",
+    author_email="truong@cmla.ens-cachan.fr",
+    description="Change point detection for signals, in Python",
+    download_url="https://reine.cmla.ens-cachan.fr/c.truong/ruptures/repository/latest/archive.zip",
+    keywords=[
+        "change point detection",
+        "signal segmentation",
+        "computer science",
+        "machine learning",
+        "kernel methods",
+        "time series",
+    ],
     classifiers=[
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
         "Topic :: Scientific/Engineering :: Mathematics",
         "Intended Audience :: Science/Research",
-        "License :: OSI Approved :: BSD License"
+        "License :: OSI Approved :: BSD License",
     ],
     long_description="""\
 Offline change point detection for Python.
@@ -34,5 +38,5 @@ Offline change point detection for Python.
 An extensive documentation is available `github.com/deepcharles/ruptures <https://github.com/deepcharles/ruptures>`_.
 
 This version requires Python 3 or later.
-"""
+""",
 )

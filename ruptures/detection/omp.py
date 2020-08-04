@@ -55,10 +55,9 @@ class Omp(BaseEstimator):
         while not stop:
             res_norm = norm(residual)
             # greedy search
-            raw_corr = np.sum(residual.cumsum(axis=0)**2, axis=1)
+            raw_corr = np.sum(residual.cumsum(axis=0) ** 2, axis=1)
             correlation = raw_corr[:-1].flatten() * correction
-            bkp_opt, _ = max(
-                enumerate(correlation, start=1), key=lambda x: x[1])
+            bkp_opt, _ = max(enumerate(correlation, start=1), key=lambda x: x[1])
 
             # orthogonal projection
             proj = np.zeros(self.signal.shape)

@@ -51,9 +51,9 @@ class GreedyAR:
         stop = False
         n_samples = self.n_samples - self.order
         bkps = [n_samples]
-        inds = np.arange(start=self.jump - self.order,
-                         stop=n_samples - self.jump,
-                         step=self.jump)
+        inds = np.arange(
+            start=self.jump - self.order, stop=n_samples - self.jump, step=self.jump
+        )
         signal = self.signal[-n_samples:]
         residual = signal
         res_norm = residual.var() * n_samples
@@ -121,8 +121,9 @@ class GreedyAR:
         # covariates are lagged sub-sequences
         shape = (self.n_samples - self.order, self.order)
         strides = (self.signal.itemsize, self.signal.itemsize)
-        covariates = np.lib.stride_tricks.as_strided(self.signal,
-                                                     shape=shape, strides=strides)
+        covariates = np.lib.stride_tricks.as_strided(
+            self.signal, shape=shape, strides=strides
+        )
         intercept = np.ones(self.n_samples - self.order)
         covariates = np.column_stack((covariates, intercept))
 

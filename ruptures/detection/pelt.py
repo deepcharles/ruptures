@@ -114,8 +114,7 @@ class Pelt(BaseEstimator):
         admissible = []
 
         # Recursion
-        ind = [
-            k for k in range(0, self.n_samples, self.jump) if k >= self.min_size]
+        ind = [k for k in range(0, self.n_samples, self.jump) if k >= self.min_size]
         ind += [self.n_samples]
         for bkp in ind:
             # adding a point to the admissible set from the previous loop.
@@ -135,13 +134,13 @@ class Pelt(BaseEstimator):
                 subproblems.append(tmp_partition)
 
             # finding the optimal partition
-            partitions[bkp] = min(
-                subproblems, key=lambda d: sum(d.values()))
+            partitions[bkp] = min(subproblems, key=lambda d: sum(d.values()))
             # trimming the admissible set
-            admissible = [t for t, partition in
-                          zip(admissible, subproblems) if
-                          sum(partition.values()) <=
-                          sum(partitions[bkp].values()) + pen]
+            admissible = [
+                t
+                for t, partition in zip(admissible, subproblems)
+                if sum(partition.values()) <= sum(partitions[bkp].values()) + pen
+            ]
 
         best_partition = partitions[self.n_samples]
         del best_partition[(0, 0)]
@@ -159,7 +158,7 @@ class Pelt(BaseEstimator):
         # update params
         self.cost.fit(signal)
         if signal.ndim == 1:
-            n_samples, = signal.shape
+            (n_samples,) = signal.shape
         else:
             n_samples, _ = signal.shape
         self.n_samples = n_samples

@@ -60,8 +60,7 @@ class BaseCost(object, metaclass=abc.ABCMeta):
         Returns:
             float: sum of costs
         """
-        soc = sum(self.error(start, end)
-                  for start, end in pairwise([0] + bkps))
+        soc = sum(self.error(start, end) for start, end in pairwise([0] + bkps))
         return soc
 
     @property
