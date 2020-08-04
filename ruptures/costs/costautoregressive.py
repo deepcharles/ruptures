@@ -141,13 +141,11 @@ class CostAR(BaseCost):
         shape = (n_samples - self.order, self.order)
         lagged = as_strided(self.signal, shape=shape, strides=strides)
         # pad the first columns
-        lagged_after_padding = np.pad(lagged,
-                                      ((self.order, 0), (0, 0)),
-                                      mode="edge")
+        lagged_after_padding = np.pad(lagged, ((self.order, 0), (0, 0)), mode="edge")
         # add intercept
         self.covar = np.c_[lagged_after_padding, np.ones(n_samples)]
         # pad signal on the edges
-        self.signal[:self.order] = self.signal[self.order]
+        self.signal[: self.order] = self.signal[self.order]
         return self
 
     def error(self, start, end):

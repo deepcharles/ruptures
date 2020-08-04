@@ -1,2 +1,3 @@
 numpy
+pre-commit
 scipy

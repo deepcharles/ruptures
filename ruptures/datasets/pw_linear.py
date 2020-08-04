@@ -56,10 +56,9 @@ def pw_linear(n_samples=200, n_features=1, n_bkps=3, noise_std=None):
     """
 
     covar = normal(size=(n_samples, n_features))
-    linear_coeff, bkps = pw_constant(n_samples=n_samples,
-                                     n_bkps=n_bkps,
-                                     n_features=n_features,
-                                     noise_std=None)
+    linear_coeff, bkps = pw_constant(
+        n_samples=n_samples, n_bkps=n_bkps, n_features=n_features, noise_std=None
+    )
     var = np.sum(linear_coeff * covar, axis=1)
     if noise_std is not None:
         var += normal(scale=noise_std, size=var.shape)

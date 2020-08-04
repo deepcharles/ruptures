@@ -148,8 +148,9 @@ class Binseg(BaseEstimator):
         stop = False
         while not stop:
             stop = True
-            new_bkps = [self.single_bkp(start, end)
-                        for start, end in pairwise([0] + bkps)]
+            new_bkps = [
+                self.single_bkp(start, end) for start, end in pairwise([0] + bkps)
+            ]
             bkp, gain = max(new_bkps, key=lambda x: x[1])
 
             if bkp is None:  # all possible configuration have been explored.
@@ -169,8 +170,10 @@ class Binseg(BaseEstimator):
             if not stop:
                 bkps.append(bkp)
                 bkps.sort()
-        partition = {(start, end): self.cost.error(start, end)
-                     for start, end in pairwise([0] + bkps)}
+        partition = {
+            (start, end): self.cost.error(start, end)
+            for start, end in pairwise([0] + bkps)
+        }
         return partition
 
     def _single_bkp(self, start, end):
@@ -179,8 +182,11 @@ class Binseg(BaseEstimator):
         gain_list = list()
         for bkp in range(start, end, self.jump):
             if bkp - start > self.min_size and end - bkp > self.min_size:
-                gain = segment_cost - \
-                    self.cost.error(start, bkp) - self.cost.error(bkp, end)
+                gain = (
+                    segment_cost
+                    - self.cost.error(start, bkp)
+                    - self.cost.error(bkp, end)
+                )
                 gain_list.append((gain, bkp))
         try:
             gain, bkp = max(gain_list)

@@ -1,6 +1,15 @@
 import pytest
 
-from ruptures.costs import CostAR, CostL1, CostL2, CostLinear, CostNormal, CostRbf, CostRank, cost_factory
+from ruptures.costs import (
+    CostAR,
+    CostL1,
+    CostL2,
+    CostLinear,
+    CostNormal,
+    CostRbf,
+    CostRank,
+    cost_factory,
+)
 from ruptures.datasets import pw_constant
 from ruptures.exceptions import NotEnoughPoints
 

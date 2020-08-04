@@ -119,8 +119,7 @@ class CostMl(BaseCost):
         # Mahalanobis metric if self.metric is None
         if self.metric is None:
             covar = np.cov(s_.T)
-            self.metric = inv(
-                covar.reshape(1, 1) if covar.size == 1 else covar)
+            self.metric = inv(covar.reshape(1, 1) if covar.size == 1 else covar)
 
         self.gram = s_.dot(self.metric).dot(s_.T)
         return self

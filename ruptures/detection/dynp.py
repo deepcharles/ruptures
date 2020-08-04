@@ -123,9 +123,12 @@ class Dynp(BaseEstimator):
                     if end - bkp >= min_size:
                         admissible_bkps.append(bkp)
 
-            assert len(
-                admissible_bkps) > 0, "No admissible last breakpoints found.\
-             start, end: ({},{}), n_bkps: {}.".format(start, end, n_bkps)
+            assert (
+                len(admissible_bkps) > 0
+            ), "No admissible last breakpoints found.\
+             start, end: ({},{}), n_bkps: {}.".format(
+                start, end, n_bkps
+            )
 
             # Compute the subproblems
             sub_problems = list()

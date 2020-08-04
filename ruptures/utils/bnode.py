@@ -32,7 +32,11 @@ class Bnode:
         return self.start < other.start
 
     def __eq__(self, other):
-        return isinstance(other, self.__class__) and self.start == other.start and self.end == other.end
+        return (
+            isinstance(other, self.__class__)
+            and self.start == other.start
+            and self.end == other.end
+        )
 
     def __hash__(self):
         return hash((self.__class__, self.start, self.end))

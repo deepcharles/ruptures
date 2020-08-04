@@ -4,6 +4,7 @@
 class BadPartitions(Exception):
 
     """Exception raised when the partition is bad."""
+
     pass
 
 
@@ -28,7 +29,8 @@ def sanity_check(bkps1, bkps2):
     if max(bkps1) != max(bkps2):
         raise BadPartitions(
             "The end of the last regime is not the same for each of the "
-            "partitions:\n{}\n{}".format(bkps1, bkps2))
+            "partitions:\n{}\n{}".format(bkps1, bkps2)
+        )
     # checks if there is repetition.
     for bkps in (bkps1, bkps2):
         seen = set()
