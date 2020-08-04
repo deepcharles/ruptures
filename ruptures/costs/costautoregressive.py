@@ -17,7 +17,7 @@ Consider the following piecewise autoregressive model
 
 where :math:`j>1` is the segment number, :math:`z_t=[y_{t-1}, y_{t-2},\dots,y_{t-p}]` is the lag vector,and :math:`p>0` is the order of the process.
 
-The least-squares estimates of the break dates is obtained by minimiming the sum of squared
+The least-squares estimates of the break dates is obtained by minimising the sum of squared
 residuals :cite:`ar-Bai2000`.
 Formally, the associated cost function on an interval :math:`I` is
 
