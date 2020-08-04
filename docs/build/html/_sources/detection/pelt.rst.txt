@@ -1,1 +1,0 @@
-.. automodule:: ruptures.detection.pelt
