@@ -17,7 +17,7 @@ Consider the following piecewise autoregressive model
 
 where :math:`j>1` is the segment number, :math:`z_t=[y_{t-1}, y_{t-2},\dots,y_{t-p}]` is the lag vector,and :math:`p>0` is the order of the process.
 
-The least-squares estimates of the break dates is obtained by minimiming the sum of squared
+The least-squares estimates of the break dates is obtained by minimizing the sum of squared
 residuals :cite:`ar-Bai2000`.
 Formally, the associated cost function on an interval :math:`I` is
 
@@ -141,13 +141,11 @@ class CostAR(BaseCost):
         shape = (n_samples - self.order, self.order)
         lagged = as_strided(self.signal, shape=shape, strides=strides)
         # pad the first columns
-        lagged_after_padding = np.pad(lagged,
-                                      ((self.order, 0), (0, 0)),
-                                      mode="edge")
+        lagged_after_padding = np.pad(lagged, ((self.order, 0), (0, 0)), mode="edge")
         # add intercept
         self.covar = np.c_[lagged_after_padding, np.ones(n_samples)]
         # pad signal on the edges
-        self.signal[:self.order] = self.signal[self.order]
+        self.signal[: self.order] = self.signal[self.order]
         return self
 
     def error(self, start, end):

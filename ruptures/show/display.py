@@ -79,7 +79,8 @@ def display(signal, true_chg_pts, computed_chg_pts=None, **kwargs):
         import matplotlib.pyplot as plt
     except ImportError:
         raise MatplotlibMissingError(
-            'This feature requires the optional dependency matpotlib, you can install it using `pip install matplotlib`.')
+            "This feature requires the optional dependency matpotlib, you can install it using `pip install matplotlib`."
+        )
 
     if type(signal) != np.ndarray:
         # Try to get array from Pandas dataframe
@@ -111,9 +112,7 @@ def display(signal, true_chg_pts, computed_chg_pts=None, **kwargs):
         alpha = 0.2  # transparency of the colored background
 
         for (start, end), col in zip(pairwise(bkps), color_cycle):
-            axe.axvspan(max(0, start - 0.5),
-                        end - 0.5,
-                        facecolor=col, alpha=alpha)
+            axe.axvspan(max(0, start - 0.5), end - 0.5, facecolor=col, alpha=alpha)
 
         color = "k"  # color of the lines indicating the computed_chg_pts
         linewidth = 3  # linewidth of the lines indicating the computed_chg_pts
@@ -122,10 +121,12 @@ def display(signal, true_chg_pts, computed_chg_pts=None, **kwargs):
         if computed_chg_pts is not None:
             for bkp in computed_chg_pts:
                 if bkp != 0 and bkp < n_samples:
-                    axe.axvline(x=bkp - 0.5,
-                                color=color,
-                                linewidth=linewidth,
-                                linestyle=linestyle)
+                    axe.axvline(
+                        x=bkp - 0.5,
+                        color=color,
+                        linewidth=linewidth,
+                        linestyle=linestyle,
+                    )
 
     fig.tight_layout()
 

@@ -120,7 +120,9 @@ class Window(BaseEstimator):
 
     """Window sliding method."""
 
-    def __init__(self, width=100, model="l2", custom_cost=None, min_size=2, jump=5, params=None):
+    def __init__(
+        self, width=100, model="l2", custom_cost=None, min_size=2, jump=5, params=None
+    ):
         """Instanciate with window length.
 
         Args:
@@ -170,10 +172,8 @@ class Window(BaseEstimator):
         error = self.cost.sum_of_costs(bkps)
         # peak search
         # forcing order to be above one in case jump is too large (issue #16)
-        order = max(max(self.width, 2*self.min_size) // (2 * self.jump), 1)
-        peak_inds_shifted, = argrelmax(self.score,
-                                       order=order,
-                                       mode="wrap")
+        order = max(max(self.width, 2 * self.min_size) // (2 * self.jump), 1)
+        (peak_inds_shifted,) = argrelmax(self.score, order=order, mode="wrap")
 
         if peak_inds_shifted.size == 0:  # no peaks if the score is constant
             return bkps
@@ -228,11 +228,11 @@ class Window(BaseEstimator):
             self.signal = signal
         self.n_samples, _ = self.signal.shape
         # indexes
-        self.inds = np.arange(self.n_samples,
-                              step=self.jump)
+        self.inds = np.arange(self.n_samples, step=self.jump)
         # delete borders
         keep = (self.inds >= self.width // 2) & (
-            self.inds < self.n_samples - self.width // 2)
+            self.inds < self.n_samples - self.width // 2
+        )
         self.inds = self.inds[keep]
         self.cost.fit(signal)
         # compute score

@@ -55,7 +55,7 @@ class OmpK:
         while not stop:
             # greedy search
             correlation = np.diag(csum) * self.n_samples * self.n_samples
-            correlation += inds**2 * csum[-1, -1]
+            correlation += inds ** 2 * csum[-1, -1]
             correlation -= 2 * self.n_samples * inds * csum[-1]
             correlation /= inds * inds[::-1]
             bkp = np.argmax(correlation) + 1
@@ -81,7 +81,8 @@ class OmpK:
                 start1, end1 = p
                 start2, end2 = q
                 gram_new[start1:end1, start2:end2] += self.gram[
-                    start1:end1, start2:end2].mean()
+                    start1:end1, start2:end2
+                ].mean()
             csum = gram_new.cumsum(axis=0).cumsum(axis=1)
 
             # stopping criterion

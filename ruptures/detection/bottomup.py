@@ -230,12 +230,10 @@ class BottomUp(BaseEstimator):
                 # add new merge candidates
                 if left_idx > 0:
                     left_candidate = self.merge(leaves[left_idx - 1], leaf)
-                    heapq.heappush(merged,
-                                   (left_candidate.gain, left_candidate))
+                    heapq.heappush(merged, (left_candidate.gain, left_candidate))
                 if left_idx < len(leaves) - 1:
                     right_candidate = self.merge(leaf, leaves[left_idx + 1])
-                    heapq.heappush(merged,
-                                   (right_candidate.gain, right_candidate))
+                    heapq.heappush(merged, (right_candidate.gain, right_candidate))
 
         partition = {(leaf.start, leaf.end): leaf.val for leaf in leaves}
         return partition
@@ -253,7 +251,7 @@ class BottomUp(BaseEstimator):
         self.cost.fit(signal)
         self.merge.cache_clear()
         if signal.ndim == 1:
-            n_samples, = signal.shape
+            (n_samples,) = signal.shape
         else:
             n_samples, _ = signal.shape
         self.n_samples = n_samples

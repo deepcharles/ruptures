@@ -109,11 +109,10 @@ class CostRank(BaseCost):
         # Convert signal data into ranks in the range [1, n]
         ranks = rankdata(signal, axis=0)
         # Center the ranks into the range [-(n+1)/2, (n+1)/2]
-        centered_ranks = (ranks - ((obs + 1) / 2))
+        centered_ranks = ranks - ((obs + 1) / 2)
         # Sigma is the covariance of these ranks.
         # If it's a scalar, reshape it into a 1x1 matrix
-        cov = np.cov(centered_ranks, rowvar=False,
-                     bias=True).reshape(vars, vars)
+        cov = np.cov(centered_ranks, rowvar=False, bias=True).reshape(vars, vars)
 
         # Use the pseudoinverse to handle linear dependencies
         # see Lung-Yut-Fong, A., Lévy-Leduc, C., & Cappé, O. (2015)

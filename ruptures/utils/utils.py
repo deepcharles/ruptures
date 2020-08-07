@@ -37,9 +37,11 @@ def unzip(seq):
 
 def admissible_filter(start, end, jump, min_size):
     """A filter to know if an index can be considered as a change point."""
+
     def filtre(ind):
         """Return True if index is admissible."""
         return all((ind - start > min_size, end - ind > min_size, ind % jump == 0))
+
     return filtre
 
 

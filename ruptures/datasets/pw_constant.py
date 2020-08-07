@@ -46,8 +46,7 @@ from numpy import random as rd
 from ruptures.utils import draw_bkps
 
 
-def pw_constant(n_samples=200, n_features=1, n_bkps=3, noise_std=None,
-                delta=(1, 10)):
+def pw_constant(n_samples=200, n_features=1, n_bkps=3, noise_std=None, delta=(1, 10)):
     """Return a piecewise constant signal and the associated changepoints.
 
     Args:

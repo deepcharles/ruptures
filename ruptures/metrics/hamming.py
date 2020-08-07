@@ -33,6 +33,6 @@ def hamming(bkps1, bkps2):
     n_samples = max(bkps1)
 
     disagreement = abs(membership_mat(bkps1) - membership_mat(bkps2))
-    disagreement = triu(disagreement, k=1).sum() * 1.
+    disagreement = triu(disagreement, k=1).sum() * 1.0
     disagreement /= n_samples * n_samples / 2  # scaling
     return disagreement

@@ -13,7 +13,7 @@ If you use `ruptures` in a scientific publication, we would appreciate citations
 
 ## Important links
 
-- Documentation: [link](http://ctruong.perso.math.cnrs.fr/ruptures "Link to documentation").
+- Documentation: [link](https://centre-borelli.github.io/ruptures-docs/ "Link to documentation").
 - Pypi package index: [link](https://pypi.python.org/pypi/ruptures)
 
 
@@ -38,7 +38,7 @@ It is written in pure Python and depends on the following libraries: `numpy`, `s
 
 # Basic usage
 
-(Please refer to the [documentation](http://ctruong.perso.math.cnrs.fr/ruptures "Link to documentation") for more advanced use.)
+(Please refer to the [documentation](https://centre-borelli.github.io/ruptures-docs/ "Link to documentation") for more advanced use.)
 
 The following snippet creates a noisy piecewise constant signal, performs a penalized kernel change point detection and displays the results (alternating colors mark true regimes and dashed lines mark estimated change points).
 
