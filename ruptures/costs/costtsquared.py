@@ -70,7 +70,7 @@ Code explanation
 .. bibliography:: ../biblio.bib
     :style: alpha
     :cited:
-    :labelprefix: RA
+    :labelprefix: T
     :keyprefix: tsquared-
 """
 

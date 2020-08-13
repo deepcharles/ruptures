@@ -71,7 +71,7 @@ Code explanation
 .. bibliography:: ../biblio.bib
     :style: alpha
     :cited:
-    :labelprefix: RA
+    :labelprefix: Q
     :keyprefix: qresiduals-
 """
 
