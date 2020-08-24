@@ -254,8 +254,8 @@ class Window(BaseEstimator):
 
         Args:
             n_bkps (int): number of breakpoints to find before stopping.
-            penalty (float): penalty value (>0)
-            penalty (float): penalty value
+            pen (float): penalty value (>0)
+            epsilon (float): reconstruction budget (>0)
 
         Returns:
             list: sorted list of breakpoints
