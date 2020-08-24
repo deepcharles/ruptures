@@ -61,6 +61,11 @@ plt.show()
 ```
 
 ![](./images/example_readme.png)
+
+# Changelog
+
+See the [changelog](https://github.com/deepcharles/ruptures/blob/master/CHANGELOG.md) for a history of notable changes to `ruptures`.
+
 # License
 
 This project is under BSD license.
