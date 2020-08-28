@@ -1,3 +1,4 @@
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/deepcharles/ruptures/graphs/commit-activity)
 ![build](https://github.com/deepcharles/ruptures/workflows/build/badge.svg)
 ![python](https://img.shields.io/badge/python-3.5%20|%203.6%20|%203.7%20|%203.8-blue)
 [![PyPI version](https://badge.fury.io/py/ruptures.svg)](https://badge.fury.io/py/ruptures)
