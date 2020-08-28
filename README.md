@@ -1,4 +1,6 @@
-[![CircleCI](https://circleci.com/gh/deepcharles/ruptures.svg?style=svg)](https://circleci.com/gh/deepcharles/ruptures)
+
+[![PyPI version](https://badge.fury.io/py/ruptures.svg)](https://badge.fury.io/py/ruptures)
+[![Downloads](https://pepy.tech/badge/ruptures)](https://pepy.tech/project/ruptures)
 
 # ruptures
 
