@@ -1,4 +1,5 @@
-name: "Publish doc to site on new release"
+# Publish doc to website on new release (or manual trigger)
+name: "docs"
 
 on:
   release:
