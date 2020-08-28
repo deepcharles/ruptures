@@ -1,4 +1,4 @@
-
+![build](https://github.com/deepcharles/ruptures/workflows/build/badge.svg)
 ![python](https://img.shields.io/badge/python-3.5%20|%203.6%20|%203.7%20|%203.8-blue)
 [![PyPI version](https://badge.fury.io/py/ruptures.svg)](https://badge.fury.io/py/ruptures)
 ![docs](https://github.com/deepcharles/ruptures/workflows/docs/badge.svg)
