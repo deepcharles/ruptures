@@ -71,6 +71,12 @@ plt.show()
 
 See the [changelog](https://github.com/deepcharles/ruptures/blob/master/CHANGELOG.md) for a history of notable changes to `ruptures`.
 
+# Thanks to all our contributors
+
+<a href="https://github.com/deepcharles/ruptures/graphs/contributors">
+  <img src="https://contributors-img.web.app/image?repo=deepcharles/ruptures" />
+</a>
+
 # License
 
 This project is under BSD license.
