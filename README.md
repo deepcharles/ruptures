@@ -1,6 +1,7 @@
 
 [![PyPI version](https://badge.fury.io/py/ruptures.svg)](https://badge.fury.io/py/ruptures)
 [![Downloads](https://pepy.tech/badge/ruptures)](https://pepy.tech/project/ruptures)
+<a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 
 # ruptures
 
