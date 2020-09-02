@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Add badges in the README (Github repo) PR#62:
+  - pypi version, python version, code style
+  - contributor list
 - A changelog file ([link](https://github.com/deepcharles/ruptures/blob/master/CHANGELOG.md))
 - New Github actions for automatic generation of documentation
 - Pre-commit code formatting using [black](https://github.com/psf/black)

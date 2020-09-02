@@ -1,4 +1,12 @@
-[![CircleCI](https://circleci.com/gh/deepcharles/ruptures.svg?style=svg)](https://circleci.com/gh/deepcharles/ruptures)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/deepcharles/ruptures/graphs/commit-activity)
+![build](https://github.com/deepcharles/ruptures/workflows/build/badge.svg)
+![python](https://img.shields.io/badge/python-3.5%20|%203.6%20|%203.7%20|%203.8-blue)
+[![PyPI version](https://badge.fury.io/py/ruptures.svg)](https://badge.fury.io/py/ruptures)
+![docs](https://github.com/deepcharles/ruptures/workflows/docs/badge.svg)
+![PyPI - License](https://img.shields.io/pypi/l/ruptures)
+[![Downloads](https://pepy.tech/badge/ruptures)](https://pepy.tech/project/ruptures)
+<a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
+
 
 # ruptures
 
@@ -65,6 +73,12 @@ plt.show()
 # Changelog
 
 See the [changelog](https://github.com/deepcharles/ruptures/blob/master/CHANGELOG.md) for a history of notable changes to `ruptures`.
+
+# Thanks to all our contributors
+
+<a href="https://github.com/deepcharles/ruptures/graphs/contributors">
+  <img src="https://contributors-img.web.app/image?repo=deepcharles/ruptures" />
+</a>
 
 # License
 
