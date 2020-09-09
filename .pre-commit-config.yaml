@@ -1,10 +1,12 @@
 repos:
 -   repo: https://github.com/psf/black
-    rev: 19.10b0
+    rev: stable
     hooks:
     - id: black
       language_version: python3
--   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v2.0.0
+-   repo: https://gitlab.com/pycqa/flake8
+    rev: ''  # pick a git hash / tag to point to
     hooks:
     - id: flake8
+    additional_dependencies: [flake8-docstrings]
+
