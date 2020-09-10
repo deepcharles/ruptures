@@ -1,12 +1,26 @@
 repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+    - id: trailing-whitespace  # This hook trims trailing whitespace.
+    - id: check-docstring-first  # Checks a common error of defining a docstring after code.
+    - id: check-merge-conflict  # Check for files that contain merge conflict strings.
+    - id: check-yaml  # This hook checks yaml files for parseable syntax.
+    - id: detect-private-key  # Detects the presence of private keys.
+    - id: name-tests-test # This verifies that test files are named correctly.
+    - id: requirements-txt-fixer  # Sorts entries in requirements.txt.
+- repo: https://github.com/pre-commit/pygrep-hooks
+  rev: v1.6.0
+  hooks:
+    - id: python-no-eval  # A quick check for the eval() built-in function.
 -   repo: https://github.com/psf/black
     rev: stable
     hooks:
     - id: black
       language_version: python3
 -   repo: https://gitlab.com/pycqa/flake8
-    rev: '3.8.3'  # pick a git hash / tag to point to
+    rev: 3.8.3
     hooks:
     - id: flake8
-    additional_dependencies: [flake8-docstrings, flake8-bugbear]
+    additional_dependencies: [flake8-docstrings, flake8-bugbear, flake8-spellcheck, flake8-import-order]
 
