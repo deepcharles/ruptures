@@ -5,7 +5,7 @@ repos:
     - id: black
       language_version: python3
 -   repo: https://gitlab.com/pycqa/flake8
-    rev: ''  # pick a git hash / tag to point to
+    rev: '3.8.3'  # pick a git hash / tag to point to
     hooks:
     - id: flake8
     additional_dependencies: [flake8-docstrings, flake8-bugbear]
