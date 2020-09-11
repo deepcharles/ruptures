@@ -1,7 +1,12 @@
 repos:
--   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.2.0
-    hooks:
+- repo: https://github.com/psf/black
+  rev: stable
+  hooks:
+    - id: black
+      language_version: python3
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v3.2.0
+  hooks:
     - id: trailing-whitespace  # This hook trims trailing whitespace.
     - id: check-docstring-first  # Checks a common error of defining a docstring after code.
     - id: check-merge-conflict  # Check for files that contain merge conflict strings.
@@ -18,14 +23,9 @@ repos:
   hooks:
     - id: docformatter
       args: [--in-place]
--   repo: https://github.com/psf/black
-    rev: stable
-    hooks:
-    - id: black
-      language_version: python3
--   repo: https://gitlab.com/pycqa/flake8
-    rev: 3.8.3
-    hooks:
+- repo: https://gitlab.com/pycqa/flake8
+  rev: 3.8.3
+  hooks:
     - id: flake8
       additional_dependencies: [flake8-docstrings, flake8-bugbear, flake8-spellcheck, flake8-import-order]
 
