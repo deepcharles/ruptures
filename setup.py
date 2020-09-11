@@ -7,12 +7,12 @@ setup(
     install_requires=["numpy", "scipy"],
     extras_require={"display": ["matplotlib"]},
     python_requires=">=3",
-    # url='ctruong.perso.math.cnrs.fr/ruptures',
+    url="https://centre-borelli.github.io/ruptures-docs/",
     license="BSD License",
     author="Charles Truong, Laurent Oudre, Nicolas Vayatis",
-    author_email="truong@cmla.ens-cachan.fr",
+    author_email="charles@doffy.net",
     description="Change point detection for signals, in Python",
-    download_url="https://reine.cmla.ens-cachan.fr/c.truong/ruptures/repository/latest/archive.zip",
+    download_url="https://github.com/deepcharles/ruptures/archive/master.zip",
     keywords=[
         "change point detection",
         "signal segmentation",
@@ -32,10 +32,18 @@ setup(
 Offline change point detection for Python.
 ------------------------------------------
 
-**ruptures** is a Python library for offline change point detection. This package provides methods for the analysis and segmentation of non-stationary signals. Implemented algorithms include exact and approximate detection for various parametric and non-parametric models. **ruptures** focuses on ease of use by providing a well-documented and consistent interface. In addition, thanks to its modular structure, different algorithms and models can be connected and extended within this package.
+**ruptures** is a Python library for offline change point detection.
+This package provides methods for the analysis and segmentation of
+non-stationary signals.
+Implemented algorithms include exact and approximate detection for various
+parametric and non-parametric models.
+**ruptures** focuses on ease of use by providing a well-documented and
+consistent interface. In addition, thanks to its modular structure, different
+algorithms and models can be connected and extended within this package.
 
 
-An extensive documentation is available `github.com/deepcharles/ruptures <https://github.com/deepcharles/ruptures>`_.
+An extensive documentation is available
+`github.com/deepcharles/ruptures <https://github.com/deepcharles/ruptures>`_.
 
 This version requires Python 3 or later.
 """,
