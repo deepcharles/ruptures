@@ -1,4 +1,6 @@
 mkdocs
 mkdocs-material
+mkdocs-nbconvert
 pre-commit
+pymdown-extensions
 pytest
