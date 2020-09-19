@@ -54,6 +54,12 @@ For more information, see [their website](https://pre-commit.com/).
 
 ### Write tests
 
+The following command executes the test suite.
+
+```
+pytest
+```
+
 ### Write docstrings
 
 ## Contribute to the documentation
