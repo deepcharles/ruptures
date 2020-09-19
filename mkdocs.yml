@@ -1,0 +1,46 @@
+site_name: ruptures
+repo_url: https://github.com/deepcharles/ruptures
+docs_dir: docs
+site_dir: site
+plugins:
+  - search
+  - nbconvert:
+      input_dir: notebooks
+      output_dir: notebooks
+      recursive: true
+markdown_extensions:
+  - pymdownx.snippets:
+  - pymdownx.tabbed:
+  - pymdownx.emoji:
+  - pymdownx.superfences:
+  - pymdownx.arithmatex:
+      generic: true
+  - admonition:
+  - toc:
+      permalink: "#"
+nav:
+  - Home:
+    - 'Welcome to ruptures': index.md
+  - 'Getting started':
+    - 'Change point detection?': what-is-cpd.md
+    - 'Installation': install.md
+    - 'Basic usage': notebooks/basic-usage.md
+    - 'Fitting and predicting': fit-and-predict.md
+    - 'Custom cost function': custom-cost-function.md
+  - User guide:
+    - 'Index': user-guide/index.md
+  - Gallery of examples:
+    - 'Simple example': notebooks/simple-example.md
+  - About:
+    - 'Release notes': release-notes.md
+    - 'Contributing': contributing.md
+    - 'License': license.md
+theme:
+  name: material
+  features:
+    - tabs
+    - header.hide
+extra_javascript:
+  - javascripts/config.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
