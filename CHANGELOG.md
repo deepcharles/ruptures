@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- New documentation (from Sphinx to Mkdocs) PR#64
+- Separate requirements.txt and requirements-dev.txt PR#64
 - Add badges in the README (Github repo) PR#62:
   - pypi version, python version, code style
   - contributor list
