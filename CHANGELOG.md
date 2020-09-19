@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Correction of display function test #65
 - Add badges in the README (Github repo) PR#62:
   - pypi version, python version, code style
   - contributor list
