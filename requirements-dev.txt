@@ -1,3 +1,4 @@
+jupyter
 mkdocs
 mkdocs-material
 mkdocs-nbconvert
