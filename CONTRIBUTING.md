@@ -41,7 +41,7 @@ conda --file requirements-dev.txt
 We use `pre-commit` to run Git hooks before submitting the code to review.
 These hook scripts perform simple tasks before each commit (code formatting
 mostly).
-Once it is installed (it is part of the [requirements](contributing.md#install-the-requirements)), run the following command.
+Once it is installed (it is part of the [requirements](CONTRIBUTING.md#install-the-requirements)), run the following command.
 
 ```
 pre-commit install
