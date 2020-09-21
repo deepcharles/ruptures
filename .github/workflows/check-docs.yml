@@ -24,9 +24,8 @@ jobs:
         pip install -r requirements-dev.txt
     - name: Build documentation
       run: |
-        cd docs
-        make html
+        mkdocs build
     - uses: actions/upload-artifact@v1
       with:
         name: DocumentationHTML
-        path: docs/build/html/
+        path: site/
