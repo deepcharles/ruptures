@@ -27,14 +27,15 @@ python -m pip install --verbose --no-build-isolation --editable .
 Several packages are needed to format and test the code.
 They are listed in `requirements-dev.txt` and can be installed with the following command.
 
-#### With pip
-```
-pip install -r requirements-dev.txt
-```
-#### With conda
-```
-conda --file requirements-dev.txt
-```
+
+=== "With pip"
+    ```
+    pip install -r requirements-dev.txt
+    ```
+=== "With conda"
+    ```
+    conda --file requirements-dev.txt
+    ```
 
 ### Pre-commit hooks
 
