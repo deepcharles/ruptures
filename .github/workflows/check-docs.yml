@@ -25,6 +25,7 @@ jobs:
     - name: Run notebooks
       run: |
         jupyter nbconvert --to notebook --execute notebooks/simple-example.ipynb
+        mv notebooks/simple-example.nbconvert.ipynb notebooks/simple-example.ipynb
     - name: Build documentation
       run: |
         mkdocs build
