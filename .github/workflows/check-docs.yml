@@ -24,10 +24,8 @@ jobs:
         pip install -r requirements-dev.txt
     - name: Run notebooks
       run: |
-        jupyter nbconvert --to notebook --execute notebooks/simple-example.ipynb
-        mv notebooks/simple-example.nbconvert.ipynb notebooks/simple-example.ipynb
-        jupyter nbconvert --to notebook --execute notebooks/basic-usage.ipynb
-        mv notebooks/basic-usage.nbconvert.ipynb notebooks/basic-usage.ipynb
+        jupyter nbconvert --to notebook --execute notebooks/*.ipynb
+        mv notebooks/*.nbconvert.ipynb notebooks/*.ipynb
     - name: Build documentation
       run: |
         mkdocs build
