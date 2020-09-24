@@ -1,3 +1,5 @@
+jupyter
+matplotlib
 mkdocs
 mkdocs-material
 mkdocs-nbconvert

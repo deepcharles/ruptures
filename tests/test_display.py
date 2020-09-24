@@ -25,19 +25,11 @@ def test_display_with_options(signal_bkps):
             signal,
             bkps,
             figsize=figsize,
-            alpha=alpha,
-            color=color,
-            linewidth=linewidth,
-            linestyle=linestyle,
         )
         fig, axarr = display(
             signal[:, 0],
             bkps,
             figsize=figsize,
-            alpha=alpha,
-            color=color,
-            linewidth=linewidth,
-            linestyle=linestyle,
         )
     except MatplotlibMissingError:
         pytest.skip("matplotlib is not installed")

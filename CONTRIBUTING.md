@@ -3,7 +3,7 @@
 
 ## Before contributing
 
-In all following steps, it is highly recommended to use a virtual environnement.
+In all following steps, it is highly recommended to use a virtual environment.
 
 ### Install the development version
 
@@ -27,21 +27,22 @@ python -m pip install --verbose --no-build-isolation --editable .
 Several packages are needed to format and test the code.
 They are listed in `requirements-dev.txt` and can be installed with the following command.
 
-=== "With pip"
-    ```
-    pip install -r requirements-dev.txt
-    ```
-=== "With conda"
-    ```
-    conda --file requirements-dev.txt
-    ```
+
+#### With pip
+```
+pip install -r requirements-dev.txt
+```
+#### With conda
+```
+conda --file requirements-dev.txt
+```
 
 ### Pre-commit hooks
 
 We use `pre-commit` to run Git hooks before submitting the code to review.
 These hook scripts perform simple tasks before each commit (code formatting
 mostly).
-Once it is installed (it is part of the [requirements](contributing.md#install-the-requirements)), run the following command.
+Once it is installed (it is part of the [requirements](CONTRIBUTING.md#install-the-requirements)), run the following command.
 
 ```
 pre-commit install
