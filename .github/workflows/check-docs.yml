@@ -25,7 +25,7 @@ jobs:
     - name: Run notebooks
       run: |
         jupyter nbconvert --to notebook --execute notebooks/*.ipynb
-        mv notebooks/*.nbconvert.ipynb notebooks/*.ipynb
+        rename -f 's/nbconvert.ipynb/.ipynb/' notebooks/*
     - name: Build documentation
       run: |
         mkdocs build
