@@ -4,6 +4,7 @@ docs_dir: docs
 site_dir: site
 plugins:
   - search
+  - mkdocstrings
   - nbconvert:
       input_dir: notebooks
       output_dir: notebooks
@@ -31,6 +32,8 @@ nav:
     - 'Index': user-guide/index.md
   - Gallery of examples:
     - 'Simple example': notebooks/simple-example.md
+  - Code Reference:
+      - Base: code-reference/base-reference.md
   - About:
     - 'Release notes': release-notes.md
     - 'Contributing': contributing.md

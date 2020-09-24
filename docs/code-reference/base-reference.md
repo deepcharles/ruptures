@@ -1,0 +1,3 @@
+# Base class
+
+::: ruptures.base
