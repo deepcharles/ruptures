@@ -3,6 +3,7 @@ matplotlib
 mkdocs
 mkdocs-material
 mkdocs-nbconvert
+mkdocstrings
 pre-commit
 pymdown-extensions
 pytest
