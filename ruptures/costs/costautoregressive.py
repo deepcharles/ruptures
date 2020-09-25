@@ -15,6 +15,11 @@ class CostAR(BaseCost):
     model = "ar"
 
     def __init__(self, order=4):
+        """Initialize the object.
+
+        Args:
+            order (int): autoregressive order
+        """
         self.signal = None
         self.covar = None
         self.min_size = max(5, order + 1)
