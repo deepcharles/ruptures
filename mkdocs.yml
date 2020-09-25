@@ -34,6 +34,8 @@ nav:
     - 'Simple example': notebooks/simple-example.md
   - Code Reference:
       - Base: code-reference/base-reference.md
+      - Costs:
+          - Auto regressive: code-reference/costs/costautoregressive-reference.md
   - About:
     - 'Release notes': release-notes.md
     - 'Contributing': contributing.md
