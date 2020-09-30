@@ -7,7 +7,7 @@ from ruptures.base import BaseCost
 class CostL2(BaseCost):
 
     r"""
-    CostL2 (least squared deviation).
+    Least squared deviation.
     """
 
     model = "l2"
