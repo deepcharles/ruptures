@@ -48,10 +48,6 @@ c = rpt.costs.CostL1(); algo = rpt.Dynp(custom_cost=c)
 algo = rpt.Dynp(model="l1")
 ```
 
-::: ruptures.costs.costl1.CostL1
-    rendering:
-        show_root_heading: true
-
 ## References
 
 <a id="Bai1995">[Bai1995]</a>

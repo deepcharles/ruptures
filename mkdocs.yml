@@ -53,6 +53,7 @@ nav:
   - Code Reference:
       - Base: code-reference/base-reference.md
       - Costs:
+          - 'CostL1': code-reference/costs/costl1-reference.md
           - Auto regressive: code-reference/costs/costautoregressive-reference.md
   - About:
     - 'Release notes': release-notes.md
