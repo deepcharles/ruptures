@@ -30,7 +30,7 @@ markdown_extensions:
 nav:
   - Home:
     - 'Welcome to ruptures': index.md
-  - 'Getting started':
+  - Getting started:
     - 'Change point detection?': what-is-cpd.md
     - 'Installation': install.md
     - 'Basic usage': notebooks/basic-usage.md
