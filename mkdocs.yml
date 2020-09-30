@@ -29,7 +29,7 @@ nav:
     - 'Fitting and predicting': fit-and-predict.md
     - 'Custom cost function': custom-cost-function.md
   - User guide:
-    - 'Index': user-guide/index.md
+    - 'Introduction': user-guide/index.md
   - Gallery of examples:
     - 'Simple example': notebooks/simple-example.md
   - Code Reference:
