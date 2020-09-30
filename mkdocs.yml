@@ -43,8 +43,8 @@ nav:
 theme:
   name: material
   features:
-    - tabs
-    - header.hide
+    - navigation.tabs
+    - search.highlight
 extra_javascript:
   - javascripts/config.js
   - https://polyfill.io/v3/polyfill.min.js?features=es6
