@@ -45,6 +45,7 @@ nav:
       - 'CostNormal': user-guide/cost-functions/costnormal.md
       - 'CostRbf': user-guide/cost-functions/costrbf.md
       - 'CostLinear': user-guide/cost-functions/costlinear.md
+      - 'CostAutoregressive': user-guide/cost-functions/costautoregressive.md
     - 'Generate signals': user-guide/generate-signals.md
     - 'Evaluation and visualizations': user-guide/evaluation.md
   - Gallery of examples:
