@@ -38,6 +38,12 @@ nav:
     - 'Custom cost function': custom-cost-function.md
   - User guide:
     - 'Introduction': user-guide/index.md
+    - 'Search methods': user-guide/search-methods.md
+    - Cost functions:
+      - 'CostL1': user-guide/cost-functions/costl1.md
+      - 'CostL2': user-guide/cost-functions/costl2.md
+    - 'Generate signals': user-guide/generate-signals.md
+    - 'Evaluation and visualizations': user-guide/evaluation.md
   - Gallery of examples:
     - 'Simple example': notebooks/simple-example.md
   - Code Reference:
