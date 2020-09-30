@@ -1,4 +1,4 @@
-"""Base class for change point detection estimators."""
+r"""Base class for change point detection estimators."""
 import abc
 from ruptures.utils import pairwise
 
