@@ -42,6 +42,9 @@ nav:
     - Cost functions:
       - 'CostL1': user-guide/cost-functions/costl1.md
       - 'CostL2': user-guide/cost-functions/costl2.md
+      - 'CostNormal': user-guide/cost-functions/costnormal.md
+      - 'CostRbf': user-guide/cost-functions/costrbf.md
+      - 'CostLinear': user-guide/cost-functions/costlinear.md
     - 'Generate signals': user-guide/generate-signals.md
     - 'Evaluation and visualizations': user-guide/evaluation.md
   - Gallery of examples:
