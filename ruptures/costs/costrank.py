@@ -88,11 +88,12 @@ class CostRank(BaseCost):
     model = "rank"
 
     def __init__(self):
+        """Initialize the object."""
         self.inv_cov = None
         self.ranks = None
         self.min_size = 2
 
-    def fit(self, signal):
+    def fit(self, signal) -> "CostRank":
         """Set parameters of the instance.
 
         Args:

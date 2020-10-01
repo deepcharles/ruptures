@@ -96,15 +96,12 @@ class CostMl(BaseCost):
 
         Args:
             metric (ndarray, optional): PSD matrix that defines a Mahalanobis-type pseudo distance. If None, defaults to the Mahalanobis matrix. Shape (n_features, n_features).
-
-        Returns:
-            self
         """
         self.metric = metric
         self.gram = None
         self.min_size = 2
 
-    def fit(self, signal):
+    def fit(self, signal) -> "CostMl":
         """Sets parameters of the instance.
 
         Args:
