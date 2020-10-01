@@ -12,7 +12,7 @@ $$
 where $j>1$ is the segment number, $z_t=[y_{t-1}, y_{t-2},\dots,y_{t-p}]$ is the lag vector,and $p>0$ is the order of the process.
 
 The least-squares estimates of the break dates is obtained by minimizing the sum of squared
-residuals :cite:`ar-Bai2000`. <!--- How to handle citation ?  -->
+residuals [[ar-Bai2000]](#arBai2000).
 Formally, the associated cost function on an interval $I$ is
 
 $$
@@ -71,3 +71,8 @@ c = rpt.costs.CostAR(order=10); algo = rpt.Dynp(custom_cost=c)
 # is equivalent to
 algo = rpt.Dynp(model="ar", params={"order": 10})
 ```
+
+## Reference
+
+<a id="arBai2000">[arBai2000]</a>
+Bai, J. (2000). Vector autoregressive models with structural changes in regression coefficients and in variance–covariance matrices. Annals of Economics and Finance, 1, 303--339
