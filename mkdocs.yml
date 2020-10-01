@@ -61,6 +61,7 @@ nav:
           - 'CostRank': code-reference/costs/costrank-reference.md
           - 'CostMl': code-reference/costs/costml-reference.md
           - Auto regressive: code-reference/costs/costautoregressive-reference.md
+      - Datasets: code-reference/datasets/datasets-reference.md
   - About:
     - 'Release notes': release-notes.md
     - 'Contributing': contributing.md
