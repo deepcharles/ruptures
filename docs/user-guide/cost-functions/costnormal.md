@@ -47,10 +47,6 @@ c = rpt.costs.CostNormal(); algo = rpt.Dynp(custom_cost=c)
 algo = rpt.Dynp(model="normal")
 ```
 
-::: ruptures.costs.costnormal.CostNormal
-    rendering:
-        show_root_heading: true
-
 ## References
 
 <a id="Lavielle1999">[Lavielle1999]</a>

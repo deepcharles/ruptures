@@ -57,10 +57,6 @@ c = rpt.costs.CostRbf(); algo = rpt.Dynp(custom_cost=c)
 algo = rpt.Dynp(model="rbf")
 ```
 
-::: ruptures.costs.costrbf.CostRbf
-    rendering:
-        show_root_heading: true
-
 ## References
 
 <a id="Garreau2018">[Garreau2018]</a>

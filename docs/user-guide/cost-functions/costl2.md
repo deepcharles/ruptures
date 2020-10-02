@@ -46,7 +46,3 @@ c = rpt.costs.CostL2(); algo = rpt.Dynp(custom_cost=c)
 # is equivalent to
 algo = rpt.Dynp(model="l2")
 ```
-
-::: ruptures.costs.costl2.CostL2
-    rendering:
-        show_root_heading: true
