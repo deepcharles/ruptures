@@ -16,8 +16,10 @@ residuals [[Bai2000]](#Bai2000).
 Formally, the associated cost function on an interval $I$ is
 
 $$
-c(y_{I}) = \min_{\delta\in\mathbb{R}^p} \sum_{t\in I} \|y_t - \delta' z_t \|_2^2
+c(y_{I}) = \min_{\delta\in\mathbb{R}^p} \sum_{t\in I} \|y_t - \delta' z_t \|_2^2.
 $$
+
+Currently, this function is limited to 1D signals.
 
 ## Usage
 
