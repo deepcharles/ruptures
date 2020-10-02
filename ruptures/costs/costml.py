@@ -23,7 +23,7 @@ class CostMl(BaseCost):
         self.min_size = 2
 
     def fit(self, signal) -> "CostMl":
-        """Sets parameters of the instance.
+        """Set parameters of the instance.
 
         Args:
             signal (array): signal. Shape (n_samples,) or (n_samples, n_features)
