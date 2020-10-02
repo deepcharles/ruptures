@@ -45,7 +45,7 @@ nav:
       - 'CostNormal': user-guide/cost-functions/costnormal.md
       - 'CostRbf': user-guide/cost-functions/costrbf.md
       - 'CostLinear': user-guide/cost-functions/costlinear.md
-      - 'CostAutoregressive': user-guide/cost-functions/costautoregressive.md
+      - 'CostAR': user-guide/cost-functions/costautoregressive.md
     - 'Generate signals': user-guide/generate-signals.md
     - 'Evaluation and visualizations': user-guide/evaluation.md
   - Gallery of examples:
@@ -60,7 +60,7 @@ nav:
           - 'CostLinear': code-reference/costs/costlinear-reference.md
           - 'CostRank': code-reference/costs/costrank-reference.md
           - 'CostMl': code-reference/costs/costml-reference.md
-          - Auto regressive: code-reference/costs/costautoregressive-reference.md
+          - 'CostAR': code-reference/costs/costautoregressive-reference.md
       - Datasets: code-reference/datasets/datasets-reference.md
   - About:
     - 'Release notes': release-notes.md
