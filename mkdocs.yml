@@ -47,7 +47,7 @@ nav:
       - 'CostLinear': user-guide/cost-functions/costlinear.md
       - 'CostRank': user-guide/cost-functions/costrank.md
       - 'CostAR': user-guide/cost-functions/costautoregressive.md
-      - 'CostMl': user-guide/cost-functions/costml.md
+      - 'Custom cost': user-guide/cost-functions/costcustom.md
     - 'Generate signals': user-guide/generate-signals.md
     - 'Evaluation and visualizations': user-guide/evaluation.md
   - Gallery of examples:
