@@ -2,7 +2,7 @@
 
 ## Description
 
-Given a positive semi-definite kernel $k(\cdot, \cdot) : \mathbb{R}^d\times \mathbb{R}^d \mapsto \mathbb{R}$ and its associated feature map $\Phi:\mathbb{R}^d \mapsto \mathcal{H}$ (where $\mathcal{H}$ is an appropriate Hilbert space), this cost function detects changes in the mean of the embedded signal $\{\Phi(y_t)\}_t$ [[Garreau2018]](#Garreau2018) [[Arlot2019]](#Arlot2019).
+Given a positive semi-definite kernel $k(\cdot, \cdot) : \mathbb{R}^d\times \mathbb{R}^d \mapsto \mathbb{R}$ and its associated feature map $\Phi:\mathbb{R}^d \mapsto \mathcal{H}$ (where $\mathcal{H}$ is an appropriate Hilbert space), this cost function detects changes in the mean of the embedded signal $\{\Phi(y_t)\}_t$ [[Garreau2018](#Garreau2018), [Arlot2019](#Arlot2019)].
 Formally, for a signal $\{y_t\}_t$ on an interval $I$,
 
 $$
