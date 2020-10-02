@@ -69,10 +69,6 @@ c = rpt.costs.CostLinear(); algo = rpt.Dynp(custom_cost=c)
 algo = rpt.Dynp(model="linear")
 ```
 
-::: ruptures.costs.costlinear.CostLinear
-    rendering:
-        show_root_heading: true
-
 ## References
 
 <a id="Bai2003">[Bai2003]</a>
