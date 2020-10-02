@@ -46,6 +46,7 @@ nav:
       - 'CostRbf': user-guide/cost-functions/costrbf.md
       - 'CostLinear': user-guide/cost-functions/costlinear.md
       - 'CostRank': user-guide/cost-functions/costrank.md
+      - 'CostMl': user-guide/cost-functions/costml.md
       - 'CostAR': user-guide/cost-functions/costautoregressive.md
       - 'Custom cost': user-guide/cost-functions/costcustom.md
     - 'Generate signals': user-guide/generate-signals.md
