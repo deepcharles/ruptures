@@ -110,16 +110,12 @@ class BottomUp(BaseEstimator):
     def __init__(self, model="l2", custom_cost=None, min_size=2, jump=5, params=None):
         """Initialize a BottomUp instance.
 
-
         Args:
             model (str, optional): segment model, ["l1", "l2", "rbf"]. Not used if ``'custom_cost'`` is not None.
             custom_cost (BaseCost, optional): custom cost function. Defaults to None.
             min_size (int, optional): minimum segment length. Defaults to 2 samples.
             jump (int, optional): subsample (one every *jump* points). Defaults to 5 samples.
             params (dict, optional): a dictionary of parameters for the cost instance.
-
-        Returns:
-            self
         """
         if custom_cost is not None and isinstance(custom_cost, BaseCost):
             self.cost = custom_cost
@@ -238,7 +234,7 @@ class BottomUp(BaseEstimator):
         partition = {(leaf.start, leaf.end): leaf.val for leaf in leaves}
         return partition
 
-    def fit(self, signal):
+    def fit(self, signal) -> "BottomUp":
         """Compute params to segment signal.
 
         Args:
@@ -262,12 +258,12 @@ class BottomUp(BaseEstimator):
         """Return the optimal breakpoints.
 
         Must be called after the fit method. The breakpoints are associated with the signal passed
-        to fit().
+        to [`fit()`][ruptures.detection.bottomup.BottomUp.fit].
         The stopping rule depends on the parameter passed to the function.
 
         Args:
             n_bkps (int): number of breakpoints to find before stopping.
-            penalty (float): penalty value (>0)
+            pen (float): penalty value (>0)
             epsilon (float): reconstruction budget (>0)
 
         Returns:
@@ -288,7 +284,7 @@ class BottomUp(BaseEstimator):
         Args:
             signal (array): signal. Shape (n_samples, n_features) or (n_samples,).
             n_bkps (int): number of breakpoints.
-            penalty (float): penalty value (>0)
+            pen (float): penalty value (>0)
             epsilon (float): reconstruction budget (>0)
 
         Returns:

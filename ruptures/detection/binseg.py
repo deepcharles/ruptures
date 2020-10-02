@@ -109,10 +109,6 @@ class Binseg(BaseEstimator):
             min_size (int, optional): minimum segment length. Defaults to 2 samples.
             jump (int, optional): subsample (one every *jump* points). Defaults to 5 samples.
             params (dict, optional): a dictionary of parameters for the cost instance.
-
-
-        Returns:
-            self
         """
 
         if custom_cost is not None and isinstance(custom_cost, BaseCost):
@@ -194,7 +190,7 @@ class Binseg(BaseEstimator):
             return None, 0
         return bkp, gain
 
-    def fit(self, signal):
+    def fit(self, signal) -> "Binseg":
         """Compute params to segment signal.
 
         Args:
@@ -218,12 +214,12 @@ class Binseg(BaseEstimator):
         """Return the optimal breakpoints.
 
         Must be called after the fit method. The breakpoints are associated with the signal passed
-        to fit().
+        to [`fit()`][ruptures.detection.binseg.Binseg.fit].
         The stopping rule depends on the parameter passed to the function.
 
         Args:
             n_bkps (int): number of breakpoints to find before stopping.
-            penalty (float): penalty value (>0)
+            pen (float): penalty value (>0)
             epsilon (float): reconstruction budget (>0)
 
         Returns:
@@ -244,7 +240,7 @@ class Binseg(BaseEstimator):
         Args:
             signal (array): signal. Shape (n_samples, n_features) or (n_samples,).
             n_bkps (int): number of breakpoints.
-            penalty (float): penalty value (>0)
+            pen (float): penalty value (>0)
             epsilon (float): reconstruction budget (>0)
 
         Returns:

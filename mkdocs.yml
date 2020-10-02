@@ -61,6 +61,16 @@ nav:
           - 'CostRank': code-reference/costs/costrank-reference.md
           - 'CostMl': code-reference/costs/costml-reference.md
           - Auto regressive: code-reference/costs/costautoregressive-reference.md
+      - Detection:
+          - Binseg: code-reference/detection/binseg-reference.md
+          - BottomUp: code-reference/detection/bottomup-reference.md
+          - Dynp: code-reference/detection/dynp-reference.md
+          - GreedyAR: code-reference/detection/greedyar-reference.md
+          - GreedyLinear: code-reference/detection/greedylinear-reference.md
+          - Omp: code-reference/detection/omp-reference.md
+          - OmpK: code-reference/detection/ompk-reference.md
+          - Pelt: code-reference/detection/pelt-reference.md
+          - Window: code-reference/detection/window-reference.md
       - Datasets: code-reference/datasets/datasets-reference.md
   - About:
     - 'Release notes': release-notes.md

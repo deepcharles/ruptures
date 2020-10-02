@@ -67,9 +67,8 @@ class Pelt(BaseEstimator):
 
     """Penalized change point detection.
 
-    For a given model and penalty level, computes the segmentation which minimizes the constrained
-    sum of approximation errors.
-
+    For a given model and penalty level, computes the segmentation which
+    minimizes the constrained sum of approximation errors.
     """
 
     def __init__(self, model="l2", custom_cost=None, min_size=2, jump=5, params=None):
@@ -81,9 +80,6 @@ class Pelt(BaseEstimator):
             min_size (int, optional): minimum segment length.
             jump (int, optional): subsample (one every *jump* points).
             params (dict, optional): a dictionary of parameters for the cost instance.
-
-        Returns:
-            self
         """
         if custom_cost is not None and isinstance(custom_cost, BaseCost):
             self.cost = custom_cost
@@ -146,7 +142,7 @@ class Pelt(BaseEstimator):
         del best_partition[(0, 0)]
         return best_partition
 
-    def fit(self, signal):
+    def fit(self, signal) -> "Pelt":
         """Set params.
 
         Args:
@@ -168,7 +164,7 @@ class Pelt(BaseEstimator):
         """Return the optimal breakpoints.
 
         Must be called after the fit method. The breakpoints are associated with the signal passed
-        to fit().
+        to [`fit()`][ruptures.detection.pelt.Pelt.fit].
 
         Args:
             pen (float): penalty value (>0)

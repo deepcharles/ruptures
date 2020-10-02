@@ -62,10 +62,10 @@ from ruptures.base import BaseCost, BaseEstimator
 
 class Dynp(BaseEstimator):
 
-    """ Find optimal change points using dynamic programming.
+    """Find optimal change points using dynamic programming.
 
-    Given a segment model, it computes the best partition for which the sum of errors is minimum.
-
+    Given a segment model, it computes the best partition for which the
+    sum of errors is minimum.
     """
 
     def __init__(self, model="l2", custom_cost=None, min_size=2, jump=5, params=None):
@@ -77,9 +77,6 @@ class Dynp(BaseEstimator):
             min_size (int, optional): minimum segment length.
             jump (int, optional): subsample (one every *jump* points).
             params (dict, optional): a dictionary of parameters for the cost instance.
-
-        Returns:
-            self
         """
         self.seg = lru_cache(maxsize=None)(self._seg)  # dynamic programming
         if custom_cost is not None and isinstance(custom_cost, BaseCost):
@@ -142,7 +139,7 @@ class Dynp(BaseEstimator):
             # Find the optimal partition
             return min(sub_problems, key=lambda d: sum(d.values()))
 
-    def fit(self, signal):
+    def fit(self, signal) -> "Dynp":
         """Create the cache associated with the signal.
 
         Dynamic programming is a recurrence; intermediate results are cached to speed up
@@ -165,7 +162,7 @@ class Dynp(BaseEstimator):
         """Return the optimal breakpoints.
 
         Must be called after the fit method. The breakpoints are associated with the signal passed
-        to fit().
+        to [`fit()`][ruptures.detection.dynp.Dynp.fit].
 
         Args:
             n_bkps (int): number of breakpoints.

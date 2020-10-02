@@ -127,15 +127,11 @@ class Window(BaseEstimator):
 
         Args:
             width (int, optional): window length. Defaults to 100 samples.
-            model (str, optional): segment model, ["l1", "l2", "rbf"]. Not used if
-            ``'custom_cost'`` is not None.
+            model (str, optional): segment model, ["l1", "l2", "rbf"]. Not used if `custom_cost` is not None.
             custom_cost (BaseCost, optional): custom cost function. Defaults to None.
             min_size (int, optional): minimum segment length.
             jump (int, optional): subsample (one every *jump* points).
-            params (dict, optional): a dictionary of parameters for the cost instance.
-
-        Returns:
-            self
+            params (dict, optional): a dictionary of parameters for the cost instance.`
         """
         self.min_size = min_size
         self.jump = jump
@@ -212,7 +208,7 @@ class Window(BaseEstimator):
 
         return bkps
 
-    def fit(self, signal):
+    def fit(self, signal) -> "Window":
         """Compute params to segment signal.
 
         Args:
@@ -249,7 +245,7 @@ class Window(BaseEstimator):
         """Return the optimal breakpoints.
 
         Must be called after the fit method. The breakpoints are associated with the signal passed
-        to fit().
+        to [`fit()`][ruptures.detection.window.Window.fit].
         The stopping rule depends on the parameter passed to the function.
 
         Args:
