@@ -38,17 +38,19 @@ nav:
     - 'Custom cost function': custom-cost-function.md
   - User guide:
     - 'Introduction': user-guide/index.md
-    - 'Search methods': user-guide/search-methods.md
+    - Search methods:
+      - 'Dynamic programming': user-guide/detection/dynp.md
+      - 'Pelt': user-guide/detection/pelt.md
     - Cost functions:
-      - 'CostL1': user-guide/cost-functions/costl1.md
-      - 'CostL2': user-guide/cost-functions/costl2.md
-      - 'CostNormal': user-guide/cost-functions/costnormal.md
-      - 'CostRbf': user-guide/cost-functions/costrbf.md
-      - 'CostLinear': user-guide/cost-functions/costlinear.md
-      - 'CostRank': user-guide/cost-functions/costrank.md
-      - 'CostMl': user-guide/cost-functions/costml.md
-      - 'CostAR': user-guide/cost-functions/costautoregressive.md
-      - 'Custom cost': user-guide/cost-functions/costcustom.md
+      - 'CostL1': user-guide/costs/costl1.md
+      - 'CostL2': user-guide/costs/costl2.md
+      - 'CostNormal': user-guide/costs/costnormal.md
+      - 'CostRbf': user-guide/costs/costrbf.md
+      - 'CostLinear': user-guide/costs/costlinear.md
+      - 'CostRank': user-guide/costs/costrank.md
+      - 'CostMl': user-guide/costs/costml.md
+      - 'CostAR': user-guide/costs/costautoregressive.md
+      - 'Custom cost': user-guide/costs/costcustom.md
     - 'Generate signals': user-guide/generate-signals.md
     - 'Evaluation and visualizations': user-guide/evaluation.md
   - Gallery of examples:
