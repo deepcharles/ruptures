@@ -6,4 +6,6 @@ In order to define custom cost functions, simply create a class that inherits fr
 - The method `.fit(signal)` takes a signal as input and sets parameters. It returns `'self'`.
 - The method `.error(start, end)` takes two indexes `'start'` and `'end'`  and returns the cost on the segment start:end.
 
-An example can be found in LINK.
+!!! example
+    See this [custom cost example](user-guide/costs/costcustom.md).
+
