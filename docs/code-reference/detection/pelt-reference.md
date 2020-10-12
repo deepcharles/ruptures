@@ -1,4 +1,4 @@
-# Exact segmentation: Pelt
+# Pelt
 
 ::: ruptures.detection.pelt.Pelt
     rendering:
