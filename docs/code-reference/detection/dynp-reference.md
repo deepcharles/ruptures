@@ -1,4 +1,4 @@
-# Exact segmentation: dynamic programming
+# Dynamic programming
 
 ::: ruptures.detection.dynp.Dynp
     rendering:

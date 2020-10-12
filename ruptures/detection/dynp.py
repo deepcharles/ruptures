@@ -1,4 +1,4 @@
-r"""Exact segmentation: dynamic programming"""
+r"""Dynamic programming"""
 from functools import lru_cache
 
 from ruptures.utils import sanity_check
