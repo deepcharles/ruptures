@@ -41,6 +41,8 @@ nav:
     - Search methods:
       - 'Dynamic programming': user-guide/detection/dynp.md
       - 'Pelt': user-guide/detection/pelt.md
+      - 'Binary segmentation': user-guide/detection/binseg.md
+      - 'Bottom-up segmentation': user-guide/detection/bottomup.md
     - Cost functions:
       - 'CostL1': user-guide/costs/costl1.md
       - 'CostL2': user-guide/costs/costl2.md
@@ -56,8 +58,19 @@ nav:
   - Gallery of examples:
     - 'Simple example': notebooks/simple-example.md
   - Code Reference:
-      - Base: code-reference/base-reference.md
-      - Costs:
+      - Introduction: code-reference/index.md
+      - Base classes: code-reference/base-reference.md
+      - Search methods:
+          - Dynp: code-reference/detection/dynp-reference.md
+          - Pelt: code-reference/detection/pelt-reference.md
+          - Binseg: code-reference/detection/binseg-reference.md
+          - BottomUp: code-reference/detection/bottomup-reference.md
+          - Window: code-reference/detection/window-reference.md
+          # - GreedyAR: code-reference/detection/greedyar-reference.md
+          # - GreedyLinear: code-reference/detection/greedylinear-reference.md
+          # - Omp: code-reference/detection/omp-reference.md
+          # - OmpK: code-reference/detection/ompk-reference.md
+      - Cost functions:
           - 'CostL1': code-reference/costs/costl1-reference.md
           - 'CostL2': code-reference/costs/costl2-reference.md
           - 'CostNormal': code-reference/costs/costnormal-reference.md
@@ -65,18 +78,12 @@ nav:
           - 'CostLinear': code-reference/costs/costlinear-reference.md
           - 'CostRank': code-reference/costs/costrank-reference.md
           - 'CostMl': code-reference/costs/costml-reference.md
-          - CostAR: code-reference/costs/costautoregressive-reference.md
-      - Detection:
-          - Binseg: code-reference/detection/binseg-reference.md
-          - BottomUp: code-reference/detection/bottomup-reference.md
-          - Dynp: code-reference/detection/dynp-reference.md
-          - GreedyAR: code-reference/detection/greedyar-reference.md
-          - GreedyLinear: code-reference/detection/greedylinear-reference.md
-          - Omp: code-reference/detection/omp-reference.md
-          - OmpK: code-reference/detection/ompk-reference.md
-          - Pelt: code-reference/detection/pelt-reference.md
-          - Window: code-reference/detection/window-reference.md
-      - Datasets: code-reference/datasets/datasets-reference.md
+          - 'CostAR': code-reference/costs/costautoregressive-reference.md
+      - Datasets:
+        - 'Piecewise constant': code-reference/datasets/pw_constant-reference.md
+        - 'Piecewise linear': code-reference/datasets/pw_linear-reference.md
+        - 'Piecewise normal': code-reference/datasets/pw_normal-reference.md
+        - 'Piecewise wavy': code-reference/datasets/pw_wavy-reference.md
   - About:
     - 'Release notes': release-notes.md
     - 'Contributing': contributing.md
