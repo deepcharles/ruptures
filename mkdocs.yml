@@ -79,7 +79,7 @@ nav:
           - 'CostRank': code-reference/costs/costrank-reference.md
           - 'CostMl': code-reference/costs/costml-reference.md
           - 'CostAR': code-reference/costs/costautoregressive-reference.md
-      - Datasets:
+      - Data sets:
         - 'Piecewise constant': code-reference/datasets/pw_constant-reference.md
         - 'Piecewise linear': code-reference/datasets/pw_linear-reference.md
         - 'Piecewise normal': code-reference/datasets/pw_normal-reference.md
