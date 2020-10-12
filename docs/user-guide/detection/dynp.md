@@ -1,4 +1,4 @@
-# Dynamic programming (exact segmentation).
+# Dynamic programming.
 
 ## Description
 
