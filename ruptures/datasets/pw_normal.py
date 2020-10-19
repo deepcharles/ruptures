@@ -8,6 +8,7 @@ Description
 ----------------------------------------------------------------------------------------------------
 
 This function simulates a 2D signal of Gaussian i.i.d. random variables with zero mean and covariance matrix alternating between :math:`[[1, 0.9], [0.9, 1]]` and :math:`[[1, -0.9], [-0.9, 1]]` at every change point.
+Users can also append `noisy` dimensions (i.e. without change points).
 
 .. figure:: /images/correlation_shift.png
    :scale: 50 %
@@ -47,12 +48,17 @@ from numpy import random as rd
 from ruptures.utils import draw_bkps
 
 
-def pw_normal(n_samples=200, n_bkps=3):
+def pw_normal(n_samples=200, n_bkps=3, n_noisy_features=0):
     """Return a 2D piecewise Gaussian signal and the associated changepoints.
+    Users can also append `noisy` dimensions (i.e. without change points).
 
     Args:
         n_samples (int, optional): signal length
         n_bkps (int, optional): number of change points
+        n_noisy_features (int, optional): number of noisy dimensions. If not
+            zero, total dimensions of the signal will be 2 + `n_noisy_features`
+            and the last `n_noisy_features` dimensions will be white noise only
+            (no change point).
 
     Returns:
         tuple: signal of shape (n_samples, 2), list of breakpoints
@@ -67,5 +73,9 @@ def pw_normal(n_samples=200, n_bkps=3):
     for sub, cov in zip(np.split(signal, bkps), cycle((cov1, cov2))):
         n_sub, _ = sub.shape
         sub += rd.multivariate_normal([0, 0], cov, size=n_sub)
+
+    # Add noise
+    if n_noisy_features > 0:
+        signal = np.c_[signal, np.random.randn(n_samples, n_noisy_features)]
 
     return signal, bkps
