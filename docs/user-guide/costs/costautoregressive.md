@@ -1,4 +1,4 @@
-# Autoregressive model change (CostAR)
+# Autoregressive model change (`CostAR`)
 
 ## Description
 

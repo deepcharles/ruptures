@@ -1,4 +1,4 @@
-# Rank-based cost function (CostRank)
+# Rank-based cost function (`CostRank`)
 
 ## Description
 

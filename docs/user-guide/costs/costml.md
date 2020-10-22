@@ -1,4 +1,4 @@
-# Change detection with a Mahalanobis-type metric (CostMl)
+# Change detection with a Mahalanobis-type metric (`CostMl`)
 
 ## Description
 

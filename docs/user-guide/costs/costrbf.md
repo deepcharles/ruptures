@@ -1,4 +1,4 @@
-# Kernelized mean change (CostRbf)
+# Kernelized mean change (`CostRbf`)
 
 ## Description
 

@@ -1,4 +1,4 @@
-# CostL1 (least absolute deviation)
+# Least absolute deviation (`CostL1`)
 
 ## Description
 

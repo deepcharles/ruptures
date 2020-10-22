@@ -1,4 +1,4 @@
-# CostL2 (least squared deviation)
+# Least squared deviation (`CostL2`)
 
 ## Description
 

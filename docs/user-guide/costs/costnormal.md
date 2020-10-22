@@ -1,4 +1,4 @@
-# Gaussian process change (CostNormal)
+# Gaussian process change (`CostNormal`)
 
 ## Description
 

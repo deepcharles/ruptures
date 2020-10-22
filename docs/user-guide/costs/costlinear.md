@@ -1,4 +1,4 @@
-# Linear model change (CostLinear)
+# Linear model change (`CostLinear`)
 
 ## Description
 

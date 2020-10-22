@@ -1,4 +1,4 @@
-# Dynamic programming.
+# Dynamic programming (`Dynp`)
 
 ## Description
 

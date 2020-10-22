@@ -1,4 +1,4 @@
-# Pelt (exact segmentation)
+# Linearly penalized segmentation (`Pelt`)
 
 # Description
 

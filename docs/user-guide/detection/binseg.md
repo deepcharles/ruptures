@@ -1,4 +1,4 @@
-# Binary segmentation
+# Binary segmentation (`Binseg`)
 
 ## Description
 

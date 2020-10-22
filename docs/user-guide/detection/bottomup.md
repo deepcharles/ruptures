@@ -1,4 +1,4 @@
-# Bottom-up segmentation
+# Bottom-up segmentation (`BottomUp`)
 
 ## Description
 
