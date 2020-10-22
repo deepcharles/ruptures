@@ -43,6 +43,7 @@ nav:
       - 'Pelt': user-guide/detection/pelt.md
       - 'Binary segmentation': user-guide/detection/binseg.md
       - 'Bottom-up segmentation': user-guide/detection/bottomup.md
+      - 'Window sliding segmentation': user-guide/detection/window.md
     - Cost functions:
       - 'CostL1': user-guide/costs/costl1.md
       - 'CostL2': user-guide/costs/costl2.md
@@ -53,8 +54,17 @@ nav:
       - 'CostMl': user-guide/costs/costml.md
       - 'CostAR': user-guide/costs/costautoregressive.md
       - 'Custom cost': user-guide/costs/costcustom.md
-    - 'Generate signals': user-guide/generate-signals.md
-    - 'Evaluation and visualizations': user-guide/evaluation.md
+    - Generate signals:
+      - 'Piecewise constant': user-guide/datasets/pw_constant.md
+      - 'Piecewise linear': user-guide/datasets/pw_linear.md
+      - 'Piecewise Gaussian': user-guide/datasets/pw_normal.md
+      - 'Piecewise sinusoidal': user-guide/datasets/pw_wavy.md
+    - Evaluation metrics:
+      - 'Precision and recall': user-guide/metrics/precisionrecall.md
+      - 'Hausdorff metric': user-guide/metrics/hausdorff.md
+      - 'Rand index': user-guide/metrics/randindex.md
+    - Display:
+      - 'Display': user-guide/show/display.md
   - Gallery of examples:
     - 'Simple example': notebooks/simple-example.md
   - Code Reference:
@@ -84,6 +94,12 @@ nav:
         - 'Piecewise linear': code-reference/datasets/pw_linear-reference.md
         - 'Piecewise normal': code-reference/datasets/pw_normal-reference.md
         - 'Piecewise wavy': code-reference/datasets/pw_wavy-reference.md
+      - Metrics:
+        - 'Precision and recall': code-reference/metrics/precisionrecall.md
+        - 'Hausdorff metric': code-reference/metrics/hausdorff.md
+        - 'Rand index': code-reference/metrics/randindex.md
+      - Display:
+        - 'Display function': code-reference/show/display.md
   - About:
     - 'Release notes': release-notes.md
     - 'Contributing': contributing.md
