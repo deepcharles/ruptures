@@ -1,49 +1,4 @@
-r"""
-
-.. _sec-display:
-
-Display
-====================================================================================================
-
-Description
-----------------------------------------------------------------------------------------------------
-
-The function :func:`display` displays a signal and the change points provided in alternating colors.
-If another set of change point indexes is provided, they are displayed with dashed vertical dashed lines.
-
-Usage
-----------------------------------------------------------------------------------------------------
-
-Start with the usual imports and create a signal.
-
-.. code-block:: python
-
-    import numpy as np
-    import matplotlib.pylab as plt
-    import ruptures as rpt
-    # creation of data
-    n, dim = 500, 2  # number of samples, dimension
-    n_bkps, sigma = 3, 5  # number of change points, noise standart deviation
-    signal, bkps = rpt.pw_constant(n, dim, n_bkps, noise_std=sigma)
-    rpt.display(signal, bkps)
-
-If we computed another set of change points, for instance ``[110, 150, 320, 500]``, we can easily compare the two segmentations.
-
-.. code-block:: python
-
-    rpt.display(signal, bkps, [110, 150, 320, 500])
-
-.. figure:: /images/example-display.png
-    :scale: 50 %
-
-    Example output of the function :func:`display`.
-
-Code explanation
-----------------------------------------------------------------------------------------------------
-
-.. autofunction:: ruptures.show.display.display
-
-"""
+r"""Display"""
 
 from itertools import cycle
 
@@ -59,11 +14,12 @@ class MatplotlibMissingError(RuntimeError):
 
 
 def display(signal, true_chg_pts, computed_chg_pts=None, **kwargs):
-    """
-    Display a signal and the change points provided in alternating colors. If another set of change
-    point is provided, they are displayed with dashed vertical dashed lines.
-    The following matplotlib subplots options is set by default, but can be changed when calling `display`):
-    - "figsize": (10, 2 * n_features),  # figure size
+    """Display a signal and the change points provided in alternating colors.
+    If another set of change point is provided, they are displayed with dashed
+    vertical dashed lines. The following matplotlib subplots options is set by
+    default, but can be changed when calling `display`):
+
+    - figure size `figsize`, defaults to `(10, 2 * n_features)`.
 
     Args:
         signal (array): signal array, shape (n_samples,) or (n_samples, n_features).
@@ -73,7 +29,6 @@ def display(signal, true_chg_pts, computed_chg_pts=None, **kwargs):
 
     Returns:
         tuple: (figure, axarr) with a :class:`matplotlib.figure.Figure` object and an array of Axes objects.
-
     """
     try:
         import matplotlib.pyplot as plt
