@@ -1,46 +1,4 @@
-# """
-# .. _sec-pw-wavy:
-#
-# Shift in frequency (sine waves)
-# ====================================================================================================
-#
-# Description
-# ----------------------------------------------------------------------------------------------------
-#
-# This function simulates a sum-of-sine signal :math:`y_t=\sin(2\pi f_1 t)+\sin(2\pi f_2 t)` where :math:`t=0,\dots,T-1`.
-# The frequency vector :math:`[f_1, f_2]` alternates between :math:`[0.075, 0.1]` and :math:`[0.1, 0.125]` at each change point index.
-# Gaussian white noise can be added to the signal.
-#
-# .. figure:: /images/sum_of_sines.png
-#    :scale: 50 %
-#    :alt: Signal example
-#
-#    Top: signal example. Bottom: associated spectrogram.
-#
-# Usage
-# ----------------------------------------------------------------------------------------------------
-#
-# Start with the usual imports and create a signal.
-#
-# .. code-block:: python
-#
-#     import numpy as np
-#     import matplotlib.pylab as plt
-#     import ruptures as rpt
-#     # creation of data
-#     n, dim = 500, 3  # number of samples, dimension
-#     n_bkps, sigma = 3, 5  # number of change points, noise standart deviation
-#     signal, bkps = rpt.pw_wavy(n, n_bkps, noise_std=sigma)
-#     rpt.display(signal, bkps)
-#
-#
-# Code explanation
-# ----------------------------------------------------------------------------------------------------
-#
-# .. autofunction:: ruptures.datasets.pw_wavy.pw_wavy
-#
-# """
-
+"""Piecewise sinusoidal (pw_wavy)"""
 from itertools import cycle
 
 import numpy as np
