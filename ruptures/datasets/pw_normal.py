@@ -1,44 +1,4 @@
-"""
-.. _sec-pw-normal:
-
-Shift in correlation
-====================================================================================================
-
-Description
-----------------------------------------------------------------------------------------------------
-
-This function simulates a 2D signal of Gaussian i.i.d. random variables with zero mean and covariance matrix alternating between :math:`[[1, 0.9], [0.9, 1]]` and :math:`[[1, -0.9], [-0.9, 1]]` at every change point.
-
-.. figure:: /images/correlation_shift.png
-   :scale: 50 %
-   :alt: Signal example
-
-   Top and middle: 2D signal example. Bottom: Scatter plot for each regime type.
-
-Usage
-----------------------------------------------------------------------------------------------------
-
-Start with the usual imports and create a signal.
-
-.. code-block:: python
-
-    import numpy as np
-    import matplotlib.pylab as plt
-    import ruptures as rpt
-    # creation of data
-    n = 500, 3  # number of samples
-    n_bkps = 3  # number of change points, noise standart deviation
-    signal, bkps = rpt.pw_normal(n, n_bkps)
-    rpt.display(signal, bkps)
-
-Code explanation
-----------------------------------------------------------------------------------------------------
-
-.. autofunction:: ruptures.datasets.pw_normal.pw_normal
-
-
-"""
-
+"""2D piecewise Gaussian process (pw_normal)"""
 from itertools import cycle
 
 import numpy as np
@@ -56,7 +16,6 @@ def pw_normal(n_samples=200, n_bkps=3):
 
     Returns:
         tuple: signal of shape (n_samples, 2), list of breakpoints
-
     """
     # breakpoints
     bkps = draw_bkps(n_samples, n_bkps)

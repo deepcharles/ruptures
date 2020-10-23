@@ -1,62 +1,4 @@
-r"""
-Exact segmentation: Pelt
-====================================================================================================
-
-Description
-----------------------------------------------------------------------------------------------------
-
-The method is implemented in :class:`ruptures.detection.Pelt`.
-
-Because the enumeration of all possible partitions impossible, the algorithm relies on a pruning
-rule. Many indexes are discarded, greatly reducing the computational cost while retaining the
-ability to find the optimal segmentation.
-The implementation follows :cite:`b-Killick2012a`. In addition, under certain conditions on the change
-point repartition, the computational complexity is linear on average.
-
-When calling :meth:`ruptures.detection.Pelt.__init__`, the minimum distance between change points
-can be set through the keyword ``'min_size'``; through the parameter ``'jump'``, only change
-point indexes multiple of a particular value are considered.
-
-
-Usage
-----------------------------------------------------------------------------------------------------
-
-.. code-block:: python
-
-    import numpy as np
-    import matplotlib.pylab as plt
-    import ruptures as rpt
-
-    # creation of data
-    n, dim = 500, 3
-    n_bkps, sigma = 3, 1
-    signal, b = rpt.pw_constant(n, dim, n_bkps, noise_std=sigma)
-
-    # change point detection
-    model = "l1"  # "l2", "rbf"
-    algo = rpt.Pelt(model=model, min_size=3, jump=5).fit(signal)
-    my_bkps = algo.predict(pen=3)
-
-    # show results
-    fig, (ax,) = rpt.display(signal, bkps, my_bkps, figsize=(10, 6))
-    plt.show()
-
-
-Code explanation
-----------------------------------------------------------------------------------------------------
-
-.. autoclass:: ruptures.detection.Pelt
-    :members:
-    :special-members: __init__
-
-.. rubric:: References
-
-.. bibliography:: ../biblio.bib
-    :style: alpha
-    :cited:
-    :labelprefix: B
-    :keyprefix: b-
-"""
+r"""Pelt"""
 from math import floor
 
 from ruptures.costs import cost_factory
@@ -67,9 +9,8 @@ class Pelt(BaseEstimator):
 
     """Penalized change point detection.
 
-    For a given model and penalty level, computes the segmentation which minimizes the constrained
-    sum of approximation errors.
-
+    For a given model and penalty level, computes the segmentation which
+    minimizes the constrained sum of approximation errors.
     """
 
     def __init__(self, model="l2", custom_cost=None, min_size=2, jump=5, params=None):
@@ -81,9 +22,6 @@ class Pelt(BaseEstimator):
             min_size (int, optional): minimum segment length.
             jump (int, optional): subsample (one every *jump* points).
             params (dict, optional): a dictionary of parameters for the cost instance.
-
-        Returns:
-            self
         """
         if custom_cost is not None and isinstance(custom_cost, BaseCost):
             self.cost = custom_cost
@@ -146,7 +84,7 @@ class Pelt(BaseEstimator):
         del best_partition[(0, 0)]
         return best_partition
 
-    def fit(self, signal):
+    def fit(self, signal) -> "Pelt":
         """Set params.
 
         Args:
@@ -168,7 +106,7 @@ class Pelt(BaseEstimator):
         """Return the optimal breakpoints.
 
         Must be called after the fit method. The breakpoints are associated with the signal passed
-        to fit().
+        to [`fit()`][ruptures.detection.pelt.Pelt.fit].
 
         Args:
             pen (float): penalty value (>0)

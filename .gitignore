@@ -74,7 +74,7 @@ ruptures/detection/.circleci/run-build-locally.sh
 .circleci/run-build-locally.sh
 docs/build/*
 
-# OS generated files 
+# OS generated files
 .DS_Store
 ./**/.DS_Store
 .DS_Store?
@@ -82,3 +82,4 @@ docs/build/*
 .Trashes
 ehthumbs.db
 Thumbs.db
+site/

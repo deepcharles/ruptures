@@ -1,5 +1,5 @@
 name: "Pull Request Docs Check"
-on: 
+on:
 - pull_request
 
 jobs:
@@ -11,7 +11,7 @@ jobs:
       uses: actions/setup-python@v2
       with:
         # Semantic version range syntax or exact version of a Python version
-        python-version: '3.x' 
+        python-version: '3.8'
     # You can test your matrix by printing the current Python version
     - name: Display Python version
       run: python -c "import sys; print(sys.version)"
@@ -21,12 +21,14 @@ jobs:
         pip install -e .
     - name: Install dependencies
       run: |
-        pip install -r docs/requirements.txt
+        pip install -r requirements-dev.txt
+    - name: Run notebooks
+      run: |
+        jupyter nbconvert --inplace --to notebook --ExecutePreprocessor.kernel_name=python --execute notebooks/*.ipynb
     - name: Build documentation
       run: |
-        cd docs
-        make html
+        mkdocs build
     - uses: actions/upload-artifact@v1
       with:
         name: DocumentationHTML
-        path: docs/build/html/
+        path: site/

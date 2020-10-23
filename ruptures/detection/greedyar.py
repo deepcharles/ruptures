@@ -1,12 +1,10 @@
-"""
-.. _greedy-ar:
+""".. _greedy-ar:
 
 Autoregressive model
 ----------------------------------------------------------------------------------------------------
 
 Greedy change point detection for piecewise autoregressive signals.
 Sequential algorithm.
-
 """
 import numpy as np
 from numpy.lib.stride_tricks import as_strided
@@ -24,9 +22,6 @@ class GreedyAR:
         Args:
             order (int, optional): order of the autoregressive process. Defaults to 2.
             jump (int, optional): only consider change points multiple of *jump*. Defaults to 10.
-
-        Returns:
-            self
         """
         self.order = max(1, order)
         self.jump = max(jump, 2 * (order + 1))
@@ -42,7 +37,7 @@ class GreedyAR:
 
         Args:
             n_bkps (int): number of breakpoints to find before stopping.
-            penalty (float): penalty value (>0)
+            pen (float): penalty value (>0)
             epsilon (float): reconstruction budget
 
         Returns:
@@ -101,7 +96,7 @@ class GreedyAR:
             bkps.sort()
         return bkps
 
-    def fit(self, signal):
+    def fit(self, signal) -> "GreedyAR":
         """Compute params to segment signal.
 
         Args:
@@ -135,13 +130,13 @@ class GreedyAR:
         """Return the optimal breakpoints.
 
         Must be called after the fit method. The breakpoints are associated with the signal passed
-        to fit().
+        to [`fit()`][ruptures.detection.greedyar.GreedyAR.fit].
         The stopping rule depends on the parameter passed to the function.
 
         Args:
             n_bkps (int): number of breakpoints to find before stopping.
-            penalty (float): penalty value (>0)
-            penalty (float): penalty value
+            pen (float): penalty value (>0)
+            epsilon (float): reconstruction budget
 
         Returns:
             list: sorted list of breakpoints

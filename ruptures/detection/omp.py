@@ -1,11 +1,8 @@
-"""
-
-Orthogonal matching pursuit for changepoint detection.
+"""Orthogonal matching pursuit for changepoint detection.
 
 Fast but approximate.
 
 Euclidean norm.
-
 """
 import numpy as np
 from numpy.linalg import norm
@@ -19,14 +16,11 @@ class Omp(BaseEstimator):
     """Contient l'algorithme de parcours des partitions."""
 
     def __init__(self, min_size=2, jump=5):
-        """Initialize an Omp instance
+        """Initialize an Omp instance.
 
         Args:
             min_size (int, optional): minimum segment length. Defaults to 2 samples.
             jump (int, optional): subsample (one every "jump" points). Defaults to 5 samples.
-
-        Returns:
-            self
         """
         self.min_size = min_size  # not used
         self.jump = jump  # not used
@@ -84,7 +78,7 @@ class Omp(BaseEstimator):
         bkps.sort()
         return bkps
 
-    def fit(self, signal):
+    def fit(self, signal) -> "Omp":
         """Compute params to segment signal.
 
         Args:
@@ -107,13 +101,13 @@ class Omp(BaseEstimator):
         """Return the optimal breakpoints.
 
         Must be called after the fit method. The breakpoints are associated with the signal passed
-        to fit().
+        to [`fit()`][ruptures.detection.omp.Omp.fit].
         The stopping rule depends on the parameter passed to the function.
 
         Args:
             n_bkps (int): number of breakpoints to find before stopping.
-            penalty (float): penalty value (>0)
-            penalty (float): penalty value
+            pen (float): penalty value (>0)
+            epsilon (float): reconstruction budget
 
         Returns:
             list: sorted list of breakpoints
