@@ -1,3 +1,4 @@
+wheel
 jupyter
 matplotlib
 mkdocs
@@ -7,4 +8,3 @@ mkdocstrings
 pre-commit
 pymdown-extensions
 pytest
-wheel
