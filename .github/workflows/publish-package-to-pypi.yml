@@ -1,5 +1,5 @@
 name: Publish python package
-# Publish package to Pypi and commit documentation changes 
+# Publish package to Pypi and commit documentation changes
 
 on:
   release:
