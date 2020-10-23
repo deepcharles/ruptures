@@ -26,14 +26,16 @@ jobs:
     - name: Install dependencies
       run: |
         pip install -r requirements-dev.txt
+    - name: Run notebooks
+      run: |
+        jupyter nbconvert --inplace --to notebook --ExecutePreprocessor.kernel_name=python --execute notebooks/*.ipynb
     - name: Build documentation
       run: |
-        cd docs
-        make html
+        mkdocs build
     - name: Publish documentation to remote
       uses: selenehyun/gh-push@master
       env:
         GITHUB_TOKEN: ${{ secrets.DOC_PUSHER_ACCESS_TOKEN }}
-        COMMIT_FILES: docs/build/html/*
+        COMMIT_FILES: site/*
         REPO_FULLNAME: centre-borelli/ruptures-docs
         BRANCH: master
