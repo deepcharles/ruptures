@@ -5,6 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+### Added
+
+### Changed
+
+## [1.0.6] - 2020-10-23
 ### Added
 
 - Fix legacy formatting errors PR#69
@@ -27,5 +33,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Link to documentation in PyPi description
 
 
-[Unreleased]: https://github.com/deepcharles/ruptures/compare/v1.0.5...HEAD
+[Unreleased]: https://github.com/deepcharles/ruptures/compare/v1.0.6...HEAD
+[1.0.6]: https://github.com/deepcharles/ruptures/compare/v1.0.5...v1.0.6
 [1.0.5]: https://github.com/deepcharles/ruptures/compare/v1.0.4...v1.0.5
