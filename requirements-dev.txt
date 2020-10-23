@@ -1,3 +1,4 @@
+setuptools==50.2.0
 jupyter
 matplotlib
 mkdocs
@@ -7,5 +8,4 @@ mkdocstrings
 pre-commit
 pymdown-extensions
 pytest
-setuptools==50.2.0
 wheel
