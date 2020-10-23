@@ -17,8 +17,16 @@ def test_display_with_options(signal_bkps):
         fig, axarr = display(signal, bkps)
         fig, axarr = display(signal, bkps, bkps)
         figsize = (20, 10)  # figure size
-        fig, axarr = display(signal, bkps, figsize=figsize,)
-        fig, axarr = display(signal[:, 0], bkps, figsize=figsize,)
+        fig, axarr = display(
+            signal,
+            bkps,
+            figsize=figsize,
+        )
+        fig, axarr = display(
+            signal[:, 0],
+            bkps,
+            figsize=figsize,
+        )
     except MatplotlibMissingError:
         pytest.skip("matplotlib is not installed")
 

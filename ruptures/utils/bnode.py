@@ -8,7 +8,6 @@ class Bnode:
     """Binary node.
 
     In binary segmentation, each segment [start, end) is a binary node.
-
     """
 
     def __init__(self, start, end, val, left=None, right=None, parent=None):

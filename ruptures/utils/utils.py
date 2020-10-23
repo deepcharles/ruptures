@@ -8,7 +8,7 @@ import numpy as np
 
 
 def pairwise(iterable):
-    "s -> (s0,s1), (s1,s2), (s2, s3), ..."
+    """s -> (s0,s1), (s1,s2), (s2, s3), ..."""
     a, b = tee(iterable)
     next(b, None)
     return zip(a, b)
@@ -31,7 +31,7 @@ def pairwise(iterable):
 
 
 def unzip(seq):
-    """Reverse zip"""
+    """Reverse zip."""
     return zip(*seq)
 
 

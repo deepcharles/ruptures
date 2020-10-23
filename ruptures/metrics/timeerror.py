@@ -7,8 +7,7 @@ from ruptures.metrics.sanity_check import sanity_check
 
 def meantime(true_bkps, my_bkps):
     """For each computed changepoint, the mean time error is the average number
-        of points to the closest true changepoint.
-        Not a symetric funtion.
+    of points to the closest true changepoint. Not a symetric funtion.
 
     Args:
         true_bkps (list): list of the last index of each regime (true
