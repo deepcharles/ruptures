@@ -7,3 +7,4 @@ mkdocstrings
 pre-commit
 pymdown-extensions
 pytest
+wheel
