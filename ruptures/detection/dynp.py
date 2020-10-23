@@ -1,58 +1,4 @@
-r"""
-Exact segmentation: dynamic programming
-====================================================================================================
-
-Description
-----------------------------------------------------------------------------------------------------
-
-The method is implemented in :class:`ruptures.detection.Dynp`.
-
-Roughly speaking, it computes the cost of all subsequences of a given signal.
-The number of computed costs is of the order :math:`\mathcal{O}(Kn^2)`, where :math:`K` is the number
-of change points and :math:`n` the number of samples.
-This has to be multiplied by the computational cost of computing the approximation error on one
-sub-sequence.
-Consequently, piecewise constant models are significantly faster than linear or autoregressive
-models.
-
-Computational cost is drastically reduced when considering only a subsample of possible change
-points.
-When calling :meth:`ruptures.detection.Dynp.__init__`, the minimum distance between change points
-can be set through the keyword ``'min_size'``; through the parameter ``'jump'``, only change
-point indexes multiple of a particular value are considered.
-
-
-Usage
-----------------------------------------------------------------------------------------------------
-
-.. code-block:: python
-
-    import numpy as np
-    import matplotlib.pylab as plt
-    import ruptures as rpt
-
-    # creation of data
-    n, dim = 500, 3
-    n_bkps, sigma = 3, 5
-    signal, bkps = rpt.pw_constant(n, dim, n_bkps, noise_std=sigma)
-
-    # change point detection
-    model = "l1"  # "l2", "rbf"
-    algo = rpt.Dynp(model=model, min_size=3, jump=5).fit(signal)
-    my_bkps = algo.predict(n_bkps=3)
-
-    # show results
-    rpt.show.display(signal, bkps, my_bkps, figsize=(10, 6))
-    plt.show()
-
-
-Code explanation
-----------------------------------------------------------------------------------------------------
-.. autoclass:: ruptures.detection.Dynp
-    :members:
-    :special-members: __init__
-
-"""
+r"""Dynamic programming"""
 from functools import lru_cache
 
 from ruptures.utils import sanity_check
@@ -62,10 +8,10 @@ from ruptures.base import BaseCost, BaseEstimator
 
 class Dynp(BaseEstimator):
 
-    """ Find optimal change points using dynamic programming.
+    """Find optimal change points using dynamic programming.
 
-    Given a segment model, it computes the best partition for which the sum of errors is minimum.
-
+    Given a segment model, it computes the best partition for which the
+    sum of errors is minimum.
     """
 
     def __init__(self, model="l2", custom_cost=None, min_size=2, jump=5, params=None):
@@ -77,9 +23,6 @@ class Dynp(BaseEstimator):
             min_size (int, optional): minimum segment length.
             jump (int, optional): subsample (one every *jump* points).
             params (dict, optional): a dictionary of parameters for the cost instance.
-
-        Returns:
-            self
         """
         self.seg = lru_cache(maxsize=None)(self._seg)  # dynamic programming
         if custom_cost is not None and isinstance(custom_cost, BaseCost):
@@ -142,7 +85,7 @@ class Dynp(BaseEstimator):
             # Find the optimal partition
             return min(sub_problems, key=lambda d: sum(d.values()))
 
-    def fit(self, signal):
+    def fit(self, signal) -> "Dynp":
         """Create the cache associated with the signal.
 
         Dynamic programming is a recurrence; intermediate results are cached to speed up
@@ -165,7 +108,7 @@ class Dynp(BaseEstimator):
         """Return the optimal breakpoints.
 
         Must be called after the fit method. The breakpoints are associated with the signal passed
-        to fit().
+        to [`fit()`][ruptures.detection.dynp.Dynp.fit].
 
         Args:
             n_bkps (int): number of breakpoints.

@@ -32,6 +32,7 @@ They are listed in `requirements-dev.txt` and can be installed with the followin
 ```
 pip install -r requirements-dev.txt
 ```
+
 #### With conda
 ```
 conda --file requirements-dev.txt

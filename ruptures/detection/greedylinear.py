@@ -1,8 +1,6 @@
-"""
+"""Greedy change point detection for piecewise linear signals.
 
-Greedy change point detection for piecewise linear signals.
 Sequential algorithm.
-
 """
 import numpy as np
 from numpy.linalg import lstsq
@@ -18,9 +16,6 @@ class GreedyLinear:
 
         Args:
             jump (int, optional): only consider change points multiple of *jump*. Defaults to 10.
-
-        Returns:
-            self
         """
         self.jump = jump
         self.n_samples = None
@@ -35,7 +30,7 @@ class GreedyLinear:
 
         Args:
             n_bkps (int): number of breakpoints to find before stopping.
-            penalty (float): penalty value (>0)
+            pen (float): penalty value (>0)
             epsilon (float): reconstruction budget
 
         Returns:
@@ -91,7 +86,7 @@ class GreedyLinear:
             bkps.sort()
         return bkps
 
-    def fit(self, signal, covariates):
+    def fit(self, signal, covariates) -> "GreedyLinear":
         """Compute params to segment signal.
 
         Args:
@@ -120,13 +115,13 @@ class GreedyLinear:
         """Return the optimal breakpoints.
 
         Must be called after the fit method. The breakpoints are associated with the signal passed
-        to fit().
+        to [`fit()`][ruptures.detection.greedylinear.GreedyLinear.fit].
         The stopping rule depends on the parameter passed to the function.
 
         Args:
             n_bkps (int): number of breakpoints to find before stopping.
-            penalty (float): penalty value (>0)
-            penalty (float): penalty value
+            pen (float): penalty value (>0)
+            epsilon (float): reconstruction budget
 
         Returns:
             list: sorted list of breakpoints

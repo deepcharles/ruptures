@@ -1,77 +1,4 @@
-r"""
-.. _sec-costrank:
-
-Rank-based cost function
-====================================================================================================
-
-Description
-----------------------------------------------------------------------------------------------------
-
-This cost function detects general distribution changes in multivariate signals, using a rank transformation :cite:`rank-Lung-Yut-Fong2015`.
-Formally, for a signal :math:`\{y_t\}_t` on an interval :math:`[a, b)`,
-
-    .. math:: c_{rank}(a, b) = -(b - a) \bar{r}_{a..b}' \hat{\Sigma}_r^{-1} \bar{r}_{a..b}
-
-where :math:`\bar{r}_{a..b}` is the empirical mean of the sub-signal
-:math:`\{r_t\}_{t=a+1}^b`, and :math:`\hat{\Sigma}_r` is the covariance matrix of the
-complete rank signal :math:`r`.
-
-Usage
-----------------------------------------------------------------------------------------------------
-
-Start with the usual imports and create a signal.
-
-.. code-block:: python
-
-    import numpy as np
-    import matplotlib.pylab as plt
-    import ruptures as rpt
-    # creation of data
-    n, dim = 500, 3  # number of samples, dimension
-    n_bkps, sigma = 3, 5  # number of change points, noise standard deviation
-    signal, bkps = rpt.pw_constant(n, dim, n_bkps, noise_std=sigma)
-
-Then create a :class:`CostRank` instance and print the cost of the sub-signal :code:`signal[50:150]`.
-
-.. code-block:: python
-
-    c = rpt.costs.CostRank().fit(signal)
-    print(c.error(50, 150))
-
-
-You can also compute the sum of costs for a given list of change points.
-
-.. code-block:: python
-
-    print(c.sum_of_costs(bkps))
-    print(c.sum_of_costs([10, 100, 200, 250, n]))
-
-
-In order to use this cost class in a change point detection algorithm (inheriting from :class:`BaseEstimator`), either pass a :class:`CostRank` instance (through the argument ``'custom_cost'``) or set :code:`model="rank"`.
-
-.. code-block:: python
-
-    c = rpt.costs.CostRank(); algo = rpt.Dynp(custom_cost=c)
-    # is equivalent to
-    algo = rpt.Dynp(model="rank")
-
-
-Code explanation
-----------------------------------------------------------------------------------------------------
-
-.. autoclass:: ruptures.costs.CostRank
-    :members:
-    :special-members: __init__
-
-
-.. rubric:: References
-
-.. bibliography:: ../biblio.bib
-    :style: alpha
-    :cited:
-    :labelprefix: RA
-    :keyprefix: rank-
-"""
+r"""Rank-based cost function (CostRank)"""
 import numpy as np
 from numpy.linalg import pinv, LinAlgError
 from scipy.stats.mstats import rankdata
@@ -88,11 +15,12 @@ class CostRank(BaseCost):
     model = "rank"
 
     def __init__(self):
+        """Initialize the object."""
         self.inv_cov = None
         self.ranks = None
         self.min_size = 2
 
-    def fit(self, signal):
+    def fit(self, signal) -> "CostRank":
         """Set parameters of the instance.
 
         Args:
@@ -138,7 +66,7 @@ class CostRank(BaseCost):
             float: segment cost
 
         Raises:
-            NotEnoughPoints: when the segment is too short (less than ``'min_size'`` samples).
+            NotEnoughPoints: when the segment is too short (less than `min_size` samples).
         """
         if end - start < self.min_size:
             raise NotEnoughPoints

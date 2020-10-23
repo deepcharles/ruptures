@@ -1,9 +1,6 @@
-"""
-
-Kernel orthogonal matching pursuit for changepoint detection.
+"""Kernel orthogonal matching pursuit for changepoint detection.
 
 Fast but approximate.
-
 """
 from itertools import product
 
@@ -17,16 +14,13 @@ class OmpK:
     """Contient l'algorithme de parcours des partitions."""
 
     def __init__(self, min_size=2, jump=5):
-        """One line description
+        """One line description.
 
         Detailled description
 
         Args:
             min_size (int, optional): minimum segment length
             jump (int, optional): subsample (one every "jump" points)
-
-        Returns:
-            self
         """
         self.min_size = min_size  # not used
         self.jump = jump  # not used
@@ -104,7 +98,7 @@ class OmpK:
         bkps.sort()
         return bkps
 
-    def fit(self, gram):
+    def fit(self, gram) -> "OmpK":
         """Compute params to segment signal.
 
         Args:
@@ -124,13 +118,13 @@ class OmpK:
         """Return the optimal breakpoints.
 
         Must be called after the fit method. The breakpoints are associated with the signal passed
-        to fit().
+        to [`fit()`][ruptures.detection.ompk.OmpK.fit].
         The stopping rule depends on the parameter passed to the function.
 
         Args:
             n_bkps (int): number of breakpoints to find before stopping.
-            penalty (float): penalty value (>0)
-            penalty (float): penalty value
+            pen (float): penalty value (>0)
+            epsilon (float): reconstruction budget
 
         Returns:
             list: sorted list of breakpoints
