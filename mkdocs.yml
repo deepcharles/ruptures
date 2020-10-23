@@ -67,7 +67,7 @@ nav:
       - 'Display': user-guide/show/display.md
   - Gallery of examples:
     - 'Simple example': notebooks/simple-example.md
-  - Code Reference:
+  - Code reference:
       - Introduction: code-reference/index.md
       - Base classes: code-reference/base-reference.md
       - Search methods:
