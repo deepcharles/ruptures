@@ -4,6 +4,7 @@ name: Publish python package
 on:
   release:
     types: [created]
+  workflow_dispatch:
 
 jobs:
   deploy_to_pypi:
