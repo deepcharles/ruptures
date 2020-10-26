@@ -33,13 +33,13 @@ static inline double gaussian_kernel(double *x, double *y, int n_dims, double ga
 // Hub function that select proper kernel accoridng kernelObj
 double kernel_value_by_name(double *x, double *y, int n_dims, void *kernelObj)
 {
-	if (strcmp(((LinearKernel *)kernelObj)->pBaseObj->name, LINEAR_KERNEL_NAME) == 0)
+	if (strcmp(((KernelL2 *)kernelObj)->pBaseObj->name, LINEAR_KERNEL_NAME) == 0)
 	{
 		return linear_kernel(x, y, n_dims);
 	}
-	else if (strcmp(((GaussianKernel *)kernelObj)->pBaseObj->name, GAUSSIAN_KERNEL_NAME) == 0)
+	else if (strcmp(((KernelGaussian *)kernelObj)->pBaseObj->name, GAUSSIAN_KERNEL_NAME) == 0)
 	{
-		return gaussian_kernel(x, y, n_dims, ((GaussianKernel *)kernelObj)->gamma);
+		return gaussian_kernel(x, y, n_dims, ((KernelGaussian *)kernelObj)->gamma);
 	}
 	return 0.0;
 }

@@ -6,13 +6,13 @@ typedef struct KernelGeneric {
     char *name;
 } KernelGeneric;
 
-typedef struct LinearKernel {
+typedef struct KernelL2 {
     KernelGeneric *pBaseObj;
-} LinearKernel;
+} KernelL2;
 
-typedef struct GaussianKernel {
+typedef struct KernelGaussian {
     KernelGeneric *pBaseObj;
     double gamma;
-} GaussianKernel;
+} KernelGaussian;
 
 double kernel_value_by_name(double *x, double *y, int n_dims, void *kernelObj);
