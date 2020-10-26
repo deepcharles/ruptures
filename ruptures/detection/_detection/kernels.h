@@ -6,9 +6,9 @@ typedef struct KernelGeneric {
     char *name;
 } KernelGeneric;
 
-typedef struct KernelL2 {
+typedef struct KernelLinear {
     KernelGeneric *pBaseObj;
-} KernelL2;
+} KernelLinear;
 
 typedef struct KernelGaussian {
     KernelGeneric *pBaseObj;

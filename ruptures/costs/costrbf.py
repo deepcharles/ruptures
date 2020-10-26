@@ -12,10 +12,11 @@ class CostRbf(BaseCost):
 
     model = "rbf"
 
-    def __init__(self):
+    def __init__(self, gamma=1.0):
         """Initialize the object."""
         self.gram = None
         self.min_size = 2
+        self.gamma = gamma
 
     def fit(self, signal) -> "CostRbf":
         """Sets parameters of the instance.
@@ -27,9 +28,10 @@ class CostRbf(BaseCost):
             self
         """
         if signal.ndim == 1:
-            K = pdist(signal.reshape(-1, 1), metric="sqeuclidean")
+            self.signal = signal.reshape(-1, 1)
         else:
-            K = pdist(signal, metric="sqeuclidean")
+            self.signal = signal
+        K = pdist(self.signal, metric="sqeuclidean")
         K_median = np.median(K)
         if K_median != 0:
             K /= K_median

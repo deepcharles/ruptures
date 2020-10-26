@@ -1,11 +1,11 @@
 cdef extern from "kernels.h":
     ctypedef struct KernelGeneric:
         char *name
-    ctypedef struct KernelL2:
+    ctypedef struct KernelLinear:
         KernelGeneric *pBaseObj
     ctypedef struct KernelGaussian:
         KernelGeneric *pBaseObj
-        double delta
+        double gamma
     cdef char *LINEAR_KERNEL_NAME
     cdef char *GAUSSIAN_KERNEL_NAME
     double kernel_value_by_name(double *x, double *y, int n_dims, void *kernelObj)
