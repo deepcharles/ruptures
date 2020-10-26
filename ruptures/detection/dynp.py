@@ -4,6 +4,7 @@ from functools import lru_cache
 from ruptures.utils import sanity_check
 from ruptures.costs import cost_factory
 from ruptures.base import BaseCost, BaseEstimator
+from ruptures.detection._detection.ekcpd import ekcpd_L2
 
 
 class Dynp(BaseEstimator):
@@ -28,6 +29,7 @@ class Dynp(BaseEstimator):
         if custom_cost is not None and isinstance(custom_cost, BaseCost):
             self.cost = custom_cost
         else:
+            self.model_name = model
             if params is None:
                 self.cost = cost_factory(model=model)
             else:
@@ -116,8 +118,18 @@ class Dynp(BaseEstimator):
         Returns:
             list: sorted list of breakpoints
         """
-        partition = self.seg(0, self.n_samples, n_bkps)
-        bkps = sorted(e for s, e in partition.keys())
+        if (
+            self.model_name == "l2"
+            and self.min_size is self.__init__.__defaults__[2]
+            and self.jump is self.__init__.__defaults__[3]
+        ):
+            print("In the condition")
+            res = ekcpd_L2(self.cost.signal, n_bkps)
+            bkps = list(res)
+            bkps.append(self.cost.signal.shape[0])
+        else:
+            partition = self.seg(0, self.n_samples, n_bkps)
+            bkps = sorted(e for s, e in partition.keys())
         return bkps
 
     def fit_predict(self, signal, n_bkps):

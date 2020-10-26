@@ -17,8 +17,8 @@ cpdef cnp.ndarray[cnp.float_t, ndim=1] ekcpd_L2(cnp.ndarray[cnp.float_t, ndim=2]
     # Allocate and initialize structure for result of c function
     res = <int *>malloc(n_bkps * sizeof(int))
     if not res: raise MemoryError
-    cdef _detection.ekcpd.KernelL2 kernelL2Desc
-    cdef _detection.ekcpd.KernelGeneric kernelDesc
+    cdef ekcpd.KernelL2 kernelL2Desc
+    cdef ekcpd.KernelGeneric kernelDesc
     kernelDesc.name = LINEAR_KERNEL_NAME
     kernelL2Desc.pBaseObj = &kernelDesc
 
@@ -26,7 +26,7 @@ cpdef cnp.ndarray[cnp.float_t, ndim=1] ekcpd_L2(cnp.ndarray[cnp.float_t, ndim=2]
     cdef double[:, ::1] signal_arr = np.ascontiguousarray(signal)
 
     try:
-        ekcpd.ekcpd(&signal_arr[0, 0], n_sample_, n_dim_, n_bkps, &kernelL2Desc, &res)
+        ekcpd.ekcpd_compute(&signal_arr[0, 0], n_sample_, n_dim_, n_bkps, &kernelL2Desc, &res)
     except:
         print("An exception occurred")
 
@@ -36,4 +36,4 @@ cpdef cnp.ndarray[cnp.float_t, ndim=1] ekcpd_L2(cnp.ndarray[cnp.float_t, ndim=2]
     # Free memory
     free(res)
 
-    return np.asarray(res)
+    return np.asarray(bkps_flat_arr)

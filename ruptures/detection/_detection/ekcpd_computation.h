@@ -1,1 +1,1 @@
-void ekcpd(double *y, int n_samples, int n_dims, int nb_bp, void *kernelDescObj, int **res);
+void ekcpd_compute(double *signal, int n_samples, int n_dims, int n_bkps, void *kernelDescObj, int **res);

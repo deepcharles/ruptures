@@ -12,7 +12,7 @@
 /*
 *   res : has to be allocated before the call
 */
-void ekcpd(double *signal, int n_samples, int n_dims, int n_bkps, void *kernelDescObj, int **res)
+void ekcpd_compute(double *signal, int n_samples, int n_dims, int n_bkps, void *kernelDescObj, int **res)
 {
     int i, j, t, s, k;
     int c_max_bp;
