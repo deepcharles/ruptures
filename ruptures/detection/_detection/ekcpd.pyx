@@ -17,8 +17,8 @@ cpdef cnp.ndarray[cnp.float_t, ndim=1] ekcpd_L2(cnp.ndarray[cnp.float_t, ndim=2]
     # Allocate and initialize structure for result of c function
     res = <int *>malloc(n_bkps * sizeof(int))
     if not res: raise MemoryError
-    cdef ekcpd.KernelL2 kernelL2Desc
-    cdef ekcpd.KernelGeneric kernelDesc
+    cdef _detection.ekcpd.KernelL2 kernelL2Desc
+    cdef _detection.ekcpd.KernelGeneric kernelDesc
     kernelDesc.name = LINEAR_KERNEL_NAME
     kernelL2Desc.pBaseObj = &kernelDesc
 

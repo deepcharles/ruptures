@@ -1,4 +1,6 @@
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages, Extension
+import numpy as np
+from Cython.Build import cythonize
 
 setup(
     name="ruptures",
@@ -47,4 +49,18 @@ An extensive documentation is available
 
 This version requires Python 3 or later.
 """,
+    ext_modules=cythonize(
+        [
+            Extension(
+                "ruptures.detection._detection.ekcpd",
+                [
+                    "ruptures/detection/_detection/ekcpd.pyx",
+                    "ruptures/detection/_detection/ekcpd_computation.c",
+                    "ruptures/detection/_detection/kernels.c",
+                ],
+                include_dirs=[np.get_include()],
+            )
+        ],
+        language_level="3",
+    ),
 )
