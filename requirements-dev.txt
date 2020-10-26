@@ -1,3 +1,4 @@
+Cython
 jupyter
 matplotlib
 mkdocs
