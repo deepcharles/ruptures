@@ -97,3 +97,27 @@ def test_custom_cost(signal_bkps_1D, algo):
 def test_pass_param_to_cost(signal_bkps_1D, algo):
     signal, bkps = signal_bkps_1D
     algo(model="ar", params={"order": 10}).fit_predict(signal, 1)
+
+
+@pytest.mark.parametrize(
+    "algo, model, min_size",
+    product([Dynp], ["l2", "rbf"], [None, 5]),
+)
+def test_cython_dynp_1D(signal_bkps_1D, algo, model, min_size):
+    signal, bkps = signal_bkps_1D
+    if min_size is None:
+        algo(model=model).fit(signal).predict(n_bkps=len(bkps) - 1)
+    else:
+        algo(model=model, min_size=min_size).fit(signal).predict(n_bkps=len(bkps) - 1)
+
+
+@pytest.mark.parametrize(
+    "algo, model, min_size",
+    product([Dynp], ["l2", "rbf"], [None, 5]),
+)
+def test_cython_dynp_5D(signal_bkps_5D, algo, model, min_size):
+    signal, bkps = signal_bkps_5D
+    if min_size is None:
+        algo(model=model).fit(signal).predict(n_bkps=len(bkps) - 1)
+    else:
+        algo(model=model, min_size=min_size).fit(signal).predict(n_bkps=len(bkps) - 1)

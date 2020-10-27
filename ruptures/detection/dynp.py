@@ -118,15 +118,22 @@ class Dynp(BaseEstimator):
         Returns:
             list: sorted list of breakpoints
         """
+        # Current version of C implementation not compatible with custom `min_size` and `jump`
         if (
             self.min_size is self.__init__.__defaults__[2]
             and self.jump is self.__init__.__defaults__[3]
+            and self.model_name == "l2"
         ):
-            # Current version of C implementation not compatible with custom `min_size` and `jump`
-            if self.model_name == "l2":
-                res = ekcpd_L2(self.cost.signal, n_bkps)
-            elif self.model_name == "rbf":
-                res = ekcpd_Gaussian(self.cost.signal, n_bkps, self.cost.gamma)
+            res = ekcpd_L2(self.cost.signal, n_bkps)
+            bkps = list(res)
+            bkps.append(self.cost.signal.shape[0])
+            return bkps
+        elif (
+            self.min_size is self.__init__.__defaults__[2]
+            and self.jump is self.__init__.__defaults__[3]
+            and self.model_name == "rbf"
+        ):
+            res = ekcpd_Gaussian(self.cost.signal, n_bkps, self.cost.gamma)
             bkps = list(res)
             bkps.append(self.cost.signal.shape[0])
             return bkps
