@@ -34,7 +34,7 @@ jobs:
             . venv/bin/activate
             pip3 install -r requirements.txt
             pip3 install -r requirements-dev.txt
-            python3 setup.py build_ext
+            python3 setup.py build_ext --inplace
             python3 setup.py install
 
 
