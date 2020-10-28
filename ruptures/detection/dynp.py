@@ -127,7 +127,6 @@ class Dynp(BaseEstimator):
             res = ekcpd_L2(self.cost.signal, n_bkps)
             bkps = list(res)
             bkps.append(self.cost.signal.shape[0])
-            print("TEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEST LINT IN GITHUB ACTIONS")
             return bkps
         elif (
             self.min_size is self.__init__.__defaults__[2]
