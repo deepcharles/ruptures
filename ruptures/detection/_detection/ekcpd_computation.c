@@ -3,11 +3,6 @@
 
 #include "kernels.h"
 
-#define min(a, b) \
-    ({ __typeof__ (a) _a = (a); \
-       __typeof__ (b) _b = (b); \
-     _a < _b ? _a : _b; })
-
 /*
 *   res : has to be allocated before the call
 */
@@ -73,7 +68,10 @@ void ekcpd_compute(double *signal, int n_samples, int n_dims, int n_bkps, void *
         // Compute segmentation
         // Store the total cost on y_{0..t} with 0 break points
         M_V[t] = D[t] - S[0] / t;
-        c_max_bp = min(n_bkps, t - 1); // Maximum number of break points on the segment y_{0..t}
+        if (n_bkps < (t - 1)) // Maximum number of break points on the segment y_{0..t}
+            c_max_bp = n_bkps;
+        else
+            c_max_bp = t - 1;
         for (k = 1; k <= c_max_bp; k++)
         {
             for (s = k; s <= (t - 1); s++)
