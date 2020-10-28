@@ -27,7 +27,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
+        pip install -r requirements-dev.txt
     - name: Install ruptures
       run: |
         python setup.py build_ext --inplace
