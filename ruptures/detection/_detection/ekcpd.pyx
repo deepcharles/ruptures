@@ -3,10 +3,9 @@ cimport ruptures.detection._detection.ekcpd as ekcpd
 from libc.stdlib cimport malloc, free
 
 cimport cython
-cimport numpy as cnp
 import numpy as np
 
-cpdef cnp.ndarray[cnp.float_t, ndim=1] ekcpd_L2(cnp.ndarray[cnp.float_t, ndim=2] signal, cnp.int n_bkps):
+cpdef ekcpd_L2(double[:,:] signal, int n_bkps):
 
     # Allocate and initialize kernel description
     cdef ekcpd.KernelLinear kernelLinearDesc
@@ -17,7 +16,7 @@ cpdef cnp.ndarray[cnp.float_t, ndim=1] ekcpd_L2(cnp.ndarray[cnp.float_t, ndim=2]
     return ekcpd_core(signal, n_bkps, &kernelLinearDesc)
 
 
-cpdef cnp.ndarray[cnp.float_t, ndim=1] ekcpd_Gaussian(cnp.ndarray[cnp.float_t, ndim=2] signal, cnp.int n_bkps, cnp.float_t gamma):
+cpdef ekcpd_Gaussian(double[:,:] signal, int n_bkps, double gamma):
 
     # Allocate and initialize kernel description
     cdef ekcpd.KernelGaussian kernelGaussianDesc
@@ -28,7 +27,8 @@ cpdef cnp.ndarray[cnp.float_t, ndim=1] ekcpd_Gaussian(cnp.ndarray[cnp.float_t, n
 
     return ekcpd_core(signal, n_bkps, &kernelGaussianDesc)
 
-cdef cnp.ndarray[cnp.float_t, ndim=1] ekcpd_core(cnp.ndarray[cnp.float_t, ndim=2] signal, cnp.int n_bkps, void *kernelDescObj):
+
+cdef ekcpd_core(double[:,:] signal, int n_bkps, void *kernelDescObj):
     cdef:
         int n_sample_ = signal.shape[0]
         int n_dim_ = signal.shape[1]
