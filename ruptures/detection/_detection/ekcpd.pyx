@@ -30,8 +30,8 @@ cpdef ekcpd_Gaussian(double[:,:] signal, int n_bkps, double gamma):
 
 cdef ekcpd_core(double[:,:] signal, int n_bkps, void *kernelDescObj):
     cdef:
-        int n_sample_ = signal.shape[0]
-        int n_dim_ = signal.shape[1]
+        int n_samples = signal.shape[0]
+        int n_dims = signal.shape[1]
 
     # Allocate and initialize structure for result of c function
     cdef int[::1] path_matrix_flat = np.empty((n_bkps+1)*(n_samples+1), dtype=np.dtype("i"))
