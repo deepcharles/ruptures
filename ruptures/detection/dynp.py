@@ -4,7 +4,9 @@ from functools import lru_cache
 from ruptures.utils import sanity_check
 from ruptures.costs import cost_factory
 from ruptures.base import BaseCost, BaseEstimator
+
 from ruptures.detection._detection.ekcpd import ekcpd_L2, ekcpd_Gaussian
+from ruptures.utils._utils.convert_path_matrix import from_path_matrix_to_bkps_list
 
 
 class Dynp(BaseEstimator):
@@ -119,23 +121,17 @@ class Dynp(BaseEstimator):
             list: sorted list of breakpoints
         """
         # Current version of C implementation not compatible with custom `min_size` and `jump`
-        if (
-            self.min_size is self.__init__.__defaults__[2]
-            and self.jump is self.__init__.__defaults__[3]
-            and self.model_name == "l2"
-        ):
-            res = ekcpd_L2(self.cost.signal, n_bkps)
-            bkps = list(res)
-            bkps.append(self.cost.signal.shape[0])
+        if self.min_size == 2 and self.jump == 1 and self.model_name == "l2":
+            path_matrix_flat = ekcpd_L2(self.cost.signal, n_bkps)
+            bkps = from_path_matrix_to_bkps_list(
+                path_matrix_flat, n_bkps, self.cost.signal.shape[0], n_bkps
+            )
             return bkps
-        elif (
-            self.min_size is self.__init__.__defaults__[2]
-            and self.jump is self.__init__.__defaults__[3]
-            and self.model_name == "rbf"
-        ):
-            res = ekcpd_Gaussian(self.cost.signal, n_bkps, self.cost.gamma)
-            bkps = list(res)
-            bkps.append(self.cost.signal.shape[0])
+        elif self.min_size == 2 and self.jump == 1 and self.model_name == "rbf":
+            path_matrix_flat = ekcpd_Gaussian(self.cost.signal, n_bkps)
+            bkps = from_path_matrix_to_bkps_list(
+                path_matrix_flat, n_bkps, self.cost.signal.shape[0], n_bkps
+            )
             return bkps
         partition = self.seg(0, self.n_samples, n_bkps)
         bkps = sorted(e for s, e in partition.keys())
