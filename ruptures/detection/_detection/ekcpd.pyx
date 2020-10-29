@@ -34,18 +34,12 @@ cdef cnp.ndarray[cnp.float_t, ndim=1] ekcpd_core(cnp.ndarray[cnp.float_t, ndim=2
         int n_dim_ = signal.shape[1]
 
     # Allocate and initialize structure for result of c function
-    res = <int *>malloc(n_bkps * sizeof(int))
+    cdef int[::1] path_matrix_flat = np.empty((n_bkps+1)*(n_samples+1), dtype=np.dtype("i"))
     # Make it C compatible in terms of memory contiguousness
     cdef double[:, ::1] signal_arr = np.ascontiguousarray(signal)
     try:
-        ekcpd.ekcpd_compute(&signal_arr[0, 0], n_sample_, n_dim_, n_bkps, kernelDescObj, &res)
+        ekcpd.ekcpd_compute(&signal_arr[0, 0], n_samples, n_dims, n_bkps, kernelDescObj, &path_matrix_flat[0])
     except:
-        print("An exception occurred")
+        print("An exception occurred.")
 
-    # Transform int* into something understandable by numpy
-    cdef int[::1] bkps_flat_arr = <int[:n_bkps]> res
-
-    # Free memory
-    free(res)
-
-    return np.asarray(bkps_flat_arr)
+    return np.asarray(path_matrix_flat)

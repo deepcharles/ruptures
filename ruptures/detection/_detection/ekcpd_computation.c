@@ -6,7 +6,7 @@
 /*
 *   res : has to be allocated before the call
 */
-void ekcpd_compute(double *signal, int n_samples, int n_dims, int n_bkps, void *kernelDescObj, int **res)
+void ekcpd_compute(double *signal, int n_samples, int n_dims, int n_bkps, void *kernelDescObj, int *M_path)
 {
     int i, j, t, s, k;
     int n_bkps_max;
@@ -14,12 +14,10 @@ void ekcpd_compute(double *signal, int n_samples, int n_dims, int n_bkps, void *
     // Allocate memory
     double *D, *S, *M_V;
     double c_cost, c_cost_sum, c_r;
-    int *M_path;
 
     D = (double *)malloc((n_samples + 1) * sizeof(double));
     S = (double *)malloc((n_samples + 1) * sizeof(double));
     M_V = (double *)malloc((n_bkps + 1) * (n_samples + 1) * sizeof(double));
-    M_path = (int *)malloc((n_bkps + 1) * (n_samples + 1) * sizeof(int));
 
     // Initialize
     c_cost = 0;
@@ -93,22 +91,12 @@ void ekcpd_compute(double *signal, int n_samples, int n_dims, int n_bkps, void *
             }
         }
     }
-
-    /*
-    *   Format output
-    * */
-    k = 1;
-    (*res)[n_bkps - 1] = M_path[n_bkps * (n_samples + 1) + n_samples];
-    while (k++ < n_bkps)
-    {
-        (*res)[n_bkps - k] = M_path[(n_bkps - k + 1) * (n_samples + 1) + (*res)[n_bkps - k + 1]];
     }
 
     // Free memory
     free(D);
     free(S);
     free(M_V);
-    free(M_path);
 
     return;
 }
