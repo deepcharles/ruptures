@@ -11,9 +11,7 @@ void ekcpd_compute(double *signal, int n_samples, int n_dims, int n_bkps, void *
     int i, j, t, s, k;
     int n_bkps_max;
 
-    /*
-    * Allocate memory
-    * */
+    // Allocate memory
     double *D, *S, *M_V;
     double c_cost, c_cost_sum, c_r;
     int *M_path;
