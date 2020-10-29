@@ -38,12 +38,12 @@ void ekcpd_compute(double *signal, int n_samples, int n_dims, int n_bkps, void *
         S[i] = 0.0;
     }
     // M_V and M_path
-    for (i = 0; i < (n_bkps + 1); i++)
+    for (i = 0; i < (n_samples + 1); i++)
     {
-        for (j = 0; j < (n_samples + 1); j++)
+        for (j = 0; j < (n_bkps + 1); j++)
         {
-            M_V[i * (n_samples + 1) + j] = 0.0;
-            M_path[i * (n_samples + 1) + j] = 0;
+            M_V[i * (n_bkps + 1) + j] = 0.0;
+            M_path[i * (n_bkps + 1) + j] = 0;
         }
     }
 
@@ -66,39 +66,45 @@ void ekcpd_compute(double *signal, int n_samples, int n_dims, int n_bkps, void *
         }
 
         // Compute segmentation
-        // Store the total cost on y_{0..t} with 0 break points
-        M_V[t] = D[t] - S[0] / t;
-        if (n_bkps < (t - 1)) // Maximum number of break points on the segment y_{0..t}
-            c_max_bp = n_bkps;
-        else
-            c_max_bp = t - 1;
-        for (k = 1; k <= c_max_bp; k++)
+        // Store the total cost on y_{0..t} with 0 break points in M_V[t, 0]
+        M_V[t * (n_bkps + 1)] = D[t] - S[0] / t;
+        for (s = 1; s <= (t - 1); s++)
         {
-            for (s = k; s <= (t - 1); s++)
+            // Compute cost on y_{s..t}
+            // D_{s..t} = D_{0..t} - D{0..s} <--> D_{s..t} = D[t] - D[s]
+            // S{s..t} has been stored in S[s]
+            c_cost = D[t] - D[s] - S[s] / (t - s);
+
+            // Maximum number of break points on the segment y_{0..s}
+            if (n_bkps < s)
             {
-                // Compute cost on y_{s..t}
-                // D_{s..t} = D_{0..t} - D{0..s} <--> D_{s..t} = D[t] - D[s]
-                // S{s..t} has been stored in S[s]
-                c_cost = D[t] - D[s] - S[s] / (t - s);
+                n_bkps_max = n_bkps;
+            }
+            else
+            {
+                n_bkps_max = s;
+            }
+
+            for (k = 1; k <= n_bkps_max; k++)
+            {
                 // With k break points on y_{0..t}, sum cost with (k-1) break points on y_{0..s} and cost on y_{s..t}
-                c_cost_sum = M_V[(k - 1) * (n_samples + 1) + s] + c_cost;
+                c_cost_sum = M_V[s * (n_bkps + 1) + (k - 1)] + c_cost;
                 if (s == k)
                 {
-                    // k is the smallest possibility for s in order to have k break points in y_{0..t}.
+                    // k is the smallest possibility for s in order to have k break points in y_{0..s}.
                     // It means that y_0, y_1, ..., y_k are break points.
-                    M_V[k * (n_samples + 1) + t] = c_cost_sum;
-                    M_path[k * (n_samples + 1) + t] = s;
+                    M_V[t * (n_bkps + 1) + k] = c_cost_sum;
+                    M_path[t * (n_bkps + 1) + k] = s;
                     continue;
                 }
                 // Compare to current min
-                if (M_V[k * (n_samples + 1) + t] > c_cost_sum)
+                if (M_V[t * (n_bkps + 1) + k] > c_cost_sum)
                 {
-                    M_V[k * (n_samples + 1) + t] = c_cost_sum;
-                    M_path[k * (n_samples + 1) + t] = s;
+                    M_V[t * (n_bkps + 1) + k] = c_cost_sum;
+                    M_path[t * (n_bkps + 1) + k] = s;
                 }
             }
         }
-    }
     }
 
     // Free memory
