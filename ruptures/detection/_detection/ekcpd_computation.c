@@ -3,9 +3,17 @@
 
 #include "kernels.h"
 
-/*
-*   res : has to be allocated before the call
-*/
+/**
+ * @brief Efficient kernel change point detection
+ *
+ * @param signal shape (n_samples*n_dims,)
+ * @param n_samples number of samples
+ * @param n_dims number of dimensions
+ * @param n_bkps number of change points to detect
+ * @param kernelDescObj describe the selected kernel
+ * @param M_path path matrix of shape ((n_samples+1)*(n_bkps+1),) that will
+ * hold the results, must be allocated beforehand.
+ */
 void ekcpd_compute(double *signal, int n_samples, int n_dims, int n_bkps, void *kernelDescObj, int *M_path)
 {
     int i, j, t, s, k;
