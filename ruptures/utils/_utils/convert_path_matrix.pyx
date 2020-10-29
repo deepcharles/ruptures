@@ -11,4 +11,4 @@ cpdef from_path_matrix_to_bkps_list(int[:] path_matrix_flat, int n_bkps, int n_s
         convert_pm.convert_path_matrix_c(&path_matrix_flat[0], n_bkps, n_samples, n_bkps_max, &bkps_list[0])
     except:
         print("An exception occurred.")
-    return np.asarray(bkps_list)
+    return np.asarray(bkps_list).tolist()
