@@ -17,7 +17,7 @@ class KernelDynp(BaseEstimator):
     sum of errors is minimum.
     """
 
-    def __init__(self, kernel="linear", min_size=2, jump=5, **kwargs):
+    def __init__(self, kernel="linear", min_size=2, jump=5, params=None):
         r"""Creates a KernelDynp instance.
 
         Available kernels:
@@ -35,7 +35,7 @@ class KernelDynp(BaseEstimator):
         from_kernel_to_model_dict = {"linear": "l2", "rbf": "rbf"}
         self.kernel_name = kernel
         self.model_name = from_kernel_to_model_dict[kernel]
-        self.params = kwargs
+        self.params = params
         if self.params is None:
             self.cost = cost_factory(model=self.model_name)
         else:
