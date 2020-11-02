@@ -2,7 +2,11 @@
 
 ## Description
 
-The method is implemented in [`Dynp`][ruptures.detection.dynp.Dynp].
+The method is implemented in both :
+
+* [`Dynp`][ruptures.detection.dynp.Dynp], which is a full native python implementation for which the user can choose any [`cost`][ruptures.cost]
+* [`KernelDynp`][ruptures.detection.kerneldynp.KernelDynp], which is a C implementation for which not all cost methods are available. Please check [`KernelDynp`][ruptures.detection.kerneldynp.KernelDynp] for documentation.
+
 It finds the (exact) minimum of the sum of costs by computing the cost of all subsequences of a given signal.
 It is called "dynamic programming" because the search over all possible segmentations is ordered using a dynamic programming approach.
 
