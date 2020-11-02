@@ -30,7 +30,7 @@ class KernelDynp(BaseEstimator):
             model (str, optional): name of the kernel (linear, rbf)
             min_size (int, optional): minimum segment length.
             jump (int, optional): subsample (one every *jump* points).
-            gamma (float, optional): scale parameter for the RBF kernel
+            params (dict, optional): a dictionary of parameters for the kernel instance
         """
         from_kernel_to_model_dict = {"linear": "l2", "rbf": "rbf"}
         self.kernel_name = kernel
