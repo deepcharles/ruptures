@@ -4,7 +4,7 @@
 
 The method is implemented in both :
 
-* [`Dynp`][ruptures.detection.dynp.Dynp], which is a full native python implementation for which the user can choose any [`cost`][ruptures.cost]
+* [`Dynp`][ruptures.detection.dynp.Dynp], which is a full native python implementation for which the user can choose any cost functions defined in `ruptures.costs`
 * [`KernelDynp`][ruptures.detection.kerneldynp.KernelDynp], which is a C implementation for which not all cost methods are available. Please check [`KernelDynp`][ruptures.detection.kerneldynp.KernelDynp] for documentation.
 
 It finds the (exact) minimum of the sum of costs by computing the cost of all subsequences of a given signal.

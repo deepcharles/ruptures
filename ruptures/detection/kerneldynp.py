@@ -27,7 +27,7 @@ class KernelDynp(BaseEstimator):
             (`gamma`) is a user-defined parameter.
 
         Args:
-            model (str, optional): name of the kernel (linear, rbf)
+            kernel (str, optional): name of the kernel, ["linear", "rbf"]
             min_size (int, optional): minimum segment length.
             jump (int, optional): subsample (one every *jump* points).
             params (dict, optional): a dictionary of parameters for the kernel instance
