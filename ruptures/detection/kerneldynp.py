@@ -77,14 +77,18 @@ class KernelDynp(BaseEstimator):
             return self.segmentations_dict[n_bkps]
 
         if self.kernel_name == "linear":
-            path_matrix_flat = ekcpd_L2(self.cost.signal, n_bkps)
+            path_matrix_flat = ekcpd_L2(
+                self.cost.signal, n_bkps, self.jump, self.min_size
+            )
         elif self.kernel_name == "rbf":
             try:
                 gamma = self.params["gamma"]
             except KeyError as e:
                 msg = "Specify the parameter 'gamma' for the rbf kernel."
                 raise e(msg)
-            path_matrix_flat = ekcpd_Gaussian(self.cost.signal, n_bkps, gamma)
+            path_matrix_flat = ekcpd_Gaussian(
+                self.cost.signal, n_bkps, self.jump, self.min_size, gamma
+            )
         else:
             raise Exception("Kernel not found: {}".format(self.kernel_name))
 

@@ -1,6 +1,9 @@
 #include <string.h>
 #include <stdlib.h>
 
+// To be deleted
+#include <stdio.h>
+
 #include "kernels.h"
 
 /**
@@ -14,10 +17,14 @@
  * @param M_path path matrix of shape ((n_samples+1)*(n_bkps+1),) that will
  * hold the results, must be allocated beforehand.
  */
-void ekcpd_compute(double *signal, int n_samples, int n_dims, int n_bkps, void *kernelDescObj, int *M_path)
+void ekcpd_compute(double *signal, int n_samples, int n_dims, int n_bkps, int jump, int min_size, void *kernelDescObj, int *M_path)
 {
     int i, j, t, s, k;
     int n_bkps_max;
+
+    // Debug
+    printf("In ekcpd_compute with new signature\n");
+    printf("%d %d\n", jump, min_size);
 
     // Allocate memory
     double *D, *S, *M_V;
