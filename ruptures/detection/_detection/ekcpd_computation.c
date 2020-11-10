@@ -98,6 +98,7 @@ void ekcpd_compute(double *signal, int n_samples, int n_dims, int n_bkps, int ju
         // Compute segmentations
         // M_V[q_t, 0] = c(y_{0 .. q_t*jump})
         M_V[q_t * (n_bkps + 1)] = D[q_t] - S_diag[q_t] / (q_t * jump);
+        q_s_max = q_t - (min_size - 1) / jump - 1; // integer division
         for (q_s = 1; q_s < q_s_max + 1; q_s++)
         {
             c_current = D[q_t] - D[q_s] - (S_diag[q_t] + S_diag[q_s] - 2 * S_off_diag[q_s]) / ((q_t - q_s) * jump); // = c(y_{q_s*jump .. q_t*jump})
