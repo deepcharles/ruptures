@@ -2,9 +2,6 @@
 #include <stdlib.h>
 #include <math.h>
 
-// To be deleted
-#include <stdio.h>
-
 #include "kernels.h"
 
 static inline int min(int a, int b)
