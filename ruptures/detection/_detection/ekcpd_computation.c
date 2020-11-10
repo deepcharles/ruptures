@@ -44,7 +44,7 @@ void ekcpd_compute(double *signal, int n_samples, int n_dims, int n_bkps, int ju
     printf("%d %d\n", jump, min_size);
 
     // Initialize and allocate memory
-    q = (int)ceil(n_samples/jump);  // Number of eligible break points
+    q = (int)ceil((float)n_samples / (float)jump); // Number of eligible break points
     // Allocate memory
     D = (double *)malloc((q + 1) * sizeof(double));
     S_off_diag = (double *)malloc((q + 1) * sizeof(double));
