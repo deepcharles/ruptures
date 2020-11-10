@@ -82,22 +82,24 @@ void ekcpd_compute(double *signal, int n_samples, int n_dims, int n_bkps, int ju
     // Handle jumps iteratively : q_t = [1, ..., q]
     for (q_t = 1; q_t < (q + 1) ; q_t++)
     {
-        // Handle all signal points within the interval [(q_t - 1) * jump, min(q_t * jump, n_samples)]
-        for (t = (q_t - 1) * jump  + 1; t < min(q_t * jump, n_samples) + 1; t++)
+        S_off_diag[q_t] = S_off_diag[q_t - 1];
         {
             d_current += kernel_value_by_name(&(signal[(t - 1) * n_dims]), &(signal[(t - 1) * n_dims]), n_dims, kernelDescObj);
             // Update S_off_diag[1], S_off_diag[2], ..., S_off_diag[q_t]
             // S_off_diag[qs] = S_{0 .. q_s * jump, 0 .. q_t * jump}
-            acc = 0;
-            for (q_s = 1 ; q_s < q_t + 1 ; q_s++)
+            for (q_s = 1; q_s < q_t; q_s++)
             {
                 // Handle all signal points within the interval [(q_s - 1) * jump, min(q_t * jump, n_samples)]
-                for (s = (q_s - 1) * jump + 1 ; s < min(q_s * jump, t) + 1 ; s++)
+                for (s = (q_s - 1) * jump + 1; s < q_s * jump + 1; s++)
                 {
                     acc += kernel_value_by_name(&(signal[(s - 1) * n_dims]), &(signal[(t - 1) * n_dims]), n_dims, kernelDescObj);
                 }
-                S_off_diag[q_s] +=  acc;
+            for (s = (q_t - 1) * jump + 1; s < t; s++)
+            // for (s = (q_s - 1) * jump + 1; s < min(q_s * jump, t) + 1; s++)
+            {
+                acc += kernel_value_by_name(&(signal[(s - 1) * n_dims]), &(signal[(t - 1) * n_dims]), n_dims, kernelDescObj);
             }
+            S_off_diag[q_t] += 2 * acc + kernel_value_by_name(&(signal[(t - 1) * n_dims]), &(signal[(t - 1) * n_dims]), n_dims, kernelDescObj);
         }
         // D[q_t] = D_{0 .. q_t * jump}
         D[q_t] = d_current;
