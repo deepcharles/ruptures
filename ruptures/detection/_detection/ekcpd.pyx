@@ -32,15 +32,15 @@ cdef ekcpd_core(double[:,:] signal, int n_bkps, int jump, int min_size, void *ke
     cdef:
         int n_samples = signal.shape[0]
         int n_dims = signal.shape[1]
-        int q_res
 
     # Allocate and initialize structure for result of c function
-    cdef int[::1] path_matrix_flat = np.empty((n_bkps+1)*((np.int(np.ceil(n_samples/jump)))+1), dtype=np.dtype("i"))
+    q = int(np.ceil(n_samples/jump))
+    cdef int[::1] path_matrix_flat = np.empty((n_bkps+1)*(q+1), dtype=np.dtype("i"))
     # Make it C compatible in terms of memory contiguousness
     cdef double[:, ::1] signal_arr = np.ascontiguousarray(signal)
     try:
-        ekcpd.ekcpd_compute(&signal_arr[0, 0], n_samples, n_dims, n_bkps, jump, min_size, kernelDescObj, &path_matrix_flat[0], &q_res)
+        ekcpd.ekcpd_compute(&signal_arr[0, 0], n_samples, n_dims, n_bkps, jump, min_size, kernelDescObj, &path_matrix_flat[0])
     except:
         print("An exception occurred.")
 
-    return np.asarray(path_matrix_flat), q_res
+    return np.asarray(path_matrix_flat)

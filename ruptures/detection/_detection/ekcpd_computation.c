@@ -23,12 +23,13 @@ static inline int min(int a, int b)
  * @param kernelDescObj describe the selected kernel
  * @param M_path_res path matrix of shape (q+1, n_bkps+1) where q = ceil(q/jump)
  */
-void ekcpd_compute(double *signal, int n_samples, int n_dims, int n_bkps, int jump, int min_size, void *kernelDescObj, int *M_path_res, int *q_res)
+void ekcpd_compute(double *signal, int n_samples, int n_dims, int n_bkps, int jump, int min_size, void *kernelDescObj, int *M_path_res)
 {
     int i, j, t, s, k;
     int q, q_t, q_s, q_s_max;
     // Allocate memory
     double *D, *S_off_diag, *S_diag, *M_V;
+    double c_cost, c_cost_sum, c_r;
     double d_current, acc, c_current, v_current;
     int *M_path = M_path_res;
 
