@@ -11,7 +11,7 @@ plugins:
         python:
           selection:
             filters:
-              - "!^_"  # exlude all members starting with _
+              - "!^_"  # exclude all members starting with _
               - "^__init__$"  # but always include __init__ modules and methods
   - nbconvert:
       input_dir: notebooks
@@ -66,14 +66,19 @@ nav:
     - Display:
       - 'Display': user-guide/show/display.md
   - Gallery of examples:
-    - 'Simple example': notebooks/simple-example.md
-    - 'Dynamic Programming': notebooks/dynamic-programming.md
+    - 'Introduction': examples/introduction.md
+    - 'Simple usages':
+      - 'Introduction': examples/simple-usages-introduction.md
+      - 'Quick start': notebooks/quick-start.md
+    - 'Advanced usages':
+      - 'Introduction': examples/advanced-usages-introduction.md
+      - 'Dynamic programming (performance comparison)': notebooks/dynamic-programming-performance-comparison.md
   - Code reference:
       - Introduction: code-reference/index.md
       - Base classes: code-reference/base-reference.md
       - Search methods:
           - Dynp: code-reference/detection/dynp-reference.md
-          - 'Efficient Kernel using dynamic programming': code-reference/detection/kerneldynp-reference.md
+          - KernelDynp: code-reference/detection/kerneldynp-reference.md
           - Pelt: code-reference/detection/pelt-reference.md
           - Binseg: code-reference/detection/binseg-reference.md
           - BottomUp: code-reference/detection/bottomup-reference.md
