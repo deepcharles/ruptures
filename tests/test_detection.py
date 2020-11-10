@@ -117,7 +117,9 @@ def test_pass_param_to_cost(signal_bkps_1D, algo):
 )
 def test_cython_dynp_1D_linear(signal_bkps_1D, algo, kernel, min_size):
     signal, bkps = signal_bkps_1D
-    algo(kernel=kernel, min_size=min_size).fit(signal).predict(n_bkps=len(bkps) - 1)
+    algo(kernel=kernel, min_size=min_size, jump=1).fit(signal).predict(
+        n_bkps=len(bkps) - 1
+    )
 
 
 @pytest.mark.parametrize(
@@ -126,7 +128,9 @@ def test_cython_dynp_1D_linear(signal_bkps_1D, algo, kernel, min_size):
 )
 def test_cython_dynp_5D_linear(signal_bkps_5D, algo, kernel, min_size):
     signal, bkps = signal_bkps_5D
-    algo(kernel=kernel, min_size=min_size).fit(signal).predict(n_bkps=len(bkps) - 1)
+    algo(kernel=kernel, min_size=min_size, jump=1).fit(signal).predict(
+        n_bkps=len(bkps) - 1
+    )
 
 
 @pytest.mark.parametrize(
@@ -135,9 +139,9 @@ def test_cython_dynp_5D_linear(signal_bkps_5D, algo, kernel, min_size):
 )
 def test_cython_dynp_1D_rbf(signal_bkps_1D, algo, kernel, min_size):
     signal, bkps = signal_bkps_1D
-    algo(kernel=kernel, min_size=min_size, params={"gamma": 1.5}).fit(signal).predict(
-        n_bkps=len(bkps) - 1
-    )
+    algo(kernel=kernel, min_size=min_size, jump=1, params={"gamma": 1.5}).fit(
+        signal
+    ).predict(n_bkps=len(bkps) - 1)
 
 
 @pytest.mark.parametrize(
@@ -146,9 +150,9 @@ def test_cython_dynp_1D_rbf(signal_bkps_1D, algo, kernel, min_size):
 )
 def test_cython_dynp_5D_rbf(signal_bkps_5D, algo, kernel, min_size):
     signal, bkps = signal_bkps_5D
-    algo(kernel=kernel, min_size=min_size, params={"gamma": 1.5}).fit(signal).predict(
-        n_bkps=len(bkps) - 1
-    )
+    algo(kernel=kernel, min_size=min_size, jump=1, params={"gamma": 1.5}).fit(
+        signal
+    ).predict(n_bkps=len(bkps) - 1)
 
 
 @pytest.mark.parametrize(
@@ -160,7 +164,9 @@ def test_cython_dynp_1D_no_noise_linear(
 ):
     signal, bkps = signal_bkps_1D_no_noise
     res = (
-        algo(kernel=kernel, min_size=min_size).fit(signal).predict(n_bkps=len(bkps) - 1)
+        algo(kernel=kernel, min_size=min_size, jump=1)
+        .fit(signal)
+        .predict(n_bkps=len(bkps) - 1)
     )
     assert res == bkps
 
@@ -174,7 +180,9 @@ def test_cython_dynp_5D_no_noise_linear(
 ):
     signal, bkps = signal_bkps_5D_no_noise
     res = (
-        algo(kernel=kernel, min_size=min_size).fit(signal).predict(n_bkps=len(bkps) - 1)
+        algo(kernel=kernel, min_size=min_size, jump=1)
+        .fit(signal)
+        .predict(n_bkps=len(bkps) - 1)
     )
     assert res == bkps
 
@@ -186,7 +194,7 @@ def test_cython_dynp_5D_no_noise_linear(
 def test_cython_dynp_1D_no_noise_rbf(signal_bkps_1D_no_noise, algo, kernel, min_size):
     signal, bkps = signal_bkps_1D_no_noise
     res = (
-        algo(kernel=kernel, min_size=min_size, params={"gamma": 1.5})
+        algo(kernel=kernel, min_size=min_size, jump=1, params={"gamma": 1.5})
         .fit(signal)
         .predict(n_bkps=len(bkps) - 1)
     )
@@ -200,7 +208,7 @@ def test_cython_dynp_1D_no_noise_rbf(signal_bkps_1D_no_noise, algo, kernel, min_
 def test_cython_dynp_5D_no_noise_rbf(signal_bkps_5D_no_noise, algo, kernel, min_size):
     signal, bkps = signal_bkps_5D_no_noise
     res = (
-        algo(kernel=kernel, min_size=min_size, params={"gamma": 1.5})
+        algo(kernel=kernel, min_size=min_size, jump=1, params={"gamma": 1.5})
         .fit(signal)
         .predict(n_bkps=len(bkps) - 1)
     )
