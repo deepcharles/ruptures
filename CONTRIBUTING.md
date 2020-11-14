@@ -38,19 +38,23 @@ pip install -r requirements-dev.txt
 conda --file requirements-dev.txt
 ```
 
-### Pre-commit hooks
-
-We use `pre-commit` to run Git hooks before submitting the code to review.
-These hook scripts perform simple tasks before each commit (code formatting
-mostly).
-Once it is installed (it is part of the [requirements](CONTRIBUTING.md#install-the-requirements)), run the following command.
-
+Then run the following command to install the `pre-commit` hooks.
 ```
 pre-commit install
 ```
 
+### Pre-commit hooks
+
+We use `pre-commit` to run Git hooks before submitting the code to review.
+These hook scripts perform simple tasks before each commit (code formatting mostly).
+
+Note that if you try to commit a non-compliant (i.e. badly formatted) file, `pre-commit` will modify this file and make the commit fail.
+However you need to stage the new changes **yourself** as `pre-commit` will not do that for you (this is by design; see [here](https://github.com/pre-commit/pre-commit/issues/806) or [here](https://github.com/pre-commit/pre-commit/issues/747)).
+Fortunately, `pre-commit` outputs useful messages.
+
 The list of hooks (and their options) can be found in [`.pre-commit-config.yaml`](https://github.com/deepcharles/ruptures/blob/master/.pre-commit-config.yaml).
 For more information, see [their website](https://pre-commit.com/).
+If you want to manually run all pre-commit hooks on a repository, run `pre-commit run --all-files`. To run individual hooks use `pre-commit run <hook_id>`.
 
 ## Contribute to the code
 
