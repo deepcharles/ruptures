@@ -23,6 +23,7 @@ The following code implements this cost function:
 from math import log
 from ruptures.base import BaseCost
 
+
 class MyCost(BaseCost):
 
     """Custom cost for exponential signals."""
@@ -47,7 +48,7 @@ class MyCost(BaseCost):
             float: segment cost
         """
         sub = self.signal[start:end]
-        return (end-start)*log(sub.mean())
+        return (end - start) * log(sub.mean())
 ```
 
 !!! warning
@@ -63,6 +64,7 @@ For instance,
 import numpy as np
 import matplotlib.pylab as plt
 import ruptures as rpt
+
 # creation of data
 a = np.random.exponential(scale=1, size=100)
 b = np.random.exponential(scale=2, size=200)

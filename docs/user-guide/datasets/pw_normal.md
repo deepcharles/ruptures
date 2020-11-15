@@ -15,6 +15,7 @@ Start with the usual imports and create a signal.
 import numpy as np
 import matplotlib.pylab as plt
 import ruptures as rpt
+
 # creation of data
 n = 500, 3  # number of samples
 n_bkps = 3  # number of change points, noise standart deviation

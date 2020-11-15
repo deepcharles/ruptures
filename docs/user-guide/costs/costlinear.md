@@ -28,16 +28,17 @@ Start with the usual imports and create a signal with piecewise linear trends.
 import numpy as np
 import matplotlib.pylab as plt
 import ruptures as rpt
+
 # creation of data
 n, n_reg = 2000, 3  # number of samples, number of regressors (including intercept)
 n_bkps, sigma = 3, 5  # number of change points, noise standart deviation
 # regressors
-tt = np.linspace(0, 10*np.pi, n)
-X = np.vstack((np.sin(tt), np.sin(5*tt), np.ones(n))).T
+tt = np.linspace(0, 10 * np.pi, n)
+X = np.vstack((np.sin(tt), np.sin(5 * tt), np.ones(n))).T
 # parameter vectors
 deltas, bkps = rpt.pw_constant(n, n_reg, n_bkps, noise_std=None, delta=(1, 3))
 # observed signal
-y = np.sum(X*deltas, axis=1)
+y = np.sum(X * deltas, axis=1)
 y += np.random.normal(size=y.shape)
 # display signal
 rpt.show.display(y, bkps, figsize=(10, 6))
@@ -64,7 +65,8 @@ print(c.sum_of_costs([10, 100, 200, 250, n]))
 In order to use this cost class in a change point detection algorithm (inheriting from [`BaseEstimator`][ruptures.base.BaseEstimator]), either pass a [`CostLinear`][ruptures.costs.costlinear.CostLinear] instance (through the argument `custom_cost`) or set `model="linear"`.
 
 ```python
-c = rpt.costs.CostLinear(); algo = rpt.Dynp(custom_cost=c)
+c = rpt.costs.CostLinear()
+algo = rpt.Dynp(custom_cost=c)
 # is equivalent to
 algo = rpt.Dynp(model="linear")
 ```

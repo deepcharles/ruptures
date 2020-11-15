@@ -26,6 +26,7 @@ Start with the usual imports and create two change point sets to compare.
 
 ```python
 from ruptures.metrics import precision_recall
+
 bkps1, bkps2 = [100, 200, 500], [105, 115, 350, 400, 500]
 p, r = precision_recall(bkps1, bkps2)
 print((p, r))
