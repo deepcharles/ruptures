@@ -31,3 +31,7 @@ repos:
   rev: master
   hooks:
     - id: nbstripout
+-   repo: https://github.com/asottile/blacken-docs
+    rev: v1.8.0
+    hooks:
+    - id: blacken-docs
