@@ -81,13 +81,8 @@ class KernelDynp(BaseEstimator):
                 self.cost.signal, n_bkps, self.jump, self.min_size
             )
         elif self.kernel_name == "rbf":
-            try:
-                gamma = self.params["gamma"]
-            except KeyError as e:
-                msg = "Specify the parameter 'gamma' for the rbf kernel."
-                raise e(msg)
             path_matrix_flat = ekcpd_Gaussian(
-                self.cost.signal, n_bkps, self.jump, self.min_size, gamma
+                self.cost.signal, n_bkps, self.jump, self.min_size, self.cost.gamma
             )
         else:
             raise Exception("Kernel not found: {}.".format(self.kernel_name))
