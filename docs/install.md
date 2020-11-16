@@ -20,28 +20,7 @@ To install the latest stable release, use `pip` or `conda`.
 ## Development release
 
 Alternatively, you can install the development version of `ruptures` which can contain features that have not yet been integrated to the stable release.
-
-Two methods are available: with `pip` and manually.
-If you simply want the latest (and maybe untested) features, use `pip`.
-In order to contribute to the library (bug fix, new feature, code or documentation improvement), please install manually from the Github repository.
-
-=== "With pip"
-
-    ```
-    python -m pip install git+https://github.com/deepcharles/ruptures
-    ```
-
-=== "Manually"
-
-    Start by cloning the Github repository.
-    ```
-    git clone https://github.com/deepcharles/ruptures
-    cd ruptures
-    ```
-    Then install the downloaded package.
-    ```
-    python -m pip install --verbose --no-build-isolation --editable .
-    ```
+To that end, refer to the [contributing guide](contributing.md).
 
 ## Upgrade
 

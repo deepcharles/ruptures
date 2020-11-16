@@ -5,6 +5,11 @@
 
 In all following steps, it is highly recommended to use a virtual environment.
 
+### Install the requirements
+
+Several packages are needed to compile, format and test the code.
+They are listed in `requirements-dev.txt` and can be installed with the following command.
+
 ### Install the development version
 
 It is important that you contribute to the latest version of the code.
@@ -18,15 +23,9 @@ cd ruptures
 Then install the downloaded package.
 
 ```
+python setup.py build_ext --inplace
 python -m pip install --verbose --no-build-isolation --editable .
 ```
-
-
-### Install the requirements
-
-Several packages are needed to format and test the code.
-They are listed in `requirements-dev.txt` and can be installed with the following command.
-
 
 #### With pip
 ```
