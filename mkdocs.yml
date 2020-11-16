@@ -72,7 +72,7 @@ nav:
       - 'Quick start': notebooks/quick-start.md
     - 'Advanced usages':
       - 'Introduction': examples/advanced-usages-introduction.md
-      - 'Dynamic programming (performance comparison)': notebooks/dynamic-programming-performance-comparison.md
+      - notebooks/kernel-cpd-performance-comparison.md
   - Code reference:
       - Introduction: code-reference/index.md
       - Base classes: code-reference/base-reference.md
