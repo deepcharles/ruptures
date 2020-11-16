@@ -69,7 +69,7 @@ nav:
     - 'Introduction': examples/introduction.md
     - 'Simple usages':
       - 'Introduction': examples/simple-usages-introduction.md
-      - 'Quick start': notebooks/quick-start.md
+      - notebooks/basic-usage.md
     - 'Advanced usages':
       - 'Introduction': examples/advanced-usages-introduction.md
       - notebooks/kernel-cpd-performance-comparison.md
