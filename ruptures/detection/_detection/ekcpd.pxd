@@ -11,7 +11,7 @@ cdef extern from "kernels.h":
     double kernel_value_by_name(double *x, double *y, int n_dims, void *kernelObj)
 
 cdef extern from "ekcpd_computation.h":
-    void ekcpd_compute(double *signal, int n_samples, int n_dims, int n_bkps, void *kernelDescObj, int *M_path)
+    void ekcpd_compute(double *signal, int n_samples, int n_dims, int n_bkps, int jump, int min_size, void *kernelDescObj, int *M_path_res)
 
 
 

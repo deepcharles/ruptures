@@ -28,6 +28,7 @@ Start with the usual imports and create two segmentations to compare.
 
 ```python
 from ruptures.metrics import randindex
+
 bkps1, bkps2 = [100, 200, 500], [105, 115, 350, 400, 500]
 print(randindex(bkps1, bkps2))
 ```

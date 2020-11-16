@@ -5,7 +5,7 @@ from libc.stdlib cimport malloc, free
 cimport cython
 import numpy as np
 
-cpdef ekcpd_L2(double[:,:] signal, int n_bkps):
+cpdef ekcpd_L2(double[:,:] signal, int n_bkps, int jump, int min_size):
 
     # Allocate and initialize kernel description
     cdef ekcpd.KernelLinear kernelLinearDesc
@@ -13,10 +13,10 @@ cpdef ekcpd_L2(double[:,:] signal, int n_bkps):
     kernelDesc.name = LINEAR_KERNEL_NAME
     kernelLinearDesc.pBaseObj = &kernelDesc
 
-    return ekcpd_core(signal, n_bkps, &kernelLinearDesc)
+    return ekcpd_core(signal, n_bkps, jump, min_size, &kernelLinearDesc)
 
 
-cpdef ekcpd_Gaussian(double[:,:] signal, int n_bkps, double gamma):
+cpdef ekcpd_Gaussian(double[:,:] signal, int n_bkps, int jump, int min_size, double gamma):
 
     # Allocate and initialize kernel description
     cdef ekcpd.KernelGaussian kernelGaussianDesc
@@ -25,20 +25,21 @@ cpdef ekcpd_Gaussian(double[:,:] signal, int n_bkps, double gamma):
     kernelGaussianDesc.pBaseObj = &kernelDesc
     kernelGaussianDesc.gamma = gamma
 
-    return ekcpd_core(signal, n_bkps, &kernelGaussianDesc)
+    return ekcpd_core(signal, n_bkps, jump, min_size, &kernelGaussianDesc)
 
 
-cdef ekcpd_core(double[:,:] signal, int n_bkps, void *kernelDescObj):
+cdef ekcpd_core(double[:,:] signal, int n_bkps, int jump, int min_size, void *kernelDescObj):
     cdef:
         int n_samples = signal.shape[0]
         int n_dims = signal.shape[1]
 
     # Allocate and initialize structure for result of c function
-    cdef int[::1] path_matrix_flat = np.empty((n_bkps+1)*(n_samples+1), dtype=np.dtype("i"))
+    q = int(np.ceil(n_samples/jump))
+    cdef int[::1] path_matrix_flat = np.empty((n_bkps+1)*(q+1), dtype=np.dtype("i"))
     # Make it C compatible in terms of memory contiguousness
     cdef double[:, ::1] signal_arr = np.ascontiguousarray(signal)
     try:
-        ekcpd.ekcpd_compute(&signal_arr[0, 0], n_samples, n_dims, n_bkps, kernelDescObj, &path_matrix_flat[0])
+        ekcpd.ekcpd_compute(&signal_arr[0, 0], n_samples, n_dims, n_bkps, jump, min_size, kernelDescObj, &path_matrix_flat[0])
     except:
         print("An exception occurred.")
 

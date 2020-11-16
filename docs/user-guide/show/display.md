@@ -13,6 +13,7 @@ Start with the usual imports and create a signal.
 import numpy as np
 import matplotlib.pylab as plt
 import ruptures as rpt
+
 # creation of data
 n, dim = 500, 2  # number of samples, dimension
 n_bkps, sigma = 3, 5  # number of change points, noise standart deviation

@@ -30,6 +30,7 @@ from itertools import cycle
 import numpy as np
 import matplotlib.pylab as plt
 import ruptures as rpt
+
 # creation of data
 n = 2000
 n_bkps, sigma = 4, 0.5  # number of change points, noise standart deviation
@@ -40,7 +41,7 @@ freqs = np.zeros((n, 2))
 for sub, val in zip(np.split(freqs, bkps[:-1]), cycle([f1, f2])):
     sub += val
 tt = np.arange(n)
-signal = np.sum((np.sin(2*np.pi*tt*f) for f in freqs.T))
+signal = np.sum((np.sin(2 * np.pi * tt * f) for f in freqs.T))
 signal += np.random.normal(scale=sigma, size=signal.shape)
 # display signal
 rpt.show.display(signal, bkps, figsize=(10, 6))
@@ -69,7 +70,8 @@ In order to use this cost class in a change point detection algorithm (inheritin
 Additional parameters can be passed to the cost instance through the keyword ``'params'``.
 
 ```python
-c = rpt.costs.CostAR(order=10); algo = rpt.Dynp(custom_cost=c)
+c = rpt.costs.CostAR(order=10)
+algo = rpt.Dynp(custom_cost=c)
 # is equivalent to
 algo = rpt.Dynp(model="ar", params={"order": 10})
 ```

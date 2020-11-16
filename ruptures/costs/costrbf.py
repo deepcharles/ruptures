@@ -12,7 +12,7 @@ class CostRbf(BaseCost):
 
     model = "rbf"
 
-    def __init__(self, gamma=1.0):
+    def __init__(self, gamma=None):
         """Initialize the object."""
         self.gram = None
         self.min_size = 2
@@ -31,11 +31,18 @@ class CostRbf(BaseCost):
             self.signal = signal.reshape(-1, 1)
         else:
             self.signal = signal
+
         K = pdist(self.signal, metric="sqeuclidean")
-        K_median = np.median(K)
-        if K_median != 0:
-            K /= K_median
-        np.clip(K, 1e-2, 1e2, K)
+        if self.gamma is None:
+            self.gamma = 1.0
+            # median heuristics
+            K_median = np.median(K)
+            if K_median != 0:
+                K /= K_median
+                self.gamma = 1 / K_median
+        else:
+            K *= self.gamma
+        np.clip(K, 1e-2, 1e2, K)  # clipping to avoid exponential under/overflow
         self.gram = np.exp(squareform(-K))
         return self
 
