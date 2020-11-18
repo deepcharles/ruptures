@@ -29,7 +29,7 @@ class KernelDynp(BaseEstimator):
         Args:
             kernel (str, optional): name of the kernel, ["linear", "rbf"]
             min_size (int, optional): minimum segment length.
-            jump (int, optional): subsample (one every *jump* points).
+            jump (int, optional): not considered, set to 1.
             params (dict, optional): a dictionary of parameters for the kernel instance
         """
         from_kernel_to_model_dict = {"linear": "l2", "rbf": "rbf"}
@@ -41,7 +41,7 @@ class KernelDynp(BaseEstimator):
         else:
             self.cost = cost_factory(model=self.model_name, **self.params)
         self.min_size = max(min_size, self.cost.min_size)
-        self.jump = jump
+        self.jump = 1  # set to 1
         self.n_samples = None
         self.segmentations_dict = dict()  # {n_bkps: bkps_list}
 
