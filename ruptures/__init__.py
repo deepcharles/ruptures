@@ -9,7 +9,7 @@ from .detection import (
     Binseg,
     BottomUp,
     Dynp,
-    KernelDynp,
+    KernelCPD,
     Omp,
     OmpK,
     Pelt,
