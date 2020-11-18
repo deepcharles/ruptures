@@ -62,7 +62,7 @@ class Dynp(BaseEstimator):
             for bkp in multiple_of_jump:
                 n_samples = bkp - start
                 # first check if left subproblem is possible
-                if sanity_check(n_samples, n_bkps, jump, min_size):
+                if sanity_check(n_samples, n_bkps - 1, jump, min_size):
                     # second check if the right subproblem has enough points
                     if end - bkp >= min_size:
                         admissible_bkps.append(bkp)
