@@ -38,10 +38,9 @@ class CostRbf(BaseCost):
             # median heuristics
             K_median = np.median(K)
             if K_median != 0:
-                K /= K_median
+                # K /= K_median
                 self.gamma = 1 / K_median
-        else:
-            K *= self.gamma
+        K *= self.gamma
         np.clip(K, 1e-2, 1e2, K)  # clipping to avoid exponential under/overflow
         self.gram = np.exp(squareform(-K))
         return self
