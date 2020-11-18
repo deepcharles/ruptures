@@ -50,8 +50,9 @@ The exact optimization procedure is described in [[Killick2012]](#Killick2012).
 We list below a number of kernels that are already implemented in `ruptures`.
 In the following, $u$ and $v$ are two d-dimensional vectors.
 
-- **Linear kernel** $k_{\text{linear}}(u, v) = u^T v$ and the induced norm is the Euclidean norm.
+- **Linear kernel:** $k_{\text{linear}}(u, v) = u^T v$ and the induced norm is the Euclidean norm.
 - **Gaussian kernel:** (also known as radial basis function, rbf), $k_{\text{Gaussian}}(u,v)=\exp(-\gamma \|u-v\|^2)$ where $\|\cdot\|$ is the Euclidean norm and $\gamma>0$ is a user-defined parameter.
+- **Cosine similarity:** $k_{\text{cosine}}(u, v) = (u^T v)/(\|u\|\|v\|)$ (scaled version of the linear kernel).
 
 ## Implementation and usage
 

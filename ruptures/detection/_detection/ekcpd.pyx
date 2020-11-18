@@ -51,6 +51,28 @@ cpdef ekcpd_pelt_Gaussian(double[:,:] signal, double beta, int min_size, double 
     return ekcpd_pelt_core(signal, beta, min_size, &kernelGaussianDesc)
 
 
+cpdef ekcpd_cosine(double[:,:] signal, int n_bkps, int min_size):
+
+    # Allocate and initialize kernel description
+    cdef ekcpd.KernelCosine kernelCosineDesc
+    cdef ekcpd.KernelGeneric kernelDesc
+    kernelDesc.name = COSINE_KERNEL_NAME
+    kernelCosineDesc.pBaseObj = &kernelDesc
+
+    return ekcpd_core(signal, n_bkps, min_size, &kernelCosineDesc)
+
+
+cpdef ekcpd_pelt_cosine(double[:,:] signal, double beta, int min_size):
+
+    # Allocate and initialize kernel description
+    cdef ekcpd.KernelLinear kernelCosineDesc
+    cdef ekcpd.KernelGeneric kernelDesc
+    kernelDesc.name = COSINE_KERNEL_NAME
+    kernelCosineDesc.pBaseObj = &kernelDesc
+
+    return ekcpd_pelt_core(signal, beta, min_size, &kernelCosineDesc)
+
+
 cdef ekcpd_core(double[:,:] signal, int n_bkps, int min_size, void *kernelDescObj):
     cdef:
         int n_samples = signal.shape[0]

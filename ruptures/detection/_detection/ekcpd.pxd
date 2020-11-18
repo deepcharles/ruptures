@@ -6,8 +6,11 @@ cdef extern from "kernels.h":
     ctypedef struct KernelGaussian:
         KernelGeneric *pBaseObj
         double gamma
+    ctypedef struct KernelCosine:
+        KernelGeneric *pBaseObj
     cdef char *LINEAR_KERNEL_NAME
     cdef char *GAUSSIAN_KERNEL_NAME
+    cdef char *COSINE_KERNEL_NAME
     double kernel_value_by_name(double *x, double *y, int n_dims, void *kernelObj)
 
 cdef extern from "ekcpd_computation.h":

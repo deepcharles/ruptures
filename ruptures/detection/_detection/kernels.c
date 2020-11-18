@@ -57,6 +57,19 @@ static inline double gaussian_kernel(double *x, double *y, int n_dims, double ga
 	return exp(-clip(gamma * squared_distance, 0.01, 100));
 }
 
+static inline double cosine_similarity(double *x, double *y, int n_dims)
+{
+    double dot = 0.0, denom_x = 0.0, denom_y = 0.0 ;
+     for(int i = 0; i < n_dims; ++i) {
+        dot += x[i] * y[i] ;
+        denom_x += x[i] * x[i] ;
+        denom_y += y[i] * y[i] ;
+    }
+    return dot / (sqrt(denom_x) * sqrt(denom_y)) ;
+}
+
+
+
 // Hub function that select proper kernel accoridng kernelObj
 double kernel_value_by_name(double *x, double *y, int n_dims, void *kernelObj)
 {
@@ -67,6 +80,10 @@ double kernel_value_by_name(double *x, double *y, int n_dims, void *kernelObj)
 	else if (strcmp(((KernelGaussian *)kernelObj)->pBaseObj->name, GAUSSIAN_KERNEL_NAME) == 0)
 	{
 		return gaussian_kernel(x, y, n_dims, ((KernelGaussian *)kernelObj)->gamma);
+	}
+	else if (strcmp(((KernelCosine *)kernelObj)->pBaseObj->name, COSINE_KERNEL_NAME) == 0)
+	{
+		return cosine_similarity(x, y, n_dims);
 	}
 	return 0.0;
 }

@@ -9,6 +9,8 @@ from ruptures.detection._detection.ekcpd import (
     ekcpd_Gaussian,
     ekcpd_pelt_L2,
     ekcpd_pelt_Gaussian,
+    ekcpd_cosine,
+    ekcpd_pelt_cosine,
 )
 from ruptures.utils._utils.convert_path_matrix import from_path_matrix_to_bkps_list
 
@@ -33,6 +35,7 @@ class KernelCPD(BaseEstimator):
         - `linear`: $k(x,y) = x^T y$.
         - `rbf`: $k(x, y) = exp(\gamma \|x-y\|^2)$ where $\gamma>0$
         (`gamma`) is a user-defined parameter.
+        - `cosine`: $k(x,y)= (x^T y)/(\|x\|\|y\|$.
 
         Args:
             kernel (str, optional): name of the kernel, ["linear", "rbf"]
@@ -43,17 +46,18 @@ class KernelCPD(BaseEstimator):
         Raises:
             AssertionError: if the kernel is not implemented.
         """
-        from_kernel_to_model_dict = {"linear": "l2", "rbf": "rbf"}
         self.kernel_name = kernel
         err_msg = "Kernel not found: {}.".format(self.kernel_name)
-        assert self.kernel_name in ["linear", "rbf"], err_msg
-        self.model_name = from_kernel_to_model_dict[kernel]
+        assert self.kernel_name in ["linear", "rbf", "cosine"], err_msg
+        self.model_name = "l2" if self.kernel_name == "linear" else self.kernel_name
         self.params = params
+        # load the associated cost function
         if self.params is None:
             self.cost = cost_factory(model=self.model_name)
         else:
             self.cost = cost_factory(model=self.model_name, **self.params)
         self.min_size = max(min_size, self.cost.min_size)
+
         self.jump = 1  # set to 1
         self.n_samples = None
         self.segmentations_dict = dict()  # {n_bkps: bkps_list}
@@ -89,27 +93,31 @@ class KernelCPD(BaseEstimator):
         Returns:
             list[int]: sorted list of breakpoints
         """
+        # dynamic programming if the user passed a number change points
         if n_bkps is not None:
             n_bkps = int(n_bkps)
             err_msg = "The number of changes must be positive: {}".format(n_bkps)
             assert n_bkps > 0, err_msg
-
+            # if we have already computed it, return it without computations.
             if n_bkps in self.segmentations_dict:
                 return self.segmentations_dict[n_bkps]
-
+            # otherwise, call the C function
             if self.kernel_name == "linear":
                 path_matrix_flat = ekcpd_L2(self.cost.signal, n_bkps, self.min_size)
             elif self.kernel_name == "rbf":
                 path_matrix_flat = ekcpd_Gaussian(
                     self.cost.signal, n_bkps, self.min_size, self.cost.gamma
                 )
-
+            elif self.kernel_name == "cosine":
+                path_matrix_flat = ekcpd_cosine(self.cost.signal, n_bkps, self.min_size)
+            # from the path matrix, get all segmentation for k=1,...,n_bkps changes
             for k in range(1, n_bkps + 1):
                 self.segmentations_dict[k] = from_path_matrix_to_bkps_list(
                     path_matrix_flat, k, self.n_samples, n_bkps, self.jump
                 )
-
             return self.segmentations_dict[n_bkps]
+
+        # Call pelt if the user passed a penalty
         if pen is not None:
             assert pen > 0, "The penalty must be positive: {}".format(pen)
             if self.kernel_name == "linear":
@@ -118,6 +126,9 @@ class KernelCPD(BaseEstimator):
                 path_matrix = ekcpd_pelt_Gaussian(
                     self.cost.signal, pen, self.min_size, self.cost.gamma
                 )
+            elif self.kernel_name == "cosine":
+                path_matrix = ekcpd_pelt_cosine(self.cost.signal, pen, self.min_size)
+
             my_bkps = list()
             ind = self.n_samples
             while ind > 0:
