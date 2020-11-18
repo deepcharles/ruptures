@@ -15,30 +15,38 @@ from ruptures.utils._utils.convert_path_matrix import from_path_matrix_to_bkps_l
 
 class KernelCPD(BaseEstimator):
 
-    """Find optimal change points (using dynamic programming) for the special
-    case where the cost function derives from a kernel function.
+    """Find optimal change points (using dynamic programming or pelt) for the
+    special case where the cost function derives from a kernel function.
 
     Given a segment model, it computes the best partition for which the
     sum of errors is minimum.
+
+    See the [user guide](../../../user-guide/detection/kernelcpd) for more
+    information.
     """
 
-    def __init__(self, kernel="linear", min_size=2, jump=5, params=None):
+    def __init__(self, kernel="linear", min_size=2, jump=1, params=None):
         r"""Creates a KernelCPD instance.
 
         Available kernels:
 
-            - `linear`: $k(x,y) = x^T y$.
-            - `rbf`: $k(x, y)$ = exp(\gamma \|x-y\|^2)$ where $\gamma>0$
-            (`gamma`) is a user-defined parameter.
+        - `linear`: $k(x,y) = x^T y$.
+        - `rbf`: $k(x, y) = exp(\gamma \|x-y\|^2)$ where $\gamma>0$
+        (`gamma`) is a user-defined parameter.
 
         Args:
             kernel (str, optional): name of the kernel, ["linear", "rbf"]
             min_size (int, optional): minimum segment length.
             jump (int, optional): not considered, set to 1.
             params (dict, optional): a dictionary of parameters for the kernel instance
+
+        Raises:
+            AssertionError: if the kernel is not implemented.
         """
         from_kernel_to_model_dict = {"linear": "l2", "rbf": "rbf"}
         self.kernel_name = kernel
+        err_msg = "Kernel not found: {}.".format(self.kernel_name)
+        assert self.kernel_name in ["linear", "rbf"], err_msg
         self.model_name = from_kernel_to_model_dict[kernel]
         self.params = params
         if self.params is None:
@@ -76,17 +84,16 @@ class KernelCPD(BaseEstimator):
             pen (float, optional): penalty value (>0). Defaults to None. Not considered if n_bkps is not None.
 
         Raises:
-            AssertionError: if the kernel is not implemented.
-            AssertionError: if the pen is not strictly positive.
+            AssertionError: if `pen` or `n_bkps` is not strictly positive.
 
         Returns:
             list[int]: sorted list of breakpoints
         """
-        err_msg = "Kernel not found: {}.".format(self.kernel_name)
-        assert self.kernel_name in ["linear", "rbf"], err_msg
-
         if n_bkps is not None:
             n_bkps = int(n_bkps)
+            err_msg = "The number of changes must be positive: {}".format(n_bkps)
+            assert n_bkps > 0, err_msg
+
             if n_bkps in self.segmentations_dict:
                 return self.segmentations_dict[n_bkps]
 

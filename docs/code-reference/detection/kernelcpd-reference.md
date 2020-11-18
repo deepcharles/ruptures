@@ -1,4 +1,4 @@
-# Efficient kernel change point detection using dynamic programming
+# Efficient kernel change point detection
 
 ::: ruptures.detection.kernelcpd.KernelCPD
     rendering:

@@ -41,6 +41,7 @@ nav:
     - Search methods:
       - 'Dynamic programming': user-guide/detection/dynp.md
       - 'Pelt': user-guide/detection/pelt.md
+      - 'Kernel change detection': user-guide/detection/kernelcpd.md
       - 'Binary segmentation': user-guide/detection/binseg.md
       - 'Bottom-up segmentation': user-guide/detection/bottomup.md
       - 'Window sliding segmentation': user-guide/detection/window.md
@@ -78,7 +79,7 @@ nav:
       - Base classes: code-reference/base-reference.md
       - Search methods:
           - Dynp: code-reference/detection/dynp-reference.md
-          - KernelCPD: code-reference/detection/KernelCPD-reference.md
+          - KernelCPD: code-reference/detection/kernelcpd-reference.md
           - Pelt: code-reference/detection/pelt-reference.md
           - Binseg: code-reference/detection/binseg-reference.md
           - BottomUp: code-reference/detection/bottomup-reference.md
