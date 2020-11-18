@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.6] - 2020-10-23
 ### Added
 
+- Correct minor error in Dynp (about min_size) PR#74
 - Fix legacy formatting errors PR#69
 - New documentation (from Sphinx to Mkdocs) PR#64
 - Separate requirements.txt and requirements-dev.txt PR#64
