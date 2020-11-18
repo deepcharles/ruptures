@@ -1,7 +1,7 @@
 r"""CostCosine (kernel change point detection with the cosine similarity)"""
-from ruptures.costs import NotEnoughPoints
 import numpy as np
 from ruptures.base import BaseCost
+from ruptures.costs import NotEnoughPoints
 from scipy.spatial.distance import pdist, squareform
 
 
