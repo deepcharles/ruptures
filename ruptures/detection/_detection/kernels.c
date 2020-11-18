@@ -5,6 +5,31 @@
 
 /*************************************
  *
+ * Utils
+ *
+*************************************/
+
+static inline float min_f(float a, float b)
+{
+	if (a > b)
+		return b;
+	return a;
+}
+
+static inline float max_f(float a, float b)
+{
+	if (a > b)
+		return a;
+	return b;
+}
+
+float clip(float n, float lower, float upper)
+{
+	return max_f(lower, min_f(n, upper));
+}
+
+/*************************************
+ *
  * Kernels
  *
 *************************************/
@@ -28,9 +53,9 @@ static inline double gaussian_kernel(double *x, double *y, int n_dims, double ga
 	{
 		squared_distance = squared_distance + (x[t] - y[t]) * (x[t] - y[t]);
 	}
-	return (exp(-gamma * squared_distance));
+	// clipping to avoid exp under/overflow
+	return exp(-clip(gamma * squared_distance, 0.01, 100));
 }
-
 
 // Hub function that select proper kernel accoridng kernelObj
 double kernel_value_by_name(double *x, double *y, int n_dims, void *kernelObj)
