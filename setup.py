@@ -9,6 +9,7 @@ ext_modules = [
         sources=[
             "ruptures/detection/_detection/ekcpd.pyx",
             "ruptures/detection/_detection/ekcpd_computation.c",
+            "ruptures/detection/_detection/ekcpd_pelt_computation.c",
             "ruptures/detection/_detection/kernels.c",
         ],
     ),
