@@ -94,14 +94,6 @@ void ekcpd_pelt_compute(double *signal, int n_samples, int n_dims, double beta, 
         }
     }
 
-    // DEBUG
-    // t=n_samples;
-    // for (int s = 0; s < n_samples; s++)
-    // {
-    //     printf("%i..%i\t%f\t(%f - %f)\n", s, n_samples, D[t] - D[s] - S[s] / (t - s), D[t] - D[s], S[s]);
-    // }
-
-
     // Free memory
     free(D);
     free(S);
