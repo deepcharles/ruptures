@@ -69,7 +69,7 @@ class KernelCPD(BaseEstimator):
         """Return the optimal breakpoints. Must be called after the fit method.
         The breakpoints are associated with the signal passed to.
 
-        [`fit()`][ruptures.detection.KernelCPD.KernelCPD.fit].
+        [`fit()`][ruptures.detection.kernelcpd.KernelCPD.fit].
 
         Args:
             n_bkps (int, optional): Number of change points. Defaults to None.
