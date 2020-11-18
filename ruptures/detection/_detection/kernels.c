@@ -60,7 +60,8 @@ static inline double gaussian_kernel(double *x, double *y, int n_dims, double ga
 static inline double cosine_similarity(double *x, double *y, int n_dims)
 {
     double dot = 0.0, denom_x = 0.0, denom_y = 0.0 ;
-     for(int i = 0; i < n_dims; ++i) {
+	int i;
+     for(i = 0; i < n_dims; i++) {
         dot += x[i] * y[i] ;
         denom_x += x[i] * x[i] ;
         denom_y += y[i] * y[i] ;
