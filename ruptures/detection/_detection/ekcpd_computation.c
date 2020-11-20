@@ -81,7 +81,7 @@ void ekcpd_compute(double *signal, int n_samples, int n_dims, int n_bkps, int mi
             // D_{s..t} = D_{0..t} - D{0..s} <--> D_{s..t} = D[t] - D[s]
             // S{s..t} has been stored in S[s]
             c_cost = D[t] - D[s] - S[s] / (t - s);
-            n_bkps_max = int_min(n_bkps, s / min_size); // integer division
+            n_bkps_max = int_min(n_bkps, s / min_size); // integer division: s / min_size = floor(s / min_size)
             for (k = 1; k <= n_bkps_max; k++)
             {
                 // With k break points on y_{0..t}, sum cost with (k-1) break points on y_{0..s} and cost on y_{s..t}
