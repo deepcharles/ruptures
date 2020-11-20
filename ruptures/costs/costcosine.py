@@ -17,6 +17,18 @@ class CostCosine(BaseCost):
         """Initialize the object."""
         self.signal = None
         self.min_size = 1
+        self._gram = None
+
+    @property
+    def gram(self):
+        """Generate the gram matrix (lazy loading).
+
+        Only access this function after a `.fit()` (otherwise
+        `self.signal` is not defined).
+        """
+        if self._gram is None:
+            self._gram = squareform(1 - pdist(self.signal, metric="cosine"))
+        return self._gram
 
     def fit(self, signal) -> "CostCosine":
         """Set parameters of the instance.
@@ -31,7 +43,6 @@ class CostCosine(BaseCost):
             self.signal = signal.reshape(-1, 1)
         else:
             self.signal = signal
-        self.gram = squareform(1 - pdist(self.signal, metric="cosine"))
         return self
 
     def error(self, start, end) -> float:
