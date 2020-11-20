@@ -52,6 +52,13 @@ class CostRbf(BaseCost):
             self.signal = signal.reshape(-1, 1)
         else:
             self.signal = signal
+
+        # If gamma is none, set it using the median heuristic.
+        # This heuristic involves computing the gram matrix which is lazy loaded
+        # so we simply access the `.gram` property
+        if self.gamma is None:
+            self.gram
+
         return self
 
     def error(self, start, end) -> float:
