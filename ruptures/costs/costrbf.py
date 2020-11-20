@@ -14,9 +14,30 @@ class CostRbf(BaseCost):
 
     def __init__(self, gamma=None):
         """Initialize the object."""
-        self.gram = None
         self.min_size = 2
         self.gamma = gamma
+        self._gram = None
+
+    @property
+    def gram(self):
+        """Generate the gram matrix (lazy loading).
+
+        Only access this function after a `.fit()` (otherwise
+        `self.signal` is not defined).
+        """
+        if self._gram is None:
+            K = pdist(self.signal, metric="sqeuclidean")
+            if self.gamma is None:
+                self.gamma = 1.0
+                # median heuristics
+                K_median = np.median(K)
+                if K_median != 0:
+                    # K /= K_median
+                    self.gamma = 1 / K_median
+            K *= self.gamma
+            np.clip(K, 1e-2, 1e2, K)  # clipping to avoid exponential under/overflow
+            self._gram = np.exp(squareform(-K))
+        return self._gram
 
     def fit(self, signal) -> "CostRbf":
         """Sets parameters of the instance.
@@ -32,17 +53,12 @@ class CostRbf(BaseCost):
         else:
             self.signal = signal
 
-        K = pdist(self.signal, metric="sqeuclidean")
+        # If gamma is none, set it using the median heuristic.
+        # This heuristic involves computing the gram matrix which is lazy loaded
+        # so we simply access the `.gram` property
         if self.gamma is None:
-            self.gamma = 1.0
-            # median heuristics
-            K_median = np.median(K)
-            if K_median != 0:
-                # K /= K_median
-                self.gamma = 1 / K_median
-        K *= self.gamma
-        np.clip(K, 1e-2, 1e2, K)  # clipping to avoid exponential under/overflow
-        self.gram = np.exp(squareform(-K))
+            self.gram
+
         return self
 
     def error(self, start, end) -> float:
