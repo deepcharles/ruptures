@@ -5,7 +5,7 @@ import pytest
 
 from ruptures.costs import NotEnoughPoints, CostAR
 from ruptures.datasets import pw_constant
-from ruptures.detection import Binseg, BottomUp, Dynp, Pelt, Window
+from ruptures.detection import Binseg, BottomUp, Dynp, Pelt, Window, KernelCPD
 
 
 @pytest.fixture(scope="module")
@@ -17,6 +17,18 @@ def signal_bkps_5D():
 @pytest.fixture(scope="module")
 def signal_bkps_1D():
     signal, bkps = pw_constant(noise_std=1)
+    return signal, bkps
+
+
+@pytest.fixture(scope="module")
+def signal_bkps_5D_no_noise():
+    signal, bkps = pw_constant(n_features=5, noise_std=0)
+    return signal, bkps
+
+
+@pytest.fixture(scope="module")
+def signal_bkps_1D_no_noise():
+    signal, bkps = pw_constant(noise_std=0)
     return signal, bkps
 
 
@@ -97,3 +109,107 @@ def test_custom_cost(signal_bkps_1D, algo):
 def test_pass_param_to_cost(signal_bkps_1D, algo):
     signal, bkps = signal_bkps_1D
     algo(model="ar", params={"order": 10}).fit_predict(signal, 1)
+
+
+@pytest.mark.parametrize(
+    "algo, kernel, min_size",
+    product([KernelCPD], ["linear"], [2, 5]),
+)
+def test_cython_dynp_1D_linear(signal_bkps_1D, algo, kernel, min_size):
+    signal, bkps = signal_bkps_1D
+    algo(kernel=kernel, min_size=min_size, jump=1).fit(signal).predict(
+        n_bkps=len(bkps) - 1
+    )
+
+
+@pytest.mark.parametrize(
+    "algo, kernel, min_size",
+    product([KernelCPD], ["linear"], [2, 5]),
+)
+def test_cython_dynp_5D_linear(signal_bkps_5D, algo, kernel, min_size):
+    signal, bkps = signal_bkps_5D
+    algo(kernel=kernel, min_size=min_size, jump=1).fit(signal).predict(
+        n_bkps=len(bkps) - 1
+    )
+
+
+@pytest.mark.parametrize(
+    "algo, kernel, min_size",
+    product([KernelCPD], ["rbf"], [2, 5]),
+)
+def test_cython_dynp_1D_rbf(signal_bkps_1D, algo, kernel, min_size):
+    signal, bkps = signal_bkps_1D
+    algo(kernel=kernel, min_size=min_size, jump=1, params={"gamma": 1.5}).fit(
+        signal
+    ).predict(n_bkps=len(bkps) - 1)
+
+
+@pytest.mark.parametrize(
+    "algo, kernel, min_size",
+    product([KernelCPD], ["rbf"], [2, 5]),
+)
+def test_cython_dynp_5D_rbf(signal_bkps_5D, algo, kernel, min_size):
+    signal, bkps = signal_bkps_5D
+    algo(kernel=kernel, min_size=min_size, jump=1, params={"gamma": 1.5}).fit(
+        signal
+    ).predict(n_bkps=len(bkps) - 1)
+
+
+@pytest.mark.parametrize(
+    "algo, kernel, min_size",
+    product([KernelCPD], ["linear"], [2, 5]),
+)
+def test_cython_dynp_1D_no_noise_linear(
+    signal_bkps_1D_no_noise, algo, kernel, min_size
+):
+    signal, bkps = signal_bkps_1D_no_noise
+    res = (
+        algo(kernel=kernel, min_size=min_size, jump=1)
+        .fit(signal)
+        .predict(n_bkps=len(bkps) - 1)
+    )
+    assert res == bkps
+
+
+@pytest.mark.parametrize(
+    "algo, kernel, min_size",
+    product([KernelCPD], ["linear"], [2, 5]),
+)
+def test_cython_dynp_5D_no_noise_linear(
+    signal_bkps_5D_no_noise, algo, kernel, min_size
+):
+    signal, bkps = signal_bkps_5D_no_noise
+    res = (
+        algo(kernel=kernel, min_size=min_size, jump=1)
+        .fit(signal)
+        .predict(n_bkps=len(bkps) - 1)
+    )
+    assert res == bkps
+
+
+@pytest.mark.parametrize(
+    "algo, kernel, min_size",
+    product([KernelCPD], ["rbf"], [2, 5]),
+)
+def test_cython_dynp_1D_no_noise_rbf(signal_bkps_1D_no_noise, algo, kernel, min_size):
+    signal, bkps = signal_bkps_1D_no_noise
+    res = (
+        algo(kernel=kernel, min_size=min_size, jump=1, params={"gamma": 1.5})
+        .fit(signal)
+        .predict(n_bkps=len(bkps) - 1)
+    )
+    assert res == bkps
+
+
+@pytest.mark.parametrize(
+    "algo, kernel, min_size",
+    product([KernelCPD], ["rbf"], [2, 5]),
+)
+def test_cython_dynp_5D_no_noise_rbf(signal_bkps_5D_no_noise, algo, kernel, min_size):
+    signal, bkps = signal_bkps_5D_no_noise
+    res = (
+        algo(kernel=kernel, min_size=min_size, jump=1, params={"gamma": 1.5})
+        .fit(signal)
+        .predict(n_bkps=len(bkps) - 1)
+    )
+    assert res == bkps

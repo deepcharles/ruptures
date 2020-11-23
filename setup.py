@@ -1,8 +1,30 @@
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages, Extension
+import numpy as np
+from Cython.Build import cythonize
+
+
+ext_modules = [
+    Extension(
+        "ruptures.detection._detection.ekcpd",
+        sources=[
+            "ruptures/detection/_detection/ekcpd.pyx",
+            "ruptures/detection/_detection/ekcpd_computation.c",
+            "ruptures/detection/_detection/ekcpd_pelt_computation.c",
+            "ruptures/detection/_detection/kernels.c",
+        ],
+    ),
+    Extension(
+        "ruptures.utils._utils.convert_path_matrix",
+        sources=[
+            "ruptures/utils/_utils/convert_path_matrix.pyx",
+            "ruptures/utils/_utils/convert_path_matrix_c.c",
+        ],
+    ),
+]
 
 setup(
     name="ruptures",
-    version="1.0.6",
+    version="1.1.0",
     packages=find_packages(exclude=["docs", "tests*", "images"]),
     install_requires=["numpy", "scipy"],
     extras_require={"display": ["matplotlib"]},
@@ -47,4 +69,8 @@ An extensive documentation is available
 
 This version requires Python 3 or later.
 """,
+    ext_modules=cythonize(
+        ext_modules,
+        language_level="3",
+    ),
 )

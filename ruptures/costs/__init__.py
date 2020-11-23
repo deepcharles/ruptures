@@ -8,3 +8,4 @@ from .costnormal import CostNormal
 from .costautoregressive import CostAR
 from .costml import CostMl
 from .costrank import CostRank
+from .costcosine import CostCosine

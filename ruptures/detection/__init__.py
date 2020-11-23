@@ -45,6 +45,7 @@ The :mod:`ruptures.detection` module implements the change point detection metho
 from .binseg import Binseg
 from .bottomup import BottomUp
 from .dynp import Dynp
+from .kernelcpd import KernelCPD
 from .omp import Omp
 from .ompk import OmpK
 from .pelt import Pelt

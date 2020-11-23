@@ -1,9 +1,12 @@
+Cython
 jupyter
 matplotlib
 mkdocs
 mkdocs-material
 mkdocs-nbconvert
 mkdocstrings
+numpy
 pre-commit
 pymdown-extensions
 pytest
+scipy

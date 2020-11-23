@@ -26,6 +26,7 @@ Start with the usual imports and create a signal.
 import numpy as np
 import matplotlib.pylab as plt
 import ruptures as rpt
+
 # creation of data
 n, dim = 500, 3  # number of samples, dimension
 n_bkps, sigma = 3, 5  # number of change points, noise standart deviation
@@ -50,7 +51,8 @@ print(c.sum_of_costs([10, 100, 200, 250, n]))
 In order to use this cost class in a change point detection algorithm (inheriting from [`BaseEstimator`][ruptures.base.BaseEstimator]), either pass a [`CostMl`][ruptures.costs.costml.CostMl] instance (through the argument `custom_cost`) or set `model="mahalanobis"`.
 
 ```python
-c = rpt.costs.CostMl(metric=M); algo = rpt.Dynp(custom_cost=c)
+c = rpt.costs.CostMl(metric=M)
+algo = rpt.Dynp(custom_cost=c)
 # is equivalent to
 algo = rpt.Dynp(model="mahalanobis", params={"metric": M})
 ```

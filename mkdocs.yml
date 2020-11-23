@@ -11,7 +11,7 @@ plugins:
         python:
           selection:
             filters:
-              - "!^_"  # exlude all members starting with _
+              - "!^_"  # exclude all members starting with _
               - "^__init__$"  # but always include __init__ modules and methods
   - nbconvert:
       input_dir: notebooks
@@ -41,6 +41,7 @@ nav:
     - Search methods:
       - 'Dynamic programming': user-guide/detection/dynp.md
       - 'Pelt': user-guide/detection/pelt.md
+      - 'Kernel change detection': user-guide/detection/kernelcpd.md
       - 'Binary segmentation': user-guide/detection/binseg.md
       - 'Bottom-up segmentation': user-guide/detection/bottomup.md
       - 'Window sliding segmentation': user-guide/detection/window.md
@@ -66,12 +67,19 @@ nav:
     - Display:
       - 'Display': user-guide/show/display.md
   - Gallery of examples:
-    - 'Simple example': notebooks/simple-example.md
+    - 'Introduction': examples/introduction.md
+    - 'Simple usages':
+      - 'Introduction': examples/simple-usages-introduction.md
+      - notebooks/basic-usage.md
+    - 'Advanced usages':
+      - 'Introduction': examples/advanced-usages-introduction.md
+      - notebooks/kernel-cpd-performance-comparison.md
   - Code reference:
       - Introduction: code-reference/index.md
       - Base classes: code-reference/base-reference.md
       - Search methods:
           - Dynp: code-reference/detection/dynp-reference.md
+          - KernelCPD: code-reference/detection/kernelcpd-reference.md
           - Pelt: code-reference/detection/pelt-reference.md
           - Binseg: code-reference/detection/binseg-reference.md
           - BottomUp: code-reference/detection/bottomup-reference.md

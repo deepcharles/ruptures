@@ -37,6 +37,7 @@ Start with the usual imports and create a signal.
 import numpy as np
 import matplotlib.pylab as plt
 import ruptures as rpt
+
 # creation of data
 n, dim = 500, 3  # number of samples, dimension
 n_bkps, sigma = 3, 5  # number of change points, noise standart deviation
@@ -64,9 +65,9 @@ In the situation in which the number of change points is unknown, one can specif
 the `pen` parameter or a threshold on the residual norm using `epsilon`.
 
 ```python
-my_bkps = algo.predict(pen=np.log(n)*dim*sigma**2)
+my_bkps = algo.predict(pen=np.log(n) * dim * sigma ** 2)
 # or
-my_bkps = algo.predict(epsilon=3*n*sigma**2)
+my_bkps = algo.predict(epsilon=3 * n * sigma ** 2)
 ```
 
 For faster predictions, one can modify the `jump` parameter during initialization.
