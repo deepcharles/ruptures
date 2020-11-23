@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+### Changed
+
+## [1.1.0] - 2020-11-23
+
+### Added
+
+- modify publishing process to Pypi
+- add cosine kernel (cost function and in KernelCPD)PR#74
+- add faster kernel change point detection (`KernelCPD`, C implementation) PR#74
 - add manual trigger to publish to Pypi PR#72
 
 ### Changed
@@ -36,6 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Link to documentation in PyPi description
 
 
-[Unreleased]: https://github.com/deepcharles/ruptures/compare/v1.0.6...HEAD
+[Unreleased]: https://github.com/deepcharles/ruptures/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/deepcharles/ruptures/compare/v1.0.6...v1.1.0
 [1.0.6]: https://github.com/deepcharles/ruptures/compare/v1.0.5...v1.0.6
 [1.0.5]: https://github.com/deepcharles/ruptures/compare/v1.0.4...v1.0.5
