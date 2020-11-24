@@ -10,6 +10,26 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+          # Run 32 and 64 bit version in parallel for Linux and Windows
+          - os: windows-latest
+            bitness: 64
+            platform_id: win_amd64
+          - os: windows-latest
+            bitness: 32
+            platform_id: win32
+          - os: ubuntu-latest
+            bitness: 64
+            platform_id: manylinux_x86_64
+          - os: ubuntu-latest
+            bitness: 32
+            platform_id: manylinux_i686
+          - os: macos-latest
+            bitness: 64
+            platform_id: macosx_x86_64
+        exclude:
+          - os: macos-latest
+            bitness: 32
 
     steps:
       - uses: actions/checkout@v2
@@ -24,6 +44,8 @@ jobs:
           python -m pip install cibuildwheel
 
       - name: Build wheels
+        env:
+          CIBW_BUILD: cp3.7-${{ matrix.platform_id }}
         run: |
           python -m cibuildwheel --output-dir wheelhouse
 
