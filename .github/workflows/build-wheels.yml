@@ -49,7 +49,7 @@ jobs:
 
       - name: Build wheels
         env:
-          CIBW_BUILD: cp3.7-${{ matrix.platform_id }}
+          CIBW_BUILD: cp37-${{ matrix.platform_id }}
         run: |
           python setup.py build_ext --inplace
           python setup.py sdist bdist_wheel
@@ -57,4 +57,4 @@ jobs:
 
       - uses: actions/upload-artifact@v2
         with:
-          path: ./wheelhouse/*.whl
+          path: wheelhouse/*.whl
