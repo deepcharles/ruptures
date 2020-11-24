@@ -10,6 +10,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
+        bitness: [32, 64]
         include:
           # Run 32 and 64 bit version in parallel for Linux and Windows
           - os: windows-latest
