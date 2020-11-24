@@ -51,8 +51,6 @@ jobs:
         env:
           CIBW_BUILD: cp37-${{ matrix.platform_id }}
         run: |
-          python setup.py build_ext --inplace
-          python setup.py sdist bdist_wheel
           python -m cibuildwheel --output-dir wheelhouse
 
       - uses: actions/upload-artifact@v2
