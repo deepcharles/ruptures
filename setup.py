@@ -24,7 +24,7 @@ ext_modules = [
 
 setup(
     name="ruptures",
-    version="1.1.0",
+    version="1.1.0-rc.1",
     packages=find_packages(exclude=["docs", "tests*", "images"]),
     install_requires=["numpy", "scipy"],
     extras_require={"display": ["matplotlib"]},
