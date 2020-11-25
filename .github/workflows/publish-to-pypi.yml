@@ -51,8 +51,11 @@ jobs:
       - name: Build wheels
         env:
           CIBW_BUILD: cp${{ matrix.python }}-${{ matrix.platform_id }}
+          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
         run: |
           python -m cibuildwheel --output-dir wheelhouse
+          twine upload wheelhouse/*.whl
 
       - uses: actions/upload-artifact@v2
         with:
@@ -76,8 +79,12 @@ jobs:
           pip install -r requirements-dev.txt
           pip install setuptools wheel twine
       - name: Build
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
         run: |
           python setup.py sdist
+          twine upload dist/*.tar.gz
       - uses: actions/upload-artifact@v2
         with:
           path: dist/*.tar.gz
