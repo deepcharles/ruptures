@@ -1,7 +1,9 @@
-name: Build wheels
+name: Publish to Pypi (sdist and wheels)
 
 on:
   workflow_dispatch:
+  release:
+    types: [created]
 
 jobs:
   build_wheels:
@@ -39,7 +41,7 @@ jobs:
       - uses: actions/setup-python@v2
         name: Install Python
         with:
-          python-version: '3.7'
+          python-version: '3.8'
 
       - name: Install cibuildwheel and dependencies
         run: |
@@ -51,8 +53,11 @@ jobs:
       - name: Build wheels
         env:
           CIBW_BUILD: cp${{ matrix.python }}-${{ matrix.platform_id }}
+          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
         run: |
           python -m cibuildwheel --output-dir wheelhouse
+          twine upload wheelhouse/*.whl
 
       - uses: actions/upload-artifact@v2
         with:
@@ -76,8 +81,12 @@ jobs:
           pip install -r requirements-dev.txt
           pip install setuptools wheel twine
       - name: Build
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
         run: |
           python setup.py sdist
+          twine upload dist/*.tar.gz
       - uses: actions/upload-artifact@v2
         with:
           path: dist/*.tar.gz
