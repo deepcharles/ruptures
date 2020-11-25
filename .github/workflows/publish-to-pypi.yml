@@ -1,4 +1,4 @@
-name: Build wheels
+name: Publish to Pypi (sdist and wheels)
 
 on:
   workflow_dispatch:
