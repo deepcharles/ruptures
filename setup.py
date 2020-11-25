@@ -33,6 +33,7 @@ setup(
     license="BSD License",
     author="Charles Truong, Laurent Oudre, Nicolas Vayatis",
     author_email="charles@doffy.net",
+    maintainer="Charles Truong, Olivier Boulant",
     description="Change point detection for signals, in Python",
     download_url="https://github.com/deepcharles/ruptures/archive/master.zip",
     keywords=[
