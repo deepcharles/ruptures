@@ -47,17 +47,15 @@ jobs:
           python -m pip install cibuildwheel
           pip install -r requirements-dev.txt
           pip install setuptools wheel twine
-
       - name: Build wheels
         env:
           CIBW_BUILD: cp${{ matrix.python }}-${{ matrix.platform_id }}
         run: |
           python -m cibuildwheel --output-dir wheelhouse
-
       - uses: actions/upload-artifact@v2
         with:
           path: wheelhouse/*.whl
-
+  
   deploy_sdist:
     runs-on: ubuntu-latest
     steps:
