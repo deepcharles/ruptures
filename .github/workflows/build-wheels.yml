@@ -57,7 +57,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           path: wheelhouse/*.whl
-  
+
   deploy_sdist:
     runs-on: ubuntu-latest
     steps:
