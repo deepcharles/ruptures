@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- modify publishing process to Pypi
+- modify publishing process to Pypi PR#83
 - add cosine kernel (cost function and in KernelCPD)PR#74
 - add faster kernel change point detection (`KernelCPD`, C implementation) PR#74
 - add manual trigger to publish to Pypi PR#72
