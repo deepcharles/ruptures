@@ -10,6 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+## [1.1.1] - 2020-11-26
+
+No change to the code compared to the previous version.
+The package was only partly published to Pypi because of the failure of one provider in the CI.
+Since Pypi's policy prevents re-uploading twice the same version, we have to increment the version number.
+
 ## [1.1.0] - 2020-11-23
 
 ### Added
@@ -45,7 +51,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Link to documentation in PyPi description
 
 
-[Unreleased]: https://github.com/deepcharles/ruptures/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/deepcharles/ruptures/compare/v1.1.1...HEAD
+[1.1.1]: https://github.com/deepcharles/ruptures/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/deepcharles/ruptures/compare/v1.0.6...v1.1.0
 [1.0.6]: https://github.com/deepcharles/ruptures/compare/v1.0.5...v1.0.6
 [1.0.5]: https://github.com/deepcharles/ruptures/compare/v1.0.4...v1.0.5
