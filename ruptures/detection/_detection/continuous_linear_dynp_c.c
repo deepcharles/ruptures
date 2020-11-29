@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 
@@ -10,14 +9,13 @@ static inline int min_int(int a, int b)
 }
 
 /**
- * @brief Efficient kernel change point detection
+ * @brief Optimal 1D linear spline smoothing (fixed number of knots).
  *
  * @param signal shape (n_samples,)
  * @param n_samples number of samples
- * @param n_dims number of dimensions
  * @param n_bkps number of change points to detect
  * @param min_size minimum size of a segment
- * @param M_path_res path matrix of shape (n_samples+1, n_bkps+1)
+ * @param M_path_res path matrix of shape ((n_samples+1)*(n_bkps+1),)
  */
 void continuous_linear_dynp_c(double *signal, int n_samples, int n_bkps,
                               int min_size, int *M_path)
