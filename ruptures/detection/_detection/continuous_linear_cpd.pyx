@@ -7,6 +7,10 @@ import numpy as np
 
 
 cpdef continuous_linear_dynp(double[:] signal, int n_bkps, int min_size):
+    """Optimal linear spline regression with fixed number of knots.
+
+    The signal should be 1D.
+    """
     cdef:
         int n_samples = signal.shape[0]
 
