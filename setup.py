@@ -18,6 +18,7 @@ ext_modules = [
         sources=[
             "ruptures/detection/_detection/continuous_linear_cpd.pyx",
             "ruptures/detection/_detection/continuous_linear_dynp_c.c",
+            "ruptures/detection/_detection/continuous_linear_pelt_c.c",
         ],
     ),
     Extension(
