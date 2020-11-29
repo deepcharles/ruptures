@@ -1,0 +1,1 @@
+void continuous_linear_pelt_c(double *signal, int n_samples, double beta, int min_size, int *M_path);
