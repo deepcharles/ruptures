@@ -33,7 +33,6 @@ jobs:
         pip install -r requirements-dev.txt
     - name: Install ruptures
       run: |
-        python setup.py build_ext --inplace
         python setup.py install
     - name: Test with pytest
       run: |

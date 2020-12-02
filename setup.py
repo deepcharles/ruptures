@@ -1,4 +1,5 @@
 from setuptools import setup, find_packages, Extension
+from setuptools.command.build_ext import build_ext
 import numpy as np
 from Cython.Build import cythonize
 
@@ -28,6 +29,22 @@ setup(
     packages=find_packages(exclude=["docs", "tests*", "images"]),
     install_requires=["numpy", "scipy"],
     extras_require={"display": ["matplotlib"]},
+    setup_requires=["cython", "numpy"],
+    package_data={
+        "ruptures.detection._detection": [
+            "ekcpd.pxd",
+            "ekcpd.pyx",
+            "ekcpd_computation.h",
+            "ekcpd_pelt_computation.h",
+            "kernels.h",
+        ],
+        "ruptures.utils._utils": [
+            "convert_path_matrix.pyx",
+            "convert_path_matrix.pxd",
+            "convert_path_matrix_c.h",
+        ],
+    },
+    cmdclass={"build_ext": build_ext},
     python_requires=">=3",
     url="https://centre-borelli.github.io/ruptures-docs/",
     license="BSD License",
