@@ -25,7 +25,7 @@ static inline int int_min(int a, int b)
  */
 void ekcpd_compute(double *signal, int n_samples, int n_dims, int n_bkps, int min_size, void *kernelDescObj, int *M_path)
 {
-    int i, j, t, s, k;
+    int t, s, k;
     int n_bkps_max;
 
     // Allocate memory
@@ -38,19 +38,15 @@ void ekcpd_compute(double *signal, int n_samples, int n_dims, int n_bkps, int mi
     S = (double *)malloc((n_samples + 1) * sizeof(double));
     M_V = (double *)malloc((n_samples + 1) * (n_bkps + 1) * sizeof(double));
 
-    // D and S
-    for (i = 0; i < (n_samples + 1); i++)
+    // D, S, M_V and M_path
+    for (t = 0; t < (n_samples + 1); t++)
     {
-        D[i] = 0.0;
-        S[i] = 0.0;
-    }
-    // M_V and M_path
-    for (i = 0; i < (n_samples + 1); i++)
-    {
-        for (j = 0; j < (n_bkps + 1); j++)
+        D[t] = 0.0;
+        S[t] = 0.0;
+        for (k = 0; k < (n_bkps + 1); k++)
         {
-            M_V[i * (n_bkps + 1) + j] = 0.0;
-            M_path[i * (n_bkps + 1) + j] = 0;
+            M_V[t * (n_bkps + 1) + k] = 0.0;
+            M_path[t * (n_bkps + 1) + k] = 0;
         }
     }
 

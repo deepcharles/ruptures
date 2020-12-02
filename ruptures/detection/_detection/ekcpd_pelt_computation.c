@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <math.h>
@@ -98,6 +97,7 @@ void ekcpd_pelt_compute(double *signal, int n_samples, int n_dims, double beta, 
     free(D);
     free(S);
     free(M_V);
+    free(M_pruning);
 
     return;
 }
