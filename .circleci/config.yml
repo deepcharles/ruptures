@@ -34,7 +34,6 @@ jobs:
             . venv/bin/activate
             python -m pip install --upgrade pip
             pip install -r requirements-dev.txt
-            python setup.py build_ext --inplace
             python setup.py install
 
 
