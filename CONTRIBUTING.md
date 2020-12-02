@@ -23,7 +23,6 @@ cd ruptures
 Then install the downloaded package.
 
 ```
-python setup.py build_ext --inplace
 python -m pip install --verbose --no-build-isolation --editable .
 ```
 
