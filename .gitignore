@@ -83,3 +83,6 @@ docs/build/*
 ehthumbs.db
 Thumbs.db
 site/
+ruptures/utils/_utils/convert_path_matrix.c
+ruptures/detection/_detection/continuous_linear_cpd.c
+ruptures/detection/_detection/ekcpd.c
