@@ -48,11 +48,14 @@ The exact optimization procedure is described in [[Killick2012]](#Killick2012).
 
 ## Available kernels
 We list below a number of kernels that are already implemented in `ruptures`.
-In the following, $u$ and $v$ are two d-dimensional vectors.
+In the following, $u$ and $v$ are two d-dimensional vectors and $\|\cdot\|$ is the Euclidean norm.
 
-- **Linear kernel:** $k_{\text{linear}}(u, v) = u^T v$ and the induced norm is the Euclidean norm.
-- **Gaussian kernel:** (also known as radial basis function, rbf), $k_{\text{Gaussian}}(u,v)=\exp(-\gamma \|u-v\|^2)$ where $\|\cdot\|$ is the Euclidean norm and $\gamma>0$ is a user-defined parameter.
-- **Cosine similarity:** $k_{\text{cosine}}(u, v) = (u^T v)/(\|u\|\|v\|)$ (scaled version of the linear kernel).
+| Kernel                     | Description                                                                                         | Cost function                                        |
+| -------------------------- | --------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| Linear<br>`model="linear"` | $k_{\text{linear}}(u, v) = u^T v$.                                                                  | [`CostL2`](../../user-guide/costs/costl2.md)         |
+| Gaussian<br>`model="rbf"`  | $k_{\text{Gaussian}}(u,v)=\exp(-\gamma \|u-v\|^2)$<br>where $\gamma>0$ is a user-defined parameter. | [`CostRbf`](../../user-guide/costs/costrbf.md)       |
+| Cosine<br>`model="cosine"` | $k_{\text{cosine}}(u, v) = (u^T v)/(\|u\|\|v\|)$                                                    | [`CostCosine`](../../user-guide/costs/costcosine.md) |
+
 
 ## Implementation and usage
 
