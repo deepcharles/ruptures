@@ -50,6 +50,7 @@ nav:
       - 'CostL2': user-guide/costs/costl2.md
       - 'CostNormal': user-guide/costs/costnormal.md
       - 'CostRbf': user-guide/costs/costrbf.md
+      - 'CostCosine': user-guide/costs/costcosine.md
       - 'CostLinear': user-guide/costs/costlinear.md
       - 'CostRank': user-guide/costs/costrank.md
       - 'CostMl': user-guide/costs/costml.md
@@ -93,6 +94,7 @@ nav:
           - 'CostL2': code-reference/costs/costl2-reference.md
           - 'CostNormal': code-reference/costs/costnormal-reference.md
           - 'CostRbf': code-reference/costs/costrbf-reference.md
+          - 'CostCosine': code-reference/costs/costcosine-reference.md
           - 'CostLinear': code-reference/costs/costlinear-reference.md
           - 'CostRank': code-reference/costs/costrank-reference.md
           - 'CostMl': code-reference/costs/costml-reference.md
