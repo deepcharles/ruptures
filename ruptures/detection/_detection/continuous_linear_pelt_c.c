@@ -40,14 +40,44 @@ void continuous_linear_pelt_c(double *signal, int n_samples, double beta, int mi
         S[t] = 0.0;
         M_c[t] = 0.0;
         M_V[t] = 0.0;
-        M_path[t] = 0.0;
+        M_path[t] = 0;
         M_pruning[t] = 0.0;
+    }
+
+    // for t<2*min_size, there cannot be any change point.
+    for (t = 2; t < 2 * min_size; t++)
+    {
+        y_last = signal[t - 1];
+        y_before_last = signal[t - 2];
+        // Compute S[t-1] = S_{t-1..t}, S[t-2] = S_{t-2..t},..., S[0] = S_{0..t}
+        // S_{t-1..t} can be computed with S_{t-1, t-1}.
+        // S_{t-1..t-1} was stored in S[t-1]
+        // S_{t-1..t} will be stored in S[t-1] as well
+        s = t - 1;
+        y_before_first = signal[s - 1];
+        S[s] += (t - s) * (y_last - y_before_first);
+        for (s = t - 2; s >= 0; s--)
+        {
+            length = t - s;
+            y_before_first = signal[s - 1];
+            S[s] += length * (y_last - y_before_first);
+            alpha_curr = (y_last - y_before_first) / length;
+            alpha_prev = (y_before_last - y_before_first) / (t - 1 - s);
+            M_c[s] += 2 * (y_last - y_before_first) * (y_last - y_before_first);
+            M_c[s] += (alpha_prev + alpha_curr) * ((length - 1) * (y_last - y_before_first) - (length * (y_before_last - y_before_first))) * (2 * length - 1) / 6.0;
+            M_c[s] -= 2.0 * (alpha_curr - alpha_prev) * S[s];
+            M_c[s] -= 2.0 * alpha_prev * length * (y_last - y_before_first);
+        }
+        M_c[0] = M_c[1];
+        M_V[t] = M_c[0] + beta;
+        M_pruning[t] = M_c[0];
     }
 
     // Computation loop
     // Handle y_{0..t} = {y_0, ..., y_{t-1}}
-    for (t = 2; t < (n_samples + 1); t++)
+    for (t = 2 * min_size; t < (n_samples + 1); t++)
     {
+
         y_last = signal[t - 1];
         y_before_last = signal[t - 2];
         // Compute S[t-1] = S_{t-1..t}, S[t-2] = S_{t-2..t},..., S[0] = S_{0..t}
@@ -82,7 +112,7 @@ void continuous_linear_pelt_c(double *signal, int n_samples, double beta, int mi
         M_V[t] = sum_of_costs;
         M_path[t] = s;
         // search for minimum (penalized) sum of cost
-        for (s = s_min + 1; s < t - min_size + 1; s++)
+        for (s = max_int(s_min + 1, min_size); s < t - min_size + 1; s++)
         {
             // Compute cost on y_{s..t}
             // D_{s..t} = D_{0..t} - D{0..s} <--> D_{s..t} = D[t] - D[s]
@@ -91,6 +121,7 @@ void continuous_linear_pelt_c(double *signal, int n_samples, double beta, int mi
             sum_of_costs = M_V[s] + c_cost;
             M_pruning[s] = sum_of_costs;
             sum_of_costs += beta;
+
             // Compare to current min
             if (M_V[t] > sum_of_costs)
             {
@@ -101,9 +132,17 @@ void continuous_linear_pelt_c(double *signal, int n_samples, double beta, int mi
         // Pruning
         while ((M_pruning[s_min] >= M_V[t]) && (s_min < t - min_size + 1))
         {
-            s_min++;
+            if (s_min == 0)
+            {
+                s_min += min_size;
+            }
+            else
+            {
+                s_min++;
+            }
         }
     }
+
     // Free memory
     free(S);
     free(M_c);
