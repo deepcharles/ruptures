@@ -52,6 +52,7 @@ nav:
       - 'CostRbf': user-guide/costs/costrbf.md
       - 'CostCosine': user-guide/costs/costcosine.md
       - 'CostLinear': user-guide/costs/costlinear.md
+      - 'CostCLinear': user-guide/costs/costclinear.md
       - 'CostRank': user-guide/costs/costrank.md
       - 'CostMl': user-guide/costs/costml.md
       - 'CostAR': user-guide/costs/costautoregressive.md
@@ -96,6 +97,7 @@ nav:
           - 'CostRbf': code-reference/costs/costrbf-reference.md
           - 'CostCosine': code-reference/costs/costcosine-reference.md
           - 'CostLinear': code-reference/costs/costlinear-reference.md
+          - 'CostCLinear': code-reference/costs/costclinear-reference.md
           - 'CostRank': code-reference/costs/costrank-reference.md
           - 'CostMl': code-reference/costs/costml-reference.md
           - 'CostAR': code-reference/costs/costautoregressive-reference.md

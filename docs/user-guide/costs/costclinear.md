@@ -1,0 +1,63 @@
+# Continuous linear change (`CostCLinear`)
+
+## Description
+
+Let $0 < t_1 < t_2 < \dots < n$ be unknown change points indexes.
+Consider the following multiple linear regression model
+
+
+## Usage
+
+Start with the usual imports and create a signal with piecewise linear trends.
+
+```python
+import numpy as np
+import matplotlib.pylab as plt
+import ruptures as rpt
+
+# creation of data
+n, n_reg = 2000, 3  # number of samples, number of regressors (including intercept)
+n_bkps, sigma = 3, 5  # number of change points, noise standart deviation
+# regressors
+tt = np.linspace(0, 10 * np.pi, n)
+X = np.vstack((np.sin(tt), np.sin(5 * tt), np.ones(n))).T
+# parameter vectors
+deltas, bkps = rpt.pw_constant(n, n_reg, n_bkps, noise_std=None, delta=(1, 3))
+# observed signal
+y = np.sum(X * deltas, axis=1)
+y += np.random.normal(size=y.shape)
+# display signal
+rpt.show.display(y, bkps, figsize=(10, 6))
+plt.show()
+```
+
+Then create a [`CostCLinear`][ruptures.costs.costclinear.CostCLinear] instance and print the cost of the sub-signal `signal[50:150]`.
+
+```python
+# stack observed signal and regressors.
+# first dimension is the observed signal.
+signal = np.column_stack((y.reshape(-1, 1), X))
+c = rpt.costs.CostCLinear().fit(signal)
+print(c.error(50, 150))
+```
+
+You can also compute the sum of costs for a given list of change points.
+
+```python
+print(c.sum_of_costs(bkps))
+print(c.sum_of_costs([10, 100, 200, 250, n]))
+```
+
+In order to use this cost class in a change point detection algorithm (inheriting from [`BaseEstimator`][ruptures.base.BaseEstimator]), either pass a [`CostCLinear`][ruptures.costs.costclinear.CostCLinear] instance (through the argument `custom_cost`) or set `model="linear"`.
+
+```python
+c = rpt.costs.CostCLinear()
+algo = rpt.Dynp(custom_cost=c)
+# is equivalent to
+algo = rpt.Dynp(model="clinear")
+```
+
+## References
+
+<a id="Bai2003">[Bai2003]</a>
+J. Bai and P. Perron. Critical values for multiple structural change tests. Econometrics Journal, 6(1):72–78, 2003.
