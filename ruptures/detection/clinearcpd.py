@@ -1,0 +1,122 @@
+r"""Efficient linear change point detection (continuity constraint)."""
+
+from ruptures.utils import sanity_check
+from ruptures.costs import cost_factory
+from ruptures.base import BaseCost, BaseEstimator
+
+from ruptures.detection._detection.continuous_linear_cpd import (
+    continuous_linear_dynp,
+    continuous_linear_pelt,
+)
+from ruptures.utils._utils.convert_path_matrix import from_path_matrix_to_bkps_list
+
+
+class CLinearCPD(BaseEstimator):
+    """Find optimal change points (using dynamic programming or pelt) for the
+    special case where the signal is approximated by a piecewise linear
+    continuous fonction.
+
+    Given a segment model, it computes the best partition for which the
+    sum of errors is minimum.
+
+    See the [user guide](../../../user-guide/detection/clinear) for more
+    information.
+    """
+
+    def __init__(self, min_size=2, jump=1, params=None):
+        r"""Creates a CLinearCPD instance.
+
+        Args:
+            min_size (int, optional): minimum segment length.
+            jump (int, optional): not considered, set to 1.
+            params (dict, optional): not considered.
+        """
+        self.model_name = "clinear"
+        # load the associated cost function
+        self.cost = cost_factory(model=self.model_name)
+        self.min_size = max(min_size, self.cost.min_size)
+        self.jump = 1  # set to 1
+        self.n_samples = None
+        self.segmentations_dict = dict()  # {n_bkps: bkps_list}
+
+    def fit(self, signal) -> "CLinearCPD":
+        """Update some parameters (no computation in this function).
+
+        Args:
+            signal (array): signal. Shape (n_samples, n_features) or
+                (n_samples,).
+
+        Returns:
+            self
+        """
+        # update some params
+        self.segmentations_dict = dict()
+        self.cost.fit(signal)
+        self.n_samples = signal.shape[0]
+        return self
+
+    def predict(self, n_bkps=None, pen=None):
+        """Return the optimal breakpoints. Must be called after the fit method.
+        The breakpoints are associated with the signal passed to.
+
+        [`fit()`][ruptures.detection.clinear.CLinearCPD.fit].
+
+        Args:
+            n_bkps (int, optional): Number of change points. Defaults to None.
+            pen (float, optional): penalty value (>0). Defaults to None. Not
+                considered if n_bkps is not None.
+
+        Raises:
+            AssertionError: if `pen` or `n_bkps` is not strictly positive.
+
+        Returns:
+            list[int]: sorted list of breakpoints
+        """
+        # dynamic programming if the user passed a number change points
+        if n_bkps is not None:
+            n_bkps = int(n_bkps)
+            err_msg = "The number of changes must be positive: {}".format(n_bkps)
+            assert n_bkps > 0, err_msg
+            # if we have already computed it, return it without computations.
+            if n_bkps in self.segmentations_dict:
+                return self.segmentations_dict[n_bkps]
+            # otherwise, call the C function
+            path_matrix_flat = continuous_linear_dynp(
+                self.cost.signal, n_bkps, self.min_size
+            )
+            # from the path matrix, get all segmentation for k=1,...,n_bkps
+            for k in range(1, n_bkps + 1):
+                self.segmentations_dict[k] = from_path_matrix_to_bkps_list(
+                    path_matrix_flat, k, self.n_samples, n_bkps, self.jump
+                )
+            return self.segmentations_dict[n_bkps]
+
+        # Call pelt if the user passed a penalty
+        if pen is not None:
+            assert pen > 0, "The penalty must be positive: {}".format(pen)
+            path_matrix = continuous_linear_pelt(self.cost.signal, pen, self.min_size)
+
+            my_bkps = list()
+            ind = self.n_samples
+            while ind > 0:
+                my_bkps.append(ind)
+                ind = path_matrix[ind]
+            return my_bkps[::-1]
+
+    def fit_predict(self, signal, n_bkps=None, pen=None):
+        """Fit to the signal and return the optimal breakpoints.
+
+        Helper method to call fit and predict once
+
+        Args:
+            signal (array): signal. Shape (n_samples, n_features) or
+                (n_samples,).
+            n_bkps (int, optional): Number of change points. Defaults to None.
+            pen (float, optional): penalty value (>0). Defaults to None. Not
+                considered if n_bkps is not None.
+
+        Returns:
+            list: sorted list of breakpoints
+        """
+        self.fit(signal)
+        return self.predict(n_bkps=n_bkps, pen=pen)
