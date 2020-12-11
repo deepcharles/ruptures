@@ -6,7 +6,7 @@
 ![PyPI - License](https://img.shields.io/pypi/l/ruptures)
 [![Downloads](https://pepy.tech/badge/ruptures)](https://pepy.tech/project/ruptures)
 <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/deepcharles/ruptures/HEAD)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/deepcharles/ruptures/master)
 
 
 # ruptures
