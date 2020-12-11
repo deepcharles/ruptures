@@ -29,9 +29,6 @@ jobs:
     - name: Build documentation
       run: |
         mkdocs build
-    - name: Add notebooks ressources
-      run: |
-        ./scripts/add_notebooks_to_docs_site.sh
     - uses: actions/upload-artifact@v1
       with:
         name: DocumentationHTML
