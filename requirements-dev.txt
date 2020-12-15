@@ -2,6 +2,7 @@ Cython
 jupyter
 matplotlib
 mkdocs
+mkdocs-macros-plugin
 mkdocs-material
 mkdocstrings
 mknotebooks
