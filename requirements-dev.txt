@@ -3,8 +3,8 @@ jupyter
 matplotlib
 mkdocs
 mkdocs-material
-mkdocs-nbconvert
 mkdocstrings
+mknotebooks
 numpy
 pre-commit
 pymdown-extensions
