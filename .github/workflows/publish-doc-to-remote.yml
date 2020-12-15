@@ -26,10 +26,7 @@ jobs:
         python setup.py install
     - name: Run notebooks
       run: |
-        jupyter nbconvert --inplace --to notebook --ExecutePreprocessor.kernel_name=python --execute notebooks/*.ipynb
-    - name: Add Binder and download ressources
-      run: |
-        python ./scripts/notebooks_add_binder_download.py
+        jupyter nbconvert --inplace --to notebook --ExecutePreprocessor.kernel_name=python --execute $(find ./docs -name '*.ipynb')
     - name: Build documentation
       run: |
         mkdocs build
