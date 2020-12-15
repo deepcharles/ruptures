@@ -31,7 +31,6 @@ repos:
   rev: master
   hooks:
     - id: nbstripout
-      args: [--extra-keys, "metadata.kernelspec.display_name"]
 -   repo: https://github.com/asottile/blacken-docs
     rev: v1.8.0
     hooks:
