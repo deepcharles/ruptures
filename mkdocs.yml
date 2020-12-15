@@ -1,5 +1,6 @@
 site_name: ruptures
 repo_url: https://github.com/deepcharles/ruptures
+repo_name: deepcharles/ruptures
 docs_dir: docs
 site_dir: site
 plugins:
@@ -13,10 +14,11 @@ plugins:
             filters:
               - "!^_"  # exclude all members starting with _
               - "^__init__$"  # but always include __init__ modules and methods
-  - nbconvert:
-      input_dir: notebooks
-      output_dir: notebooks
-      recursive: true
+  - mknotebooks:
+      execute: false
+      binder: false
+  - macros:
+      module_name: mkdocs_macros
 markdown_extensions:
   - pymdownx.snippets:
   - pymdownx.tabbed:
@@ -27,13 +29,14 @@ markdown_extensions:
   - admonition:
   - toc:
       permalink: "#"
+  - codehilite
 nav:
   - Home:
     - 'Welcome to ruptures': index.md
   - Getting started:
     - 'Change point detection?': what-is-cpd.md
     - 'Installation': install.md
-    - 'Basic usage': notebooks/basic-usage.md
+    - 'Basic usage': getting-started/basic-usage.ipynb
     - 'Fitting and predicting': fit-and-predict.md
     - 'Custom cost function': custom-cost-function.md
   - User guide:
@@ -71,10 +74,10 @@ nav:
     - 'Introduction': examples/introduction.md
     - 'Simple usages':
       - 'Introduction': examples/simple-usages-introduction.md
-      - notebooks/basic-usage.md
+      - 'Basic usage': getting-started/basic-usage.ipynb
     - 'Advanced usages':
       - 'Introduction': examples/advanced-usages-introduction.md
-      - notebooks/kernel-cpd-performance-comparison.md
+      - 'Kernel change point detection: a performance comparison': examples/kernel-cpd-performance-comparison.ipynb
   - Code reference:
       - Introduction: code-reference/index.md
       - Base classes: code-reference/base-reference.md

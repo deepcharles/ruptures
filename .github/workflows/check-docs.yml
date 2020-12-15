@@ -22,7 +22,7 @@ jobs:
         python setup.py install
     - name: Run notebooks
       run: |
-        jupyter nbconvert --inplace --to notebook --ExecutePreprocessor.kernel_name=python --execute notebooks/*.ipynb
+        jupyter nbconvert --inplace --to notebook --ExecutePreprocessor.kernel_name=python --execute $(find ./docs -name '*.ipynb')
     - name: Build documentation
       run: |
         mkdocs build

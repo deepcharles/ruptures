@@ -2,9 +2,10 @@ Cython
 jupyter
 matplotlib
 mkdocs
+mkdocs-macros-plugin
 mkdocs-material
-mkdocs-nbconvert
 mkdocstrings
+mknotebooks
 numpy
 pre-commit
 pymdown-extensions

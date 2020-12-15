@@ -76,9 +76,16 @@ Once you are satisfied, no need to build the documentation, the CI will take car
 ### Add examples to the gallery
 
 An easy way to showcase your work with `ruptures` is to write a narrative example.
-To that, simply put a [Jupyter notebook](https://jupyter.org/) in the `notebooks/` folder.
-To make it appear in the documentation, add a reference in `mkdocs.yml` (`nav > Gallery of examples`): if the notebook's name is `my_notebook.ipynb`, it will be available as `notebooks/my_notebook.md`.
+To that, simply put a [Jupyter notebook](https://jupyter.org/) in the `docs/examples` folder.
+To make it appear in the documentation, add a reference in `mkdocs.yml` (`nav > Gallery of examples`): if the notebook's name is `my_notebook.ipynb`, it will be available as `examples/my_notebook.ipynb`.
 It will be rendered automatically when [MkDocs](https://www.mkdocs.org/) builds the documentation.
+
+!!! note
+    To automatically add a [Binder](https://mybinder.org/v2/gh/deepcharles/ruptures/master) link and a download link to your notebook, simply add the following line of code.
+    ```markdown
+    {{ '<!-- {{ add_binder_block(page) }} -->' }}
+    ```
+    Ideally, place this code below the title of the notebook (same cell) and it will be rendered as in [here](examples/kernel-cpd-performance-comparison.ipynb).
 
 We welcome any interesting work about a new cost function, algorithm, data, calibration method, etc.
 Any other package can be used in combination with `ruptures`.
