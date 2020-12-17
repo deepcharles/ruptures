@@ -53,10 +53,9 @@ jobs:
             py.test --cov=./ --cov-report=xml
 
       - codecov/upload:
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./coverage.xml
-          verbose: true
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: ./coverage.xml
+        verbose: true
 
       - store_artifacts:
         path: ./coverage.xml
