@@ -50,7 +50,6 @@ jobs:
       - codecov/upload:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage.xml
-          verbose: true
 
       - store_artifacts:
         path: ./coverage.xml
