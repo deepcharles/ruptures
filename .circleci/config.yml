@@ -34,6 +34,7 @@ jobs:
             . venv/bin/activate
             python -m pip install --upgrade pip
             pip install -r requirements-dev.txt
+            pip install pytest-cov
             python setup.py install
 
 
@@ -43,19 +44,27 @@ jobs:
           key: v1-dependencies-{{ checksum "requirements-dev.txt" }}
 
       # run tests!
-      # this example uses Django's built-in test-runner
-      # other common Python testing frameworks include pytest and nose
-      # https://pytest.org
-      # https://nose.readthedocs.io
       - run:
           name: run tests
           command: |
             . venv/bin/activate
-            mkdir test-reports
-            py.test --junitxml=test-reports/junit.xml tests/
+            py.test --cov=./ --cov-report=xml
 
-      - store_test_results:
-          path: test-reports
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage.xml
+          files: ./coverage1.xml,./coverage2.xml
+          directory: ./coverage/reports/
+          flags: unittests
+          env_vars: OS,PYTHON
+          name: codecov-umbrella
+          fail_ci_if_error: true
+          path_to_write_report: ./coverage/codecov_report.txt
+          verbose: true
 
       - store_artifacts:
-          path: test-reports
+        path: ./coverage.xml
+
+
