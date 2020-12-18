@@ -28,10 +28,14 @@ jobs:
         python setup.py install
     - name: Test with pytest
       run: |
-        pytest --cov-report=xml --cov=myproj tests/
+        pytest --cov-report=xml --cov=ruptures tests/
 
     - name: Upload to Codecov
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       run: |
         bash <(curl -s https://codecov.io/bash)
+
+    - uses: actions/upload-artifact@v2
+      with:
+        path: coverage.xml
