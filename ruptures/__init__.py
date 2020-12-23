@@ -14,7 +14,7 @@ from .detection import (
     OmpK,
     Pelt,
     Window,
-    GreedyAR,
-    GreedyLinear,
+    # GreedyAR,
+    # GreedyLinear,
 )
 from .show import display
