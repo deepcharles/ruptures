@@ -14,8 +14,7 @@ class CostCLinear(BaseCost):
     def __init__(self):
         """Initialize the object."""
         self.signal = None
-        self.covar = None
-        self.min_size = 2
+        self.min_size = 3
 
     def fit(self, signal) -> "CostCLinear":
         """Set parameters of the instance.
@@ -51,7 +50,7 @@ class CostCLinear(BaseCost):
             raise NotEnoughPoints
 
         if start == 0:
-            return self.error(1, end)
+            start = 1
 
         sub = self.signal[start:end]
         slope = (self.signal[end - 1] - self.signal[start - 1]) / (end - start)
