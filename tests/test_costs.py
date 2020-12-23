@@ -5,6 +5,7 @@ from ruptures.costs import (
     CostL1,
     CostL2,
     CostLinear,
+    CostCLinear,
     CostNormal,
     CostRbf,
     CostRank,
