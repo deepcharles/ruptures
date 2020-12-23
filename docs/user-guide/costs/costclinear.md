@@ -54,5 +54,3 @@ algo = rpt.Dynp(custom_cost=c)
 # is equivalent to
 algo = rpt.Dynp(model="clinear")
 ```
-
-## References
