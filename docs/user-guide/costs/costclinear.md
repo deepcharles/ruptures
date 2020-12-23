@@ -2,9 +2,19 @@
 
 ## Description
 
-Let $0 < t_1 < t_2 < \dots < n$ be unknown change points indexes.
-Consider the following multiple linear regression model
+For a given set of indexes (also called knots) $t_k$ ($k=1,\dots,K$), a linear spline $f$ is such that:
 
+1. $f$ is affine on each interval $t_k..t_{k+1}$, i.e. $f(t)=\alpha_k (t-t_k) + \beta_k$ ($\alpha_k, \beta_k \in \mathbb{R}^d$) for all $t=t_k,t_k+1,\dots,t_{k+1}-1$;
+2. $f$ is continuous.
+
+The cost function [`CostCLinear`][ruptures.costs.costclinear.CostCLinear] measures the error when approximating the signal with a linear spline.
+Formally, it is defined for $0<a<b\leq T$ by
+
+$$
+c(y_{a..b}) := \sum_{t=a}^{b-1} \left\lVert y_t - y_{a-1} - \frac{t-a+1}{b-a}(y_{b-1}-y_{a-1}) \right\rVert^2
+$$
+
+and $c(y_{0..b}):=c(y_{1..b})$ (by convention).
 
 ## Usage
 
@@ -16,27 +26,15 @@ import matplotlib.pylab as plt
 import ruptures as rpt
 
 # creation of data
-n, n_reg = 2000, 3  # number of samples, number of regressors (including intercept)
-n_bkps, sigma = 3, 5  # number of change points, noise standart deviation
-# regressors
-tt = np.linspace(0, 10 * np.pi, n)
-X = np.vstack((np.sin(tt), np.sin(5 * tt), np.ones(n))).T
-# parameter vectors
-deltas, bkps = rpt.pw_constant(n, n_reg, n_bkps, noise_std=None, delta=(1, 3))
-# observed signal
-y = np.sum(X * deltas, axis=1)
-y += np.random.normal(size=y.shape)
-# display signal
-rpt.show.display(y, bkps, figsize=(10, 6))
-plt.show()
+n_samples, n_dims = 500, 3  # number of samples, dimension
+n_bkps, sigma = 3, 5  # number of change points, noise standard deviation
+signal, bkps = rpt.pw_constant(n_samples, n_dims, n_bkps, noise_std=sigma)
+signal = np.cumsum(signal, axis=1)
 ```
 
 Then create a [`CostCLinear`][ruptures.costs.costclinear.CostCLinear] instance and print the cost of the sub-signal `signal[50:150]`.
 
 ```python
-# stack observed signal and regressors.
-# first dimension is the observed signal.
-signal = np.column_stack((y.reshape(-1, 1), X))
 c = rpt.costs.CostCLinear().fit(signal)
 print(c.error(50, 150))
 ```
@@ -48,7 +46,7 @@ print(c.sum_of_costs(bkps))
 print(c.sum_of_costs([10, 100, 200, 250, n]))
 ```
 
-In order to use this cost class in a change point detection algorithm (inheriting from [`BaseEstimator`][ruptures.base.BaseEstimator]), either pass a [`CostCLinear`][ruptures.costs.costclinear.CostCLinear] instance (through the argument `custom_cost`) or set `model="linear"`.
+In order to use this cost class in a change point detection algorithm (inheriting from [`BaseEstimator`][ruptures.base.BaseEstimator]), either pass a [`CostCLinear`][ruptures.costs.costclinear.CostCLinear] instance (through the argument `custom_cost`) or set `model="clinear"`.
 
 ```python
 c = rpt.costs.CostCLinear()
@@ -58,6 +56,3 @@ algo = rpt.Dynp(model="clinear")
 ```
 
 ## References
-
-<a id="Bai2003">[Bai2003]</a>
-J. Bai and P. Perron. Critical values for multiple structural change tests. Econometrics Journal, 6(1):72–78, 2003.
