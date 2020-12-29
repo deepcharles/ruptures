@@ -12,7 +12,5 @@ from .detection import (
     KernelCPD,
     Pelt,
     Window,
-    # GreedyAR,
-    # GreedyLinear,
 )
 from .show import display
