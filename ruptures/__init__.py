@@ -10,6 +10,7 @@ from .detection import (
     BottomUp,
     Dynp,
     KernelCPD,
+    CLinearCPD,
     Omp,
     OmpK,
     Pelt,

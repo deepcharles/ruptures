@@ -15,14 +15,6 @@ ext_modules = [
         ],
     ),
     Extension(
-        "ruptures.detection._detection.continuous_linear_cpd",
-        sources=[
-            "ruptures/detection/_detection/continuous_linear_cpd.pyx",
-            "ruptures/detection/_detection/continuous_linear_dynp_c.c",
-            "ruptures/detection/_detection/continuous_linear_pelt_c.c",
-        ],
-    ),
-    Extension(
         "ruptures.utils._utils.convert_path_matrix",
         sources=[
             "ruptures/utils/_utils/convert_path_matrix.pyx",
