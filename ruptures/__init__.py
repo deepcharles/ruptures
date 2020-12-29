@@ -10,11 +10,7 @@ from .detection import (
     BottomUp,
     Dynp,
     KernelCPD,
-    Omp,
-    OmpK,
     Pelt,
     Window,
-    GreedyAR,
-    GreedyLinear,
 )
 from .show import display

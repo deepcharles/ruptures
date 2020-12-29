@@ -96,7 +96,7 @@ void ekcpd_pelt_compute(double *signal, int n_samples, int n_dims, double beta, 
         M_V[t] = c_cost_sum;
         M_path[t] = s;
         // search for minimum (penalized) sum of cost
-        for (s = max_int(s_min, min_size) + 1; s < t - min_size + 1; s++)
+        for (s = max_int(s_min + 1, min_size); s < t - min_size + 1; s++)
         {
             // Compute cost on y_{s..t}
             // D_{s..t} = D_{0..t} - D{0..s} <--> D_{s..t} = D[t] - D[s]
