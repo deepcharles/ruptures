@@ -10,6 +10,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+## [1.1.2] - 2020-12-01
+
+### Added
+
+- 12cbc9e feat: add piecewise linear cpd (#91)
+- a12b215 test: add code coverage badge (#97)
+- 2e9b17f docs: add binder for notebooks (#94)
+- da7544f docs(costcosine): add entry for CostCosine in docs (#93)
+- 8c9aa35 build(setup.py/cfg):  add build_ext to setup.py (#88)
+- 10ef8e8 build(python39): add py39 to supported versions (#87)
+
+### Changed
+
+- 069bd41 fix(kernelcpd): bug fix in pelt (#95)
+- b4abc34 fix: memory leak in KernelCPD (#89)
+
 ## [1.1.1] - 2020-11-26
 
 No change to the code compared to the previous version.
@@ -50,8 +66,8 @@ Since Pypi's policy prevents re-uploading twice the same version, we have to inc
 ### Changed
 - Link to documentation in PyPi description
 
-
-[Unreleased]: https://github.com/deepcharles/ruptures/compare/v1.1.1...HEAD
+[Unreleased]: https://github.com/deepcharles/ruptures/compare/v1.1.2...HEAD
+[1.1.2]: https://github.com/deepcharles/ruptures/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/deepcharles/ruptures/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/deepcharles/ruptures/compare/v1.0.6...v1.1.0
 [1.0.6]: https://github.com/deepcharles/ruptures/compare/v1.0.5...v1.0.6
