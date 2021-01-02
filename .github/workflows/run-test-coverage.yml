@@ -23,7 +23,7 @@ jobs:
     - name: Install dependencies and ruptures[dev]
       run: |
         python -m pip install --upgrade pip
-        python -m pip install -vv .[dev]
+        python -m pip install -v .[dev]
     - name: Test with pytest
       run: |
         python -m pytest
