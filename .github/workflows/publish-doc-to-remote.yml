@@ -1,5 +1,5 @@
-# Publish doc to website on new release (or manual trigger)
-name: "docs"
+# Publish docs to website on new release (or manual trigger)
+name: "Publish docs online"
 
 on:
   release:
@@ -14,23 +14,18 @@ jobs:
     - name: Set up Python 3.x
       uses: actions/setup-python@v2
       with:
-        # Semantic version range syntax or exact version of a Python version
         python-version: '3.8'
-    # You can test your matrix by printing the current Python version
-    - name: Display Python version
-      run: python -c "import sys; print(sys.version)"
     - name: Install ruptures and dependecies
       run: |
         python -m pip install --upgrade pip
-        if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
-        python setup.py install
+        python -m pip install .[dev]
     - name: Run notebooks
       run: |
         jupyter nbconvert --inplace --to notebook --ExecutePreprocessor.kernel_name=python --execute $(find ./docs -name '*.ipynb')
     - name: Build documentation
       run: |
         mkdocs build
-    - name: Publish documentation to remote
+    - name: Publish documentation to remote repo
       uses: selenehyun/gh-push@master
       env:
         GITHUB_TOKEN: ${{ secrets.DOC_PUSHER_ACCESS_TOKEN }}
