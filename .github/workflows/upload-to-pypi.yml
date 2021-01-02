@@ -1,4 +1,4 @@
-name: Publish to Pypi (sdist and wheels)
+name: Upload package to Pypi
 
 on:
   workflow_dispatch:
@@ -48,9 +48,7 @@ jobs:
       - name: Install cibuildwheel and dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install cibuildwheel
-          pip install -r requirements-dev.txt
-          pip install setuptools wheel twine
+          python -m pip install cibuildwheel setuptools wheel twine
 
       - name: Build wheels
         env:
@@ -59,7 +57,7 @@ jobs:
           TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
         run: |
           python -m cibuildwheel --output-dir wheelhouse
-          twine upload wheelhouse/*.whl
+          python -m twine upload wheelhouse/*.whl
 
       - uses: actions/upload-artifact@v2
         with:
@@ -69,18 +67,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python 3.x
+      - name: Set up Python 3.8
         uses: actions/setup-python@v2
         with:
-          # Semantic version range syntax or exact version of a Python version
           python-version: '3.8'
-      # You can test your matrix by printing the current Python version
-      - name: Display Python version
-        run: python -c "import sys; print(sys.version)"
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements-dev.txt
           pip install setuptools wheel twine
       - name: Build
         env:
@@ -88,7 +81,7 @@ jobs:
           TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
         run: |
           python setup.py sdist
-          twine upload dist/*.tar.gz
+          python -m twine upload dist/*.tar.gz
       - uses: actions/upload-artifact@v2
         with:
           path: dist/*.tar.gz
