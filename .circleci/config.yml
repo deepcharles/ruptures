@@ -37,7 +37,7 @@ jobs:
       - save_cache:
           paths:
             - ./venv
-          key: v1-dependencies-{{ checksum "pyprojet.toml" }}-{{ checksum "setup.cfg" }}-{{ checksum "setup.py" }}
+          key: v1-dependencies-{{ checksum "pyproject.toml" }}-{{ checksum "setup.cfg" }}-{{ checksum "setup.py" }}
 
       # run tests!
       # this example uses Django's built-in test-runner
