@@ -1,14 +1,13 @@
 import pytest
-
 from ruptures.costs import (
     CostAR,
+    CostCLinear,
     CostL1,
     CostL2,
     CostLinear,
-    CostCLinear,
     CostNormal,
-    CostRbf,
     CostRank,
+    CostRbf,
     cost_factory,
 )
 from ruptures.datasets import pw_constant
