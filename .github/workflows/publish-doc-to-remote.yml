@@ -18,7 +18,7 @@ jobs:
     - name: Install ruptures and dependecies
       run: |
         python -m pip install --upgrade pip
-        python -m pip install -v .[dev]
+        python -m pip install .[dev]
     - name: Run notebooks
       run: |
         jupyter nbconvert --inplace --to notebook --ExecutePreprocessor.kernel_name=python --execute $(find ./docs -name '*.ipynb')

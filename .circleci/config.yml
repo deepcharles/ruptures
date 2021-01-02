@@ -43,7 +43,7 @@ jobs:
           name: run tests
           command: |
             . venv/bin/activate
-            python -m pip install -v .[dev]
+            python -m pip install .[dev]
             python -m pytest
 
       - store_test_results:
