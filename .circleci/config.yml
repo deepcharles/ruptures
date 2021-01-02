@@ -23,7 +23,7 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "pyprojet.toml" }}-{{ checksum "setup.cfg" }}-{{ checksum "setup.py" }}
+          - v1-dependencies-{{ checksum "pyproject.toml" }}-{{ checksum "setup.cfg" }}-{{ checksum "setup.py" }}
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
@@ -39,11 +39,6 @@ jobs:
             - ./venv
           key: v1-dependencies-{{ checksum "pyproject.toml" }}-{{ checksum "setup.cfg" }}-{{ checksum "setup.py" }}
 
-      # run tests!
-      # this example uses Django's built-in test-runner
-      # other common Python testing frameworks include pytest and nose
-      # https://pytest.org
-      # https://nose.readthedocs.io
       - run:
           name: run tests
           command: |
