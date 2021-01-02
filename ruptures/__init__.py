@@ -1,7 +1,4 @@
-"""
-Offline change point detection for Python
-====================================================================================================
-"""
+"""Offline change point detection for Python."""
 
 from .datasets import pw_constant, pw_linear, pw_normal, pw_wavy
 from .detection import Binseg, BottomUp, Dynp, KernelCPD, Pelt, Window
