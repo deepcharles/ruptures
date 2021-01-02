@@ -1,4 +1,5 @@
 """Import utils functions."""
-from .utils import pairwise, unzip, admissible_filter, sanity_check
 from .bnode import Bnode
 from .drawbkps import draw_bkps
+from .utils import admissible_filter, pairwise, sanity_check, unzip
+from .utils._utils.convert_path_matrix import from_path_matrix_to_bkps_list
