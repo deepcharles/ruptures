@@ -1,7 +1,7 @@
 include pyproject.toml
 include ruptures/utils/_utils/*.h
 include ruptures/utils/_utils/*.pyx
-include ruptures/utils/_utils/*.pyd
+include ruptures/utils/_utils/*.pxd
 include ruptures/detection/_detection/*.h
 include ruptures/detection/_detection/*.pyx
-include ruptures/detection/_detection/*.pyd
+include ruptures/detection/_detection/*.pxd
