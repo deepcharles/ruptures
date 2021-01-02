@@ -24,6 +24,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         python -m pip install -v .[dev]
+        python -c "import ruptures as rpt"
     - name: Test with pytest
       run: |
         python -m pytest
