@@ -6,6 +6,8 @@ from random import choice
 
 import numpy as np
 
+from ._utils.convert_path_matrix import from_path_matrix_to_bkps_list
+
 
 def pairwise(iterable):
     """s -> (s0,s1), (s1,s2), (s2, s3), ..."""
