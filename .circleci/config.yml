@@ -23,7 +23,7 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "requirements-dev.txt" }}
+          - v1-dependencies-{{ checksum "pyprojet.toml" }}-{{ checksum "setup.cfg" }}-{{ checksum "setup.py" }}
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
@@ -33,14 +33,11 @@ jobs:
             python3 -m venv venv
             . venv/bin/activate
             python -m pip install --upgrade pip
-            pip install -r requirements-dev.txt
-            python setup.py install
-
 
       - save_cache:
           paths:
             - ./venv
-          key: v1-dependencies-{{ checksum "requirements-dev.txt" }}
+          key: v1-dependencies-{{ checksum "pyprojet.toml" }}-{{ checksum "setup.cfg" }}-{{ checksum "setup.py" }}
 
       # run tests!
       # this example uses Django's built-in test-runner
@@ -51,11 +48,11 @@ jobs:
           name: run tests
           command: |
             . venv/bin/activate
-            mkdir test-reports
-            py.test --junitxml=test-reports/junit.xml tests/
+            python -m pip install .[dev]
+            python -m pytest
 
       - store_test_results:
-          path: test-reports
+          path: coverage.xml
 
       - store_artifacts:
-          path: test-reports
+          path: coverage.xml
