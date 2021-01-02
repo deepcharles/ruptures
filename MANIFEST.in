@@ -1,1 +1,4 @@
 include pyproject.toml
+include *.h
+include *.pyx
+include *.pyd
