@@ -1,4 +1,4 @@
-from setuptools import Extension, setup
+from setuptools import Extension, find_packages, setup
 
 ext_modules = [
     Extension(
@@ -23,4 +23,7 @@ ext_modules = [
 if __name__ == "__main__":
     from Cython.Build import cythonize
 
-    setup(ext_modules=cythonize(ext_modules, language_level="3"))
+    setup(
+        packages=find_packages(exclude=["docs", "tests*", "images"]),
+        ext_modules=cythonize(ext_modules, language_level="3"),
+    )
