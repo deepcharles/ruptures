@@ -1,7 +1,4 @@
-import numpy as np
-from Cython.Build import cythonize
-from setuptools import Extension, find_packages, setup
-from setuptools.command.build_ext import build_ext
+from setuptools import Extension, setup
 
 ext_modules = [
     Extension(
@@ -22,9 +19,8 @@ ext_modules = [
     ),
 ]
 
-setup(
-    ext_modules=cythonize(
-        ext_modules,
-        language_level="3",
-    ),
-)
+
+if __name__ == "__main__":
+    from Cython.Build import cythonize
+
+    setup(ext_modules=cythonize(ext_modules, language_level="3"))
