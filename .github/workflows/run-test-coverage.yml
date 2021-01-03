@@ -24,6 +24,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         python -m pip install .[dev]
+        python  -c 'from setuptools import find_packages; print(find_packages())'
         python -c "import ruptures as rpt"
     - name: Test with pytest
       run: |
