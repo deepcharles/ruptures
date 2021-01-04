@@ -5,4 +5,4 @@ from .detection import Binseg, BottomUp, Dynp, KernelCPD, Pelt, Window
 from .exceptions import NotEnoughPoints
 from .show import display
 
-__version__ = "1.1.2dev0"
+__version__ = "1.1.2"
