@@ -15,7 +15,7 @@ jobs:
         bitness: [32, 64]
         python: [36, 37, 38, 39]
         include:
-          # Run 32 and 64 bit version in parallel for Linux and Windows
+          # Run 32 and 64 bits version in parallel for Linux and Windows
           - os: windows-latest
             bitness: 64
             platform_id: win_amd64
