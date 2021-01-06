@@ -1,7 +1,7 @@
 [build-system]
 # Minimum requirements for the build system to execute.
 requires = [
-    "setuptools",
+    "setuptools>=38.3.0",  # version with most `setup.cfg` bugfixes
     "wheel",
     "Cython>=0.28.5",
 
@@ -28,3 +28,12 @@ requires = [
 
     "scipy>=0.19.1",
 ]
+build-backend = "setuptools.build_meta"
+
+# pytest config
+# For more information, see:
+# https://docs.pytest.org/en/stable/customize.html#pyproject-toml
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "--cov-report=xml --cov-report=term:skip-covered --cov=ruptures"
+testpaths = ["tests"]

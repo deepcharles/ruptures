@@ -1,18 +1,23 @@
 r"""Efficient kernel change point detection (dynamic programming)"""
 
-from ruptures.utils import sanity_check
-from ruptures.costs import cost_factory
 from ruptures.base import BaseCost, BaseEstimator
+from ruptures.costs import cost_factory
+from ruptures.utils import from_path_matrix_to_bkps_list, sanity_check
 
-from ruptures.detection._detection.ekcpd import (
-    ekcpd_L2,
-    ekcpd_Gaussian,
-    ekcpd_pelt_L2,
-    ekcpd_pelt_Gaussian,
+# from ruptures.detection._detection.ekcpd import (ekcpd_cosine, ekcpd_Gaussian,
+from ._detection.ekcpd import (
     ekcpd_cosine,
+    ekcpd_Gaussian,
+    ekcpd_L2,
     ekcpd_pelt_cosine,
+    ekcpd_pelt_Gaussian,
+    ekcpd_pelt_L2,
 )
-from ruptures.utils._utils.convert_path_matrix import from_path_matrix_to_bkps_list
+
+# from ..utils._utils.convert_path_matrix import from_path_matrix_to_bkps_list
+
+
+# from ruptures.utils._utils.convert_path_matrix import from_path_matrix_to_bkps_list
 
 
 class KernelCPD(BaseEstimator):
