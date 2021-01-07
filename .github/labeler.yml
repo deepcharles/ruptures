@@ -1,0 +1,71 @@
+# Config file for the labeler Github Action
+# https://hub.docker.com/r/jimschubert/labeler-action
+# labeler "full" schema
+
+# enable labeler on issues, prs, or both.
+enable:
+  issues: true
+  prs: true
+
+# comments object allows you to specify a different message for issues and prs
+
+# comments:
+#   issues: |
+#     Thanks for opening this issue!
+#     I have applied any labels matching special text in your title and description.
+
+#     Please review the labels and make any necessary changes.
+#   prs: |
+#     Thanks for the contribution!
+#     I have applied any labels matching special text in your title and description.
+
+#     Please review the labels and make any necessary changes.
+
+# Labels is an object where:
+# - keys are labels
+# - values are objects of { include: [ pattern ], exclude: [ pattern ] }
+#    - pattern must be a valid regex, and is applied globally to
+#      title + description of issues and/or prs (see enabled config above)
+#    - 'include' patterns will associate a label if any of these patterns match
+#    - 'exclude' patterns will ignore this label if any of these patterns match
+labels:
+  'Type: Fix':
+    include:
+      - '^(bug|fix)(\(.*\))?:(.*)'
+    exclude: []
+  'Type: Feature':
+    include:
+      - '^feat(\(.*\))?:(.*)'
+    exclude: []
+  'Type: Build':
+    include:
+      - '^build(\(.*\))?:(.*)'
+    exclude: []
+  'Type: Documentation':
+    include:
+      - '^docs(\(.*\))?:(.*)'
+    exclude: []
+  'Type: Refactoring':
+    include:
+      - '^(refactor|style)(\(.*\))?:(.*)'
+    exclude: []
+  'Type: Testing':
+    include:
+      - '^test(\(.*\))?:(.*)'
+    exclude: []
+  'Type: Maintenance':
+    include:
+      - '^(chore|mnt)(\(.*\))?:(.*)'
+    exclude: []
+  'Type: CI':
+    include:
+      - '^ci(\(.*\))?:(.*)'
+    exclude: []
+  'Type: Performance':
+    include:
+      - '^perf(\(.*\))?:(.*)'
+    exclude: []
+  'Type: Revert':
+    include:
+      - '^revert(\(.*\))?:(.*)'
+    exclude: []
