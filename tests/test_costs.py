@@ -2,6 +2,7 @@ import pytest
 from ruptures.costs import (
     CostAR,
     CostCLinear,
+    CostLinear,
     CostL1,
     CostL2,
     CostLinear,
@@ -38,8 +39,8 @@ def signal_bkps_5D_noisy():
     return signal, bkps
 
 
-cost_classes = {CostAR, CostL1, CostL2, CostNormal, CostRbf, CostRank}
-cost_names = {"ar", "l1", "l2", "normal", "rbf", "rank"}
+cost_classes = {CostAR, CostL1, CostL2, CostNormal, CostRbf, CostRank, CostCLinear}
+cost_names = {"ar", "l1", "l2", "normal", "rbf", "rank", "clinear"}
 
 
 @pytest.mark.parametrize("cost", cost_classes)

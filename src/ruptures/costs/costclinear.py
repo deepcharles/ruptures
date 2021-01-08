@@ -55,5 +55,7 @@ class CostCLinear(BaseCost):
         sub = self.signal[start:end]
         slope = (self.signal[end - 1] - self.signal[start - 1]) / (end - start)
         intercept = self.signal[start - 1]
-        approx = slope * (np.arange(1, end - start + 1)) + intercept
-        return np.sum((sub - approx) ** 2)
+        approx = slope.reshape(-1, 1) * np.arange(
+            1, end - start + 1
+        ) + intercept.reshape(-1, 1)
+        return np.sum((sub - approx.transpose()) ** 2)
