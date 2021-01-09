@@ -31,22 +31,7 @@ If you use `ruptures` in a scientific publication, we would appreciate citations
 
 # Dependencies and install
 
-`ruptures` is tested to work under Python >= 3.6.
-It is written in pure Python and depends on the following libraries: `numpy`, `scipy` and `matplotlib` (optional).
-
-- With **pip**:
-    > pip3 install ruptures
-
-- With **conda**:
-    > conda install -c conda-forge ruptures
-
-- From source: download the archive and run from inside the **ruptures** directory:
-
-    > python3 setup.py install
-
-    or
-
-    > python3 setup.py develop
+Installation instructions can be found [here](https://centre-borelli.github.io/ruptures-docs/install/).
 
 # Basic usage
 
