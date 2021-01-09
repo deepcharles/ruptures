@@ -1,7 +1,7 @@
 [build-system]
 # Minimum requirements for the build system to execute.
 requires = [
-    "setuptools>=38.3.0",  # version with most `setup.cfg` bugfixes
+    "setuptools>=42",  # https://github.com/deepcharles/ruptures/pull/100#discussion_r553700339
     "wheel",
     "Cython>=0.28.5",
 
