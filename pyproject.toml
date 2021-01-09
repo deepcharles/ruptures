@@ -4,6 +4,7 @@ requires = [
     "setuptools>=42",  # https://github.com/deepcharles/ruptures/pull/100#discussion_r553700339
     "wheel",
     "Cython>=0.28.5",
+    "setuptools_scm[toml]>=3.4",  # https://scikit-hep.org/developer/packaging#git-tags-official-pypa-method
 
     # PyPy needs numpy >= 1.14.0
     # platform_python_implementation!='CPython' not needed >= Python 3.7 which is numpy 1.14.5
@@ -37,3 +38,6 @@ build-backend = "setuptools.build_meta"
 minversion = "6.0"
 addopts = "--cov-report=xml --cov-report=term:skip-covered --cov=ruptures"
 testpaths = ["tests"]
+
+[tool.setuptools_scm]
+write_to = "src/ruptures/version.py"
