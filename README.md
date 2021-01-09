@@ -2,6 +2,7 @@
 ![build](https://github.com/deepcharles/ruptures/workflows/build/badge.svg)
 ![python](https://img.shields.io/badge/python-3.6%20|%203.7%20|%203.8%20|%203.9-blue)
 [![PyPI version](https://badge.fury.io/py/ruptures.svg)](https://badge.fury.io/py/ruptures)
+[![Conda Version](https://img.shields.io/conda/vn/conda-forge/ruptures.svg)](https://anaconda.org/conda-forge/ruptures)
 ![docs](https://github.com/deepcharles/ruptures/workflows/docs/badge.svg)
 ![PyPI - License](https://img.shields.io/pypi/l/ruptures)
 [![Downloads](https://pepy.tech/badge/ruptures)](https://pepy.tech/project/ruptures)
