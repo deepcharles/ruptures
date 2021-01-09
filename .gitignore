@@ -83,3 +83,4 @@ docs/build/*
 ehthumbs.db
 Thumbs.db
 site/
+src/ruptures/version.py
