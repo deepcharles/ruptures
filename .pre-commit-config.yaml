@@ -12,7 +12,8 @@ repos:
     - id: check-merge-conflict  # Check for files that contain merge conflict strings.
     - id: check-yaml  # This hook checks yaml files for parseable syntax.
     - id: detect-private-key  # Detects the presence of private keys.
-    - id: requirements-txt-fixer  # Sorts entries in requirements.txt.
+    - id: check-symlinks
+    - id: check-toml
 - repo: https://github.com/pre-commit/pygrep-hooks
   rev: v1.6.0
   hooks:
