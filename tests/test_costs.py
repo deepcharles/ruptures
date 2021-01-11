@@ -4,30 +4,28 @@ from ruptures.costs import cost_factory
 from ruptures.datasets import pw_constant
 from ruptures.exceptions import NotEnoughPoints
 
-np.random.seed(101)
-
 
 @pytest.fixture(scope="module")
 def signal_bkps_1D():
-    signal, bkps = pw_constant(n_features=1)
+    signal, bkps = pw_constant(n_features=1, seed=1234567890)
     return signal, bkps
 
 
 @pytest.fixture(scope="module")
 def signal_bkps_1D_noisy():
-    signal, bkps = pw_constant(n_features=1, noise_std=1)
+    signal, bkps = pw_constant(n_features=1, noise_std=1, seed=1234567890)
     return signal, bkps
 
 
 @pytest.fixture(scope="module")
 def signal_bkps_5D():
-    signal, bkps = pw_constant(n_features=5)
+    signal, bkps = pw_constant(n_features=5, seed=1234567890)
     return signal, bkps
 
 
 @pytest.fixture(scope="module")
 def signal_bkps_5D_noisy():
-    signal, bkps = pw_constant(n_features=5, noise_std=1)
+    signal, bkps = pw_constant(n_features=5, noise_std=1, seed=1234567890)
     return signal, bkps
 
 
