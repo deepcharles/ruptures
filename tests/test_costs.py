@@ -29,7 +29,7 @@ def signal_bkps_5D_noisy():
     return signal, bkps
 
 
-cost_names = {"ar", "l1", "l2", "normal", "rbf", "rank", "mahalanobis", "cosine"}
+cost_names = {"ar", "l1", "l2", "normal", "rbf", "rank", "clinear", "mahalanobis", "cosine"}
 
 
 @pytest.mark.parametrize("cost_name", cost_names)
