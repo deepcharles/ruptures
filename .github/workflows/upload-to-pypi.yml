@@ -37,20 +37,18 @@ jobs:
             bitness: 32
           - os: windows-latest
             python: 39
-
     steps:
       - uses: actions/checkout@v2
-
+        with:
+          depth-fetch: 0
       - uses: actions/setup-python@v2
         name: Install Python
         with:
           python-version: '3.8'
-
       - name: Install cibuildwheel and dependencies
         run: |
           python -m pip install --upgrade pip
           python -m pip install cibuildwheel twine
-
       - name: Build wheels
         env:
           CIBW_BUILD: cp${{ matrix.python }}-${{ matrix.platform_id }}
@@ -61,11 +59,9 @@ jobs:
           echo $SETUPTOOLS_SCM_PRETEND_VERSION
           python -m cibuildwheel --output-dir wheelhouse
           python -m twine upload wheelhouse/*.whl
-
       - uses: actions/upload-artifact@v2
         with:
           path: wheelhouse/*.whl
-
   deploy_sdist:
     runs-on: ubuntu-latest
     steps:
