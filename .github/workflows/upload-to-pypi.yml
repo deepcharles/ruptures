@@ -58,6 +58,7 @@ jobs:
           TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
           SETUPTOOLS_SCM_PRETEND_VERSION: ${{ github.event.inputs.overrideVersion }}
         run: |
+          echo $SETUPTOOLS_SCM_PRETEND_VERSION
           python -m cibuildwheel --output-dir wheelhouse
           python -m twine upload wheelhouse/*.whl
 
