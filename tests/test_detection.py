@@ -40,7 +40,7 @@ def signal_bkps_1D_constant():
 
 @pytest.mark.parametrize("algo", [Binseg, BottomUp, Dynp, Pelt, Window])
 def test_empty(signal_bkps_1D, algo):
-    signal, bkps = signal_bkps_1D
+    signal, _ = signal_bkps_1D
     algo().fit(signal).predict(1)
     algo().fit_predict(signal, 1)
 
@@ -50,7 +50,7 @@ def test_empty(signal_bkps_1D, algo):
     product([Binseg, BottomUp, Window], ["l1", "l2", "ar", "normal", "rbf", "rank"]),
 )
 def test_model_1D(signal_bkps_1D, algo, model):
-    signal, bkps = signal_bkps_1D
+    signal, _ = signal_bkps_1D
     algo().fit_predict(signal, pen=1)
     algo().fit_predict(signal, n_bkps=1)
     algo().fit_predict(signal, epsilon=10)
@@ -213,3 +213,11 @@ def test_cython_dynp_5D_no_noise_rbf(signal_bkps_5D_no_noise, algo, kernel, min_
         .predict(n_bkps=len(bkps) - 1)
     )
     assert res == bkps
+
+
+# Exhaustive test of KernelCPD
+def test_kernelcpd(signal_bkps_5D):
+    signal, bkps = signal_bkps_5D
+    algo = KernelCPD()
+    algo.fit(signal).predict(n_bkps=len(bkps) - 1)
+    algo.fit(signal).predict(n_bkps=1)
