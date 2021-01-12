@@ -2,8 +2,9 @@ name: Upload package to Pypi
 
 on:
   workflow_dispatch:
-  release:
-    types: [created]
+    inputs:
+      overrideVersion:
+        description: Manually force a version
 
 jobs:
   build_wheels:
@@ -55,6 +56,7 @@ jobs:
           CIBW_BUILD: cp${{ matrix.python }}-${{ matrix.platform_id }}
           TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
           TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+          SETUPTOOLS_SCM_PRETEND_VERSION: ${{ github.event.inputs.overrideVersion }}
         run: |
           python -m cibuildwheel --output-dir wheelhouse
           python -m twine upload wheelhouse/*.whl
@@ -79,6 +81,7 @@ jobs:
         env:
           TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
           TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+          SETUPTOOLS_SCM_PRETEND_VERSION: ${{ github.event.inputs.overrideVersion }}
         run: |
           python -m build --sdist
           python -m twine upload dist/*.tar.gz
