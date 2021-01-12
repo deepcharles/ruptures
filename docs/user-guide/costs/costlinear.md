@@ -6,7 +6,7 @@ Let $0 < t_1 < t_2 < \dots < n$ be unknown change points indexes.
 Consider the following multiple linear regression model
 
 $$
-y_t = z_t' \delta_j + \varepsilon_t, \quad \forall t=t_j,\dots,t_{j+1}-1
+y_t = x_t' \delta_j + \varepsilon_t, \quad \forall t=t_j,\dots,t_{j+1}-1
 $$
 
 for $j>1$.
@@ -17,7 +17,7 @@ The least-squares estimates of the break dates is obtained by minimizing the sum
 Formally, the associated cost function on an interval $I$ is
 
 $$
-c(y_{I}) = \min_{\delta\in\mathbb{R}^p} \sum_{t\in I} \|y_t - \delta' z_t \|_2^2.
+c(y_{I}) = \min_{\delta\in\mathbb{R}^p} \sum_{t\in I} \|y_t - \delta' x_t \|_2^2.
 $$
 
 ## Usage
@@ -31,7 +31,7 @@ import ruptures as rpt
 
 # creation of data
 n, n_reg = 2000, 3  # number of samples, number of regressors (including intercept)
-n_bkps, sigma = 3, 5  # number of change points, noise standart deviation
+n_bkps = 3  # number of change points
 # regressors
 tt = np.linspace(0, 10 * np.pi, n)
 X = np.vstack((np.sin(tt), np.sin(5 * tt), np.ones(n))).T
