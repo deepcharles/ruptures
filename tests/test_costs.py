@@ -160,11 +160,10 @@ def test_costlinear(signal_bkps_5D_noisy, signal_bkps_1D_noisy):
     signal, bkps = signal_bkps_1D_noisy  # observed signal
     n = signal.shape[0]  # number of samples
 
-    # Add intercept to regressors
-    X = np.append(signal_regressors, np.ones(n).reshape(-1, 1), axis=1)
-    # Stack observed signal and regressors.
     # First dimension is the observed signal.
-    s = np.column_stack((signal.reshape(-1, 1), X))
+    # Stack observed signal and regressors.
+    # Add intercept to regressors
+    s = np.c_[signal, signal_regressors, np.ones(n)]
     # Compute error
     c = CostLinear().fit(s)
     c.error(0, 100)
