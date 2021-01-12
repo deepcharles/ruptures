@@ -153,25 +153,22 @@ def test_factory_exception():
 
 
 # Test CostLinear
-def test_costlinear(signal_bkps_5D):
-    signal, bkps = signal_bkps_5D
-    # creation of data
+def test_costlinear(signal_bkps_5D_noisy, signal_bkps_1D_noisy):
+    # Creation of data. For convinience.
+    # Use already generated signal_bkps_5D and signal_bkps_1D
+    signal_regressors, _ = signal_bkps_5D_noisy  # regressors
+    signal, bkps = signal_bkps_1D_noisy  # observed signal
     n = signal.shape[0]  # number of samples
-    # regressors
-    tt = np.linspace(0, 10 * np.pi, n)
-    X = np.vstack(
-        (np.sin(tt), np.sin(2 * tt), np.sin(3 * tt), np.sin(4 * tt), np.ones(n))
-    ).T
-    # observed signal
-    y = np.sum(X * signal, axis=1)
-    y += np.random.normal(size=y.shape)
-    # stack observed signal and regressors.
-    # first dimension is the observed signal.
-    s = np.column_stack((y.reshape(-1, 1), X))
-    # compute error
+
+    # Add intercept to regressors
+    X = np.append(signal_regressors, np.ones(n).reshape(-1, 1), axis=1)
+    # Stack observed signal and regressors.
+    # First dimension is the observed signal.
+    s = np.column_stack((signal.reshape(-1, 1), X))
+    # Compute error
     c = CostLinear().fit(s)
     c.error(0, 100)
-    c.error(100, signal.shape[0])
+    c.error(100, n)
     c.error(10, 50)
     c.sum_of_costs(bkps)
     with pytest.raises(NotEnoughPoints):
