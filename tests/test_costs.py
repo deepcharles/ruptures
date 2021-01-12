@@ -3,6 +3,7 @@ import numpy as np
 from ruptures.costs import cost_factory
 from ruptures.datasets import pw_constant
 from ruptures.exceptions import NotEnoughPoints
+import numpy as np
 
 
 @pytest.fixture(scope="module")
@@ -115,3 +116,25 @@ def test_costs_5D_noisy_names(signal_bkps_5D_noisy, cost_name):
 def test_factory_exception():
     with pytest.raises(ValueError):
         cost_factory("bkd;s")
+
+
+# Test CostLinear
+def test_costlinear(signal_bkps_5D_noisy, signal_bkps_1D_noisy):
+    # Creation of data. For convinience, we use
+    # already generated signal_bkps_5D and signal_bkps_1D
+    signal_regressors, _ = signal_bkps_5D_noisy  # regressors
+    signal, bkps = signal_bkps_1D_noisy  # observed signal
+    n = signal.shape[0]  # number of samples
+
+    # First dimension is the observed signal.
+    # Stack observed signal and regressors.
+    # Add intercept to regressors
+    s = np.c_[signal, signal_regressors, np.ones(n)]
+    # Compute error
+    c = CostLinear().fit(s)
+    c.error(0, 100)
+    c.error(100, n)
+    c.error(10, 50)
+    c.sum_of_costs(bkps)
+    with pytest.raises(NotEnoughPoints):
+        c.error(10, 11)
