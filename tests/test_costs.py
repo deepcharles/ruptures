@@ -154,8 +154,8 @@ def test_factory_exception():
 
 # Test CostLinear
 def test_costlinear(signal_bkps_5D_noisy, signal_bkps_1D_noisy):
-    # Creation of data. For convinience.
-    # Use already generated signal_bkps_5D and signal_bkps_1D
+    # Creation of data. For convinience, we use
+    # already generated signal_bkps_5D and signal_bkps_1D
     signal_regressors, _ = signal_bkps_5D_noisy  # regressors
     signal, bkps = signal_bkps_1D_noisy  # observed signal
     n = signal.shape[0]  # number of samples
