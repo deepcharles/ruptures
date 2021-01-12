@@ -220,4 +220,4 @@ def test_kernelcpd(signal_bkps_5D):
     signal, bkps = signal_bkps_5D
     algo = KernelCPD()
     algo.fit(signal).predict(n_bkps=len(bkps) - 1)
-    algo.fit(signal).predict(n_bkps=1)
+    algo.predict(n_bkps=1)
