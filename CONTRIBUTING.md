@@ -4,6 +4,11 @@
 ## Before contributing
 
 In all following steps, it is highly recommended to use a virtual environment.
+Build and installation are performed using `pip` so be sure to have the latest version available.
+
+```
+python -m pip install --upgrade pip
+```
 
 ### Install the development version
 
@@ -22,7 +27,7 @@ python -m pip install --editable .[dev]
 ```
 
 Note that `python -m` can be omitted most of the times, but within virtualenvs, it can prevent certain errors.
-Also, in certain terminals (such as zsh), the square brackets must be escaped, e.g. replace `.[dev]` by `.\[dev\]`.
+Also, in certain terminals (such as `zsh`), the square brackets must be escaped, e.g. replace `.[dev]` by `.\[dev\]`.
 
 In addition to `numpy`, `scipy` and `ruptures`, this command will install all packages needed to develop `ruptures`.
 The exact list of librairies can be found in the [`setup.cfg` file](https://github.com/deepcharles/ruptures/blob/master/setup.cfg) (section `[options.extras_require]`).
@@ -36,7 +41,6 @@ To activate the hooks, simply run the following command in your terminal.
 ```
 pre-commit install
 ```
-
 
 If you try to commit a non-compliant (i.e. badly formatted) file, `pre-commit` will modify this file and make the commit fail.
 However you need to stage the new changes **yourself** as `pre-commit` will not do that for you (this is by design; see [here](https://github.com/pre-commit/pre-commit/issues/806) or [here](https://github.com/pre-commit/pre-commit/issues/747)).

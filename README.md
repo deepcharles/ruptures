@@ -2,6 +2,7 @@
 ![build](https://github.com/deepcharles/ruptures/workflows/build/badge.svg)
 ![python](https://img.shields.io/badge/python-3.6%20|%203.7%20|%203.8%20|%203.9-blue)
 [![PyPI version](https://badge.fury.io/py/ruptures.svg)](https://badge.fury.io/py/ruptures)
+[![Conda Version](https://img.shields.io/conda/vn/conda-forge/ruptures.svg)](https://anaconda.org/conda-forge/ruptures)
 ![docs](https://github.com/deepcharles/ruptures/workflows/docs/badge.svg)
 ![PyPI - License](https://img.shields.io/pypi/l/ruptures)
 [![Downloads](https://pepy.tech/badge/ruptures)](https://pepy.tech/project/ruptures)
@@ -30,22 +31,7 @@ If you use `ruptures` in a scientific publication, we would appreciate citations
 
 # Dependencies and install
 
-`ruptures` is tested to work under Python >= 3.6.
-It is written in pure Python and depends on the following libraries: `numpy`, `scipy` and `matplotlib` (optional).
-
-- With **pip**:
-    > pip3 install ruptures
-
-- With **conda**:
-    > conda install -c conda-forge ruptures
-
-- From source: download the archive and run from inside the **ruptures** directory:
-
-    > python3 setup.py install
-
-    or
-
-    > python3 setup.py develop
+Installation instructions can be found [here](https://centre-borelli.github.io/ruptures-docs/install/).
 
 # Basic usage
 

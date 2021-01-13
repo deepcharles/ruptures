@@ -1,1 +1,7 @@
-include pyproject.toml
+prune *
+graft src
+graft tests
+
+include LICENSE README.md pyproject.toml setup.py setup.cfg
+exclude CHANGELOG.md CONTRIBUTING.md mkdocs.yml mkdocs_macros.py
+global-exclude __pycache__ *.py[cod] .*
