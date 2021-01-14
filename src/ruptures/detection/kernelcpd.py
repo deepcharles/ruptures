@@ -37,7 +37,7 @@ class KernelCPD(BaseEstimator):
         - `cosine`: $k(x,y)= (x^T y)/(\|x\|\|y\|$.
 
         Args:
-            kernel (str, optional): name of the kernel, ["linear", "rbf"]
+            kernel (str, optional): name of the kernel, ["linear", "rbf", "cosine"]
             min_size (int, optional): minimum segment length.
             jump (int, optional): not considered, set to 1.
             params (dict, optional): a dictionary of parameters for the kernel instance
