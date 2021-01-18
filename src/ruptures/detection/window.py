@@ -129,6 +129,10 @@ class Window(BaseEstimator):
         for k in self.inds:
             start, end = k - self.width // 2, k + self.width // 2
             gain = self.cost.error(start, end)
+            if np.isinf(gain) and gain < 0:
+                # segment is constant and no improvment possible on start .. end
+                score.append(0)
+                continue
             gain -= self.cost.error(start, k) + self.cost.error(k, end)
             score.append(gain)
         self.score = np.array(score)
