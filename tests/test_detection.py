@@ -7,8 +7,6 @@ from ruptures.costs import NotEnoughPoints, CostAR
 from ruptures.datasets import pw_constant
 from ruptures.detection import Binseg, BottomUp, Dynp, Pelt, Window, KernelCPD
 
-# old_settings = np.seterr(all='raise')
-
 
 @pytest.fixture(scope="module")
 def signal_bkps_5D():
