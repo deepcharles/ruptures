@@ -83,8 +83,25 @@ def test_model_1D_constant(signal_bkps_1D_constant, algo, model):
     signal, bkps = signal_bkps_1D_constant
     algo_t = algo(model=model)
     ret = algo_t.fit_predict(signal, 1)
-    if not isinstance(algo_t, Pelt):
+    if isinstance(algo_t, Dynp) or isinstance(algo_t, BottomUp):
+        # With constant signal, those search methods
+        # will return another break points alongside signal.shape[0]
         assert len(ret) == 2
+    if isinstance(algo_t, Binseg):
+        if model == "normal":
+            # With constant signal, this search method with normal cost
+            # will return only signal.shape[0] as breaking points
+            assert len(ret) == 1
+        else:
+            # With constant signal, this search method with another cost
+            # will return another break points alongside signal.shape[0]
+            assert len(ret) == 2
+    if isinstance(algo_t, Window):
+        # With constant signal, this search methods
+        # will return only signal.shape[0] as breaking points
+        assert len(ret) == 1
+    if isinstance(algo_t, Pelt):
+        assert len(ret) <= 2
     assert ret[-1] == signal.shape[0]
 
 
