@@ -17,7 +17,7 @@ def signal_bkps_5D():
 @pytest.fixture(scope="module")
 def signal_bkps_1D():
     signal, bkps = pw_constant(noise_std=1)
-    return signal, bkps
+    return signal.astype(np.float32), bkps
 
 
 @pytest.fixture(scope="module")

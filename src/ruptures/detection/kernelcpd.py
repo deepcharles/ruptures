@@ -3,6 +3,7 @@ r"""Efficient kernel change point detection (dynamic programming)"""
 from ruptures.base import BaseCost, BaseEstimator
 from ruptures.costs import cost_factory
 from ruptures.utils import from_path_matrix_to_bkps_list, sanity_check
+import numpy as np
 
 # from ruptures.detection._detection.ekcpd import (ekcpd_cosine, ekcpd_Gaussian,
 from ._detection.ekcpd import (
@@ -78,7 +79,7 @@ class KernelCPD(BaseEstimator):
         """
         # update some params
         self.segmentations_dict = dict()
-        self.cost.fit(signal)
+        self.cost.fit(signal.astype(np.double))
         self.n_samples = signal.shape[0]
         return self
 
