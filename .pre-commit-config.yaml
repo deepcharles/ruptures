@@ -33,11 +33,11 @@ repos:
   hooks:
     - id: nbstripout
 -   repo: https://github.com/asottile/blacken-docs
-    rev: v1.9.1
+    rev: v1.9.2
     hooks:
     - id: blacken-docs
 - repo: https://github.com/nbQA-dev/nbQA
-  rev: 0.5.6
+  rev: 0.5.7
   hooks:
     - id: nbqa-black
       args: [--nbqa-mutate]
