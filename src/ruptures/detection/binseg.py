@@ -3,6 +3,7 @@ from functools import lru_cache
 from ruptures.base import BaseCost, BaseEstimator
 from ruptures.costs import cost_factory
 from ruptures.utils import pairwise
+import numpy as np
 
 
 class Binseg(BaseEstimator):
@@ -84,6 +85,8 @@ class Binseg(BaseEstimator):
     def _single_bkp(self, start, end):
         """Return the optimal breakpoint of [start:end] (if it exists)."""
         segment_cost = self.cost.error(start, end)
+        if np.isinf(segment_cost) and segment_cost < 0:  # if constant on segment
+            return None, 0
         gain_list = list()
         for bkp in range(start, end, self.jump):
             if bkp - start > self.min_size and end - bkp > self.min_size:

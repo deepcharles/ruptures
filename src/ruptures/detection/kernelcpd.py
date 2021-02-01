@@ -5,7 +5,6 @@ from ruptures.costs import cost_factory
 from ruptures.utils import from_path_matrix_to_bkps_list, sanity_check
 import numpy as np
 
-# from ruptures.detection._detection.ekcpd import (ekcpd_cosine, ekcpd_Gaussian,
 from ._detection.ekcpd import (
     ekcpd_cosine,
     ekcpd_Gaussian,
@@ -14,11 +13,6 @@ from ._detection.ekcpd import (
     ekcpd_pelt_Gaussian,
     ekcpd_pelt_L2,
 )
-
-# from ..utils._utils.convert_path_matrix import from_path_matrix_to_bkps_list
-
-
-# from ruptures.utils._utils.convert_path_matrix import from_path_matrix_to_bkps_list
 
 
 class KernelCPD(BaseEstimator):
@@ -44,7 +38,7 @@ class KernelCPD(BaseEstimator):
         - `cosine`: $k(x,y)= (x^T y)/(\|x\|\|y\|$.
 
         Args:
-            kernel (str, optional): name of the kernel, ["linear", "rbf"]
+            kernel (str, optional): name of the kernel, ["linear", "rbf", "cosine"]
             min_size (int, optional): minimum segment length.
             jump (int, optional): not considered, set to 1.
             params (dict, optional): a dictionary of parameters for the kernel instance
