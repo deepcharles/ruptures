@@ -79,6 +79,7 @@ nav:
     - 'Advanced usages':
       - 'Introduction': examples/advanced-usages-introduction.md
       - 'Kernel change point detection: a performance comparison': examples/kernel-cpd-performance-comparison.ipynb
+      - 'Music segmentation': examples/music-segmentation.ipynb
   - Code reference:
       - Introduction: code-reference/index.md
       - Base classes: code-reference/base-reference.md
