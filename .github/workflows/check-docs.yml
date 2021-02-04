@@ -13,7 +13,7 @@ jobs:
         python-version: '3.8'
     - name: Install sndfile library
       run: |
-        apt-get install libsndfile1-dev
+        sudo apt-get install libsndfile1-dev
     - name: Install ruptures and dependencies
       run: |
         python -m pip install --upgrade pip
