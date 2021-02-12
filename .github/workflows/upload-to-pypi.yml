@@ -7,7 +7,6 @@ on:
         description: Manually force a version
 
 env:
-  SETUPTOOLS_SCM_PRETEND_VERSION: ${{ github.event.inputs.overrideVersion }}
   CIBW_BUILD_VERBOSITY: 1
 
 jobs:
@@ -69,6 +68,7 @@ jobs:
         uses: joerick/cibuildwheel@v1.9.0
         env:
           CIBW_BUILD: cp${{ matrix.python }}-${{ matrix.platform_id }}
+          # Manually force a version
           CIBW_ENVIRONMENT: "SETUPTOOLS_SCM_PRETEND_VERSION=${{ github.event.inputs.overrideVersion }}"
       - uses: actions/upload-artifact@v2
         with:
