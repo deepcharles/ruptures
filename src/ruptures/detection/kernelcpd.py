@@ -35,7 +35,7 @@ class KernelCPD(BaseEstimator):
         - `linear`: $k(x,y) = x^T y$.
         - `rbf`: $k(x, y) = exp(\gamma \|x-y\|^2)$ where $\gamma>0$
         (`gamma`) is a user-defined parameter.
-        - `cosine`: $k(x,y)= (x^T y)/(\|x\|\|y\|$.
+        - `cosine`: $k(x,y)= (x^T y)/(\|x\|\|y\|)$.
 
         Args:
             kernel (str, optional): name of the kernel, ["linear", "rbf", "cosine"]
