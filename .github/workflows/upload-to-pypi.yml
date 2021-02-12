@@ -69,6 +69,7 @@ jobs:
         uses: joerick/cibuildwheel@v1.9.0
         env:
           CIBW_BUILD: cp${{ matrix.python }}-${{ matrix.platform_id }}
+          CIBW_ENVIRONMENT: "SETUPTOOLS_SCM_PRETEND_VERSION=${{ github.event.inputs.overrideVersion }}"
       - uses: actions/upload-artifact@v2
         with:
           path: wheelhouse/*.whl
