@@ -63,7 +63,7 @@ jobs:
           - os: windows-latest
             python: 39
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v1
         with:
           fetch-depth: 0
       - name: Build wheels
