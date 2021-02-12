@@ -4,13 +4,16 @@ on:
 
 jobs:
   docs:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.8
       uses: actions/setup-python@v2
       with:
         python-version: '3.8'
+    - name: Install sndfile library # for librose, see https://github.com/deepcharles/ruptures/pull/121
+      run: |
+        sudo apt-get install libsndfile1-dev
     - name: Install ruptures and dependencies
       run: |
         python -m pip install --upgrade pip
