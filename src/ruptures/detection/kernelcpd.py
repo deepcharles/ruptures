@@ -3,6 +3,7 @@ r"""Efficient kernel change point detection (dynamic programming)"""
 from ruptures.base import BaseCost, BaseEstimator
 from ruptures.costs import cost_factory
 from ruptures.utils import from_path_matrix_to_bkps_list, sanity_check
+from ruptures.exceptions import BadSegmentationParameters
 import numpy as np
 
 from ._detection.ekcpd import (
@@ -89,10 +90,15 @@ class KernelCPD(BaseEstimator):
 
         Raises:
             AssertionError: if `pen` or `n_bkps` is not strictly positive.
+            BadSegmentationParameters: if segmentation parameters not compatible with finding a change point alone
 
         Returns:
             list[int]: sorted list of breakpoints
         """
+        # If not compatible with a single change point, raises an exception
+        if not sanity_check(self.cost.signal.shape[0], 1, self.jump, self.min_size):
+            raise BadSegmentationParameters
+
         # dynamic programming if the user passed a number change points
         if n_bkps is not None:
             n_bkps = int(n_bkps)

@@ -3,6 +3,8 @@ from math import floor
 
 from ruptures.costs import cost_factory
 from ruptures.base import BaseCost, BaseEstimator
+from ruptures.exceptions import BadSegmentationParameters
+from ruptures.utils import sanity_check
 
 
 class Pelt(BaseEstimator):
@@ -111,9 +113,16 @@ class Pelt(BaseEstimator):
         Args:
             pen (float): penalty value (>0)
 
+        Raises:
+            BadSegmentationParameters: if segmentation parameters not compatible with finding a change point alone
+
         Returns:
             list: sorted list of breakpoints
         """
+        # If not compatible with a single change point, raises an exception
+        if not sanity_check(self.cost.signal.shape[0], 1, self.jump, self.min_size):
+            raise BadSegmentationParameters
+
         partition = self._seg(pen)
         bkps = sorted(e for s, e in partition.keys())
         return bkps

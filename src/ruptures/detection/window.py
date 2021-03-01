@@ -6,7 +6,8 @@ from scipy.signal import argrelmax
 
 from ruptures.base import BaseCost, BaseEstimator
 from ruptures.costs import cost_factory
-from ruptures.utils import unzip
+from ruptures.utils import unzip, sanity_check
+from ruptures.exceptions import BadSegmentationParameters
 
 
 class Window(BaseEstimator):
@@ -150,9 +151,17 @@ class Window(BaseEstimator):
             pen (float): penalty value (>0)
             epsilon (float): reconstruction budget (>0)
 
+        Raises:
+            AssertionError: if none of `n_bkps`, `pen`, `epsilon` is set.
+            BadSegmentationParameters: if segmentation parameters not compatible with finding a change point alone
+
         Returns:
             list: sorted list of breakpoints
         """
+        # If not compatible with a single change point, raises an exception
+        if not sanity_check(self.cost.signal.shape[0], 1, self.jump, self.min_size):
+            raise BadSegmentationParameters
+
         msg = "Give a parameter."
         assert any(param is not None for param in (n_bkps, pen, epsilon)), msg
 

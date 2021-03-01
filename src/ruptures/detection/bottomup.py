@@ -5,7 +5,8 @@ from functools import lru_cache
 
 from ruptures.base import BaseCost, BaseEstimator
 from ruptures.costs import cost_factory
-from ruptures.utils import Bnode, pairwise
+from ruptures.utils import Bnode, pairwise, sanity_check
+from ruptures.exceptions import BadSegmentationParameters
 
 
 class BottomUp(BaseEstimator):
@@ -171,11 +172,19 @@ class BottomUp(BaseEstimator):
             pen (float): penalty value (>0)
             epsilon (float): reconstruction budget (>0)
 
+        Raises:
+            AssertionError: if none of `n_bkps`, `pen`, `epsilon` is set.
+            BadSegmentationParameters: if segmentation parameters not compatible with finding a change point alone
+
         Returns:
             list: sorted list of breakpoints
         """
         msg = "Give a parameter."
         assert any(param is not None for param in (n_bkps, pen, epsilon)), msg
+
+        # If not compatible with a single change point, raises an exception
+        if not sanity_check(self.cost.signal.shape[0], 1, self.jump, self.min_size):
+            raise BadSegmentationParameters
 
         partition = self._seg(n_bkps=n_bkps, pen=pen, epsilon=epsilon)
         bkps = sorted(e for s, e in partition.keys())
