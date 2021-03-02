@@ -3,9 +3,19 @@ from itertools import product
 import numpy as np
 import pytest
 
-from ruptures.costs import NotEnoughPoints, CostAR
+from ruptures.costs import CostAR
 from ruptures.datasets import pw_constant
 from ruptures.detection import Binseg, BottomUp, Dynp, Pelt, Window, KernelCPD
+from ruptures.exceptions import BadSegmentationParameters
+
+## TO BE DELETED
+from ruptures.utils import sanity_check
+
+
+@pytest.fixture(scope="module")
+def signal_bkps_5D_n10():
+    signal, bkps = pw_constant(n_samples=10, n_features=5, noise_std=1)
+    return signal, bkps
 
 
 @pytest.fixture(scope="module")
@@ -62,7 +72,7 @@ def test_model_1D(signal_bkps_1D, algo, model):
     "algo, model", product([Dynp, Pelt], ["l1", "l2", "ar", "normal", "rbf", "rank"])
 )
 def test_model_1D_bis(signal_bkps_1D, algo, model):
-    signal, bkps = signal_bkps_1D
+    signal, _ = signal_bkps_1D
     algo_t = algo(model=model)
     ret = algo_t.fit_predict(signal, 1)
     if isinstance(algo_t, Dynp):
@@ -78,7 +88,7 @@ def test_model_1D_bis(signal_bkps_1D, algo, model):
     ),
 )
 def test_model_1D_constant(signal_bkps_1D_constant, algo, model):
-    signal, bkps = signal_bkps_1D_constant
+    signal, _ = signal_bkps_1D_constant
     algo_t = algo(model=model)
     ret = algo_t.fit_predict(signal, 1)
     if isinstance(algo_t, Dynp) or isinstance(algo_t, BottomUp):
@@ -283,3 +293,47 @@ def test_kernelcpd(signal_bkps_5D, algo, kernel):
     algo(kernel=kernel).fit(signal).predict(pen=0.2)
     # Test fit_predict
     algo(kernel=kernel).fit_predict(signal, pen=0.2)
+
+
+@pytest.mark.parametrize(
+    "algo, kernel",
+    product([KernelCPD], ["linear", "rbf", "cosine"]),
+)
+def test_kernelcpd_small_signal(signal_bkps_5D_n10, algo, kernel):
+    signal, _ = signal_bkps_5D_n10
+    with pytest.raises(BadSegmentationParameters):
+        algo(kernel=kernel, min_size=10, jump=2).fit_predict(signal, n_bkps=2)
+    with pytest.raises(BadSegmentationParameters):
+        algo(kernel=kernel, min_size=10, jump=2).fit_predict(signal, pen=10 ** 6)
+
+
+@pytest.mark.parametrize(
+    "algo, model",
+    product(
+        [Binseg, BottomUp, Window],
+        ["l1", "l2", "ar", "normal", "rbf", "rank"],
+    ),
+)
+def test_model_small_signal(signal_bkps_5D_n10, algo, model):
+    signal, _ = signal_bkps_5D_n10
+    with pytest.raises(BadSegmentationParameters):
+        algo(model=model, min_size=5, jump=2).fit_predict(signal, n_bkps=2)
+    with pytest.raises(BadSegmentationParameters):
+        algo(model=model, min_size=5, jump=2).fit_predict(signal, pen=10 ** 6)
+    with pytest.raises(BadSegmentationParameters):
+        algo(model=model, min_size=5, jump=2).fit_predict(
+            signal, pen=10 ** 6, epsilon=10
+        )
+
+
+@pytest.mark.parametrize(
+    "algo, model",
+    product(
+        [Dynp, Pelt],
+        ["l1", "l2", "ar", "normal", "rbf", "rank"],
+    ),
+)
+def test_model_small_signal_bis(signal_bkps_5D_n10, algo, model):
+    signal, _ = signal_bkps_5D_n10
+    with pytest.raises(BadSegmentationParameters):
+        algo(model=model, min_size=5, jump=2).fit_predict(signal, 2)
