@@ -323,9 +323,7 @@ def test_model_small_signal(signal_bkps_5D_n10, algo, model):
     with pytest.raises(BadSegmentationParameters):
         algo(model=model, min_size=5, jump=2).fit_predict(signal, pen=10 ** 6)
     with pytest.raises(BadSegmentationParameters):
-        algo(model=model, min_size=5, jump=2).fit_predict(
-            signal, pen=10 ** 6, epsilon=10
-        )
+        algo(model=model, min_size=5, jump=2).fit_predict(signal, epsilon=10)
 
 
 @pytest.mark.parametrize(
