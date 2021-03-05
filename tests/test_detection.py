@@ -8,9 +8,6 @@ from ruptures.datasets import pw_constant
 from ruptures.detection import Binseg, BottomUp, Dynp, Pelt, Window, KernelCPD
 from ruptures.exceptions import BadSegmentationParameters
 
-## TO BE DELETED
-from ruptures.utils import sanity_check
-
 
 @pytest.fixture(scope="module")
 def signal_bkps_5D_n10():
