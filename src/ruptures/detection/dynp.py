@@ -63,7 +63,12 @@ class Dynp(BaseEstimator):
             for bkp in multiple_of_jump:
                 n_samples = bkp - start
                 # first check if left subproblem is possible
-                if sanity_check(n_samples, n_bkps - 1, jump, min_size):
+                if sanity_check(
+                    n_samples=n_samples,
+                    n_bkps=n_bkps - 1,
+                    jump=jump,
+                    min_size=min_size,
+                ):
                     # second check if the right subproblem has enough points
                     if end - bkp >= min_size:
                         admissible_bkps.append(bkp)
@@ -122,10 +127,14 @@ class Dynp(BaseEstimator):
         Returns:
             list: sorted list of breakpoints
         """
-        # If not compatible with a single change point, raises an exception
-        if not sanity_check(self.cost.signal.shape[0], 1, self.jump, self.min_size):
+        # raise an exception in case of impossible segmentation configuration
+        if not sanity_check(
+            n_samples=self.cost.signal.shape[0],
+            n_bkps=n_bkps,
+            jump=self.jump,
+            min_size=self.min_size,
+        ):
             raise BadSegmentationParameters
-
         partition = self.seg(0, self.n_samples, n_bkps)
         bkps = sorted(e for s, e in partition.keys())
         return bkps

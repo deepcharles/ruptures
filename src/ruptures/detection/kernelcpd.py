@@ -97,8 +97,13 @@ class KernelCPD(BaseEstimator):
         Returns:
             list[int]: sorted list of breakpoints
         """
-        # If not compatible with a single change point, raises an exception
-        if not sanity_check(self.cost.signal.shape[0], 1, self.jump, self.min_size):
+        # raise an exception in case of impossible segmentation configuration
+        if not sanity_check(
+            n_samples=self.cost.signal.shape[0],
+            n_bkps=1 if n_bkps is None else n_bkps,
+            jump=self.jump,
+            min_size=self.min_size,
+        ):
             raise BadSegmentationParameters
 
         # dynamic programming if the user passed a number change points
