@@ -69,7 +69,8 @@ def test_model_1D(signal_bkps_1D, algo, model):
 
 
 @pytest.mark.parametrize(
-    "algo, model", product([Dynp, Pelt], ["l1", "l2", "ar", "normal", "rbf", "rank"])
+    "algo, model",
+    product([Dynp, Pelt], ["l1", "l2", "ar", "normal", "rbf", "rank"]),
 )
 def test_model_1D_bis(signal_bkps_1D, algo, model):
     signal, _ = signal_bkps_1D
@@ -116,7 +117,8 @@ def test_model_1D_constant(signal_bkps_1D_constant, algo, model):
 @pytest.mark.parametrize(
     "algo, model",
     product(
-        [Binseg, BottomUp, Window], ["l1", "l2", "linear", "normal", "rbf", "rank"]
+        [Binseg, BottomUp, Window],
+        ["l1", "l2", "linear", "normal", "rbf", "rank"],
     ),
 )
 def test_model_5D(signal_bkps_5D, algo, model):
