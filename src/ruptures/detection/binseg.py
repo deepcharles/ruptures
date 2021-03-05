@@ -126,8 +126,8 @@ class Binseg(BaseEstimator):
     def predict(self, n_bkps=None, pen=None, epsilon=None):
         """Return the optimal breakpoints.
 
-        Must be called after the fit method. The breakpoints are associated with the signal passed
-        to [`fit()`][ruptures.detection.binseg.Binseg.fit].
+        Must be called after the fit method. The breakpoints are associated with the
+        signal passed to [`fit()`][ruptures.detection.binseg.Binseg.fit].
         The stopping rule depends on the parameter passed to the function.
 
         Args:
@@ -137,7 +137,8 @@ class Binseg(BaseEstimator):
 
         Raises:
             AssertionError: if none of `n_bkps`, `pen`, `epsilon` is set.
-            BadSegmentationParameters: if segmentation parameters not compatible with finding a change point alone
+            BadSegmentationParameters: in case of impossible segmentation
+                configuration
 
         Returns:
             list: sorted list of breakpoints

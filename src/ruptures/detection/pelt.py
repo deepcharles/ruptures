@@ -114,7 +114,8 @@ class Pelt(BaseEstimator):
             pen (float): penalty value (>0)
 
         Raises:
-            BadSegmentationParameters: if segmentation parameters not compatible with finding a change point alone
+            BadSegmentationParameters: in case of impossible segmentation
+                configuration
 
         Returns:
             list: sorted list of breakpoints

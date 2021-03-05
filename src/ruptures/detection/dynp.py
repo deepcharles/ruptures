@@ -116,7 +116,8 @@ class Dynp(BaseEstimator):
             n_bkps (int): number of breakpoints.
 
         Raises:
-            BadSegmentationParameters: if segmentation parameters not compatible with finding a change point alone
+            BadSegmentationParameters: in case of impossible segmentation
+                configuration
 
         Returns:
             list: sorted list of breakpoints

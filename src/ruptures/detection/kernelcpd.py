@@ -80,17 +80,19 @@ class KernelCPD(BaseEstimator):
 
     def predict(self, n_bkps=None, pen=None):
         """Return the optimal breakpoints. Must be called after the fit method.
-        The breakpoints are associated with the signal passed to.
 
+        The breakpoints are associated with the signal passed to
         [`fit()`][ruptures.detection.kernelcpd.KernelCPD.fit].
 
         Args:
             n_bkps (int, optional): Number of change points. Defaults to None.
-            pen (float, optional): penalty value (>0). Defaults to None. Not considered if n_bkps is not None.
+            pen (float, optional): penalty value (>0). Defaults to None. Not considered
+                if n_bkps is not None.
 
         Raises:
             AssertionError: if `pen` or `n_bkps` is not strictly positive.
-            BadSegmentationParameters: if segmentation parameters not compatible with finding a change point alone
+            BadSegmentationParameters: in case of impossible segmentation
+                configuration
 
         Returns:
             list[int]: sorted list of breakpoints
