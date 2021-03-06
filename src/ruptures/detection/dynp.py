@@ -4,6 +4,7 @@ from functools import lru_cache
 from ruptures.utils import sanity_check
 from ruptures.costs import cost_factory
 from ruptures.base import BaseCost, BaseEstimator
+from ruptures.exceptions import BadSegmentationParameters
 
 
 class Dynp(BaseEstimator):
@@ -62,7 +63,12 @@ class Dynp(BaseEstimator):
             for bkp in multiple_of_jump:
                 n_samples = bkp - start
                 # first check if left subproblem is possible
-                if sanity_check(n_samples, n_bkps - 1, jump, min_size):
+                if sanity_check(
+                    n_samples=n_samples,
+                    n_bkps=n_bkps - 1,
+                    jump=jump,
+                    min_size=min_size,
+                ):
                     # second check if the right subproblem has enough points
                     if end - bkp >= min_size:
                         admissible_bkps.append(bkp)
@@ -114,9 +120,21 @@ class Dynp(BaseEstimator):
         Args:
             n_bkps (int): number of breakpoints.
 
+        Raises:
+            BadSegmentationParameters: in case of impossible segmentation
+                configuration
+
         Returns:
             list: sorted list of breakpoints
         """
+        # raise an exception in case of impossible segmentation configuration
+        if not sanity_check(
+            n_samples=self.cost.signal.shape[0],
+            n_bkps=n_bkps,
+            jump=self.jump,
+            min_size=self.min_size,
+        ):
+            raise BadSegmentationParameters
         partition = self.seg(0, self.n_samples, n_bkps)
         bkps = sorted(e for s, e in partition.keys())
         return bkps
