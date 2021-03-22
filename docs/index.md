@@ -8,6 +8,7 @@
 [![Downloads](https://pepy.tech/badge/ruptures)](https://pepy.tech/project/ruptures)
 <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/deepcharles/ruptures/master)
+[![Codecov](https://codecov.io/gh/deepcharles/ruptures/branch/master/graphs/badge.svg)](https://app.codecov.io/gh/deepcharles/ruptures/branch/master)
 
 `ruptures` is designed to perform offline change point algorithms within the Python language. Also in this library, new methods are presented.
 

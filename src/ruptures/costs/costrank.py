@@ -52,6 +52,7 @@ class CostRank(BaseCost):
                 "pseudo-inverse computation did not converge."
             ) from e
         self.ranks = centered_ranks
+        self.signal = signal
 
         return self
 

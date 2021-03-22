@@ -7,17 +7,15 @@ on:
         description: Manually force a version
 
 env:
-  SETUPTOOLS_SCM_PRETEND_VERSION: ${{ github.event.inputs.overrideVersion }}
   CIBW_BUILD_VERBOSITY: 1
+  SETUPTOOLS_SCM_PRETEND_VERSION: ${{ github.event.inputs.overrideVersion }}
 
 jobs:
   make_sdist:
     name: Make SDist
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
+    - uses: actions/checkout@v1
     - name: Setup Python
       uses: actions/setup-python@v2
       with:
@@ -63,21 +61,14 @@ jobs:
           - os: windows-latest
             python: 39
     steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-python@v2
-        name: Install Python
-        with:
-          python-version: '3.8'
-      - name: Install cibuildwheel
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install cibuildwheel
+      - uses: actions/checkout@v1
+
       - name: Build wheels
+        uses: joerick/cibuildwheel@v1.9.0
         env:
           CIBW_BUILD: cp${{ matrix.python }}-${{ matrix.platform_id }}
-        run: python -m cibuildwheel --output-dir wheelhouse
+          # Manually force a version
+          CIBW_ENVIRONMENT: "SETUPTOOLS_SCM_PRETEND_VERSION=${{ github.event.inputs.overrideVersion }}"
       - uses: actions/upload-artifact@v2
         with:
           path: wheelhouse/*.whl

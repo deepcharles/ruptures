@@ -6,7 +6,8 @@ from scipy.signal import argrelmax
 
 from ruptures.base import BaseCost, BaseEstimator
 from ruptures.costs import cost_factory
-from ruptures.utils import unzip
+from ruptures.utils import unzip, sanity_check
+from ruptures.exceptions import BadSegmentationParameters
 
 
 class Window(BaseEstimator):
@@ -62,7 +63,7 @@ class Window(BaseEstimator):
         # peak search
         # forcing order to be above one in case jump is too large (issue #16)
         order = max(max(self.width, 2 * self.min_size) // (2 * self.jump), 1)
-        (peak_inds_shifted,) = argrelmax(self.score, order=order, mode="wrap")
+        peak_inds_shifted = argrelmax(self.score, order=order, mode="wrap")[0]
 
         if peak_inds_shifted.size == 0:  # no peaks if the score is constant
             return bkps
@@ -129,6 +130,10 @@ class Window(BaseEstimator):
         for k in self.inds:
             start, end = k - self.width // 2, k + self.width // 2
             gain = self.cost.error(start, end)
+            if np.isinf(gain) and gain < 0:
+                # segment is constant and no improvment possible on start .. end
+                score.append(0)
+                continue
             gain -= self.cost.error(start, k) + self.cost.error(k, end)
             score.append(gain)
         self.score = np.array(score)
@@ -146,9 +151,23 @@ class Window(BaseEstimator):
             pen (float): penalty value (>0)
             epsilon (float): reconstruction budget (>0)
 
+        Raises:
+            AssertionError: if none of `n_bkps`, `pen`, `epsilon` is set.
+            BadSegmentationParameters: in case of impossible segmentation
+                configuration
+
         Returns:
             list: sorted list of breakpoints
         """
+        # raise an exception in case of impossible segmentation configuration
+        if not sanity_check(
+            n_samples=self.cost.signal.shape[0],
+            n_bkps=1 if n_bkps is None else n_bkps,
+            jump=self.jump,
+            min_size=self.min_size,
+        ):
+            raise BadSegmentationParameters
+
         msg = "Give a parameter."
         assert any(param is not None for param in (n_bkps, pen, epsilon)), msg
 

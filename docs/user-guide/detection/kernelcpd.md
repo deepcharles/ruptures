@@ -62,7 +62,7 @@ In the following, $u$ and $v$ are two d-dimensional vectors and $\|\cdot\|$ is t
 Kernel change point detection is implemented in the class [`KernelCPD`][ruptures.detection.kernelcpd.KernelCPD], which is a C implementation of dynamic programming and PELT.
 To see it in action, please look at the gallery of examples, in particular:
 
-- [Kernel change point detection: a performance comparison](../../notebooks/kernel-cpd-performance-comparison.md)
+- [Kernel change point detection: a performance comparison](../../examples/kernel-cpd-performance-comparison.md)
 
 The exact class API is available [here][ruptures.detection.kernelcpd.KernelCPD].
 

@@ -3,9 +3,9 @@ r"""Efficient kernel change point detection (dynamic programming)"""
 from ruptures.base import BaseCost, BaseEstimator
 from ruptures.costs import cost_factory
 from ruptures.utils import from_path_matrix_to_bkps_list, sanity_check
+from ruptures.exceptions import BadSegmentationParameters
 import numpy as np
 
-# from ruptures.detection._detection.ekcpd import (ekcpd_cosine, ekcpd_Gaussian,
 from ._detection.ekcpd import (
     ekcpd_cosine,
     ekcpd_Gaussian,
@@ -14,11 +14,6 @@ from ._detection.ekcpd import (
     ekcpd_pelt_Gaussian,
     ekcpd_pelt_L2,
 )
-
-# from ..utils._utils.convert_path_matrix import from_path_matrix_to_bkps_list
-
-
-# from ruptures.utils._utils.convert_path_matrix import from_path_matrix_to_bkps_list
 
 
 class KernelCPD(BaseEstimator):
@@ -41,10 +36,10 @@ class KernelCPD(BaseEstimator):
         - `linear`: $k(x,y) = x^T y$.
         - `rbf`: $k(x, y) = exp(\gamma \|x-y\|^2)$ where $\gamma>0$
         (`gamma`) is a user-defined parameter.
-        - `cosine`: $k(x,y)= (x^T y)/(\|x\|\|y\|$.
+        - `cosine`: $k(x,y)= (x^T y)/(\|x\|\|y\|)$.
 
         Args:
-            kernel (str, optional): name of the kernel, ["linear", "rbf"]
+            kernel (str, optional): name of the kernel, ["linear", "rbf", "cosine"]
             min_size (int, optional): minimum segment length.
             jump (int, optional): not considered, set to 1.
             params (dict, optional): a dictionary of parameters for the kernel instance
@@ -85,20 +80,32 @@ class KernelCPD(BaseEstimator):
 
     def predict(self, n_bkps=None, pen=None):
         """Return the optimal breakpoints. Must be called after the fit method.
-        The breakpoints are associated with the signal passed to.
 
+        The breakpoints are associated with the signal passed to
         [`fit()`][ruptures.detection.kernelcpd.KernelCPD.fit].
 
         Args:
             n_bkps (int, optional): Number of change points. Defaults to None.
-            pen (float, optional): penalty value (>0). Defaults to None. Not considered if n_bkps is not None.
+            pen (float, optional): penalty value (>0). Defaults to None. Not considered
+                if n_bkps is not None.
 
         Raises:
             AssertionError: if `pen` or `n_bkps` is not strictly positive.
+            BadSegmentationParameters: in case of impossible segmentation
+                configuration
 
         Returns:
             list[int]: sorted list of breakpoints
         """
+        # raise an exception in case of impossible segmentation configuration
+        if not sanity_check(
+            n_samples=self.cost.signal.shape[0],
+            n_bkps=1 if n_bkps is None else n_bkps,
+            jump=self.jump,
+            min_size=self.min_size,
+        ):
+            raise BadSegmentationParameters
+
         # dynamic programming if the user passed a number change points
         if n_bkps is not None:
             n_bkps = int(n_bkps)

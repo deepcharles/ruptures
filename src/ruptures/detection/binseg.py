@@ -2,7 +2,9 @@ r"""Binary segmentation."""
 from functools import lru_cache
 from ruptures.base import BaseCost, BaseEstimator
 from ruptures.costs import cost_factory
-from ruptures.utils import pairwise
+from ruptures.utils import pairwise, sanity_check
+from ruptures.exceptions import BadSegmentationParameters
+import numpy as np
 
 
 class Binseg(BaseEstimator):
@@ -84,6 +86,8 @@ class Binseg(BaseEstimator):
     def _single_bkp(self, start, end):
         """Return the optimal breakpoint of [start:end] (if it exists)."""
         segment_cost = self.cost.error(start, end)
+        if np.isinf(segment_cost) and segment_cost < 0:  # if constant on segment
+            return None, 0
         gain_list = list()
         for bkp in range(start, end, self.jump):
             if bkp - start > self.min_size and end - bkp > self.min_size:
@@ -122,8 +126,8 @@ class Binseg(BaseEstimator):
     def predict(self, n_bkps=None, pen=None, epsilon=None):
         """Return the optimal breakpoints.
 
-        Must be called after the fit method. The breakpoints are associated with the signal passed
-        to [`fit()`][ruptures.detection.binseg.Binseg.fit].
+        Must be called after the fit method. The breakpoints are associated with the
+        signal passed to [`fit()`][ruptures.detection.binseg.Binseg.fit].
         The stopping rule depends on the parameter passed to the function.
 
         Args:
@@ -131,11 +135,25 @@ class Binseg(BaseEstimator):
             pen (float): penalty value (>0)
             epsilon (float): reconstruction budget (>0)
 
+        Raises:
+            AssertionError: if none of `n_bkps`, `pen`, `epsilon` is set.
+            BadSegmentationParameters: in case of impossible segmentation
+                configuration
+
         Returns:
             list: sorted list of breakpoints
         """
         msg = "Give a parameter."
         assert any(param is not None for param in (n_bkps, pen, epsilon)), msg
+
+        # raise an exception in case of impossible segmentation configuration
+        if not sanity_check(
+            n_samples=self.cost.signal.shape[0],
+            n_bkps=1,
+            jump=self.jump,
+            min_size=self.min_size,
+        ):
+            raise BadSegmentationParameters
 
         partition = self._seg(n_bkps=n_bkps, pen=pen, epsilon=epsilon)
         bkps = sorted(e for s, e in partition.keys())

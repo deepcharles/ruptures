@@ -8,3 +8,10 @@ class NotEnoughPoints(Exception):
     function."""
 
     pass
+
+
+class BadSegmentationParameters(Exception):
+    """Raise this exception when a segmentation is not possible given the
+    parameters."""
+
+    pass
