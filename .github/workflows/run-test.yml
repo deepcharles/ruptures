@@ -12,8 +12,8 @@ on:
 jobs:
   build:
     strategy:
+      max-parallel: 2
       matrix:
-        max-parallel: 2
         python-version: [3.6, 3.7, 3.8, 3.9]
         os: [ubuntu-latest, windows-latest, macos-latest]
         exclude:
