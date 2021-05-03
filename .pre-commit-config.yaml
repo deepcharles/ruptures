@@ -1,6 +1,6 @@
 repos:
 - repo: https://github.com/psf/black
-  rev: 20.8b1
+  rev: 21.4b0
   hooks:
     - id: black
       language_version: python3
@@ -23,13 +23,13 @@ repos:
   hooks:
     - id: docformatter
       args: [--in-place]
-- repo: https://gitlab.com/pycqa/flake8
-  rev: 3.9.0
+- repo: https://github.com/PyCQA/flake8
+  rev: 3.9.1
   hooks:
     - id: flake8
       # additional_dependencies: [flake8-docstrings, flake8-bugbear, flake8-spellcheck, flake8-import-order]
 - repo: https://github.com/kynan/nbstripout
-  rev: 0.3.9
+  rev: 0.4.0
   hooks:
     - id: nbstripout
 -   repo: https://github.com/asottile/blacken-docs
@@ -37,7 +37,7 @@ repos:
     hooks:
     - id: blacken-docs
 - repo: https://github.com/nbQA-dev/nbQA
-  rev: 0.5.9
+  rev: 0.7.0
   hooks:
     - id: nbqa-black
       args: [--nbqa-mutate]
