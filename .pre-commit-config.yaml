@@ -41,6 +41,6 @@ repos:
   hooks:
     - id: nbqa-black
       args: [--nbqa-mutate]
-      
+
 ci:
   autoupdate_commit_msg: 'chore: pre-commit autoupdate'
