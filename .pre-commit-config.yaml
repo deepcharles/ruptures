@@ -1,6 +1,6 @@
 repos:
 - repo: https://github.com/psf/black
-  rev: 21.4b0
+  rev: 21.4b2
   hooks:
     - id: black
       language_version: python3
@@ -37,7 +37,7 @@ repos:
     hooks:
     - id: blacken-docs
 - repo: https://github.com/nbQA-dev/nbQA
-  rev: 0.7.0
+  rev: 0.8.0
   hooks:
     - id: nbqa-black
       args: [--nbqa-mutate]
