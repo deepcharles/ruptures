@@ -1,6 +1,6 @@
 repos:
 - repo: https://github.com/psf/black
-  rev: 20.8b1
+  rev: 21.4b0
   hooks:
     - id: black
       language_version: python3
@@ -29,7 +29,7 @@ repos:
     - id: flake8
       # additional_dependencies: [flake8-docstrings, flake8-bugbear, flake8-spellcheck, flake8-import-order]
 - repo: https://github.com/kynan/nbstripout
-  rev: 0.3.9
+  rev: 0.4.0
   hooks:
     - id: nbstripout
 -   repo: https://github.com/asottile/blacken-docs
