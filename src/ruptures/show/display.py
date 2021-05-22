@@ -13,7 +13,10 @@ class MatplotlibMissingError(RuntimeError):
     pass
 
 
-def display(signal, true_chg_pts, computed_chg_pts=None, **kwargs):
+def display(
+    signal, true_chg_pts, computed_chg_pts=None, computed_chg_pts_color="k",
+        computed_chg_pts_linewidth=3, computed_chg_pts_linestyle="--",
+        computed_chg_pts_alpha=1.0, **kwargs):
     """Display a signal and the change points provided in alternating colors.
     If another set of change point is provided, they are displayed with dashed
     vertical dashed lines. The following matplotlib subplots options is set by
@@ -25,6 +28,10 @@ def display(signal, true_chg_pts, computed_chg_pts=None, **kwargs):
         signal (array): signal array, shape (n_samples,) or (n_samples, n_features).
         true_chg_pts (list): list of change point indexes.
         computed_chg_pts (list, optional): list of change point indexes.
+        computed_chg_pts_color (str, optional): color.
+        computed_chg_pts_linewidth (int, optional): linewidth for computed_chg_pts.
+        computed_chg_pts_linestyle (str, optional): linestyle for computed_chg_pts.
+        computed_chg_pts_alpha (list, optional): alpha for computed_chg_pts_linestyle.
         **kwargs : all additional keyword arguments are passed to the plt.subplots call.
 
     Returns:
@@ -69,9 +76,9 @@ def display(signal, true_chg_pts, computed_chg_pts=None, **kwargs):
         for (start, end), col in zip(pairwise(bkps), color_cycle):
             axe.axvspan(max(0, start - 0.5), end - 0.5, facecolor=col, alpha=alpha)
 
-        color = "k"  # color of the lines indicating the computed_chg_pts
-        linewidth = 3  # linewidth of the lines indicating the computed_chg_pts
-        linestyle = "--"  # linestyle of the lines indicating the computed_chg_pts
+        color = computed_chg_pts_color  # color of the lines indicating the computed_chg_pts
+        linewidth = computed_chg_pts_linewidth  # linewidth of the lines indicating the computed_chg_pts
+        linestyle = computed_chg_pts_linestyle  # linestyle of the lines indicating the computed_chg_pts
         # vertical lines to mark the computed_chg_pts
         if computed_chg_pts is not None:
             for bkp in computed_chg_pts:
@@ -81,6 +88,7 @@ def display(signal, true_chg_pts, computed_chg_pts=None, **kwargs):
                         color=color,
                         linewidth=linewidth,
                         linestyle=linestyle,
+                        alpha=computed_chg_pts_alpha,
                     )
 
     fig.tight_layout()
