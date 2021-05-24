@@ -85,19 +85,14 @@ def display(
 
         for (start, end), col in zip(pairwise(bkps), color_cycle):
             axe.axvspan(max(0, start - 0.5), end - 0.5, facecolor=col, alpha=alpha)
-        color = (
-            computed_chg_pts_color  # color of the lines indicating the computed_chg_pts
-        )
-        linewidth = computed_chg_pts_linewidth  # linewidth of the lines indicating the computed_chg_pts
-        linestyle = computed_chg_pts_linestyle  # linestyle of the lines indicating the computed_chg_pts
         # vertical lines to mark the computed_chg_pts
         if computed_chg_pts is not None:
             for bkp in computed_chg_pts:
                 if bkp != 0 and bkp < n_samples:
                     axe.axvline(
                         x=bkp - 0.5,
-                        color=color,
-                        linewidth=linewidth,
+                        color=computed_chg_pts_color,
+                        linewidth=computed_chg_pts_linewidth,
                         linestyle=linestyle,
                         alpha=computed_chg_pts_alpha,
                     )
