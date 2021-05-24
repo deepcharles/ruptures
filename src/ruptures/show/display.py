@@ -28,10 +28,14 @@ def display(
         signal (array): signal array, shape (n_samples,) or (n_samples, n_features).
         true_chg_pts (list): list of change point indexes.
         computed_chg_pts (list, optional): list of change point indexes.
-        computed_chg_pts_color (str, optional): color.
-        computed_chg_pts_linewidth (int, optional): linewidth for computed_chg_pts.
-        computed_chg_pts_linestyle (str, optional): linestyle for computed_chg_pts.
-        computed_chg_pts_alpha (list, optional): alpha for computed_chg_pts_linestyle.
+        computed_chg_pts_color (str, optional): color of the lines indicating
+            the computed_chg_pts. Defaults to "k".
+        computed_chg_pts_linewidth (int, optional): linewidth of the lines
+            indicating the computed_chg_pts. Defaults to 3.
+        computed_chg_pts_linestyle (str, optional): linestyle of the lines
+            indicating the computed_chg_pts. Defaults to "--".
+        computed_chg_pts_alpha (float, optional): alpha of the lines indicating
+            the computed_chg_pts. Defaults to "1.0".
         **kwargs : all additional keyword arguments are passed to the plt.subplots call.
 
     Returns:
@@ -76,9 +80,9 @@ def display(
         for (start, end), col in zip(pairwise(bkps), color_cycle):
             axe.axvspan(max(0, start - 0.5), end - 0.5, facecolor=col, alpha=alpha)
 
-        color = computed_chg_pts_color  # color of the lines indicating the computed_chg_pts
-        linewidth = computed_chg_pts_linewidth  # linewidth of the lines indicating the computed_chg_pts
-        linestyle = computed_chg_pts_linestyle  # linestyle of the lines indicating the computed_chg_pts
+        color = computed_chg_pts_color
+        linewidth = computed_chg_pts_linewidth
+        linestyle = computed_chg_pts_linestyle
         # vertical lines to mark the computed_chg_pts
         if computed_chg_pts is not None:
             for bkp in computed_chg_pts:
