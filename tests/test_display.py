@@ -63,14 +63,24 @@ def test_display_with_computed_chg_pts_options(signal_bkps):
 
         fig, axarr = display(signal, bkps, bkps, computed_chg_pts_color="k")
         fig, axarr = display(
-            signal, bkps, bkps, computed_chg_pts_color="k",
-            computed_chg_pts_linewidth=3)
+            signal, bkps, bkps, computed_chg_pts_color="k", computed_chg_pts_linewidth=3
+        )
         fig, axarr = display(
-            signal, bkps, bkps, computed_chg_pts_color="k",
-            computed_chg_pts_linewidth=3, computed_chg_pts_linestyle="--")
+            signal,
+            bkps,
+            bkps,
+            computed_chg_pts_color="k",
+            computed_chg_pts_linewidth=3,
+            computed_chg_pts_linestyle="--",
+        )
         fig, axarr = display(
-            signal, bkps, bkps, computed_chg_pts_color="k",
-            computed_chg_pts_linewidth=3, computed_chg_pts_linestyle="--",
-            computed_chg_pts_alpha=1.0)
+            signal,
+            bkps,
+            bkps,
+            computed_chg_pts_color="k",
+            computed_chg_pts_linewidth=3,
+            computed_chg_pts_linestyle="--",
+            computed_chg_pts_alpha=1.0,
+        )
     except MatplotlibMissingError:
         pytest.skip("matplotlib is not installed")
