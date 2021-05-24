@@ -88,8 +88,12 @@ def display(
         color = (
             computed_chg_pts_color  # color of the lines indicating the computed_chg_pts
         )
-        linewidth = computed_chg_pts_linewidth  # linewidth of the lines indicating the computed_chg_pts
-        linestyle = computed_chg_pts_linestyle  # linestyle of the lines indicating the computed_chg_pts
+        linewidth = (
+            computed_chg_pts_linewidth  # linewidth of the lines indicating the computed_chg_pts
+        )
+        linestyle = (
+            computed_chg_pts_linestyle  # linestyle of the lines indicating the computed_chg_pts
+        )
         # vertical lines to mark the computed_chg_pts
         if computed_chg_pts is not None:
             for bkp in computed_chg_pts:
