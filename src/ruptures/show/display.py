@@ -93,7 +93,7 @@ def display(
                         x=bkp - 0.5,
                         color=computed_chg_pts_color,
                         linewidth=computed_chg_pts_linewidth,
-                        linestyle=linestyle,
+                        linestyle=computed_chg_pts_linestyle,
                         alpha=computed_chg_pts_alpha,
                     )
 
