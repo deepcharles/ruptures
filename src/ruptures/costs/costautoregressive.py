@@ -1,6 +1,7 @@
 import numpy as np
 from numpy.lib.stride_tricks import as_strided
 from numpy.linalg import lstsq
+from copy import deepcopy
 
 from ruptures.base import BaseCost
 from ruptures.costs import NotEnoughPoints
@@ -34,10 +35,9 @@ class CostAR(BaseCost):
         Returns:
             self: the current object
         """
+        self.signal = deepcopy(signal)
         if signal.ndim == 1:
-            self.signal = signal.reshape(-1, 1)
-        else:
-            self.signal = signal
+            self.signal = self.signal.reshape(-1, 1)
 
         # lagged covariates
         n_samples, _ = self.signal.shape
