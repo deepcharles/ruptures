@@ -69,3 +69,7 @@ labels:
     include:
       - '^revert(\(.*\))?:(.*)'
     exclude: []
+  'skip-changelog':
+    include:
+      - '^(chore: pre-commit autoupdate)'
+    exclude: []
