@@ -1,3 +1,4 @@
+from copy import deepcopy
 from itertools import product
 
 import numpy as np
@@ -334,3 +335,9 @@ def test_model_small_signal_bis(signal_bkps_5D_n10, algo, model):
     signal, _ = signal_bkps_5D_n10
     with pytest.raises(BadSegmentationParameters):
         algo(model=model, min_size=5, jump=2).fit_predict(signal, 2)
+
+
+def test_binseg_deepcopy():
+    binseg = Binseg()
+    binseg_copy = deepcopy(binseg)
+    assert id(binseg.single_bkp) != id(binseg_copy.single_bkp)
