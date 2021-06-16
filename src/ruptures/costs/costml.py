@@ -41,7 +41,7 @@ class CostMl(BaseCost):
             self.metric = inv(covar.reshape(1, 1) if covar.size == 1 else covar)
 
         self.gram = s_.dot(self.metric).dot(s_.T)
-        self.signal = deepcopy(s_)
+        self.signal = s_
 
         return self
 
