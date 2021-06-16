@@ -54,7 +54,10 @@ def test_empty(signal_bkps_1D, algo):
 
 @pytest.mark.parametrize(
     "algo, model",
-    product([Binseg, BottomUp, Window], ["l1", "l2", "ar", "normal", "rbf", "rank"]),
+    product(
+        [Binseg, BottomUp, Window],
+        ["l1", "l2", "ar", "normal", "rbf", "rank", "mahalanobis"],
+    ),
 )
 def test_model_1D(signal_bkps_1D, algo, model):
     signal, _ = signal_bkps_1D
@@ -67,7 +70,7 @@ def test_model_1D(signal_bkps_1D, algo, model):
 
 @pytest.mark.parametrize(
     "algo, model",
-    product([Dynp, Pelt], ["l1", "l2", "ar", "normal", "rbf", "rank"]),
+    product([Dynp, Pelt], ["l1", "l2", "ar", "normal", "rbf", "rank", "mahalanobis"]),
 )
 def test_model_1D_bis(signal_bkps_1D, algo, model):
     signal, _ = signal_bkps_1D
@@ -115,7 +118,7 @@ def test_model_1D_constant(signal_bkps_1D_constant, algo, model):
     "algo, model",
     product(
         [Binseg, BottomUp, Window],
-        ["l1", "l2", "linear", "normal", "rbf", "rank"],
+        ["l1", "l2", "linear", "normal", "rbf", "rank", "mahalanobis"],
     ),
 )
 def test_model_5D(signal_bkps_5D, algo, model):
@@ -128,7 +131,9 @@ def test_model_5D(signal_bkps_5D, algo, model):
 
 @pytest.mark.parametrize(
     "algo, model",
-    product([Dynp, Pelt], ["l1", "l2", "linear", "normal", "rbf", "rank"]),
+    product(
+        [Dynp, Pelt], ["l1", "l2", "linear", "normal", "rbf", "rank", "mahalanobis"]
+    ),
 )
 def test_model_5D_bis(signal_bkps_5D, algo, model):
     signal, _ = signal_bkps_5D
@@ -310,7 +315,7 @@ def test_kernelcpd_small_signal(signal_bkps_5D_n10, algo, kernel):
     "algo, model",
     product(
         [Binseg, BottomUp, Window],
-        ["l1", "l2", "ar", "normal", "rbf", "rank"],
+        ["l1", "l2", "ar", "normal", "rbf", "rank", "mahalanobis"],
     ),
 )
 def test_model_small_signal(signal_bkps_5D_n10, algo, model):
@@ -327,7 +332,7 @@ def test_model_small_signal(signal_bkps_5D_n10, algo, model):
     "algo, model",
     product(
         [Dynp, Pelt],
-        ["l1", "l2", "ar", "normal", "rbf", "rank"],
+        ["l1", "l2", "ar", "normal", "rbf", "rank", "mahalanobis"],
     ),
 )
 def test_model_small_signal_bis(signal_bkps_5D_n10, algo, model):
