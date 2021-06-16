@@ -1,7 +1,6 @@
 r"""Change detection with a Mahalanobis-type metric"""
 import numpy as np
 from numpy.linalg import inv
-from copy import deepcopy
 
 from ruptures.base import BaseCost
 from ruptures.exceptions import NotEnoughPoints
