@@ -25,7 +25,6 @@ class Dynp(BaseEstimator):
             jump (int, optional): subsample (one every *jump* points).
             params (dict, optional): a dictionary of parameters for the cost instance.
         """
-        self.seg = lru_cache(maxsize=None)(self._seg)  # dynamic programming
         if custom_cost is not None and isinstance(custom_cost, BaseCost):
             self.cost = custom_cost
         else:
@@ -38,7 +37,8 @@ class Dynp(BaseEstimator):
         self.jump = jump
         self.n_samples = None
 
-    def _seg(self, start, end, n_bkps):
+    @lru_cache(maxsize=None)
+    def seg(self, start, end, n_bkps):
         """Recurrence to find the optimal partition of signal[start:end].
 
         This method is to be memoized and then used.
