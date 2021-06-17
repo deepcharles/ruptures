@@ -33,8 +33,6 @@ class Binseg(BaseEstimator):
         self.jump = jump
         self.n_samples = None
         self.signal = None
-        # cache for intermediate results
-        self.single_bkp = lru_cache(maxsize=None)(self._single_bkp)
 
     def _seg(self, n_bkps=None, pen=None, epsilon=None):
         """Computes the binary segmentation.
@@ -83,7 +81,8 @@ class Binseg(BaseEstimator):
         }
         return partition
 
-    def _single_bkp(self, start, end):
+    @lru_cache(maxsize=None)
+    def single_bkp(self, start, end):
         """Return the optimal breakpoint of [start:end] (if it exists)."""
         segment_cost = self.cost.error(start, end)
         if np.isinf(segment_cost) and segment_cost < 0:  # if constant on segment

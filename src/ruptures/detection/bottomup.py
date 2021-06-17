@@ -35,7 +35,6 @@ class BottomUp(BaseEstimator):
         self.n_samples = None
         self.signal = None
         self.leaves = None
-        self.merge = lru_cache(maxsize=None)(self._merge)
 
     def _grow_tree(self):
         """Grow the entire binary tree."""
@@ -66,7 +65,8 @@ class BottomUp(BaseEstimator):
             leaves.append(leaf)
         return leaves
 
-    def _merge(self, left, right):
+    @lru_cache(maxsize=None)
+    def merge(self, left, right):
         """Merge two contiguous segments."""
         assert left.end == right.start, "Segments are not contiguous."
         start, end = left.start, right.end
