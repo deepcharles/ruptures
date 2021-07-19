@@ -73,8 +73,35 @@ jobs:
         with:
           path: wheelhouse/*.whl
 
+  build_aarch64_wheels:
+    name: Build wheels manylinux_aarch64
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: [36, 37, 38, 39]
+        include:
+          - os: ubuntu-latest
+            arch: aarch64
+            platform_id: manylinux_aarch64
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Build wheels
+        uses: joerick/cibuildwheel@v1.9.0
+        env:
+          CIBW_ARCHS_LINUX: ${{matrix.arch}}
+          CIBW_BUILD: cp${{ matrix.python }}-${{ matrix.platform_id }}
+          # Manually force a version
+          CIBW_ENVIRONMENT: "SETUPTOOLS_SCM_PRETEND_VERSION=${{ github.event.inputs.overrideVersion }}"
+      - uses: actions/upload-artifact@v2
+        with:
+          path: wheelhouse/*.whl
+
   upload_all:
-    needs: [build_wheels, make_sdist]
+    needs: [build_wheels, build_aarch64_wheels, make_sdist]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/download-artifact@v2
