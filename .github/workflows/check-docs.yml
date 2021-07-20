@@ -1,9 +1,12 @@
 name: "Check docs"
 on:
-- pull_request
+  pull_request:
+    branches: [ master ]
+    types: [labeled]
 
 jobs:
   docs:
+    if: ${{ github.event.label.name != 'skip-changelog' }}
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
