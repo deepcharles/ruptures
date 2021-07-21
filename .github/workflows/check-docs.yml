@@ -2,7 +2,6 @@ name: "Check docs"
 on:
   pull_request:
     branches: [ master ]
-    types: [labeled]
 
 jobs:
   docs:
