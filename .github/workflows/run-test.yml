@@ -22,7 +22,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - name: To be deleted - print pr name
-      run: echo github.event.pull_request.name
+      run: echo ${{github.event.pull_request.name}}
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
