@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    if: ${{ github.event.label.name != 'skip-changelog' }}
+    # if: ${{ !startsWith(github.event.pull_request.name, 'chore: pre-commit') }}
     strategy:
       matrix:
         python-version: [3.6, 3.7, 3.8, 3.9]
@@ -21,6 +21,8 @@ jobs:
             python-version: 3.9
     runs-on: ${{ matrix.os }}
     steps:
+    - name: To be deleted - print pr name
+      run: echo github.event.pull_request.name
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
