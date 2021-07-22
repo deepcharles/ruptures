@@ -10,10 +10,11 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
+    paths-ignore:
+      - '.pre-commit-config.yaml'
 
 jobs:
   coverage:
-    if: ${{ github.event.label.name != 'skip-changelog' }}
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
