@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    # if: ${{ !startsWith(github.event.pull_request.name, 'chore: pre-commit') }}
+    if: ${{ !contains(github.event.pull_request.title, 'pre-commit autoupdate') }}
     strategy:
       matrix:
         python-version: [3.6, 3.7, 3.8, 3.9]
@@ -21,11 +21,11 @@ jobs:
             python-version: 3.9
     runs-on: ${{ matrix.os }}
     steps:
-    - name: To be deleted - print pr name
-      env:
-        GH_EVENT_CONTEXT_PR = ${{ toJson(github.event.pull_request) }}
-      run: |
-        echo "$GH_EVENT_CONTEXT_PR"
+    # - name: To be deleted - print pr name
+    #   env:
+    #     GH_EVENT_CONTEXT_PR = ${{ toJson(github.event.pull_request) }}
+    #   run: |
+    #     echo "$GH_EVENT_CONTEXT_PR"
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
