@@ -123,7 +123,7 @@ class Pelt(BaseEstimator):
         # raise an exception in case of impossible segmentation configuration
         if not sanity_check(
             n_samples=self.cost.signal.shape[0],
-            n_bkps=1,
+            n_bkps=0,
             jump=self.jump,
             min_size=self.min_size,
         ):
