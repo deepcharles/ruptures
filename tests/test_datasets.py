@@ -1,6 +1,5 @@
 from itertools import product
 
-import numpy as np
 import pytest
 
 from ruptures.datasets import pw_constant, pw_linear, pw_normal, pw_wavy

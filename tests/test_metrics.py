@@ -1,4 +1,3 @@
-import numpy as np
 import pytest
 
 from ruptures.metrics import hausdorff, meantime, precision_recall, randindex

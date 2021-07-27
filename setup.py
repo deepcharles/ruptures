@@ -1,4 +1,4 @@
-from setuptools import Extension, find_packages, setup
+from setuptools import Extension, setup
 
 ext_modules = [
     Extension(

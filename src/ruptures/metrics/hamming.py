@@ -1,7 +1,7 @@
 """Hamming metric for segmentation."""
 
 import numpy as np
-from scipy.sparse import block_diag, triu
+from scipy.sparse import triu
 
 from ruptures.metrics.sanity_check import sanity_check
 from ruptures.utils import pairwise

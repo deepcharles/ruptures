@@ -2,9 +2,6 @@
 
 from itertools import tee
 from math import ceil
-from random import choice
-
-import numpy as np
 
 
 def pairwise(iterable):

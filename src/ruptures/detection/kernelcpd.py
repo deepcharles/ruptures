@@ -1,6 +1,6 @@
 r"""Efficient kernel change point detection (dynamic programming)"""
 
-from ruptures.base import BaseCost, BaseEstimator
+from ruptures.base import BaseEstimator
 from ruptures.costs import cost_factory
 from ruptures.utils import from_path_matrix_to_bkps_list, sanity_check
 from ruptures.exceptions import BadSegmentationParameters
