@@ -1,10 +1,7 @@
 r"""Precision and recall"""
-from itertools import groupby, product
-
-import numpy as np
+from itertools import product
 
 from ruptures.metrics.sanity_check import sanity_check
-from ruptures.utils import unzip
 
 
 def precision_recall(true_bkps, my_bkps, margin=10):

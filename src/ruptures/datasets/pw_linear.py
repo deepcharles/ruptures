@@ -3,7 +3,6 @@ import numpy as np
 from numpy.random import normal
 
 from . import pw_constant
-from ruptures.utils import draw_bkps
 
 
 def pw_linear(n_samples=200, n_features=1, n_bkps=3, noise_std=None):
