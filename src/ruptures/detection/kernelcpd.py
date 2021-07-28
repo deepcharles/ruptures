@@ -97,6 +97,7 @@ class KernelCPD(BaseEstimator):
         Returns:
             list[int]: sorted list of breakpoints
         """
+        # Our KernelCPD implementation with Pelt implies that we have at least one change point
         # raise an exception in case of impossible segmentation configuration
         if not sanity_check(
             n_samples=self.cost.signal.shape[0],
