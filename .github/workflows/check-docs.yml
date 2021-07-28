@@ -1,6 +1,9 @@
 name: "Check docs"
 on:
-- pull_request
+  pull_request:
+    branches: [ master ]
+    paths-ignore:
+      - '.pre-commit-config.yaml'
 
 jobs:
   docs:
