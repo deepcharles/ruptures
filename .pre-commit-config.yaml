@@ -1,6 +1,6 @@
 repos:
 - repo: https://github.com/psf/black
-  rev: 21.7b0
+  rev: 21.8b0
   hooks:
     - id: black
       language_version: python3
@@ -33,7 +33,7 @@ repos:
   hooks:
     - id: nbstripout
 -   repo: https://github.com/asottile/blacken-docs
-    rev: v1.10.0
+    rev: v1.11.0
     hooks:
     - id: blacken-docs
 - repo: https://github.com/nbQA-dev/nbQA
