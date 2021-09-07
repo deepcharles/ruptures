@@ -140,6 +140,7 @@ def test_costlinear(signal_bkps_5D_noisy, signal_bkps_1D_noisy):
     with pytest.raises(NotEnoughPoints):
         c.error(10, 11)
 
+
 # Test CostNormal
 def test_costnormal():
     # For signals that have truly constant segments, CostNormal should not fail.
