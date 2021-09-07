@@ -1,6 +1,7 @@
 import pytest
 import numpy as np
 from ruptures.costs import cost_factory, CostLinear
+from ruptures.costs.costnormal import CostNormal
 from ruptures.datasets import pw_constant
 from ruptures.exceptions import NotEnoughPoints
 import numpy as np
@@ -120,7 +121,7 @@ def test_factory_exception():
 
 # Test CostLinear
 def test_costlinear(signal_bkps_5D_noisy, signal_bkps_1D_noisy):
-    # Creation of data. For convinience, we use
+    # Creation of data. For convenience, we use
     # already generated signal_bkps_5D and signal_bkps_1D
     signal_regressors, _ = signal_bkps_5D_noisy  # regressors
     signal, bkps = signal_bkps_1D_noisy  # observed signal
@@ -138,3 +139,21 @@ def test_costlinear(signal_bkps_5D_noisy, signal_bkps_1D_noisy):
     c.sum_of_costs(bkps)
     with pytest.raises(NotEnoughPoints):
         c.error(10, 11)
+
+# Test CostNormal
+def test_costnormal():
+    # For signals that have truly constant segments, CostNormal should not fail.
+    signal_1D = np.r_[np.ones(100), np.arange(100), np.zeros(100)]
+    signal_2D = np.c_[signal_1D, signal_1D[::-1]]
+    n_samples = signal_1D.shape[0]
+    bkps = [100, 200, n_samples]
+
+    # with the correction on the diagonal of the covariance matrix.
+    for signal in (signal_1D, signal_2D):
+        c = CostNormal(add_small_diag=True).fit(signal=signal)
+        c.error(0, 100)
+        c.error(100, n_samples)
+        c.error(10, 50)
+        c.sum_of_costs(bkps)
+        with pytest.raises(NotEnoughPoints):
+            c.error(10, 11)
