@@ -1,10 +1,9 @@
-import pytest
 import numpy as np
-from ruptures.costs import cost_factory, CostLinear
+import pytest
+from ruptures.costs import CostLinear, cost_factory
 from ruptures.costs.costnormal import CostNormal
 from ruptures.datasets import pw_constant
 from ruptures.exceptions import NotEnoughPoints
-import numpy as np
 
 
 @pytest.fixture(scope="module")
