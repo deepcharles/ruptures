@@ -7,15 +7,11 @@ def test_bnode():
     right = Bnode(start=120, end=200, val=1)
 
     # bad merging, no right leaf
-    merged_node = Bnode(
-        start=left.start, end=right.end, left=left, right=None, val=3
-    )
+    merged_node = Bnode(start=left.start, end=right.end, left=left, right=None, val=3)
     assert merged_node.gain == 0
 
     # bad merging, no left leaf
-    merged_node = Bnode(
-        start=left.start, end=right.end, left=None, right=right, val=3
-    )
+    merged_node = Bnode(start=left.start, end=right.end, left=None, right=right, val=3)
     assert merged_node.gain == 0
 
     # bad merging, negative infinit val
