@@ -1,7 +1,8 @@
 r"""Gaussian process changes (CostNormal)"""
+import warnings
+
 import numpy as np
 from numpy.linalg import slogdet
-
 from ruptures.base import BaseCost
 from ruptures.costs import NotEnoughPoints
 
@@ -23,6 +24,12 @@ class CostNormal(BaseCost):
         self.signal = None
         self.min_size = 2
         self.add_small_diag = add_small_diag
+        warnings.warn(
+            "New behaviour in v1.1.5: "
+            "a small bias is added to the covariance matrix to cope with truly "
+            "constant segments (see PR#198).",
+            UserWarning,
+        )
 
     def fit(self, signal) -> "CostNormal":
         """Set parameters of the instance.
