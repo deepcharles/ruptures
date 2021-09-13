@@ -140,15 +140,19 @@ def test_costlinear(signal_bkps_5D_noisy, signal_bkps_1D_noisy):
     with pytest.raises(NotEnoughPoints):
         c.error(10, 11)
 
+
 # Test CostNormal
 def test_costnormal():
-    # For signals that have truly constant segments, CostNormal should not fail.
+    # For signals that have truly constant segments, CostNormal should not fail
+    # with the correction on the diagonal of the covariance matrix.
+
+    # generate data
     signal_1D = np.r_[np.ones(100), np.arange(100), np.zeros(100)]
     signal_2D = np.c_[signal_1D, signal_1D[::-1]]
     n_samples = signal_1D.shape[0]
     bkps = [100, 200, n_samples]
-
-    # with the correction on the diagonal of the covariance matrix.
+    
+    # test cost function
     for signal in (signal_1D, signal_2D):
         c = CostNormal(add_small_diag=True).fit(signal=signal)
         c.error(0, 100)
@@ -157,3 +161,8 @@ def test_costnormal():
         c.sum_of_costs(bkps)
         with pytest.raises(NotEnoughPoints):
             c.error(10, 11)
+
+    # test cost function without correction
+    c = CostNormal(add_small_diag=False).fit(signal=signal_1D)
+    assert np.isinf(c.error(0, 100))
+    
