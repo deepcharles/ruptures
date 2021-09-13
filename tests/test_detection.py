@@ -85,34 +85,32 @@ def test_model_1D_bis(signal_bkps_1D, algo, model):
 @pytest.mark.parametrize(
     "algo, model",
     product(
-        [Dynp, Pelt, Binseg, BottomUp, Window],
+        [Dynp, Binseg, BottomUp, Window, Pelt],
         ["l1", "l2", "ar", "normal", "rbf", "rank"],
     ),
 )
 def test_model_1D_constant(signal_bkps_1D_constant, algo, model):
     signal, _ = signal_bkps_1D_constant
-    algo_t = algo(model=model)
-    ret = algo_t.fit_predict(signal, 1)
-    if isinstance(algo_t, Dynp) or isinstance(algo_t, BottomUp):
-        # With constant signal, those search methods
-        # will return another break points alongside signal.shape[0]
+    algo = algo(model=model)
+    if (
+        isinstance(algo, Dynp)
+        or isinstance(algo, BottomUp)
+        or isinstance(algo, Binseg)
+    ):
+        ret = algo.fit_predict(signal=signal, n_bkps=1)
+        # Even with constant signals, return the specified number of
+        # change-points.
         assert len(ret) == 2
-    if isinstance(algo_t, Binseg):
-        if model == "normal":
-            # With constant signal, this search method with normal cost
-            # will return only signal.shape[0] as breaking points
-            assert len(ret) == 1
-        else:
-            # With constant signal, this search method with another cost
-            # will return another break points alongside signal.shape[0]
-            assert len(ret) == 2
-    if isinstance(algo_t, Window):
-        # With constant signal, this search methods
-        # will return only signal.shape[0] as breaking points
+    if isinstance(algo, Window):
+        ret = algo.fit_predict(signal=signal, n_bkps=1)
+        # With constant signal, this search method returns 0 change-point.
         assert len(ret) == 1
-    if isinstance(algo_t, Pelt):
-        assert len(ret) <= 2
-    assert ret[-1] == signal.shape[0]
+    if isinstance(algo, Pelt):
+        ret = algo.fit_predict(signal=signal, pen=1)
+        # With constant signal, this search method returns 0 change-point.
+        assert len(ret) == 1
+    assert ret[-1] == signal.shape[0], "The last change-point is equal to"
+    " n_samples."
 
 
 @pytest.mark.parametrize(
