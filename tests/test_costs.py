@@ -151,7 +151,7 @@ def test_costnormal():
     signal_2D = np.c_[signal_1D, signal_1D[::-1]]
     n_samples = signal_1D.shape[0]
     bkps = [100, 200, n_samples]
-    
+
     # test cost function
     for signal in (signal_1D, signal_2D):
         c = CostNormal(add_small_diag=True).fit(signal=signal)
@@ -165,4 +165,3 @@ def test_costnormal():
     # test cost function without correction
     c = CostNormal(add_small_diag=False).fit(signal=signal_1D)
     assert np.isinf(c.error(0, 100))
-    

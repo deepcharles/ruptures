@@ -92,11 +92,7 @@ def test_model_1D_bis(signal_bkps_1D, algo, model):
 def test_model_1D_constant(signal_bkps_1D_constant, algo, model):
     signal, _ = signal_bkps_1D_constant
     algo = algo(model=model)
-    if (
-        isinstance(algo, Dynp)
-        or isinstance(algo, BottomUp)
-        or isinstance(algo, Binseg)
-    ):
+    if isinstance(algo, Dynp) or isinstance(algo, BottomUp) or isinstance(algo, Binseg):
         ret = algo.fit_predict(signal=signal, n_bkps=1)
         # Even with constant signals, return the specified number of
         # change-points.
