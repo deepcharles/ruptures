@@ -17,9 +17,9 @@ class CostNormal(BaseCost):
         """Initialize the object.
 
         Args:
-            add_small_diag (bool, optional): For signals with truly constant segments,
-            the covariance matrix is badly conditioned, so we add a small diagonal
-            matrix. Defaults to False.
+            add_small_diag (bool, optional): For signals with truly constant
+                segments, the covariance matrix is badly conditioned, so we add
+                a small diagonal matrix. Defaults to False.
         """
         self.signal = None
         self.min_size = 2
@@ -35,7 +35,8 @@ class CostNormal(BaseCost):
         """Set parameters of the instance.
 
         Args:
-            signal (array): signal. Shape (n_samples,) or (n_samples, n_features)
+            signal (array): signal of shape (n_samples,) or
+                (n_samples, n_features)
 
         Returns:
             self
@@ -58,7 +59,8 @@ class CostNormal(BaseCost):
             segment cost
 
         Raises:
-            NotEnoughPoints: when the segment is too short (less than `min_size` samples).
+            NotEnoughPoints: when the segment is too short (less than `min_size`
+                samples).
         """
         if end - start < self.min_size:
             raise NotEnoughPoints
@@ -68,7 +70,7 @@ class CostNormal(BaseCost):
             cov = np.cov(sub.T)
         else:
             cov = np.array([[sub.var()]])
-        if self.add_small_diag:
+        if self.add_small_diag:  # adding small bias
             cov += 1e-6 * np.eye(self.n_dims)
         _, val = slogdet(cov)
         return val * (end - start)
