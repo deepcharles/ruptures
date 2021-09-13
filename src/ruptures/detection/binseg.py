@@ -4,7 +4,6 @@ from ruptures.base import BaseCost, BaseEstimator
 from ruptures.costs import cost_factory
 from ruptures.utils import pairwise, sanity_check
 from ruptures.exceptions import BadSegmentationParameters
-import numpy as np
 
 
 class Binseg(BaseEstimator):
