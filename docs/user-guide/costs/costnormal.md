@@ -5,10 +5,10 @@
 This cost function detects changes in the mean and covariance matrix of a sequence of multivariate Gaussian random variables.
 Formally, for a signal $\{y_t\}_t$ on an interval $I$,
 $$
-c(y_{I}) = |I| \log\det\widehat{\Sigma}_I
+c(y_{I}) = |I| \log\det(\widehat{\Sigma}_I + \epsilon\text{Id})
 $$
-where $\widehat{\Sigma}_I$ is the empirical covariance matrix of the sub-signal $\{y_t\}_{t\in I}$.
-It is robust to strongly dependant processes; for more information, see  [[Lavielle1999]](#Lavielle1999) (univariate case) and [[Lavielle2006]](#Lavielle2006) (multivariate case).
+where $\widehat{\Sigma}_I$ is the empirical covariance matrix of the sub-signal $\{y_t\}_{t\in I}$ and $\epsilon>0$ is a small constant added to cope with badly conditioned covariance matrices (new in version 1.1.5, see [Issue 196](https://github.com/deepcharles/ruptures/issues/196)).
+It is robust to strongly dependant processes; for more information, see [[Lavielle1999]](#Lavielle1999) (univariate case) and [[Lavielle2006]](#Lavielle2006) (multivariate case).
 
 
 ## Usage
@@ -47,6 +47,14 @@ c = rpt.costs.CostNormal()
 algo = rpt.Dynp(custom_cost=c)
 # is equivalent to
 algo = rpt.Dynp(model="normal")
+```
+
+To set the small diagonal bias to 0 (default behaviour in versions 1.1.4 and before), simply do the following (change `Dynp` by the search method you need).
+```python
+c = rpt.costs.CostNormal(add_small_diag=False)
+algo = rpt.Dynp(custom_cost=c)
+# or, equivalently,
+algo = rpt.Dynp(model="normal", params={"add_small_diag": False})
 ```
 
 ## References
