@@ -16,7 +16,7 @@ def test_bnode():
 
     # bad merging, negative infinit val
     merged_node = Bnode(
-        start=left.start, end=right.end, left=None, right=right, val=-np.inf
+        start=left.start, end=right.end, left=left, right=right, val=-np.inf
     )
     assert merged_node.gain == 0
 
