@@ -19,7 +19,7 @@ class CostNormal(BaseCost):
         Args:
             add_small_diag (bool, optional): For signals with truly constant
                 segments, the covariance matrix is badly conditioned, so we add
-                a small diagonal matrix. Defaults to False.
+                a small diagonal matrix. Defaults to True.
         """
         self.signal = None
         self.min_size = 2
