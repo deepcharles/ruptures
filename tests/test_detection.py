@@ -109,6 +109,14 @@ def test_model_1D_constant(signal_bkps_1D_constant, algo, model):
     " n_samples."
 
 
+def test_window_normal_on_constant(signal_bkps_1D_constant):
+    signal, _ = signal_bkps_1D_constant
+    algo = Window(model="normal", params={"add_small_diag": False})
+    ret = algo.fit_predict(signal=signal, n_bkps=1)
+    assert ret[-1] == signal.shape[0], "The last change-point is equal to"
+    " n_samples."
+
+
 @pytest.mark.parametrize(
     "algo, model",
     product(
