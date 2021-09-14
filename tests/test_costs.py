@@ -1,7 +1,6 @@
 import numpy as np
 import pytest
-from ruptures.costs import CostLinear, cost_factory
-from ruptures.costs.costnormal import CostNormal
+from ruptures.costs import CostLinear, CostNormal, cost_factory
 from ruptures.datasets import pw_constant
 from ruptures.exceptions import NotEnoughPoints
 
