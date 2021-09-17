@@ -28,4 +28,4 @@ def test_bnode():
         right=right,
         val=left.val + right.val + 1,
     )
-    assert merged_node.gain == 1
+    assert merged_node.gain == merged_node.val - (left.val + right.val)
