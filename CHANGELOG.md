@@ -1,8 +1,8 @@
 # Changelog
 
-The latest releases are available directly in Github: [ruptures/releases](https://github.com/deepcharles/ruptures/releases).
+The latest release notes are available directly in Github: [ruptures/releases](https://github.com/deepcharles/ruptures/releases).
 
-Early releases are documented below ⬇️.
+Earlier releases are documented below ⬇️.
 
 ## [1.1.2] - 2020-12-01
 
