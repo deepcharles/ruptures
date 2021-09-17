@@ -44,3 +44,4 @@ repos:
 
 ci:
   autoupdate_commit_msg: 'chore: pre-commit autoupdate'
+  autoupdate_schedule: 'quarterly'
