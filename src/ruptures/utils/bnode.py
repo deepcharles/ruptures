@@ -24,8 +24,6 @@ class Bnode:
         """Return the cost decrease when splitting this node."""
         if self.left is None or self.right is None:
             return 0
-        elif abs(self.val) < 1e-8:
-            return 0
         elif np.isinf(self.val) and self.val < 0:
             return 0
         return self.val - (self.left.val + self.right.val)
