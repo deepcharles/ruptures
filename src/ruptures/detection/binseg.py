@@ -84,6 +84,8 @@ class Binseg(BaseEstimator):
     def single_bkp(self, start, end):
         """Return the optimal breakpoint of [start:end] (if it exists)."""
         segment_cost = self.cost.error(start, end)
+        if np.isinf(segment_cost) and segment_cost < 0:  # if constant on segment
+            return None, 0
         gain_list = list()
         for bkp in range(start, end, self.jump):
             if bkp - start > self.min_size and end - bkp > self.min_size:
