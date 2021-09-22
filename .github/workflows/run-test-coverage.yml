@@ -12,6 +12,7 @@ on:
     branches: [ master ]
     paths-ignore:
       - '.pre-commit-config.yaml'
+      - 'docs/**'
 
 jobs:
   coverage:
