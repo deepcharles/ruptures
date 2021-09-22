@@ -16,8 +16,11 @@ class CostMl(BaseCost):
         """Create a new instance.
 
         Args:
-            metric (ndarray, optional): PSD matrix that defines a Mahalanobis-type pseudo distance. If None, defaults to the Mahalanobis matrix. Shape (n_features, n_features).
+            metric (ndarray, optional): PSD matrix that defines a
+                Mahalanobis-type pseudo distance. If None, defaults to the
+                Mahalanobis matrix. Shape (n_features, n_features).
         """
+        self.metric = metric # metric matrix
         self.has_custom_metric = False if self.metric is None else True
         self.gram = None
         self.min_size = 2
@@ -26,12 +29,12 @@ class CostMl(BaseCost):
         """Set parameters of the instance.
 
         Args:
-            signal (array): signal. Shape (n_samples,) or (n_samples, n_features)
+            signal (array): signal. Shape (n_samples,) or
+                (n_samples, n_features)
 
         Returns:
             self
         """
-
         s_ = signal.reshape(-1, 1) if signal.ndim == 1 else signal
 
         # fit a Mahalanobis metric if self.has_custom_metric is False
@@ -55,7 +58,8 @@ class CostMl(BaseCost):
             float: segment cost
 
         Raises:
-            NotEnoughPoints: when the segment is too short (less than ``'min_size'`` samples).
+            NotEnoughPoints: when the segment is too short (less than
+                ``'min_size'`` samples).
         """
         if end - start < self.min_size:
             raise NotEnoughPoints
