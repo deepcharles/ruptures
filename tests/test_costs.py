@@ -1,6 +1,7 @@
 import numpy as np
 import pytest
 from ruptures.costs import CostLinear, CostNormal, cost_factory
+from ruptures.costs.costml import CostMl
 from ruptures.datasets import pw_constant
 from ruptures.exceptions import NotEnoughPoints
 
@@ -114,7 +115,7 @@ def test_costs_5D_noisy_names(signal_bkps_5D_noisy, cost_name):
 
 def test_factory_exception():
     with pytest.raises(ValueError):
-        cost_factory("bkd;s")
+        cost_factory("Dummy cost name")
 
 
 # Test CostLinear
@@ -163,3 +164,27 @@ def test_costnormal():
     # test cost function without correction
     c = CostNormal(add_small_diag=False).fit(signal=signal_1D)
     assert np.isinf(c.error(0, 100))
+
+
+def test_costml(signal_bkps_5D_noisy, signal_bkps_1D_noisy):
+    """Test if `CostMl.fit` actually (re-)fits the metric matrix.
+    
+    Refitting the metric matrix should only happen if the user did not provide a
+    metric matrix.
+
+    """
+    # no user-defined metric matrix
+    c = CostMl()
+    for (signal, bkps) in (signal_bkps_5D_noisy, signal_bkps_1D_noisy):
+        c.fit(signal=signal)
+        c.error(0, 100)
+        c.sum_of_costs(bkps)
+    # with a user-defined metric matric
+    signal, bkps = signal_bkps_5D_noisy
+    _, n_dims = signal.shape 
+    c = CostMl(metric=np.eye(n_dims))
+    c.fit(signal)
+    c.error(10, 50)
+    assert np.allclose(c.metric, np.eye(n_dims))
+
+
