@@ -18,7 +18,7 @@ class CostMl(BaseCost):
         Args:
             metric (ndarray, optional): PSD matrix that defines a Mahalanobis-type pseudo distance. If None, defaults to the Mahalanobis matrix. Shape (n_features, n_features).
         """
-        self.metric = metric
+        self.has_custom_metric = False if self.metric is None else True
         self.gram = None
         self.min_size = 2
 
@@ -34,8 +34,8 @@ class CostMl(BaseCost):
 
         s_ = signal.reshape(-1, 1) if signal.ndim == 1 else signal
 
-        # Mahalanobis metric if self.metric is None
-        if self.metric is None:
+        # fit a Mahalanobis metric if self.has_custom_metric is False
+        if self.has_custom_metric is False:
             covar = np.cov(s_.T)
             self.metric = inv(covar.reshape(1, 1) if covar.size == 1 else covar)
 
