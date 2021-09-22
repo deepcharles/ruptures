@@ -20,7 +20,7 @@ class CostMl(BaseCost):
                 Mahalanobis-type pseudo distance. If None, defaults to the
                 Mahalanobis matrix. Shape (n_features, n_features).
         """
-        self.metric = metric # metric matrix
+        self.metric = metric  # metric matrix
         self.has_custom_metric = False if self.metric is None else True
         self.gram = None
         self.min_size = 2

@@ -168,10 +168,9 @@ def test_costnormal():
 
 def test_costml(signal_bkps_5D_noisy, signal_bkps_1D_noisy):
     """Test if `CostMl.fit` actually (re-)fits the metric matrix.
-    
-    Refitting the metric matrix should only happen if the user did not provide a
-    metric matrix.
 
+    Refitting the metric matrix should only happen if the user did not
+    provide a metric matrix.
     """
     # no user-defined metric matrix
     c = CostMl()
@@ -181,10 +180,8 @@ def test_costml(signal_bkps_5D_noisy, signal_bkps_1D_noisy):
         c.sum_of_costs(bkps)
     # with a user-defined metric matric
     signal, bkps = signal_bkps_5D_noisy
-    _, n_dims = signal.shape 
+    _, n_dims = signal.shape
     c = CostMl(metric=np.eye(n_dims))
     c.fit(signal)
     c.error(10, 50)
     assert np.allclose(c.metric, np.eye(n_dims))
-
-
