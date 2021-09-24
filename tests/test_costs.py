@@ -178,7 +178,7 @@ def test_costml(signal_bkps_5D_noisy, signal_bkps_1D_noisy):
         c.fit(signal=signal)
         c.error(0, 100)
         c.sum_of_costs(bkps)
-    # with a user-defined metric matric
+    # with a user-defined metric matrix
     signal, bkps = signal_bkps_5D_noisy
     _, n_dims = signal.shape
     c = CostMl(metric=np.eye(n_dims))
