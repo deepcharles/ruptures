@@ -100,7 +100,17 @@ def test_costs_5D_names(signal_bkps_5D, cost_name):
 def test_costs_5D_noisy_names(signal_bkps_5D_noisy, cost_name):
     signal, bkps = signal_bkps_5D_noisy
     cost = cost_factory(cost_name)
-    cost.fit(signal)
+    try:
+        cost.fit(signal)
+    except np.linalg.LinAlgError as e:
+        if cost_name == "mahalanobis":
+            reason_msg = (
+                "The Mahalanobis metric matrix cannot be computed "
+                "because the signal has a singular covariance matrix"
+            )
+            pytest.skip(reason_msg)
+        else:
+            raise
     cost.error(0, 100)
     cost.error(100, signal.shape[0])
     cost.error(10, 50)
