@@ -316,6 +316,25 @@ def test_kernelcpd_small_signal(signal_bkps_5D_n10, kernel):
     )
 
 
+@pytest.mark.parametrize("kernel", ["linear", "rbf", "cosine"])
+def test_kernelcpd_small_signal_same_result(signal_bkps_5D_n10, kernel):
+    signal, _ = signal_bkps_5D_n10
+    algo = KernelCPD(kernel=kernel)
+    list_of_segmentations = list()
+    n_iter = 100
+    for _ in range(n_iter):
+        bkps = algo.fit(signal=signal).predict(pen=1.0)
+        list_of_segmentations.append(bkps)
+
+    # test if all segmentations are equal
+    first_bkps = list_of_segmentations[0]
+    all_elements_are_equal = all(
+        first_bkps == other_bkps for other_bkps in list_of_segmentations
+    )
+    err_msg = "KernelCPD returns different segmentations on the same signal."
+    assert all_elements_are_equal, err_msg
+
+
 @pytest.mark.parametrize(
     "algo, model",
     product(
