@@ -329,7 +329,7 @@ def test_kernelcpd_small_signal_same_result(signal_bkps_5D_n10, kernel):
     # test if all segmentations are equal
     first_bkps = list_of_segmentations[0]
     all_elements_are_equal = all(
-        first_bkps == other_bkps for other_bkps in list_of_segmentations
+        first_bkps == other_bkps for other_bkps in list_of_segmentations[1:]
     )
     err_msg = "KernelCPD returns different segmentations on the same signal."
     assert all_elements_are_equal, err_msg
