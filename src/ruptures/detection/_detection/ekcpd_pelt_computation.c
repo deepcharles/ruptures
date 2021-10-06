@@ -63,7 +63,7 @@ void ekcpd_pelt_compute(double *signal, int n_samples, int n_dims, double beta, 
             c_r += kernel_value_by_name(&(signal[s * n_dims]), &(signal[(t - 1) * n_dims]), n_dims, kernelDescObj);
             S[s] += 2 * c_r - diag_element;
         }
-        c_cost = D[t] - D[s] - S[0] / t;
+        c_cost = D[t] - D[0] - S[0] / t;
         M_V[t] = c_cost + beta;
     }
 
