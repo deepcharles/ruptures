@@ -76,7 +76,7 @@ This project is under BSD license.
 ```
 BSD 2-Clause License
 
-Copyright (c) 2017, ENS Paris-Saclay, CNRS
+Copyright (c) 2017-2021, ENS Paris-Saclay, CNRS
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
