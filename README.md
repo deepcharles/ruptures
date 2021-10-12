@@ -1,3 +1,5 @@
+# Welcome to ruptures
+
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/deepcharles/ruptures/graphs/commit-activity)
 ![build](https://github.com/deepcharles/ruptures/workflows/build/badge.svg)
 ![python](https://img.shields.io/badge/python-3.6%20|%203.7%20|%203.8%20|%203.9-blue)
@@ -10,10 +12,6 @@
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/deepcharles/ruptures/master)
 [![Codecov](https://codecov.io/gh/deepcharles/ruptures/branch/master/graphs/badge.svg)](https://app.codecov.io/gh/deepcharles/ruptures/branch/master)
 
-
-
-# ruptures
-
 `ruptures` is a Python library for off-line change point detection.
 This package provides methods for the analysis and segmentation of non-stationary signals.  Implemented algorithms include exact and approximate detection for various parametric and non-parametric models.
 `ruptures` focuses on ease of use by providing a well-documented and consistent interface.
@@ -23,10 +21,16 @@ In addition, thanks to its modular structure, different algorithms and models ca
 If you use `ruptures` in a scientific publication, we would appreciate citations to the following paper:
 - C. Truong, L. Oudre, N. Vayatis. Selective review of offline change point detection methods. _Signal Processing_, 167:107299, 2020. [[journal]](https://doi.org/10.1016/j.sigpro.2019.107299) [[pdf]](http://www.laurentoudre.fr/publis/TOG-SP-19.pdf)
 
+### Contact
+
+Concerning this package, its use and bugs, use the [issue page](https://github.com/deepcharles/ruptures/issues) of the [ruptures repository](https://github.com/deepcharles/ruptures). For other inquiries, you can contact me [here](https://charles.doffy.net/contact/).
+
+
 ## Important links
 
 - Documentation: [link](https://centre-borelli.github.io/ruptures-docs/ "Link to documentation").
 - Pypi package index: [link](https://pypi.python.org/pypi/ruptures)
+
 
 
 # Dependencies and install
