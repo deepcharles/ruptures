@@ -17,27 +17,12 @@ This package provides methods for the analysis and segmentation of non-stationar
 `ruptures` focuses on ease of use by providing a well-documented and consistent interface.
 In addition, thanks to its modular structure, different algorithms and models can be connected and extended within this package.
 
-### How to cite
-If you use `ruptures` in a scientific publication, we would appreciate citations to the following paper:
+**How to cite.** If you use `ruptures` in a scientific publication, we would appreciate citations to the following paper:
+
 - C. Truong, L. Oudre, N. Vayatis. Selective review of offline change point detection methods. _Signal Processing_, 167:107299, 2020. [[journal]](https://doi.org/10.1016/j.sigpro.2019.107299) [[pdf]](http://www.laurentoudre.fr/publis/TOG-SP-19.pdf)
 
-### Contact
 
-Concerning this package, its use and bugs, use the [issue page](https://github.com/deepcharles/ruptures/issues) of the [ruptures repository](https://github.com/deepcharles/ruptures). For other inquiries, you can contact me [here](https://charles.doffy.net/contact/).
-
-
-## Important links
-
-- Documentation: [link](https://centre-borelli.github.io/ruptures-docs/ "Link to documentation").
-- Pypi package index: [link](https://pypi.python.org/pypi/ruptures)
-
-
-
-# Dependencies and install
-
-Installation instructions can be found [here](https://centre-borelli.github.io/ruptures-docs/install/).
-
-# Basic usage
+## Basic usage
 
 (Please refer to the [documentation](https://centre-borelli.github.io/ruptures-docs/ "Link to documentation") for more advanced use.)
 
@@ -63,17 +48,33 @@ plt.show()
 
 ![](./images/example_readme.png)
 
-# Changelog
+## General information 
+
+#### Contact
+
+Concerning this package, its use and bugs, use the [issue page](https://github.com/deepcharles/ruptures/issues) of the [ruptures repository](https://github.com/deepcharles/ruptures). For other inquiries, you can contact me [here](https://charles.doffy.net/contact/).
+
+
+#### Important links
+
+- Documentation: [link](https://centre-borelli.github.io/ruptures-docs/ "Link to documentation").
+- Pypi package index: [link](https://pypi.python.org/pypi/ruptures)
+
+#### Dependencies and install
+
+Installation instructions can be found [here](https://centre-borelli.github.io/ruptures-docs/install/).
+
+#### Changelog
 
 See the [changelog](https://github.com/deepcharles/ruptures/blob/master/CHANGELOG.md) for a history of notable changes to `ruptures`.
 
-# Thanks to all our contributors
+## Thanks to all our contributors
 
 <a href="https://github.com/deepcharles/ruptures/graphs/contributors">
   <img src="https://contributors-img.web.app/image?repo=deepcharles/ruptures" />
 </a>
 
-# License
+## License
 
 This project is under BSD license.
 
