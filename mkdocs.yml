@@ -19,6 +19,7 @@ plugins:
       binder: false
   - macros:
       module_name: mkdocs_macros
+  - section-index
 markdown_extensions:
   - pymdownx.snippets:
   - pymdownx.tabbed:
@@ -32,15 +33,15 @@ markdown_extensions:
   - codehilite
 nav:
   - Home:
-    - 'Welcome to ruptures': index.md
+    - index.md
   - Getting started:
-    - 'Change point detection?': what-is-cpd.md
+    - what-is-cpd.md
     - 'Installation': install.md
     - 'Basic usage': getting-started/basic-usage.ipynb
     - 'Fitting and predicting': fit-and-predict.md
     - 'Custom cost function': custom-cost-function.md
   - User guide:
-    - 'Introduction': user-guide/index.md
+    - user-guide/index.md
     - Search methods:
       - 'Dynamic programming': user-guide/detection/dynp.md
       - 'Pelt': user-guide/detection/pelt.md
@@ -70,19 +71,19 @@ nav:
       - 'Hausdorff metric': user-guide/metrics/hausdorff.md
       - 'Rand index': user-guide/metrics/randindex.md
     - Display:
-      - 'Display': user-guide/show/display.md
+      - user-guide/show/display.md
   - Gallery of examples:
-    - 'Introduction': examples/introduction.md
+    - examples/introduction.md
     - 'Simple usages':
-      - 'Introduction': examples/simple-usages-introduction.md
-      - 'Basic usage': getting-started/basic-usage.ipynb
+      - examples/simple-usages-introduction.md
+      - 'Basic usage': examples/basic-usage.ipynb
     - 'Advanced usages':
-      - 'Introduction': examples/advanced-usages-introduction.md
+      - examples/advanced-usages-introduction.md
       - 'Kernel change point detection: a performance comparison': examples/kernel-cpd-performance-comparison.ipynb
       - 'Music segmentation': examples/music-segmentation.ipynb
       - 'Text segmentation': examples/text-segmentation.ipynb
   - Code reference:
-      - Introduction: code-reference/index.md
+      - code-reference/index.md
       - Base classes: code-reference/base-reference.md
       - Search methods:
           - Dynp: code-reference/detection/dynp-reference.md
