@@ -48,7 +48,7 @@ plt.show()
 
 ![](./images/example_readme.png)
 
-## General information 
+## General information
 
 #### Contact
 
