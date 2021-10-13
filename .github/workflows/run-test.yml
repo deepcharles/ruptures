@@ -11,6 +11,9 @@ on:
     paths-ignore:
       - '.pre-commit-config.yaml'
       - 'docs/**'
+      - 'images/**'
+      - '**.md'
+      - 'mkdocs.yml'
 
 jobs:
   build:
