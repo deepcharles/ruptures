@@ -17,7 +17,6 @@ on:
       - '**.md'
       - 'mkdocs.yml'
 
-
 jobs:
   coverage:
     runs-on: ubuntu-latest
