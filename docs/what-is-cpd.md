@@ -1,8 +1,9 @@
-# What is change point detection?
+# Getting started
+
+## What is change point detection?
 
 Under construction.
 In the meantime, you can refer to the associated review of methods [[Truong2020]](#Truong2020).
-
 
 ## References
 
