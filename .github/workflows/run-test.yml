@@ -50,7 +50,7 @@ jobs:
         python -m pip install .[test]
     - name: Test with pytest
       run: |
-        python -m pytest --cov-report=xml --cov-report=term:skip-covered --cov=src/ruptures
+        python -m pytest --cov
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v2
       with:
