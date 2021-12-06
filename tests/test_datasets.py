@@ -1,6 +1,7 @@
 from itertools import product
 
 import pytest
+import numpy as np
 
 from ruptures.datasets import pw_constant, pw_linear, pw_normal, pw_wavy
 
@@ -21,6 +22,60 @@ def test_constant(func, n_samples, n_features, n_bkps, noise_std):
     assert signal.shape == (n_samples, n_features)
     assert len(bkps) == n_bkps + 1
     assert bkps[-1] == n_samples
+
+
+def test_seed(n_samples=200, n_features=3, n_bkps=5, noise_std=1, seed=12345):
+    # pw_constant
+    signal1, bkps1 = pw_constant(
+        n_samples=n_samples,
+        n_features=n_features,
+        n_bkps=n_bkps,
+        noise_std=noise_std,
+        seed=seed,
+    )
+    signal2, bkps2 = pw_constant(
+        n_samples=n_samples,
+        n_features=n_features,
+        n_bkps=n_bkps,
+        noise_std=noise_std,
+        seed=seed,
+    )
+    assert np.isclose(signal1, signal2).all()
+    assert bkps1 == bkps2
+
+    # pw_normal
+    signal1, bkps1 = pw_normal(n_samples=n_samples, n_bkps=n_bkps, seed=seed)
+    signal2, bkps2 = pw_normal(n_samples=n_samples, n_bkps=n_bkps, seed=seed)
+    assert np.isclose(signal1, signal2).all()
+    assert bkps1 == bkps2
+
+    # pw_linear
+    signal1, bkps1 = pw_linear(
+        n_samples=n_samples,
+        n_features=n_features,
+        n_bkps=n_bkps,
+        noise_std=noise_std,
+        seed=seed,
+    )
+    signal2, bkps2 = pw_linear(
+        n_samples=n_samples,
+        n_features=n_features,
+        n_bkps=n_bkps,
+        noise_std=noise_std,
+        seed=seed,
+    )
+    assert np.isclose(signal1, signal2).all()
+    assert bkps1 == bkps2
+
+    # pw_wavy
+    signal1, bkps1 = pw_wavy(
+        n_samples=n_samples, n_bkps=n_bkps, noise_std=noise_std, seed=seed
+    )
+    signal2, bkps2 = pw_wavy(
+        n_samples=n_samples, n_bkps=n_bkps, noise_std=noise_std, seed=seed
+    )
+    assert np.isclose(signal1, signal2).all()
+    assert bkps1 == bkps2
 
 
 @pytest.mark.parametrize(
