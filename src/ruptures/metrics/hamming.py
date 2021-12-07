@@ -33,5 +33,5 @@ def hamming(bkps1, bkps2):
 
     disagreement = abs(membership_mat(bkps1) - membership_mat(bkps2))
     disagreement = triu(disagreement, k=1).sum() * 1.0
-    disagreement /= n_samples * (n_samples-1) / 2  # scaling
+    disagreement /= n_samples * (n_samples - 1) / 2  # scaling
     return disagreement
