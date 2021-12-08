@@ -74,7 +74,7 @@ def test_seed(n_samples=200, n_features=3, n_bkps=5, noise_std=1, seed=12345):
     signal2, bkps2 = pw_wavy(
         n_samples=n_samples, n_bkps=n_bkps, noise_std=noise_std, seed=seed
     )
-    assert np.isclose(signal1, signal2).all()
+    assert np.allclose(signal1, signal2)
     assert bkps1 == bkps2
 
 
