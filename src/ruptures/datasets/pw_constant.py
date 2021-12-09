@@ -1,7 +1,6 @@
 """Piecewise constant signal (with noise)"""
 
 import numpy as np
-from numpy.random import RandomState
 
 from ruptures.utils import draw_bkps
 
@@ -23,24 +22,24 @@ def pw_constant(
         tuple: signal of shape (n_samples, n_features), list of breakpoints
     """
     # breakpoints
-    bkps = draw_bkps(n_samples, n_bkps)
+    bkps = draw_bkps(n_samples, n_bkps, seed=seed)
     # we create the signal
     signal = np.empty((n_samples, n_features), dtype=float)
     tt_ = np.arange(n_samples)
     delta_min, delta_max = delta
     # mean value
     center = np.zeros(n_features)
-    rd = RandomState(seed)
+    rng = np.random.default_rng(seed=seed)
     for ind in np.split(tt_, bkps):
         if ind.size > 0:
             # jump value
-            jump = rd.uniform(delta_min, delta_max, size=n_features)
-            spin = rd.choice([-1, 1], n_features)
+            jump = rng.uniform(delta_min, delta_max, size=n_features)
+            spin = rng.choice([-1, 1], n_features)
             center += jump * spin
             signal[ind] = center
 
     if noise_std is not None:
-        noise = rd.normal(size=signal.shape) * noise_std
+        noise = rng.normal(size=signal.shape) * noise_std
         signal = signal + noise
 
     return signal, bkps

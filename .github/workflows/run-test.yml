@@ -47,7 +47,7 @@ jobs:
     - name: Install ruptures
       run: |
         python -m pip install --upgrade pip
-        python -m pip install .[test]
+        python -m pip install .[test,display]
     - name: Test with pytest
       run: |
         python -m pytest --cov
