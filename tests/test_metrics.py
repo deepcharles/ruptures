@@ -1,6 +1,7 @@
 import pytest
 
 from ruptures.metrics import (
+    hamming,
     hausdorff,
     meantime,
     precision_recall,
@@ -50,7 +51,7 @@ def test_precision_recall(b_mb, margin):
 
 
 @pytest.mark.parametrize(
-    "metric", [hausdorff, meantime, precision_recall, randindex]
+    "metric", [hamming, hausdorff, meantime, precision_recall, randindex]
 )
 def test_exception(b_mb, metric):
     true_bkps, my_bkps = b_mb
