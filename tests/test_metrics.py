@@ -5,7 +5,6 @@ from ruptures.metrics import (
     meantime,
     precision_recall,
     randindex,
-    randindex_cpd,
 )
 from ruptures.metrics.sanity_check import BadPartitions
 
