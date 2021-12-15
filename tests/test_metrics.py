@@ -30,14 +30,6 @@ def test_randindex(b_mb):
     assert m == 1
 
 
-def test_randindex_cpd(b_mb):
-    b, mb = b_mb
-    m = randindex_cpd(b, mb)
-    assert 1 > m > 0
-    m = randindex_cpd(b, b)
-    assert m == 1
-
-
 def test_meantime(b_mb):
     b, mb = b_mb
     m = meantime(b, mb)
@@ -58,7 +50,7 @@ def test_precision_recall(b_mb, margin):
 
 
 @pytest.mark.parametrize(
-    "metric", [hausdorff, meantime, precision_recall, randindex, randindex_cpd]
+    "metric", [hausdorff, meantime, precision_recall, randindex]
 )
 def test_exception(b_mb, metric):
     true_bkps, my_bkps = b_mb
