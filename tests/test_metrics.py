@@ -49,9 +49,7 @@ def test_precision_recall(b_mb, margin):
     p, r = precision_recall(b, [b[-1]], margin=margin)
 
 
-@pytest.mark.parametrize(
-    "metric", [hausdorff, meantime, precision_recall, randindex]
-)
+@pytest.mark.parametrize("metric", [hausdorff, meantime, precision_recall, randindex])
 def test_exception(b_mb, metric):
     true_bkps, my_bkps = b_mb
     with pytest.raises(BadPartitions):
