@@ -16,7 +16,7 @@ def randindex(bkps1, bkps2):
         float: Rand index
     """
     sanity_check(bkps1, bkps2)
-    n_samples = max(bkps1)
+    n_samples = bkps1[-1]
     disagreement = 0
 
     beginj = 0  # avoids unnecessary computations
