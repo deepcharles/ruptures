@@ -23,7 +23,7 @@ def randindex(bkps1, bkps2):
     beginj = 0  # avoids unnecessary computations
     for (start1, end1) in pairwise(bkps1_with_0):
         for (start2, end2) in pairwise(bkps2_with_0[beginj:]):
-            nij = max(min(end1, end2)-max(start1, start2), 0)
+            nij = max(min(end1, end2) - max(start1, start2), 0)
             disagreement += nij * abs(end1 - end2)
 
             # we can skip the rest of the iteration, nij will be 0
