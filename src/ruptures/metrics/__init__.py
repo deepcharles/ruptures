@@ -20,4 +20,4 @@ from .hausdorff import hausdorff
 from .timeerror import meantime
 from .precisionrecall import precision_recall
 from .hamming import hamming
-from .randindex import randindex, randindex_cpd
+from .randindex import randindex
