@@ -14,4 +14,4 @@ def hamming(bkps1, bkps2):
     Returns:
         float: Hamming distance.
     """
-    return 1-randindex(bkps1=bkps1, bkps2=bkps2)
+    return 1 - randindex(bkps1=bkps1, bkps2=bkps2)
