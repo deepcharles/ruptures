@@ -1,6 +1,12 @@
 import pytest
 
-from ruptures.metrics import hausdorff, meantime, precision_recall, randindex
+from ruptures.metrics import (
+    hamming,
+    hausdorff,
+    meantime,
+    precision_recall,
+    randindex,
+)
 from ruptures.metrics.sanity_check import BadPartitions
 
 
@@ -44,7 +50,9 @@ def test_precision_recall(b_mb, margin):
     p, r = precision_recall(b, [b[-1]], margin=margin)
 
 
-@pytest.mark.parametrize("metric", [hausdorff, meantime, precision_recall, randindex])
+@pytest.mark.parametrize(
+    "metric", [hamming, hausdorff, meantime, precision_recall, randindex]
+)
 def test_exception(b_mb, metric):
     true_bkps, my_bkps = b_mb
     with pytest.raises(BadPartitions):
