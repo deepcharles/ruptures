@@ -4,8 +4,16 @@ from ruptures.utils import pairwise
 
 
 def randindex(bkps1, bkps2):
-    """Computes efficiently the Rand index for change-point detection given two
-    sorted partitions.
+    """Computes the Rand index (between 0 and 1) between two segmentations.
+
+    The Rand index (RI) measures the similarity between two segmentations and
+    is equal to the proportion of aggreement between two partitions.
+
+    RI is between 0 (total disagreement) and 1 (total agreement).
+    This function which uses the efficient implementation of [1].
+
+    [1] Prates, L. (2021). A more efficient algorithm to compute the Rand Index for
+    change-point problems. ArXiv:2112.03738.
 
     Args:
         bkps1 (list): sorted list of the last index of each regime.
