@@ -9,7 +9,7 @@ def randindex(bkps1, bkps2):
     is equal to the proportion of aggreement between two partitions.
 
     RI is between 0 (total disagreement) and 1 (total agreement).
-    This function which uses the efficient implementation of [1].
+    This function uses the efficient implementation of [1].
 
     [1] Prates, L. (2021). A more efficient algorithm to compute the Rand Index for
     change-point problems. ArXiv:2112.03738.
