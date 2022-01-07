@@ -2,25 +2,24 @@
 
 ## Description
 
-The Rand index, computed by the [`randindex`][ruptures.metrics.randindex.randindex] function, measures the similarity between two segmentations.
-Formally, for a signal $\{y_t\}_t$ and a segmentation $\mathcal{S}$, denote by $A$ the associated membership matrix:
+The Rand index ($RI$) measures the similarity between two segmentations and is
+equal to the proportion of aggreement between two partitions.
+Formally, for $\mathcal{T}_1$ and $\mathcal{T}_2$ two partitions of $\{1, 2,\dots,T\}$,
 
 $$
-\begin{aligned} \mathcal{A}_{ij} &= 1 \text{ if both samples } y_i \text{ and } y_j \text{ are in the same segment according to } \mathcal{S} \\ &= 0 \quad\text{otherwise} \end{aligned}
+RI := \frac{N_0 + N_1}{T(T+1)/2}
 $$
 
-Let $\hat{\mathcal{S}}$ be the estimated segmentation and $\hat{A}$, the associated membership matrix.
-Then the Rand index is equal to
+where
 
-$$
-\frac{\sum_{i<j} \mathbb{1}(A_{ij} = \hat{A}_{ij})}{T(T-1)/2}
-$$
+- $N_0$ is the number of pairs of samples that belong to the same segment
+according to $\mathcal{T}_1$ and $\mathcal{T}_2$,
+- $N_1$ is the number of pairs of samples that belong to different segments
+according to $\mathcal{T}_1$ and $\mathcal{T}_2$.
 
-where $T$ is the number of samples.
-It has a value between 0 and 1: 0 indicates that the two segmentations do not agree on any pair of points and 1 indicates that the two segmentations are exactly the same.
-
-![](../../images/randindex.png)
-<center><i>Schematic example: true segmentation in gray, estimated segmentation in dashed lines and their associated membership matrices. Rand index is equal to 1 minus the gray area.</i></center>
+$RI$ is between 0 (total disagreement) and 1 (total agreement).
+It is available in the [`randindex`][ruptures.metrics.randindex.randindex]
+function which uses the efficient implementation of [[Prates2021]](#Prates2021).
 
 ## Usage
 
@@ -32,3 +31,9 @@ from ruptures.metrics import randindex
 bkps1, bkps2 = [100, 200, 500], [105, 115, 350, 400, 500]
 print(randindex(bkps1, bkps2))
 ```
+
+## References
+
+<a id="Prates2021">[Prates2021]</a>
+Prates, L. (2021). A more efficient algorithm to compute the Rand Index for
+change-point problems. ArXiv:2112.03738.
