@@ -18,11 +18,17 @@ def randindex(bkps1, bkps2):
     n_samples = bkps1[-1]
     bkps1_with_0 = [0] + bkps1
     bkps2_with_0 = [0] + bkps2
+    n_bkps1 = len(bkps1)
+    n_bkps2 = len(bkps2)
 
     disagreement = 0
-    beginj = 0  # avoids unnecessary computations
-    for (start1, end1) in pairwise(bkps1_with_0):
-        for (start2, end2) in pairwise(bkps2_with_0[beginj:]):
+    beginj: int = 0  # avoids unnecessary computations
+    for index_bkps1 in range(n_bkps1):
+        start1: int = bkps1_with_0[index_bkps1]
+        end1: int = bkps1_with_0[index_bkps1 + 1]
+        for index_bkps2 in range(beginj, n_bkps2):
+            start2: int = bkps2_with_0[index_bkps2]
+            end2: int = bkps2_with_0[index_bkps2 + 1]
             nij = max(min(end1, end2) - max(start1, start2), 0)
             disagreement += nij * abs(end1 - end2)
 
@@ -30,7 +36,7 @@ def randindex(bkps1, bkps2):
             if end1 < end2:
                 break
             else:
-                beginj += 1
+                beginj = index_bkps2 + 1
 
     disagreement /= n_samples * (n_samples - 1) / 2
     return 1.0 - disagreement
