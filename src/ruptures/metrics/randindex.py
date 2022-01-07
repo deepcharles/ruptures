@@ -1,6 +1,5 @@
 r"""Rand index (`randindex`)"""
 from ruptures.metrics.sanity_check import sanity_check
-from ruptures.utils import pairwise
 
 
 def randindex(bkps1, bkps2):
