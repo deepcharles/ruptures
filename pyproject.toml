@@ -15,7 +15,7 @@ build-backend = "setuptools.build_meta"
 # https://docs.pytest.org/en/stable/customize.html#pyproject-toml
 [tool.pytest.ini_options]
 minversion = "6.0"
-addopts = "--cov-report=xml --cov-report=term:skip-covered"
+addopts = "-vv"
 testpaths = ["tests"]
 
 [tool.setuptools_scm]
