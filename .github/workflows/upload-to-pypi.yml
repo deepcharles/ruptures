@@ -10,8 +10,8 @@ env:
   CIBW_BUILD_VERBOSITY: 3
   SETUPTOOLS_SCM_PRETEND_VERSION: ${{ github.event.inputs.overrideVersion }}
   # Run the package tests using `pytest`
-  CIBW_TEST_REQUIRES: pytest pytest-cov
-  CIBW_TEST_COMMAND: pytest {project}/tests
+  CIBW_TEST_REQUIRES: pytest
+  CIBW_TEST_COMMAND: pytest {project}/tests --no-cov
 
 jobs:
   make_sdist:
