@@ -14,5 +14,5 @@ class Ruptures:
 
     @parameterized(["algo"], [("Binseg", "BottomUp", "Dynp", "KernelCPD", "Pelt", "Window")])
     def time_algos(self, algo, model):
-        getattr(rpt, algo)().fit_predict(signal, pen=10)
+        getattr(rpt, algo)().fit_predict(self.signal, pen=10)
 
