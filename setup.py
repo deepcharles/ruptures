@@ -21,8 +21,11 @@ ext_modules = [
 
 
 if __name__ == "__main__":
-    from Cython.Build import cythonize
+    try:
+        from Cython.Build import cythonize
 
-    setup(
-        ext_modules=cythonize(ext_modules, language_level="3"),
-    )
+        setup(
+            ext_modules=cythonize(ext_modules, language_level="3"),
+        )
+    except ModuleNotFoundError:
+        pass
