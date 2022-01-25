@@ -20,3 +20,6 @@ testpaths = ["tests"]
 
 [tool.setuptools_scm]
 write_to = "src/ruptures/version.py"
+
+[build-system]
+requires = ["setuptools", "wheel", "Cython"]
