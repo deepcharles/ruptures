@@ -43,8 +43,7 @@ def randint(low, high=None, size=None, frac_minus=None, seed=0):
 
 
 def _skip_slow():
-    """
-    Use this function to skip slow or highly demanding tests.
+    """Use this function to skip slow or highly demanding tests.
 
     Use it as a `Class.setup` method or a `function.setup` attribute.
 
