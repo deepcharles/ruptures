@@ -10,7 +10,8 @@ class Ruptures:
         signal, bkps = rpt.pw_constant(n_samples, dim, n_bkps, noise_std=sigma)
         self.signal = signal
 
-    @parameterized(["algo"], [("Binseg", "BottomUp", "Dynp", "KernelCPD", "Pelt", "Window")])
+    @parameterized(
+        ["algo"], [("Binseg", "BottomUp", "Dynp", "KernelCPD", "Pelt", "Window")]
+    )
     def time_algos(self, algo, model):
         getattr(rpt, algo)().fit_predict(self.signal, pen=10)
-
