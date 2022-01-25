@@ -1,8 +1,6 @@
-import numpy as np
-
 import ruptures as rpt
 
-from . import _skip_slow, parameterized, requires_dask
+from . import parameterized
 
 
 class Ruptures:
