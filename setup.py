@@ -29,4 +29,3 @@ if __name__ == "__main__":
         )
     except ModuleNotFoundError:
         setup(use_scm_version={"fallback_version": "999"})
-
