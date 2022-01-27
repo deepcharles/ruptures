@@ -29,6 +29,7 @@ jobs:
       - name: Setup some dependencies
         shell: bash -l {0}
         run: |
+          pip install cython
           pip install asv
           sudo apt-get update -y
 
