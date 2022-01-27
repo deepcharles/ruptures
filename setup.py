@@ -21,11 +21,8 @@ ext_modules = [
 
 
 if __name__ == "__main__":
-    try:
-        from Cython.Build import cythonize
+    from Cython.Build import cythonize
 
-        setup(
-            ext_modules=cythonize(ext_modules, language_level="3"),
-        )
-    except ModuleNotFoundError:
-        setup(use_scm_version={"fallback_version": "999"})
+    setup(
+        ext_modules=cythonize(ext_modules, language_level="3"),
+    )
