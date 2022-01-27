@@ -20,9 +20,25 @@ ext_modules = [
 ]
 
 
-if __name__ == "__main__":
-    from Cython.Build import cythonize
+# if __name__ == "__main__":
+    # from Cython.Build import cythonize
 
+    # setup(
+        # ext_modules=cythonize(ext_modules, language_level="3"),
+    # )
+
+
+
+
+if __name__ == "__main__":
     setup(
-        ext_modules=cythonize(ext_modules, language_level="3"),
+        # # ...
+        # setup_requires=[
+            # # Setuptools 18.0 properly handles Cython extensions.
+            # 'setuptools>=18.0',
+            # 'cython',
+        # ],
+        ext_modules=[
+            ext_modules,
+        ],
     )
