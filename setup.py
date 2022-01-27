@@ -28,4 +28,5 @@ if __name__ == "__main__":
             ext_modules=cythonize(ext_modules, language_level="3"),
         )
     except ModuleNotFoundError:
-        pass
+        setup(use_scm_version={"fallback_version": "999"})
+
