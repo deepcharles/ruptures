@@ -30,5 +30,5 @@ cmdclass["build_ext"] = build_ext
 
 setup(
     cmdclass=cmdclass,
-    ext_modules=cythonize(ext_modules, language_level="3"),
+    ext_modules=ext_modules,
 )
