@@ -28,8 +28,8 @@ ext_modules = [
 setup(
     setup_requires=[
         # Setuptools 18.0 properly handles Cython extensions.
-        'setuptools>42.0',
-        'cython',
+        "setuptools>42.0",
+        "cython",
     ],
     ext_modules=ext_modules,
 )
