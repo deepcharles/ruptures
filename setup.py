@@ -1,5 +1,10 @@
 from setuptools import Extension, setup
 
+try:
+    from Cython.Distutils.build_ext import new_build_ext as build_ext
+except ImportError:
+    from setuptools.command.build_ext import build_ext
+
 ext_modules = [
     Extension(
         "ruptures.detection._detection.ekcpd",
@@ -20,23 +25,10 @@ ext_modules = [
 ]
 
 
-# if __name__ == "__main__":
-# from Cython.Build import cythonize
+cmdclass = dict()
+cmdclass["build_ext"] = build_ext
 
-# setup(
-# ext_modules=cythonize(ext_modules, language_level="3"),
-# )
-
-
-if __name__ == "__main__":
-    setup(
-        # ...
-        setup_requires=[
-        # Setuptools 18.0 properly handles Cython extensions.
-        'setuptools>=42',
-        'cython',
-        ],
-        ext_modules=[
-            ext_modules,
-        ],
-    )
+setup(
+    cmdclass=cmdclass,
+    ext_modules=cythonize(ext_modules, language_level="3"),
+)
