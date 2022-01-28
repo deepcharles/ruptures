@@ -1,10 +1,10 @@
 from setuptools import Extension, setup
 
 
-try:
-    from Cython.Distutils.build_ext import new_build_ext as build_ext
-except ImportError:
-    from setuptools.command.build_ext import build_ext
+# try:
+    # from Cython.Distutils.build_ext import new_build_ext as build_ext
+# except ImportError:
+    # from setuptools.command.build_ext import build_ext
 
 ext_modules = [
     Extension(
@@ -26,10 +26,23 @@ ext_modules = [
 ]
 
 
-cmdclass = dict()
-cmdclass["build_ext"] = build_ext
+# cmdclass = dict()
+# cmdclass["build_ext"] = build_ext
+
+# setup(
+    # cmdclass=cmdclass,
+    # ext_modules=ext_modules,
+# )
+
+# https://luminousmen.com/post/resolve-cython-and-numpy-dependencies
+try:
+    from Cython.Build import cythonize
+except ImportError:
+    # create closure for deferred import
+    def cythonize (*args, ** kwargs ):
+        from Cython.Build import cythonize
+        return cythonize(*args, ** kwargs)
 
 setup(
-    cmdclass=cmdclass,
-    ext_modules=ext_modules,
+    ext_modules=cythonize(ext_modules, language_level="3"),
 )
