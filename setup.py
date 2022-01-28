@@ -48,8 +48,8 @@ except ImportError:
 setup(
     setup_requires=[
         # Setuptools 18.0 properly handles Cython extensions.
-        'setuptools>=18.0',
-        'cython',
+        "setuptools>=18.0",
+        "cython",
     ],
     ext_modules=cythonize(ext_modules, language_level="3"),
 )
