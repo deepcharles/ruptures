@@ -1,5 +1,7 @@
 from setuptools import Extension, setup
 
+import versioneer
+
 try:
     from Cython.Distutils.build_ext import new_build_ext as build_ext
 except ImportError:
@@ -26,6 +28,7 @@ ext_modules = [
 
 
 cmdclass = dict()
+cmdclass.update(versioneer.get_cmdclass())
 cmdclass["build_ext"] = build_ext
 
 setup(
