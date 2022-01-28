@@ -32,9 +32,9 @@ if __name__ == "__main__":
     setup(
         # ...
         setup_requires=[
-        # Setuptools 18.0 properly handles Cython extensions.
-        'setuptools>=42',
-        'cython',
+            # Setuptools 18.0 properly handles Cython extensions.
+            "setuptools>=42",
+            "cython",
         ],
         ext_modules=[
             ext_modules,
