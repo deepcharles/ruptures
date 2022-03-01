@@ -77,9 +77,11 @@ nav:
     - 'Simple usages':
       - 'Basic usage': examples/basic-usage.ipynb
     - 'Advanced usages':
+      - 'Window ensemble model': examples/ensemble-window.ipynb
       - 'Kernel change point detection: a performance comparison': examples/kernel-cpd-performance-comparison.ipynb
       - 'Music segmentation': examples/music-segmentation.ipynb
       - 'Text segmentation': examples/text-segmentation.ipynb
+
   - Code reference:
       - code-reference/index.md
       - Base classes: code-reference/base-reference.md
