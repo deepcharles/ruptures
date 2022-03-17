@@ -17,8 +17,8 @@ import matplotlib.pylab as plt
 import ruptures as rpt
 
 # creation of data
-n = 500, 3  # number of samples
-n_bkps = 3  # number of change points, noise standart deviation
+n = 500  # number of samples
+n_bkps = 3  # number of change points
 signal, bkps = rpt.pw_normal(n, n_bkps)
 rpt.display(signal, bkps)
 ```
