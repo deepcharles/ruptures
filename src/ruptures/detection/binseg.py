@@ -90,7 +90,7 @@ class Binseg(BaseEstimator):
             return None, 0
         gain_list = list()
         for bkp in range(start, end, self.jump):
-            if bkp - start > self.min_size and end - bkp > self.min_size:
+            if bkp - start >= self.min_size and end - bkp >= self.min_size:
                 gain = (
                     segment_cost
                     - self.cost.error(start, bkp)
