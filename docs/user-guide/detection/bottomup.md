@@ -51,9 +51,9 @@ In the situation in which the number of change points is unknown, one can specif
 the `pen` parameter or a threshold on the residual norm using `epsilon`.
 
 ```python
-my_bkps = algo.predict(pen=np.log(n) * dim * sigma ** 2)
+my_bkps = algo.predict(pen=np.log(n) * dim * sigma**2)
 # or
-my_bkps = algo.predict(epsilon=3 * n * sigma ** 2)
+my_bkps = algo.predict(epsilon=3 * n * sigma**2)
 ```
 
 For faster predictions, one can modify the `jump` parameter during initialization.
