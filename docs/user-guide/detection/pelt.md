@@ -35,7 +35,7 @@ algo = rpt.Pelt(model=model, min_size=3, jump=5).fit(signal)
 my_bkps = algo.predict(pen=3)
 
 # show results
-fig, ax = rpt.display(signal, bkps, my_bkps, figsize=(10, 6))
+fig, ax_arr = rpt.display(signal, bkps, my_bkps, figsize=(10, 6))
 plt.show()
 ```
 
