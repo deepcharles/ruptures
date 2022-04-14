@@ -77,7 +77,7 @@ nav:
     - 'Simple usages':
       - 'Basic usage': examples/basic-usage.ipynb
     - 'Advanced usages':
-      - 'Combining cost functions': examples/ensemble-dimensions.ipynb
+      - 'Combining cost functions': examples/merging-cost-functions.ipynb
       - 'Kernel change point detection: a performance comparison': examples/kernel-cpd-performance-comparison.ipynb
       - 'Music segmentation': examples/music-segmentation.ipynb
       - 'Text segmentation': examples/text-segmentation.ipynb
