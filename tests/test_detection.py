@@ -358,6 +358,17 @@ def test_model_small_signal(signal_bkps_5D_n10, algo, model):
 
 
 @pytest.mark.parametrize(
+    "model",
+    ["l1", "l2", "ar", "normal", "rbf", "rank", "mahalanobis"],
+)
+def test_binseg_min_size(signal_bkps_5D_n10, model):
+    signal, _ = signal_bkps_5D_n10
+
+    c_bkps = Binseg(model=model, min_size=5, jump=1).fit_predict(signal, n_bkps=1)
+    assert all([a == b for a, b in zip(c_bkps, [5, 10])])
+
+
+@pytest.mark.parametrize(
     "model", ["l1", "l2", "ar", "normal", "rbf", "rank", "mahalanobis"]
 )
 def test_model_small_signal_dynp(signal_bkps_5D_n10, model):
@@ -368,6 +379,9 @@ def test_model_small_signal_dynp(signal_bkps_5D_n10, model):
         Dynp(model=model, min_size=9, jump=2).fit_predict(signal, 2)
     with pytest.raises(BadSegmentationParameters):
         Dynp(model=model, min_size=11, jump=2).fit_predict(signal, 2)
+    # Test if it can find the single eligible break point compatible with min_size
+    c_bkps = Dynp(model=model, min_size=5, jump=1).fit_predict(signal, 1)
+    assert all([a == b for a, b in zip(c_bkps, [5, 10])])
 
 
 @pytest.mark.parametrize(
