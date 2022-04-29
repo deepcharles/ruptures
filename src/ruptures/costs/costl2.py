@@ -15,7 +15,7 @@ class CostL2(BaseCost):
     def __init__(self):
         """Initialize the object."""
         self.signal = None
-        self.min_size = 2
+        self.min_size = 1
 
     def fit(self, signal) -> "CostL2":
         """Set parameters of the instance.
