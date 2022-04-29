@@ -78,6 +78,8 @@ def test_costs_1D_noisy_names(signal_bkps_1D_noisy, cost_name):
         if cost_name == "cosine":
             cost.min_size = 4
             cost.error(1, 2)
+        elif cost_name == "l2":
+            cost.error(1, 1)
         else:
             cost.error(1, 2)
 
@@ -105,6 +107,8 @@ def test_costs_5D_names(signal_bkps_5D, cost_name):
         if cost_name == "cosine":
             cost.min_size = 4
             cost.error(1, 2)
+        elif cost_name == "l2":
+            cost.error(1, 1)
         else:
             cost.error(1, 2)
 
