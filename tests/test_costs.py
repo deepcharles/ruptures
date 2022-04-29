@@ -1,5 +1,6 @@
 import numpy as np
 import pytest
+from ruptures import Binseg
 from ruptures.costs import CostLinear, CostNormal, cost_factory
 from ruptures.costs.costml import CostMl
 from ruptures.datasets import pw_constant
@@ -195,3 +196,26 @@ def test_costml(signal_bkps_5D_noisy, signal_bkps_1D_noisy):
     c.fit(signal)
     c.error(10, 50)
     assert np.allclose(c.metric, np.eye(n_dims))
+
+
+def test_costl2_small_data():
+    """Test if CostL2 returns the correct segmentation for small data."""
+
+    signal = np.array([0.0, 0.1, 1.2, 1.0])
+    n_samples = signal.shape[0]
+    algo = Binseg(model="l2", min_size=1, jump=1).fit(signal)
+    computed_break_dict = {}
+    for n_bkps in range(n_samples):
+        try:
+            result = algo.predict(n_bkps=n_bkps)
+        except Exception as e:
+            result = e
+            computed_break_dict
+        computed_break_dict[n_bkps] = result
+
+    expected_break_dict = {0: [4], 1: [2, 4], 2: [2, 3, 4], 3: [1, 2, 3, 4]}
+    err_msg = (
+        f"Wrong segmentation, expected {expected_break_dict}, ",
+        "got {computed_break_dict}.",
+    )
+    assert expected_break_dict == computed_break_dict, err_msg
