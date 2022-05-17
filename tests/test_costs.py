@@ -103,6 +103,9 @@ def test_costs_5D_names(signal_bkps_5D, cost_name):
     cost.error(100, signal.shape[0])
     cost.error(10, 50)
     cost.sum_of_costs(bkps)
+    if cost_name == "l2":
+            assert cost.error(1, 2)==0., "CostL2 on segment of size 1 returns 0."
+
     with pytest.raises(NotEnoughPoints):
         if cost_name == "cosine":
             cost.min_size = 4
