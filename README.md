@@ -57,8 +57,8 @@ Concerning this package, its use and bugs, use the [issue page](https://github.c
 
 #### Important links
 
-- Documentation: [link](https://centre-borelli.github.io/ruptures-docs/ "Link to documentation").
-- Pypi package index: [link](https://pypi.python.org/pypi/ruptures)
+- [Documentation](https://centre-borelli.github.io/ruptures-docs)
+- [Pypi package index](https://pypi.python.org/pypi/ruptures)
 
 #### Dependencies and install
 
