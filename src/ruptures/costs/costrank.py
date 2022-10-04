@@ -8,9 +8,7 @@ from ruptures.costs import NotEnoughPoints
 
 
 class CostRank(BaseCost):
-    r"""
-    Rank-based cost function
-    """
+    r"""Rank-based cost function."""
 
     model = "rank"
 

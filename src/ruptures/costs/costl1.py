@@ -7,9 +7,7 @@ from ruptures.costs import NotEnoughPoints
 
 class CostL1(BaseCost):
 
-    r"""
-    Least absolute deviation.
-    """
+    r"""Least absolute deviation."""
 
     model = "l1"
 
