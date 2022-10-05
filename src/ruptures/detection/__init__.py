@@ -1,4 +1,4 @@
-r"""Search methods"""
+r"""Search methods."""
 
 from .binseg import Binseg
 from .bottomup import BottomUp

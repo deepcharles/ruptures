@@ -1,4 +1,4 @@
-r"""Pelt"""
+r"""Pelt."""
 from math import floor
 
 from ruptures.costs import cost_factory

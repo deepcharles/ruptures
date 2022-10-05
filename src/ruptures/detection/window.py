@@ -1,4 +1,4 @@
-r"""Window-based change point detection"""
+r"""Window-based change point detection."""
 
 
 import numpy as np

@@ -1,4 +1,4 @@
-r"""Display"""
+r"""Display."""
 
 from itertools import cycle
 

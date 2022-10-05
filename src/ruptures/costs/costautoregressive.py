@@ -9,9 +9,7 @@ from ruptures.costs import NotEnoughPoints
 
 class CostAR(BaseCost):
 
-    r"""
-    Least-squares estimate for changes in autoregressive coefficients.
-    """
+    r"""Least-squares estimate for changes in autoregressive coefficients."""
 
     model = "ar"
 
