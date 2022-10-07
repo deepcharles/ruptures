@@ -1,6 +1,8 @@
-r"""All estimators and cost functions are subclasses of
+r"""All estimators and cost functions are subclasses of.
+
 [`BaseEstimator`][ruptures.base.BaseEstimator] and
-[`BaseCost`][ruptures.base.BaseCost] respectively."""
+[`BaseCost`][ruptures.base.BaseCost] respectively.
+"""
 import abc
 from ruptures.utils import pairwise
 

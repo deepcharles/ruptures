@@ -60,6 +60,8 @@ def test_costs_1D_names(signal_bkps_1D, cost_name):
             cost.error(1, 2)
         elif cost_name == "l2":
             cost.error(1, 1)
+        elif cost_name == "rbf":
+            cost.error(1, 1)
         else:
             cost.error(1, 2)
 
@@ -79,6 +81,8 @@ def test_costs_1D_noisy_names(signal_bkps_1D_noisy, cost_name):
             cost.min_size = 4
             cost.error(1, 2)
         elif cost_name == "l2":
+            cost.error(1, 1)
+        elif cost_name == "rbf":
             cost.error(1, 1)
         else:
             cost.error(1, 2)
@@ -112,6 +116,8 @@ def test_costs_5D_names(signal_bkps_5D, cost_name):
             cost.error(1, 2)
         elif cost_name == "l2":
             cost.error(1, 1)
+        elif cost_name == "rbf":
+            cost.error(1, 1)
         else:
             cost.error(1, 2)
 
@@ -130,6 +136,8 @@ def test_costs_5D_noisy_names(signal_bkps_5D_noisy, cost_name):
             cost.min_size = 4
             cost.error(1, 2)
         elif cost_name == "l2":
+            cost.error(1, 1)
+        elif cost_name == "rbf":
             cost.error(1, 1)
         else:
             cost.error(1, 2)
