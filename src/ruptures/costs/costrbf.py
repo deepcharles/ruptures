@@ -14,7 +14,7 @@ class CostRbf(BaseCost):
 
     def __init__(self, gamma=None):
         """Initialize the object."""
-        self.min_size = 2
+        self.min_size = 1
         self.gamma = gamma
         self._gram = None
 
