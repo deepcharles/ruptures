@@ -407,7 +407,7 @@ def test_min_size_kernelcpd(signal_bkps_1D):
     """
     signal, _ = signal_bkps_1D
     # test if the attribute min_size is set to 1
-    algo = KernelCPD(kernel="rbf", min_size=1)
+    algo = KernelCPD(kernel="rbf", min_size=1).fit(signal=signal)
     assert algo.min_size == 1
 
     # test if it can predict segments of size 1
