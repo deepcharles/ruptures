@@ -60,6 +60,8 @@ def test_costs_1D_names(signal_bkps_1D, cost_name):
             cost.error(1, 2)
         elif cost_name == "l2":
             cost.error(1, 1)
+        elif cost_name == "rbf":
+            cost.error(1, 1)
         else:
             cost.error(1, 2)
 
