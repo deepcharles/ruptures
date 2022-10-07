@@ -402,7 +402,7 @@ def test_binseg_deepcopy():
 
 def test_min_size_kernelcpd(signal_bkps_1D):
     """Make sure that KernelCPD can handled min_size=1.
-    
+
     see https://github.com/deepcharles/ruptures/issues/269
     """
     signal, _ = signal_bkps_1D
