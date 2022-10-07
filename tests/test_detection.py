@@ -399,6 +399,7 @@ def test_binseg_deepcopy():
     binseg_copy = deepcopy(binseg)
     assert id(binseg.single_bkp) != id(binseg_copy.single_bkp)
 
+
 def test_min_size_kernelcpd(signal_bkps_1D):
     """Make sure that KernelCPD can handled min_size=1.
     
@@ -406,9 +407,9 @@ def test_min_size_kernelcpd(signal_bkps_1D):
     """
     signal, _ = signal_bkps_1D
     # test if the attribute min_size is set to 1
-    algo = KernelCPD(kernel="rbf", min_size=1).fit(signal=signal)
-    assert algo.min_size==1
+    algo = KernelCPD(kernel="rbf", min_size=1)
+    assert algo.min_size == 1
 
     # test if it can predict segments of size 1
     n_samples = signal.shape[0]
-    algo.predict(n_bkps=n_samples-1)
+    algo.predict(n_bkps=n_samples - 1)
