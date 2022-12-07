@@ -1,4 +1,4 @@
-name: "Check docs"
+name: "docs"
 on:
   pull_request:
     branches: [ master ]
