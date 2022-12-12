@@ -21,3 +21,4 @@ from .timeerror import meantime
 from .precisionrecall import precision_recall
 from .hamming import hamming
 from .randindex import randindex
+from .adjusted_randindex import adjusted_randindex
