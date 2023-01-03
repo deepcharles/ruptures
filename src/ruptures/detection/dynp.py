@@ -8,7 +8,6 @@ from ruptures.exceptions import BadSegmentationParameters
 
 
 class Dynp(BaseEstimator):
-
     """Find optimal change points using dynamic programming.
 
     Given a segment model, it computes the best partition for which the

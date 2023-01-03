@@ -11,7 +11,6 @@ from ruptures.exceptions import BadSegmentationParameters
 
 
 class Window(BaseEstimator):
-
     """Window sliding method."""
 
     def __init__(

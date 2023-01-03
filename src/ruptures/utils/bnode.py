@@ -5,7 +5,6 @@ import numpy as np
 
 @functools.total_ordering
 class Bnode:
-
     """Binary node.
 
     In binary segmentation, each segment [start, end) is a binary node.

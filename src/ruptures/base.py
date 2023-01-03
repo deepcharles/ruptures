@@ -8,7 +8,6 @@ from ruptures.utils import pairwise
 
 
 class BaseEstimator(metaclass=abc.ABCMeta):
-
     """Base class for all change point detection estimators.
 
     Notes:
@@ -34,7 +33,6 @@ class BaseEstimator(metaclass=abc.ABCMeta):
 
 
 class BaseCost(object, metaclass=abc.ABCMeta):
-
     """Base class for all segment cost classes.
 
     Notes:

@@ -6,7 +6,6 @@ from ruptures.costs import NotEnoughPoints
 
 
 class CostLinear(BaseCost):
-
     r"""Least-square estimate for linear changes."""
 
     model = "linear"

@@ -7,7 +7,6 @@ from ruptures.exceptions import NotEnoughPoints
 
 
 class CostMl(BaseCost):
-
     r"""Mahalanobis-type cost function."""
 
     model = "mahalanobis"

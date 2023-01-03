@@ -8,7 +8,6 @@ from ruptures.utils import sanity_check
 
 
 class Pelt(BaseEstimator):
-
     """Penalized change point detection.
 
     For a given model and penalty level, computes the segmentation which

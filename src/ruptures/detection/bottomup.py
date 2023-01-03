@@ -10,7 +10,6 @@ from ruptures.exceptions import BadSegmentationParameters
 
 
 class BottomUp(BaseEstimator):
-
     """Bottom-up segmentation."""
 
     def __init__(self, model="l2", custom_cost=None, min_size=2, jump=5, params=None):

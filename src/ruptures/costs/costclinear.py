@@ -6,7 +6,6 @@ from ruptures.costs import NotEnoughPoints
 
 
 class CostCLinear(BaseCost):
-
     r"""Piecewise linear approximation with a continuity constraint."""
 
     model = "clinear"

@@ -6,7 +6,6 @@ from scipy.spatial.distance import pdist, squareform
 
 
 class CostCosine(BaseCost):
-
     r"""Kernel change point detection with the cosine similarity."""
 
     model = "cosine"
