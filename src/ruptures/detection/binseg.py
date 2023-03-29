@@ -9,7 +9,6 @@ from ruptures.utils import pairwise, sanity_check
 
 
 class Binseg(BaseEstimator):
-
     """Binary segmentation."""
 
     def __init__(self, model="l2", custom_cost=None, min_size=2, jump=5, params=None):

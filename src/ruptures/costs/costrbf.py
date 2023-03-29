@@ -7,7 +7,6 @@ from ruptures.base import BaseCost
 
 
 class CostRbf(BaseCost):
-
     r"""Kernel cost function (rbf kernel)."""
 
     model = "rbf"

@@ -8,7 +8,6 @@ from ruptures.costs import NotEnoughPoints
 
 
 class CostNormal(BaseCost):
-
     """Gaussian process change."""
 
     model = "normal"

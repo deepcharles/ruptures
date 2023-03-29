@@ -17,7 +17,6 @@ from ._detection.ekcpd import (
 
 
 class KernelCPD(BaseEstimator):
-
     """Find optimal change points (using dynamic programming or pelt) for the
     special case where the cost function derives from a kernel function.
 

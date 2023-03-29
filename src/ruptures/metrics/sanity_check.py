@@ -2,7 +2,6 @@
 
 
 class BadPartitions(Exception):
-
     """Exception raised when the partition is bad."""
 
     pass
