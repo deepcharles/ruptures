@@ -21,7 +21,6 @@ class Binseg(BaseEstimator):
             jump (int, optional): subsample (one every *jump* points). Defaults to 5 samples.
             params (dict, optional): a dictionary of parameters for the cost instance.
         """
-
         if custom_cost is not None and isinstance(custom_cost, BaseCost):
             self.cost = custom_cost
         else:
@@ -47,7 +46,6 @@ class Binseg(BaseEstimator):
         Returns:
             dict: partition dict {(start, end): cost value,...}
         """
-
         # initialization
         bkps = [self.n_samples]
         stop = False

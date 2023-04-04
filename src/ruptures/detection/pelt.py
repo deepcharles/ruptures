@@ -45,7 +45,6 @@ class Pelt(BaseEstimator):
         Returns:
             dict: partition dict {(start, end): cost value,...}
         """
-
         # initialization
         # partitions[t] contains the optimal partition of signal[0:t]
         partitions = dict()  # this dict will be recursively filled
