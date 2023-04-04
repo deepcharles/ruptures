@@ -21,7 +21,6 @@ def define_env(env):
     - variables: the dictionary that contains the environment variables
     - macro: a decorator function, to declare a macro.
     """
-
     @env.macro
     def add_binder_block(page):
         """Add a block with binder and download link.
