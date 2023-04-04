@@ -23,7 +23,7 @@ jobs:
         python -m pip install .[docs]
     - name: Run notebooks
       run: |
-        jupyter nbconvert --inplace --to notebook --ExecutePreprocessor.kernel_name=python --execute $(find ./docs -name '*.ipynb')
+        find ./docs -name '*.ipynb' | xargs -P 3 -I % jupyter nbconvert --inplace --to notebook --ExecutePreprocessor.kernel_name=python --execute %
     - name: Build documentation
       run: |
         mkdocs build
