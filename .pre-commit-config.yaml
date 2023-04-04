@@ -1,6 +1,6 @@
 repos:
 - repo: https://github.com/psf/black
-  rev: 22.12.0
+  rev: 23.3.0
   hooks:
     - id: black
       language_version: python3
@@ -15,11 +15,11 @@ repos:
     - id: check-symlinks
     - id: check-toml
 - repo: https://github.com/pre-commit/pygrep-hooks
-  rev: v1.9.0
+  rev: v1.10.0
   hooks:
     - id: python-no-eval  # A quick check for the eval() built-in function.
 - repo: https://github.com/PyCQA/docformatter
-  rev: v1.5.1
+  rev: v1.6.0
   hooks:
     - id: docformatter
       args: [--in-place]
@@ -33,11 +33,11 @@ repos:
   hooks:
     - id: nbstripout
 -   repo: https://github.com/asottile/blacken-docs
-    rev: v1.12.1
+    rev: 1.13.0
     hooks:
     - id: blacken-docs
 - repo: https://github.com/nbQA-dev/nbQA
-  rev: 1.6.0
+  rev: 1.7.0
   hooks:
     - id: nbqa-black
       args: [--nbqa-mutate]
