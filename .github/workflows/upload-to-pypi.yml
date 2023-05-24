@@ -91,17 +91,17 @@ jobs:
         with:
           path: wheelhouse/*.whl
 
-  upload_all:
-    needs: [build_wheels, build_aarch64_wheels, make_sdist]
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/download-artifact@v2
-      with:
-        name: artifact
-        path: dist
-    - uses: pypa/gh-action-pypi-publish@v1.4.1
-      with:
-        user: ${{ secrets.PYPI_USERNAME }}
-        password: ${{ secrets.PYPI_PASSWORD }}
+  # upload_all:
+  #   needs: [build_wheels, build_aarch64_wheels, make_sdist]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/download-artifact@v2
+  #     with:
+  #       name: artifact
+  #       path: dist
+  #   - uses: pypa/gh-action-pypi-publish@v1.4.1
+  #     with:
+  #       user: ${{ secrets.PYPI_USERNAME }}
+  #       password: ${{ secrets.PYPI_PASSWORD }}
 
 
