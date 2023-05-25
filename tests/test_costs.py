@@ -204,7 +204,7 @@ def test_costml(signal_bkps_5D_noisy, signal_bkps_1D_noisy):
     """
     # no user-defined metric matrix
     c = CostMl()
-    for (signal, bkps) in (signal_bkps_5D_noisy, signal_bkps_1D_noisy):
+    for signal, bkps in (signal_bkps_5D_noisy, signal_bkps_1D_noisy):
         c.fit(signal=signal)
         c.error(0, 100)
         c.sum_of_costs(bkps)
@@ -219,7 +219,6 @@ def test_costml(signal_bkps_5D_noisy, signal_bkps_1D_noisy):
 
 def test_costl2_small_data():
     """Test if CostL2 returns the correct segmentation for small data."""
-
     signal = np.array([0.0, 0.1, 1.2, 1.0])
     n_samples = signal.shape[0]
     algo = Binseg(model="l2", min_size=1, jump=1).fit(signal)
