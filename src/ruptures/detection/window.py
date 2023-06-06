@@ -54,7 +54,6 @@ class Window(BaseEstimator):
         Returns:
             list: breakpoint index list
         """
-
         # initialization
         bkps = [self.n_samples]
         stop = False

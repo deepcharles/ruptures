@@ -23,8 +23,8 @@ class KernelCPD(BaseEstimator):
     Given a segment model, it computes the best partition for which the
     sum of errors is minimum.
 
-    See the [user guide](../../../user-guide/detection/kernelcpd) for more
-    information.
+    See the [user guide](../../../user-guide/detection/kernelcpd) for
+    more information.
     """
 
     def __init__(self, kernel="linear", min_size=2, jump=1, params=None):
