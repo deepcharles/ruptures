@@ -99,7 +99,7 @@ jobs:
       with:
         name: artifact
         path: dist
-    - uses: pypa/gh-action-pypi-publish@v1.4.1
+    - uses: pypa/gh-action-pypi-publish@release/v1
       with:
         user: ${{ secrets.PYPI_USERNAME }}
         password: ${{ secrets.PYPI_PASSWORD }}
