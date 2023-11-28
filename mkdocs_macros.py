@@ -43,7 +43,7 @@ def define_env(env):
         filepath = f"{docs_dirs}/{page.file.src_path}"
         binder_link = f"{BINDER_URL}/{repo_name}/{BRANCH}"
         binder_link = f"{binder_link}?filepath={filepath}"
-        download_link = f"{repo_url}blob/{BRANCH}/{filepath}"
+        download_link = f"{repo_url}/blob/{BRANCH}/{filepath}"
         return BINDER_TEMPLATE.format(
             binder_link=binder_link, download_link=download_link
         )
