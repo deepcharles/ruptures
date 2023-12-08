@@ -2,7 +2,7 @@
 
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/deepcharles/ruptures/graphs/commit-activity)
 [![build](https://github.com/deepcharles/ruptures/actions/workflows/run-test.yml/badge.svg)](https://github.com/deepcharles/ruptures/actions/workflows/run-test.yml)
-![python](https://img.shields.io/badge/python-3.6%20|%203.7%20|%203.8%20|%203.9%20|%203.10%20|%203.11-blue)
+![python](https://img.shields.io/badge/python-3.6%20%7C%203.7%20%7C%203.8%20%7C%203.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-blue)
 [![PyPI version](https://badge.fury.io/py/ruptures.svg)](https://badge.fury.io/py/ruptures)
 [![Conda Version](https://img.shields.io/conda/vn/conda-forge/ruptures.svg)](https://anaconda.org/conda-forge/ruptures)
 [![docs](https://github.com/deepcharles/ruptures/actions/workflows/check-docs.yml/badge.svg)](https://github.com/deepcharles/ruptures/actions/workflows/check-docs.yml)
