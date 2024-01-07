@@ -1,11 +1,11 @@
 repos:
 - repo: https://github.com/psf/black
-  rev: 23.9.1
+  rev: 23.12.1
   hooks:
     - id: black
       language_version: python3
 - repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v4.4.0
+  rev: v4.5.0
   hooks:
     - id: trailing-whitespace  # This hook trims trailing whitespace.
     - id: check-docstring-first  # Checks a common error of defining a docstring after code.
@@ -38,7 +38,7 @@ repos:
     hooks:
     - id: blacken-docs
 - repo: https://github.com/nbQA-dev/nbQA
-  rev: 1.7.0
+  rev: 1.7.1
   hooks:
     - id: nbqa-black
       args: [--nbqa-mutate]
