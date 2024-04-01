@@ -1,4 +1,5 @@
 r"""Gaussian process changes (CostNormal)"""
+
 import warnings
 
 import numpy as np

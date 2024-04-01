@@ -1,4 +1,5 @@
 r"""Rand index (`randindex`)"""
+
 from ruptures.metrics.sanity_check import sanity_check
 
 

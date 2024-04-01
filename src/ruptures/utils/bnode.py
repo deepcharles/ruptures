@@ -1,4 +1,5 @@
 """Binary node."""
+
 import functools
 import numpy as np
 

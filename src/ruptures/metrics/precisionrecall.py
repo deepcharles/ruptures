@@ -1,4 +1,5 @@
 r"""Precision and recall."""
+
 from itertools import product
 
 from ruptures.metrics.sanity_check import sanity_check

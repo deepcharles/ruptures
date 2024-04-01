@@ -1,4 +1,5 @@
 r"""Bottom-up segmentation."""
+
 import heapq
 from bisect import bisect_left
 from functools import lru_cache

@@ -25,7 +25,6 @@ from ruptures.base import BaseCost
 
 
 class MyCost(BaseCost):
-
     """Custom cost for exponential signals."""
 
     # The 2 following attributes must be specified for compatibility.

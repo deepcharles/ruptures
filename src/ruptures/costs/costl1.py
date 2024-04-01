@@ -1,4 +1,5 @@
 r"""CostL1 (least absolute deviation)"""
+
 import numpy as np
 
 from ruptures.base import BaseCost

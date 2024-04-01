@@ -1,4 +1,5 @@
 r"""CostCosine (kernel change point detection with the cosine similarity)"""
+
 import numpy as np
 from ruptures.base import BaseCost
 from ruptures.costs import NotEnoughPoints

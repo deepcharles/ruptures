@@ -1,4 +1,5 @@
 r"""Linear model change."""
+
 from numpy.linalg import lstsq
 
 from ruptures.base import BaseCost

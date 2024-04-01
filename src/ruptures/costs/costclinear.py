@@ -1,4 +1,5 @@
 r"""Continuous linear change."""
+
 import numpy as np
 
 from ruptures.base import BaseCost
