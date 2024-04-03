@@ -1,4 +1,5 @@
 """2D piecewise Gaussian process (pw_normal)"""
+
 from itertools import cycle
 
 import numpy as np

@@ -1,4 +1,5 @@
 r"""CostL2 (least squared deviation)"""
+
 from ruptures.costs import NotEnoughPoints
 
 from ruptures.base import BaseCost

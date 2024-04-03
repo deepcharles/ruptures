@@ -1,4 +1,5 @@
 """Piecewise sinusoidal (pw_wavy)"""
+
 from itertools import cycle
 
 import numpy as np

@@ -1,4 +1,5 @@
 r"""Rank-based cost function (CostRank)"""
+
 import numpy as np
 from numpy.linalg import pinv, LinAlgError
 from scipy.stats.mstats import rankdata

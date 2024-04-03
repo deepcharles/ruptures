@@ -1,4 +1,5 @@
 """Hamming metric for segmentation."""
+
 from ruptures.metrics.randindex import randindex
 
 

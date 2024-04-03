@@ -1,4 +1,5 @@
 r"""Change detection with a Mahalanobis-type metric."""
+
 import numpy as np
 from numpy.linalg import inv
 

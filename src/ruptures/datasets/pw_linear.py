@@ -1,4 +1,5 @@
 r"""Shift in linear model."""
+
 import numpy as np
 
 from . import pw_constant

@@ -1,6 +1,5 @@
 r"""Window-based change point detection."""
 
-
 import numpy as np
 from scipy.signal import argrelmax
 
