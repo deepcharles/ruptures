@@ -12,7 +12,7 @@ $$
 
 where
 
-- $D$ is the diagional degree matrix of the graph: $D = \text{diag}(d_1, \ldots, d_p)$.
+- $D$ is the diagonal degree matrix of the graph: $D = \text{diag}(d_1, \ldots, d_p)$.
 - $U$ is the orthogonal matrix whose columns $\{u_i\}_{i=1}^p$ are the eigenvectors of $L$
 - $\Lambda = \text{diag}(\lambda_1, \ldots, \lambda_p)$ contains the eigenvalues of $L$.
 

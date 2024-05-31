@@ -25,16 +25,16 @@ class CostGFSSL2(BaseCost):
         self.cut_sparsity = cut_sparsity
         self.graph_laplacian_mat = laplacian_mat
         self.signal = None
-        self.gft_square_cumsum = None
-        self.gft_cumsum = None
+        self.gfss_square_cumsum = None
+        self.gfss_cumsum = None
         super().__init__()
 
     def filter(self, freqs, eps=0.00001):
-        """Applies the GFSS filter to the input (spatial) frequences.
-        NOTE: the frequences must be in increasing order.
+        """Applies the GFSS filter to the input (spatial) frequencies.
+        NOTE: the frequencies must be in increasing order.
 
         Args:
-            freqs (array): ordered frequences to filter.
+            freqs (array): ordered frequencies to filter.
             eps (float, optional): threshold for non zero values. Defaults to 0.00001.
 
         Returns:
@@ -59,13 +59,13 @@ class CostGFSSL2(BaseCost):
         # Computation of the GFSS
         eigvals, eigvects = eigh(self.graph_laplacian_mat)
         filter_matrix = np.diag(self.filter(eigvals), k=0)
-        gft = filter_matrix.dot(eigvects.T.dot(signal.T)).T
+        gfss = filter_matrix.dot(eigvects.T.dot(signal.T)).T
         # Computation of the per-segment cost utils
-        self.gft_square_cumsum = np.concatenate(
-            [np.zeros((1, signal.shape[1])), np.cumsum(gft**2, axis=0)], axis=0
+        self.gfss_square_cumsum = np.concatenate(
+            [np.zeros((1, signal.shape[1])), np.cumsum(gfss**2, axis=0)], axis=0
         )
-        self.gft_cumsum = np.concatenate(
-            [np.zeros((1, signal.shape[1])), np.cumsum(gft, axis=0)], axis=0
+        self.gfss_cumsum = np.concatenate(
+            [np.zeros((1, signal.shape[1])), np.cumsum(gfss, axis=0)], axis=0
         )
         return self
 
@@ -83,6 +83,6 @@ class CostGFSSL2(BaseCost):
         if end - start < self.min_size:
             raise NotEnoughPoints
 
-        sub_square_sum = self.gft_square_cumsum[end] - self.gft_square_cumsum[start]
-        sub_sum = self.gft_cumsum[end] - self.gft_cumsum[start]
+        sub_square_sum = self.gfss_square_cumsum[end] - self.gfss_square_cumsum[start]
+        sub_sum = self.gfss_cumsum[end] - self.gfss_cumsum[start]
         return np.sum(sub_square_sum - (sub_sum**2) / (end - start))
