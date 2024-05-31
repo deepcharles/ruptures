@@ -88,7 +88,6 @@ class CostGFSSL2(BaseCost):
         return np.sum(sub_square_sum - (sub_sum**2) / (end - start))
 
 
-
 # %%
 
 # %%
