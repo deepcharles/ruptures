@@ -42,7 +42,7 @@ class CostGFSSL2(BaseCost):
         """
         nb_zeros = np.sum(freqs < eps)
         filtered_freqs = np.minimum(1, np.sqrt(self.cut_sparsity / freqs[nb_zeros:]))
-        return np.concatenate([np.zeros(nb_zeros), filtered_freqs])
+        return np.concatenate([np.ones(nb_zeros), filtered_freqs])
 
     def fit(self, signal):
         """Performs pre-computations for per-segment approximation cost.
@@ -86,3 +86,9 @@ class CostGFSSL2(BaseCost):
         sub_square_sum = self.gfss_square_cumsum[end] - self.gfss_square_cumsum[start]
         sub_sum = self.gfss_cumsum[end] - self.gfss_cumsum[start]
         return np.sum(sub_square_sum - (sub_sum**2) / (end - start))
+
+
+
+# %%
+
+# %%
