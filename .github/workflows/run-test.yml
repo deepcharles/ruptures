@@ -53,6 +53,8 @@ jobs:
         python -m pytest --cov --cov-report=xml --cov-report=term:skip-covered
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v4
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       with:
         files: ./coverage.xml
         flags: unittests
