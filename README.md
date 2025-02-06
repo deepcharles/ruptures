@@ -2,7 +2,7 @@
 
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/deepcharles/ruptures/graphs/commit-activity)
 [![build](https://github.com/deepcharles/ruptures/actions/workflows/run-test.yml/badge.svg)](https://github.com/deepcharles/ruptures/actions/workflows/run-test.yml)
-![python](https://img.shields.io/badge/python-3.6%20%7C%203.7%20%7C%203.8%20%7C%203.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-blue)
+![python](https://img.shields.io/badge/python-3.6%20|%203.7%20|%203.8%20|%203.9-blue)
 [![PyPI version](https://badge.fury.io/py/ruptures.svg)](https://badge.fury.io/py/ruptures)
 [![Conda Version](https://img.shields.io/conda/vn/conda-forge/ruptures.svg)](https://anaconda.org/conda-forge/ruptures)
 [![docs](https://github.com/deepcharles/ruptures/actions/workflows/check-docs.yml/badge.svg)](https://github.com/deepcharles/ruptures/actions/workflows/check-docs.yml)
@@ -21,6 +21,27 @@ In addition, thanks to its modular structure, different algorithms and models ca
 
 - C. Truong, L. Oudre, N. Vayatis. Selective review of offline change point detection methods. _Signal Processing_, 167:107299, 2020. [[journal]](https://doi.org/10.1016/j.sigpro.2019.107299) [[pdf]](http://www.laurentoudre.fr/publis/TOG-SP-19.pdf)
 
+
+## Latest news
+
+- Welcome to our new PhD student, [Nicolas Cecchi](https://fr.linkedin.com/in/nicolascecchi/fr)! He will integrate new algorithms in <span style="color:blue">ruptures</span> and create tutorials and illustrative examples.
+
+- NASA uses <span style="color:blue">ruptures</span>! They <ins>monitor crops</ins> in California and Iran. We submitted an article, let's hope for the best!!
+  - Jalilvand, E., Kumar, S.V., Haacker, E., Truong, C., Mahanama, S., 2024, Characterizing spatiotemporal variability in irrigation extent and timing through thermal remote sensing, submitted to Remote Sensing of Environment.
+
+- We have been contacted by CHELSEA FC to monitor players using <span style="color:blue">ruptures</span>. Stay tuned...
+
+- We use <span style="color:blue">ruptures</span> to understand the <ins>regulation of acetylcholine</ins>, an important neurotransmitter that plays a role in muscle contraction (involved in myasthenia gravis). Check out our work at the [Journal of Physiology](https://doi.org/10.1113/JP287243)
+
+
+- They use <span style="color:blue">ruptures</span> to detect changes in <ins>classroom engagement and student participation</ins> in Japan. [Check out their work](https://doi.org/10.1186/s40561-024-00317-6)
+
+- <span style="color:blue">ruptures</span> is part of a larger pipeline to <ins>observe Earth</ins>, in particular marine biodiversity. The authors use it to find change in the phytoplankton diversity. [Check out their work](https://doi.org/10.1007/s10712-024-09859-3)
+
+
+- We work with Croatian crystallographers (hi [Zoran Štefanić](https://www.irb.hr/eng/About-RBI/People/Zoran-Stefanic)!) to [understand protein motions using angular diagrams](https://pubs.acs.org/doi/10.1021/acs.jcim.4c00650). We will keep you posted for our next joint publications.
+
+- [Charles Truong](https://charles.doffy.net) presented <span style="color:blue">ruptures</span> at [PyConDE & PyData Berlin 2024](https://pretalx.com/pyconde-pydata-2024/speaker/BFRLAK/). [Check out the video.](https://kiwi.cmla.ens-cachan.fr/index.php/s/ss3rZwNSKwGtyQW)
 
 ## Basic usage
 
