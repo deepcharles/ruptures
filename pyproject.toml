@@ -20,3 +20,6 @@ testpaths = ["tests"]
 
 [tool.setuptools_scm]
 write_to = "src/ruptures/version.py"
+
+[tool.docformatter]
+in-place = true
