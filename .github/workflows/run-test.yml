@@ -57,6 +57,6 @@ jobs:
         files: ./coverage.xml
         flags: unittests
         fail_ci_if_error: true
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v4
       with:
         path: coverage.xml
