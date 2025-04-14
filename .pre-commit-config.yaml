@@ -1,11 +1,11 @@
 repos:
 - repo: https://github.com/psf/black
-  rev: 24.3.0
+  rev: 25.1.0
   hooks:
     - id: black
       language_version: python3
 - repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v4.5.0
+  rev: v5.0.0
   hooks:
     - id: trailing-whitespace  # This hook trims trailing whitespace.
     - id: check-docstring-first  # Checks a common error of defining a docstring after code.
@@ -19,27 +19,26 @@ repos:
   hooks:
     - id: python-no-eval  # A quick check for the eval() built-in function.
 - repo: https://github.com/PyCQA/docformatter
-  rev: v1.7.5
+  rev: eb1df347edd128b30cd3368dddc3aa65edcfac38 # Don't autoupdate until https://github.com/PyCQA/docformatter/issues/293 is fixed
   hooks:
     - id: docformatter
-      additional_dependencies: [tomli]
       exclude: mkdocs_macros.py
-      args: [--config ./pyproject.toml]
+      args: [--in-place]
 - repo: https://github.com/PyCQA/flake8
-  rev: 7.0.0
+  rev: 7.2.0
   hooks:
     - id: flake8
       # additional_dependencies: [flake8-docstrings, flake8-bugbear, flake8-spellcheck, flake8-import-order]
 - repo: https://github.com/kynan/nbstripout
-  rev: 0.7.1
+  rev: 0.8.1
   hooks:
     - id: nbstripout
 -   repo: https://github.com/asottile/blacken-docs
-    rev: 1.16.0
+    rev: 1.19.1
     hooks:
     - id: blacken-docs
 - repo: https://github.com/nbQA-dev/nbQA
-  rev: 1.8.5
+  rev: 1.9.1
   hooks:
     - id: nbqa-black
       args: [--nbqa-mutate]
@@ -47,3 +46,6 @@ repos:
 ci:
   autoupdate_commit_msg: 'chore: pre-commit autoupdate'
   autoupdate_schedule: 'quarterly'
+
+
+# https://github.com/PyCQA/docformatter/pull/287
