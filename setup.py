@@ -26,11 +26,13 @@ if __name__ == "__main__":
 
     version_file = os.path.join("src", "ruptures", "version.py")
     if not os.path.exists(version_file):
-        version = get_version(root='.', relative_to=__file__)
+        version = get_version(root=".", relative_to=__file__)
         if not version:
-            raise RuntimeError("Version could not be determined. Ensure you have a valid git tag.")
+            raise RuntimeError(
+                "Version could not be determined. Ensure you have a valid git tag."
+            )
         with open(version_file, "w") as f:
-             f.write(f'__version__ = version = "{version}"\n')
+            f.write(f'__version__ = version = "{version}"\n')
 
     setup(
         ext_modules=cythonize(ext_modules, language_level="3"),
