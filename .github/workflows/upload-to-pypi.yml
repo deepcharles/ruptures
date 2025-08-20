@@ -5,6 +5,11 @@ on:
     inputs:
       overrideVersion:
         description: Manually force a version
+      uploadToPyPI:
+          description: Upload to PyPI
+          required: false
+          default: false
+          type: boolean
 
 env:
   CIBW_BUILD_VERBOSITY: 3
@@ -100,7 +105,12 @@ jobs:
         with:
           name: artifact
           path: dist
-      - uses: pypa/gh-action-pypi-publish@release/v1
+      - name: Publish to PyPI
+        if: ${{ github.event.inputs.uploadToPyPI == 'true' }}
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: ${{ secrets.PYPI_USERNAME }}
           password: ${{ secrets.PYPI_PASSWORD }}
+      - name: Skipped PyPI Upload
+        if: ${{ github.event.inputs.uploadToPyPI != 'true' }}
+        run: echo "Upload to PyPI was skipped due to workflow input."
