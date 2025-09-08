@@ -6,10 +6,10 @@ on:
       overrideVersion:
         description: Manually force a version
       uploadToPyPI:
-          description: Upload to PyPI
-          required: false
-          default: false
-          type: boolean
+        description: Upload to PyPI
+        required: false
+        default: false
+        type: boolean
 
 env:
   CIBW_BUILD_VERBOSITY: 3
@@ -34,6 +34,7 @@ jobs:
         run: python -m build --sdist
       - uses: actions/upload-artifact@v4
         with:
+          name: sdist
           path: dist/*.tar.gz
       - name: Check metadata
         run: twine check dist/*
@@ -65,6 +66,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
+          name: wheels
           path: wheelhouse/*.whl
 
   build_aarch64_wheels:
@@ -95,6 +97,7 @@ jobs:
           CIBW_ENVIRONMENT: "SETUPTOOLS_SCM_PRETEND_VERSION=${{ github.event.inputs.overrideVersion }}"
       - uses: actions/upload-artifact@v4
         with:
+          name: aarch64_wheels
           path: wheelhouse/*.whl
 
   upload_all:
@@ -103,7 +106,15 @@ jobs:
     steps:
       - uses: actions/download-artifact@v5
         with:
-          name: artifact
+          name: sdist
+          path: dist
+      - uses: actions/download-artifact@v5
+        with:
+          name: wheels
+          path: dist
+      - uses: actions/download-artifact@v5
+        with:
+          name: aarch64_wheels
           path: dist
       - name: Publish to PyPI
         if: ${{ github.event.inputs.uploadToPyPI == 'true' }}
