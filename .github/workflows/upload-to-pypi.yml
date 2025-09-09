@@ -66,7 +66,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: cibw-wheels-${{ matrix.os }}
+          name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
           path: wheelhouse/*.whl
 
   build_aarch64_wheels:
@@ -97,7 +97,7 @@ jobs:
           CIBW_ENVIRONMENT: "SETUPTOOLS_SCM_PRETEND_VERSION=${{ github.event.inputs.overrideVersion }}"
       - uses: actions/upload-artifact@v4
         with:
-          name: cibw-aarch64_wheels-${{ matrix.os }}
+          name: cibw-aarch64_wheels-${{ matrix.os }}-${{ strategy.job-index }}
           path: wheelhouse/*.whl
 
   upload_all:
