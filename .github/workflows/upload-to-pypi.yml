@@ -34,7 +34,7 @@ jobs:
         run: python -m build --sdist
       - uses: actions/upload-artifact@v4
         with:
-          name: sdist
+          name: cibw-sdist
           path: dist/*.tar.gz
       - name: Check metadata
         run: twine check dist/*
@@ -66,7 +66,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: wheels
+          name: cibw-wheels-${{ matrix.os }}
           path: wheelhouse/*.whl
 
   build_aarch64_wheels:
@@ -97,7 +97,7 @@ jobs:
           CIBW_ENVIRONMENT: "SETUPTOOLS_SCM_PRETEND_VERSION=${{ github.event.inputs.overrideVersion }}"
       - uses: actions/upload-artifact@v4
         with:
-          name: aarch64_wheels
+          name: cibw-aarch64_wheels-${{ matrix.os }}
           path: wheelhouse/*.whl
 
   upload_all:
@@ -106,16 +106,9 @@ jobs:
     steps:
       - uses: actions/download-artifact@v5
         with:
-          name: sdist
+          pattern: cibw-*
           path: dist
-      - uses: actions/download-artifact@v5
-        with:
-          name: wheels
-          path: dist
-      - uses: actions/download-artifact@v5
-        with:
-          name: aarch64_wheels
-          path: dist
+          merge-multiple: true
       - name: Publish to PyPI
         if: ${{ github.event.inputs.uploadToPyPI == 'true' }}
         uses: pypa/gh-action-pypi-publish@release/v1
