@@ -6,10 +6,10 @@ on:
       overrideVersion:
         description: Manually force a version
       uploadToPyPI:
-          description: Upload to PyPI
-          required: false
-          default: false
-          type: boolean
+        description: Upload to PyPI
+        required: false
+        default: false
+        type: boolean
 
 env:
   CIBW_BUILD_VERBOSITY: 3
@@ -23,17 +23,18 @@ jobs:
     name: Make SDist
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v5
       - name: Setup Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v6
         with:
-          python-version: "3.10"
+          python-version: "3.13"
       - name: Install deps
         run: python -m pip install build twine
       - name: Build SDist
         run: python -m build --sdist
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
+          name: cibw-sdist
           path: dist/*.tar.gz
       - name: Check metadata
         run: twine check dist/*
@@ -45,11 +46,12 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v5
 
       # Used to host cibuildwheel
-      - uses: actions/setup-python@v2
-
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
       - name: Install cibuildwheel
         run: python -m pip install cibuildwheel
 
@@ -57,14 +59,15 @@ jobs:
         run: python -m cibuildwheel --output-dir wheelhouse
         env:
           # Disable explicitly building PyPI wheels for specific configurations
-          CIBW_SKIP: pp* cp{38,39,310,311,312,313}-manylinux_i686 *-musllinux_* cp{38,39,310,311,312,313}-win32
+          CIBW_SKIP: cp{38,39,310,311,312,313,314}-manylinux_i686 *-musllinux_* cp{38,39,310,311,312,313,314,314t}-win32
           CIBW_PRERELEASE_PYTHONS: False
           # Manually force a version (and avoid building local wheels)
           CIBW_ENVIRONMENT: "SETUPTOOLS_SCM_PRETEND_VERSION=${{ github.event.inputs.overrideVersion }}"
           CIBW_ARCHS_MACOS: x86_64 arm64
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
+          name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
           path: wheelhouse/*.whl
 
   build_aarch64_wheels:
@@ -72,16 +75,16 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python: [36, 37, 38, 39, 310, 311, 312, 313]
+        python: [39, 310, 311, 312, 313, 314]
         include:
           - os: ubuntu-latest
             arch: aarch64
             platform_id: manylinux_aarch64
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v5
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
+        uses: docker/setup-qemu-action@v3
 
       - name: Install cibuildwheel
         run: python -m pip install cibuildwheel
@@ -93,18 +96,20 @@ jobs:
           CIBW_BUILD: cp${{ matrix.python }}-${{ matrix.platform_id }}
           # Manually force a version (and avoid building local wheels)
           CIBW_ENVIRONMENT: "SETUPTOOLS_SCM_PRETEND_VERSION=${{ github.event.inputs.overrideVersion }}"
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
+          name: cibw-aarch64_wheels-${{ matrix.os }}-${{ strategy.job-index }}
           path: wheelhouse/*.whl
 
   upload_all:
     needs: [build_wheels, build_aarch64_wheels, make_sdist]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v5
         with:
-          name: artifact
+          pattern: cibw-*
           path: dist
+          merge-multiple: true
       - name: Publish to PyPI
         if: ${{ github.event.inputs.uploadToPyPI == 'true' }}
         uses: pypa/gh-action-pypi-publish@release/v1
