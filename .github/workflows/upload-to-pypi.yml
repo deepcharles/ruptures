@@ -27,7 +27,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v6
         with:
-          python-version: "3.13"
+          python-version: "3.14"
       - name: Install deps
         run: python -m pip install build twine
       - name: Build SDist
@@ -51,7 +51,7 @@ jobs:
       # Used to host cibuildwheel
       - uses: actions/setup-python@v6
         with:
-          python-version: "3.13"
+          python-version: "3.14"
       - name: Install cibuildwheel
         run: python -m pip install cibuildwheel
 
@@ -75,7 +75,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python: [39, 310, 311, 312, 313]
+        python: [39, 310, 311, 312, 313, 314]
         include:
           - os: ubuntu-latest
             arch: aarch64

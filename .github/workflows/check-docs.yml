@@ -13,7 +13,7 @@ jobs:
     - name: Set up Python 3.x
       uses: actions/setup-python@v6
       with:
-        python-version: '3.13'
+        python-version: '3.14'
     - name: Install sndfile library # for librose, see https://github.com/deepcharles/ruptures/pull/121
       run: |
         sudo apt-get install libsndfile1-dev
