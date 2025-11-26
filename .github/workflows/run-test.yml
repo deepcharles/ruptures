@@ -19,7 +19,7 @@ jobs:
   tests:
     strategy:
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
         os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
@@ -40,10 +40,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v5
-    - name: Set up Python 3.13
+    - name: Set up Python 3.14
       uses: actions/setup-python@v6
       with:
-        python-version: '3.13'
+        python-version: '3.14'
     - name: Install ruptures
       run: |
         python -m pip install --upgrade pip
@@ -59,6 +59,7 @@ jobs:
         files: ./coverage.xml
         flags: unittests
         fail_ci_if_error: true
+        token: ${{ secrets.CODECOV_TOKEN }}
     - uses: actions/upload-artifact@v4
       with:
         path: coverage.xml
