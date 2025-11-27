@@ -75,7 +75,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python: [39, 310, 311, 312, 313]
+        python: [39, 310, 311, 312, 313, 314]
         include:
           - os: ubuntu-latest
             arch: aarch64
@@ -101,21 +101,21 @@ jobs:
           name: cibw-aarch64_wheels-${{ matrix.os }}-${{ strategy.job-index }}
           path: wheelhouse/*.whl
 
-  # upload_all:
-  #   needs: [build_wheels, build_aarch64_wheels, make_sdist]
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/download-artifact@v5
-  #       with:
-  #         pattern: cibw-*
-  #         path: dist
-  #         merge-multiple: true
-  #     - name: Publish to PyPI
-  #       if: ${{ github.event.inputs.uploadToPyPI == 'true' }}
-  #       uses: pypa/gh-action-pypi-publish@release/v1
-  #       with:
-  #         user: ${{ secrets.PYPI_USERNAME }}
-  #         password: ${{ secrets.PYPI_PASSWORD }}
-  #     - name: Skipped PyPI Upload
-  #       if: ${{ github.event.inputs.uploadToPyPI != 'true' }}
-  #       run: echo "Upload to PyPI was skipped due to workflow input."
+  upload_all:
+    needs: [build_wheels, build_aarch64_wheels, make_sdist]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v5
+        with:
+          pattern: cibw-*
+          path: dist
+          merge-multiple: true
+      - name: Publish to PyPI
+        if: ${{ github.event.inputs.uploadToPyPI == 'true' }}
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: ${{ secrets.PYPI_USERNAME }}
+          password: ${{ secrets.PYPI_PASSWORD }}
+      - name: Skipped PyPI Upload
+        if: ${{ github.event.inputs.uploadToPyPI != 'true' }}
+        run: echo "Upload to PyPI was skipped due to workflow input."
