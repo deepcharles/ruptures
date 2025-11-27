@@ -29,7 +29,7 @@ python -m pip install --editable .[dev]
 Note that `python -m` can be omitted most of the times, but within virtualenvs, it can prevent certain errors.
 Also, in certain terminals (such as `zsh`), the square brackets must be escaped, e.g. replace `.[dev]` by `.\[dev\]`.
 
-In addition to `numpy`, `scipy` and `ruptures`, this command will install all packages needed to develop `ruptures`.
+In addition to `numpy`, `scipy`, `scikit-learn` and `ruptures`, this command will install all packages needed to develop `ruptures`.
 The exact list of librairies can be found in the [`setup.cfg` file](https://github.com/deepcharles/ruptures/blob/master/setup.cfg) (section `[options.extras_require]`).
 
 ### Pre-commit hooks
