@@ -24,13 +24,14 @@ class CostAR(BaseCost):
         self.order = order
 
     def fit(self, signal):
-        """Set parameters of the instance. The signal must be 1D.
+        """Set parameters of the instance.
 
-        Args:
-            signal (array): 1d signal. Shape (n_samples, 1) or (n_samples,).
+        The signal must be 1D.
+                Args:
+                    signal (array): 1d signal. Shape (n_samples, 1) or (n_samples,).
 
-        Returns:
-            self: the current object
+                Returns:
+                    self: the current object
         """
         self.signal = deepcopy(signal)
         if signal.ndim == 1:

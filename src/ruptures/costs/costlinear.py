@@ -18,8 +18,9 @@ class CostLinear(BaseCost):
         self.min_size = 2
 
     def fit(self, signal) -> "CostLinear":
-        """Set parameters of the instance. The first column contains the
-        observed variable. The other columns contains the covariates.
+        """Set parameters of the instance.
+
+        The first column contains the observed variable. The other columns contains the covariates.
 
         Args:
             signal (array): signal of shape (n_samples, n_regressors+1)

@@ -1,5 +1,7 @@
 """Helper function to check if two breakpoints list are comparable."""
 
+__all__ = ["BadPartitions", "sanity_check"]
+
 
 class BadPartitions(Exception):
     """Exception raised when the partition is bad."""

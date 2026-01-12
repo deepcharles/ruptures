@@ -78,23 +78,24 @@ class KernelCPD(BaseEstimator):
         return self
 
     def predict(self, n_bkps=None, pen=None):
-        """Return the optimal breakpoints. Must be called after the fit method.
+        """Return the optimal breakpoints.
 
-        The breakpoints are associated with the signal passed to
-        [`fit()`][ruptures.detection.kernelcpd.KernelCPD.fit].
+        Must be called after the fit method.
+                The breakpoints are associated with the signal passed to
+                [`fit()`][ruptures.detection.kernelcpd.KernelCPD.fit].
 
-        Args:
-            n_bkps (int, optional): Number of change points. Defaults to None.
-            pen (float, optional): penalty value (>0). Defaults to None. Not considered
-                if n_bkps is not None.
+                Args:
+                    n_bkps (int, optional): Number of change points. Defaults to None.
+                    pen (float, optional): penalty value (>0). Defaults to None. Not considered
+                        if n_bkps is not None.
 
-        Raises:
-            AssertionError: if `pen` or `n_bkps` is not strictly positive.
-            BadSegmentationParameters: in case of impossible segmentation
-                configuration
+                Raises:
+                    AssertionError: if `pen` or `n_bkps` is not strictly positive.
+                    BadSegmentationParameters: in case of impossible segmentation
+                        configuration
 
-        Returns:
-            list[int]: sorted list of breakpoints
+                Returns:
+                    list[int]: sorted list of breakpoints
         """
         # Our KernelCPD implementation with Pelt implies that we have at least one change point
         # raise an exception in case of impossible segmentation configuration
