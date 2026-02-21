@@ -5,6 +5,7 @@ r"""All estimators and cost functions are subclasses of.
 """
 
 import abc
+from typing_extensions import Self
 from ruptures.utils import pairwise
 
 
@@ -18,17 +19,17 @@ class BaseEstimator(metaclass=abc.ABCMeta):
     """
 
     @abc.abstractmethod
-    def fit(self, *args, **kwargs):
+    def fit(self, *args, **kwargs) -> Self:
         """To call the segmentation algorithm."""
         pass
 
     @abc.abstractmethod
-    def predict(self, *args, **kwargs):
+    def predict(self, *args, **kwargs) -> list[int]:
         """To call the segmentation algorithm."""
         pass
 
     @abc.abstractmethod
-    def fit_predict(self, *args, **kwargs):
+    def fit_predict(self, *args, **kwargs) -> list[int]:
         """To call the segmentation algorithm."""
         pass
 
@@ -43,17 +44,17 @@ class BaseCost(object, metaclass=abc.ABCMeta):
     """
 
     @abc.abstractmethod
-    def fit(self, *args, **kwargs):
+    def fit(self, *args, **kwargs) -> Self:
         """Set the parameters of the cost function, for instance the Gram
         matrix, etc."""
         pass
 
     @abc.abstractmethod
-    def error(self, start, end):
+    def error(self, start: int, end: int) -> float:
         """Returns the cost on segment [start:end]."""
         pass
 
-    def sum_of_costs(self, bkps):
+    def sum_of_costs(self, bkps: list[int]) -> float:
         """Returns the sum of segments cost for the given segmentation.
 
         Args:
@@ -67,5 +68,5 @@ class BaseCost(object, metaclass=abc.ABCMeta):
 
     @property
     @abc.abstractmethod
-    def model(self):
+    def model(self) -> str:
         pass
