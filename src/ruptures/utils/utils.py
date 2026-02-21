@@ -1,22 +1,25 @@
 """Miscellaneous functions for ruptures."""
 
+from typing import Iterable, TypeVar, Iterator
 from itertools import tee
 from math import ceil
 
+T = TypeVar("T")
 
-def pairwise(iterable):
+
+def pairwise(iterable: Iterable[T]) -> Iterator[tuple[T, T]]:
     """S -> (s0,s1), (s1,s2), (s2, s3), ..."""
     a, b = tee(iterable)
     next(b, None)
     return zip(a, b)
 
 
-def unzip(seq):
+def unzip(seq: Iterable[tuple[T, ...]]) -> Iterator[tuple[T, ...]]:
     """Reverse zip."""
     return zip(*seq)
 
 
-def sanity_check(n_samples, n_bkps, jump, min_size):
+def sanity_check(n_samples: int, n_bkps: int, jump: int, min_size: int) -> bool:
     """Check if a partition if possible given some segmentation parameters.
 
     Args:

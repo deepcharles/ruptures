@@ -1,9 +1,12 @@
 r"""Draw a random partition."""
 
+from typing import Optional
 import numpy as np
 
 
-def draw_bkps(n_samples=100, n_bkps=3, seed=None):
+def draw_bkps(
+    n_samples: int = 100, n_bkps: int = 3, seed: Optional[int] = None
+) -> list[int]:
     """Draw a random partition with specified number of samples and specified
     number of changes."""
     rng = np.random.default_rng(seed=seed)
