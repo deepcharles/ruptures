@@ -1,6 +1,8 @@
 r"""Continuous linear change."""
 
 import numpy as np
+from numpy.typing import NDArray
+from typing_extensions import Self
 
 from ruptures.base import BaseCost
 from ruptures.costs import NotEnoughPoints
@@ -11,12 +13,12 @@ class CostCLinear(BaseCost):
 
     model = "clinear"
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize the object."""
         self.signal = None
         self.min_size = 3
 
-    def fit(self, signal) -> "CostCLinear":
+    def fit(self, signal: NDArray[np.number]) -> Self:
         """Set parameters of the instance.
 
         Args:
@@ -32,7 +34,7 @@ class CostCLinear(BaseCost):
 
         return self
 
-    def error(self, start, end) -> float:
+    def error(self, start: int, end: int) -> float:
         """Return the approximation cost on the segment [start:end].
 
         Args:

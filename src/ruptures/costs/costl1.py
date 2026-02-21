@@ -1,6 +1,9 @@
 r"""CostL1 (least absolute deviation)"""
 
+from typing_extensions import Self
+
 import numpy as np
+from numpy.typing import NDArray
 
 from ruptures.base import BaseCost
 from ruptures.costs import NotEnoughPoints
@@ -16,7 +19,7 @@ class CostL1(BaseCost):
         self.signal = None
         self.min_size = 2
 
-    def fit(self, signal) -> "CostL1":
+    def fit(self, signal: NDArray[np.number]) -> Self:
         """Set parameters of the instance.
 
         Args:
@@ -32,7 +35,7 @@ class CostL1(BaseCost):
 
         return self
 
-    def error(self, start, end) -> float:
+    def error(self, start: int, end: int) -> float:
         """Return the approximation cost on the segment [start:end].
 
         Args:

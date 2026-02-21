@@ -1,5 +1,10 @@
 r"""CostL2 (least squared deviation)"""
 
+from numpy.typing import NDArray
+import numpy as np
+from typing_extensions import Self
+
+
 from ruptures.costs import NotEnoughPoints
 
 from ruptures.base import BaseCost
@@ -10,12 +15,12 @@ class CostL2(BaseCost):
 
     model = "l2"
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize the object."""
         self.signal = None
         self.min_size = 1
 
-    def fit(self, signal) -> "CostL2":
+    def fit(self, signal: NDArray[np.number]) -> Self:
         """Set parameters of the instance.
 
         Args:
@@ -31,7 +36,7 @@ class CostL2(BaseCost):
 
         return self
 
-    def error(self, start, end) -> float:
+    def error(self, start: int, end: int) -> float:
         """Return the approximation cost on the segment [start:end].
 
         Args:

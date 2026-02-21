@@ -1,7 +1,9 @@
 r"""Rank-based cost function (CostRank)"""
 
+from typing_extensions import Self
 import numpy as np
 from numpy.linalg import pinv, LinAlgError
+from numpy.typing import NDArray
 from scipy.stats.mstats import rankdata
 
 from ruptures.base import BaseCost
@@ -13,13 +15,13 @@ class CostRank(BaseCost):
 
     model = "rank"
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize the object."""
         self.inv_cov = None
         self.ranks = None
         self.min_size = 2
 
-    def fit(self, signal) -> "CostRank":
+    def fit(self, signal: NDArray[np.number]) -> Self:
         """Set parameters of the instance.
 
         Args:
@@ -55,7 +57,7 @@ class CostRank(BaseCost):
 
         return self
 
-    def error(self, start, end):
+    def error(self, start: int, end: int) -> float:
         """Return the approximation cost on the segment [start:end].
 
         Args:

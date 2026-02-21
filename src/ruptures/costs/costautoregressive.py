@@ -1,7 +1,9 @@
 import numpy as np
 from numpy.lib.stride_tricks import as_strided
 from numpy.linalg import lstsq
+from numpy.typing import NDArray
 from copy import deepcopy
+from typing_extensions import Self
 
 from ruptures.base import BaseCost
 from ruptures.costs import NotEnoughPoints
@@ -12,7 +14,7 @@ class CostAR(BaseCost):
 
     model = "ar"
 
-    def __init__(self, order=4):
+    def __init__(self, order: int = 4) -> None:
         """Initialize the object.
 
         Args:
@@ -23,7 +25,7 @@ class CostAR(BaseCost):
         self.min_size = max(5, order + 1)
         self.order = order
 
-    def fit(self, signal):
+    def fit(self, signal: NDArray[np.number]) -> Self:
         """Set parameters of the instance.
 
         The signal must be 1D.
@@ -50,7 +52,7 @@ class CostAR(BaseCost):
         self.signal[: self.order] = self.signal[self.order]
         return self
 
-    def error(self, start, end):
+    def error(self, start: int, end: int) -> float:
         """Return the approximation cost on the segment [start:end].
 
         Args:

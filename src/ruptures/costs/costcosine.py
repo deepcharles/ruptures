@@ -1,6 +1,8 @@
 r"""CostCosine (kernel change point detection with the cosine similarity)"""
 
+from typing_extensions import Self
 import numpy as np
+from numpy.typing import NDArray
 from ruptures.base import BaseCost
 from ruptures.costs import NotEnoughPoints
 from scipy.spatial.distance import pdist, squareform
@@ -11,14 +13,14 @@ class CostCosine(BaseCost):
 
     model = "cosine"
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize the object."""
         self.signal = None
         self.min_size = 1
         self._gram = None
 
     @property
-    def gram(self):
+    def gram(self) -> NDArray[np.number]:
         """Generate the gram matrix (lazy loading).
 
         Only access this function after a `.fit()` (otherwise
@@ -28,7 +30,7 @@ class CostCosine(BaseCost):
             self._gram = squareform(1 - pdist(self.signal, metric="cosine"))
         return self._gram
 
-    def fit(self, signal) -> "CostCosine":
+    def fit(self, signal: NDArray[np.number]) -> Self:
         """Set parameters of the instance.
 
         Args:
@@ -43,7 +45,7 @@ class CostCosine(BaseCost):
             self.signal = signal
         return self
 
-    def error(self, start, end) -> float:
+    def error(self, start: int, end: int) -> float:
         """Return the approximation cost on the segment [start:end].
 
         Args:
