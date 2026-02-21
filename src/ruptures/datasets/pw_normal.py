@@ -1,13 +1,17 @@
 """2D piecewise Gaussian process (pw_normal)"""
 
 from itertools import cycle
+from typing import Optional
 
 import numpy as np
 
+from numpy.typing import NDArray
 from ruptures.utils import draw_bkps
 
 
-def pw_normal(n_samples=200, n_bkps=3, seed=None):
+def pw_normal(
+    n_samples: int = 200, n_bkps: int = 3, seed: Optional[int] = None
+) -> tuple[NDArray[np.floating], list[int]]:
     """Return a 2D piecewise Gaussian signal and the associated changepoints.
 
     Args:

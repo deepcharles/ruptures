@@ -1,11 +1,19 @@
 r"""Shift in linear model."""
 
 import numpy as np
+from typing import Optional
+from numpy.typing import NDArray
 
 from . import pw_constant
 
 
-def pw_linear(n_samples=200, n_features=1, n_bkps=3, noise_std=None, seed=None):
+def pw_linear(
+    n_samples: int = 200,
+    n_features: int = 1,
+    n_bkps: int = 3,
+    noise_std: Optional[float] = None,
+    seed: Optional[int] = None,
+) -> tuple[NDArray[np.floating], list[int]]:
     """Return piecewise linear signal and the associated changepoints.
 
     Args:
