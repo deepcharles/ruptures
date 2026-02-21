@@ -1,7 +1,11 @@
 r"""Pelt."""
 
 from math import floor
+from typing import Any, Optional
+from typing_extensions import Self
 
+import numpy as np
+from numpy.typing import NDArray
 from ruptures.costs import cost_factory
 from ruptures.base import BaseCost, BaseEstimator
 from ruptures.exceptions import BadSegmentationParameters
@@ -15,7 +19,14 @@ class Pelt(BaseEstimator):
     minimizes the constrained sum of approximation errors.
     """
 
-    def __init__(self, model="l2", custom_cost=None, min_size=2, jump=5, params=None):
+    def __init__(
+        self,
+        model="l2",
+        custom_cost: Optional[BaseCost] = None,
+        min_size: int = 2,
+        jump: int = 5,
+        params: Optional[dict[str, Any]] = None,
+    ) -> None:
         """Initialize a Pelt instance.
 
         Args:
@@ -36,7 +47,7 @@ class Pelt(BaseEstimator):
         self.jump = jump
         self.n_samples = None
 
-    def _seg(self, pen):
+    def _seg(self, pen: float) -> dict[tuple[int, int], float]:
         """Computes the segmentation for a given penalty using PELT (or a list
         of penalties).
 
@@ -85,7 +96,7 @@ class Pelt(BaseEstimator):
         del best_partition[(0, 0)]
         return best_partition
 
-    def fit(self, signal) -> "Pelt":
+    def fit(self, signal: NDArray[np.number]) -> Self:
         """Set params.
 
         Args:
@@ -103,7 +114,7 @@ class Pelt(BaseEstimator):
         self.n_samples = n_samples
         return self
 
-    def predict(self, pen):
+    def predict(self, pen: float) -> list[int]:
         """Return the optimal breakpoints.
 
         Must be called after the fit method. The breakpoints are associated with the signal passed
@@ -132,7 +143,7 @@ class Pelt(BaseEstimator):
         bkps = sorted(e for s, e in partition.keys())
         return bkps
 
-    def fit_predict(self, signal, pen):
+    def fit_predict(self, signal: NDArray[np.number], pen: float) -> list[int]:
         """Fit to the signal and return the optimal breakpoints.
 
         Helper method to call fit and predict once

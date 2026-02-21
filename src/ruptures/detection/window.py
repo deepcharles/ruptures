@@ -1,6 +1,9 @@
 r"""Window-based change point detection."""
 
+from typing import Any, Optional
+from typing_extensions import Self
 import numpy as np
+from numpy.typing import NDArray
 from scipy.signal import argrelmax
 
 from ruptures.base import BaseCost, BaseEstimator
@@ -13,8 +16,14 @@ class Window(BaseEstimator):
     """Window sliding method."""
 
     def __init__(
-        self, width=100, model="l2", custom_cost=None, min_size=2, jump=5, params=None
-    ):
+        self,
+        width: int = 100,
+        model: str = "l2",
+        custom_cost: Optional[BaseCost] = None,
+        min_size: int = 2,
+        jump: int = 5,
+        params: Optional[dict[str, Any]] = None,
+    ) -> None:
         """Instanciate with window length.
 
         Args:
@@ -40,7 +49,12 @@ class Window(BaseEstimator):
                 self.cost = cost_factory(model=model, **params)
         self.score = list()
 
-    def _seg(self, n_bkps=None, pen=None, epsilon=None):
+    def _seg(
+        self,
+        n_bkps: Optional[int] = None,
+        pen: Optional[float] = None,
+        epsilon: Optional[float] = None,
+    ) -> list[int]:
         """Sequential peak search.
 
         The stopping rule depends on the parameter passed to the function.
@@ -99,7 +113,7 @@ class Window(BaseEstimator):
 
         return bkps
 
-    def fit(self, signal) -> "Window":
+    def fit(self, signal: NDArray[np.number]) -> Self:
         """Compute params to segment signal.
 
         Args:
@@ -136,7 +150,12 @@ class Window(BaseEstimator):
         self.score = np.array(score)
         return self
 
-    def predict(self, n_bkps=None, pen=None, epsilon=None):
+    def predict(
+        self,
+        n_bkps: Optional[int] = None,
+        pen: Optional[float] = None,
+        epsilon: Optional[float] = None,
+    ) -> list[int]:
         """Return the optimal breakpoints.
 
         Must be called after the fit method. The breakpoints are associated with the signal passed
@@ -171,7 +190,13 @@ class Window(BaseEstimator):
         bkps = self._seg(n_bkps=n_bkps, pen=pen, epsilon=epsilon)
         return bkps
 
-    def fit_predict(self, signal, n_bkps=None, pen=None, epsilon=None):
+    def fit_predict(
+        self,
+        signal: NDArray[np.number],
+        n_bkps: Optional[int] = None,
+        pen: Optional[float] = None,
+        epsilon: Optional[float] = None,
+    ) -> list[int]:
         """Helper method to call fit and predict once."""
         self.fit(signal)
         return self.predict(n_bkps=n_bkps, pen=pen, epsilon=epsilon)

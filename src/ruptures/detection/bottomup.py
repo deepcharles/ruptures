@@ -3,7 +3,11 @@ r"""Bottom-up segmentation."""
 import heapq
 from bisect import bisect_left
 from functools import lru_cache
+from typing import Optional, Any
+from typing_extensions import Self
 
+import numpy as np
+from numpy.typing import NDArray
 from ruptures.base import BaseCost, BaseEstimator
 from ruptures.costs import cost_factory
 from ruptures.utils import Bnode, pairwise, sanity_check
@@ -13,7 +17,14 @@ from ruptures.exceptions import BadSegmentationParameters
 class BottomUp(BaseEstimator):
     """Bottom-up segmentation."""
 
-    def __init__(self, model="l2", custom_cost=None, min_size=2, jump=5, params=None):
+    def __init__(
+        self,
+        model: str = "l2",
+        custom_cost: Optional[BaseCost] = None,
+        min_size: int = 2,
+        jump: int = 5,
+        params: Optional[dict[str, Any]] = None,
+    ) -> None:
         """Initialize a BottomUp instance.
 
         Args:
@@ -66,7 +77,7 @@ class BottomUp(BaseEstimator):
         return leaves
 
     @lru_cache(maxsize=None)
-    def merge(self, left, right):
+    def merge(self, left: Bnode, right: Bnode) -> Bnode:
         """Merge two contiguous segments."""
         assert left.end == right.start, "Segments are not contiguous."
         start, end = left.start, right.end
@@ -74,7 +85,12 @@ class BottomUp(BaseEstimator):
         node = Bnode(start, end, val, left=left, right=right)
         return node
 
-    def _seg(self, n_bkps=None, pen=None, epsilon=None):
+    def _seg(
+        self,
+        n_bkps: Optional[int] = None,
+        pen: Optional[float] = None,
+        epsilon: Optional[float] = None,
+    ):
         """Compute the bottom-up segmentation.
 
         The stopping rule depends on the parameter passed to the function.
@@ -144,7 +160,7 @@ class BottomUp(BaseEstimator):
         partition = {(leaf.start, leaf.end): leaf.val for leaf in leaves}
         return partition
 
-    def fit(self, signal) -> "BottomUp":
+    def fit(self, signal: NDArray[np.number]) -> Self:
         """Compute params to segment signal.
 
         Args:
@@ -164,7 +180,12 @@ class BottomUp(BaseEstimator):
         self.leaves = self._grow_tree()
         return self
 
-    def predict(self, n_bkps=None, pen=None, epsilon=None):
+    def predict(
+        self,
+        n_bkps: Optional[int] = None,
+        pen: Optional[float] = None,
+        epsilon: Optional[float] = None,
+    ) -> list[int]:
         """Return the optimal breakpoints.
 
         Must be called after the fit method. The breakpoints are associated with the signal passed
@@ -200,7 +221,13 @@ class BottomUp(BaseEstimator):
         bkps = sorted(e for s, e in partition.keys())
         return bkps
 
-    def fit_predict(self, signal, n_bkps=None, pen=None, epsilon=None):
+    def fit_predict(
+        self,
+        signal: NDArray[np.number],
+        n_bkps: Optional[int] = None,
+        pen: Optional[float] = None,
+        epsilon: Optional[float] = None,
+    ) -> list[int]:
         """Fit to the signal and return the optimal breakpoints.
 
         Helper method to call fit and predict once

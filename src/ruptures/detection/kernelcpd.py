@@ -5,6 +5,9 @@ from ruptures.costs import cost_factory
 from ruptures.utils import from_path_matrix_to_bkps_list, sanity_check
 from ruptures.exceptions import BadSegmentationParameters
 import numpy as np
+from numpy.typing import NDArray
+from typing import Optional, Any
+from typing_extensions import Self
 
 from ._detection.ekcpd import (
     ekcpd_cosine,
@@ -27,7 +30,13 @@ class KernelCPD(BaseEstimator):
     more information.
     """
 
-    def __init__(self, kernel="linear", min_size=2, jump=1, params=None):
+    def __init__(
+        self,
+        kernel: str = "linear",
+        min_size: int = 2,
+        jump: int = 1,
+        params: Optional[dict[str, Any]] = None,
+    ) -> None:
         r"""Creates a KernelCPD instance.
 
         Available kernels:
@@ -62,7 +71,7 @@ class KernelCPD(BaseEstimator):
         self.n_samples = None
         self.segmentations_dict = dict()  # {n_bkps: bkps_list}
 
-    def fit(self, signal) -> "KernelCPD":
+    def fit(self, signal: NDArray[np.number]) -> Self:
         """Update some parameters (no computation in this function).
 
         Args:
@@ -77,7 +86,9 @@ class KernelCPD(BaseEstimator):
         self.n_samples = signal.shape[0]
         return self
 
-    def predict(self, n_bkps=None, pen=None):
+    def predict(
+        self, n_bkps: Optional[int] = None, pen: Optional[float] = None
+    ) -> list[int]:
         """Return the optimal breakpoints.
 
         Must be called after the fit method.
@@ -150,7 +161,12 @@ class KernelCPD(BaseEstimator):
                 ind = path_matrix[ind]
             return my_bkps[::-1]
 
-    def fit_predict(self, signal, n_bkps=None, pen=None):
+    def fit_predict(
+        self,
+        signal: NDArray[np.number],
+        n_bkps: Optional[int] = None,
+        pen: Optional[float] = None,
+    ) -> list[int]:
         """Fit to the signal and return the optimal breakpoints.
 
         Helper method to call fit and predict once

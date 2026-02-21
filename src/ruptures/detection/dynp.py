@@ -1,7 +1,11 @@
 r"""Dynamic programming."""
 
 from functools import lru_cache
+from typing import Any, Optional
+from typing_extensions import Self
 
+import numpy as np
+from numpy.typing import NDArray
 from ruptures.utils import sanity_check
 from ruptures.costs import cost_factory
 from ruptures.base import BaseCost, BaseEstimator
@@ -15,7 +19,14 @@ class Dynp(BaseEstimator):
     sum of errors is minimum.
     """
 
-    def __init__(self, model="l2", custom_cost=None, min_size=2, jump=5, params=None):
+    def __init__(
+        self,
+        model: str = "l2",
+        custom_cost: Optional[BaseCost] = None,
+        min_size: int = 2,
+        jump: int = 5,
+        params: Optional[dict[str, Any]] = None,
+    ) -> None:
         """Creates a Dynp instance.
 
         Args:
@@ -38,7 +49,7 @@ class Dynp(BaseEstimator):
         self.n_samples = None
 
     @lru_cache(maxsize=None)
-    def seg(self, start, end, n_bkps):
+    def seg(self, start: int, end: int, n_bkps: int) -> dict[tuple[int, int], float]:
         """Recurrence to find the optimal partition of signal[start:end].
 
         This method is to be memoized and then used.
@@ -92,7 +103,7 @@ class Dynp(BaseEstimator):
             # Find the optimal partition
             return min(sub_problems, key=lambda d: sum(d.values()))
 
-    def fit(self, signal) -> "Dynp":
+    def fit(self, signal: NDArray[np.number]) -> Self:
         """Create the cache associated with the signal.
 
         Dynamic programming is a recurrence; intermediate results are cached to speed up
@@ -111,7 +122,7 @@ class Dynp(BaseEstimator):
         self.n_samples = signal.shape[0]
         return self
 
-    def predict(self, n_bkps):
+    def predict(self, n_bkps: int) -> list[int]:
         """Return the optimal breakpoints.
 
         Must be called after the fit method. The breakpoints are associated with the signal passed
@@ -139,7 +150,7 @@ class Dynp(BaseEstimator):
         bkps = sorted(e for s, e in partition.keys())
         return bkps
 
-    def fit_predict(self, signal, n_bkps):
+    def fit_predict(self, signal: NDArray[np.number], n_bkps: int) -> list[int]:
         """Fit to the signal and return the optimal breakpoints.
 
         Helper method to call fit and predict once
