@@ -85,7 +85,16 @@ class _ImplicitGramMatrix:
 
 
 class CostRbf(BaseCost):
-    r"""Kernel cost function (rbf kernel)."""
+    r"""Kernel cost function using the radial basis function (RBF) kernel.
+
+    The cost of a segment :math:`[a, b)` is defined as:
+
+    .. math::
+        c(a, b) = \sum_{i=a}^{b-1} K(x_i, x_i)
+                  - \frac{1}{b - a} \sum_{i=a}^{b-1} \sum_{j=a}^{b-1} K(x_i, x_j)
+
+    where :math:`K(x, y) = \exp(-\gamma \|x - y\|^2)` is the RBF kernel.
+    """
 
     model = "rbf"
 
@@ -100,7 +109,31 @@ class CostRbf(BaseCost):
         gamma: typing.Optional[float] = None,
         quadratic_precompute: typing.Optional[bool] = True,
     ):
-        """Initialize the object."""
+        """Initialize the CostRbf instance.
+
+        Args:
+            gamma (float or None): Bandwidth parameter of the RBF kernel,
+                defined as :math:`K(x, y) = \\exp(-\\gamma \\|x - y\\|^2)`.
+                Must be strictly positive when provided.
+                If ``None`` (default), ``gamma`` is set automatically after
+                ``fit()`` using the median heuristic:
+                :math:`\\gamma = 1 / \\operatorname{median}(\\|x_i - x_j\\|^2)`.
+                For signals with more than 4096 samples, the median is estimated
+                on a regularly-spaced subsample to keep the cost tractable.
+
+            quadratic_precompute (bool or None): Controls whether the full
+                :math:`n \\times n` Gram matrix is computed and stored in memory
+                after ``fit()``.
+
+                - ``True`` (default): always precompute and store the full Gram
+                  matrix. Memory complexity is :math:`O(n^2)`. Fastest at
+                  inference time.
+                - ``False``: never precompute. The Gram matrix is evaluated
+                  on-demand for each queried block. Memory complexity is
+                  :math:`O(n)`. Recommended for very large signals.
+                - ``None``: automatic mode. Behaves like ``True`` when
+                  :math:`n \\leq 4096`, and like ``False`` otherwise.
+        """
         self.min_size = 1
         self.gamma = gamma
         self._gram = None

@@ -59,6 +59,16 @@ algo = rpt.Dynp(custom_cost=c)
 algo = rpt.Dynp(model="rbf")
 ```
 
+### Memory usage
+
+By default, the full $n \times n$ Gram matrix is precomputed and stored in memory after `fit()` (`quadratic_precompute=True`, $O(n^2)$ memory).
+For very large signals, set `quadratic_precompute=False` to evaluate the Gram matrix on demand instead, reducing memory to $O(n)$ at the cost of extra computation at inference time.
+Setting `quadratic_precompute=None` switches automatically: explicit storage for $n \leq 4096$, on-demand otherwise.
+
+```python
+c = rpt.costs.CostRbf(quadratic_precompute=False)
+```
+
 ## References
 
 <a id="Garreau2018">[Garreau2018]</a>
