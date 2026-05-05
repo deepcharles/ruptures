@@ -1,162 +1,244 @@
-r"""L1Potts."""
+r"""L1Potts.
+
+Implementation prepared with assistance from Claude (Anthropic) acting
+as a coding agent: rewrite of the original L1Potts contribution to
+faithfully match Algorithm 1 of Storath, Weinmann & Unser (2017), plus
+parent-pointer backtracking, input hardening, and the test suite under
+tests/test_l1potts.py. The algorithm itself is the authors'; the agent's
+role was implementation, hardening, and testing.
+"""
+
+import numpy as np
 
 from ruptures.base import BaseEstimator
 from ruptures.exceptions import BadSegmentationParameters
-import numpy as np
 
 
 class L1Potts(BaseEstimator):
-    
-    """Penalized change point detection for piecewise constant signals with L1 data fidelity
-    
-    The L1 Potts model is defined as follows:
+    """Penalized change point detection for piecewise constant 1D signals with
+    L1 data fidelity.
 
-    \min_{u} \sum_{i=1}^N w_i |f_i - u_i| + \gamma \sum_{i=1}^{N-1} \mathbb{I}(u_i \neq u_{i+1})
-    
-    The algorithm implemented is described in the paper
-    the paper 
-    Storath, Weinmann, Unser. 
-    Jump-penalized least absolute values estimation of scalar or circle-valued signals, 
-    Information and Inference, 2017
-     
+    Solves the L1 Potts model
+
+        min_u  sum_i w_i * |f_i - u_i|  +  gamma * #{ i : u_i != u_{i+1} }
+
+    where f is the input signal, w are non-negative weights, and gamma > 0
+    is the jump penalty.
+
+    Implements Algorithm 1 of:
+
+        Storath, Weinmann, Unser. Jump-penalized least absolute values
+        estimation of scalar or circle-valued signals. Information and
+        Inference, 2017.
+
+    The algorithm reduces the search space to V = unique(signal), justified
+    by Theorem 2 of the paper (a global minimizer takes values in V because
+    the weighted L1 median always lies among the data values), then runs
+    a Viterbi-type dynamic program over (level, sample) pairs. The Potts
+    penalty is handled in O(K) per column via the Felzenszwalb-Huttenlocher
+    trick (the global minimum of the previous column plus gamma is shared
+    across all jump targets). Time complexity is O(K * N) where K is the
+    number of distinct values in the signal.
+
+    The forward pass matches the paper exactly. For backtracking we store
+    explicit parent pointers (one byte per cell) instead of subtracting
+    gamma in place from the float64 cost table; this is mathematically
+    equivalent to the paper's procedure but reduces memory from
+    8 * K * N bytes to K * N + O(K + N) bytes.
+
+    Only 1D signals are supported.
     """
-    
+
     def __init__(self):
-        """Initialize a L1Potts instance.
-        """
+        """Initialize a L1Potts instance."""
         self.jump = 1
         self.min_size = 1
         self.n_samples = None
-    
-    def fit(self, signal) -> "L1Potts":
+        self.signal = None
+        self._levels = None
+        self._weights = None
+
+    def fit(self, signal, weights=None) -> "L1Potts":
         """Set params.
 
         Args:
-            signal (array): signal to segment. Shape (n_samples)
+            signal (array): signal to segment. Shape (n_samples,) or
+                (n_samples, 1). Must be a real-valued numeric array with
+                only finite entries.
+            weights (array, optional): per-sample non-negative finite
+                weights. Shape (n_samples,). Defaults to uniform weights.
 
         Returns:
             self
+
+        Raises:
+            BadSegmentationParameters: if ``signal`` is not 1D (after
+                squeezing a trailing length-1 axis) or is empty.
+            ValueError: if ``signal`` or ``weights`` has a non-numeric dtype,
+                contains NaN/Inf, or ``weights`` has the wrong shape or
+                negative entries.
         """
-        # update params
-        signal = signal.squeeze()
-        if signal.ndim == 1:
-            (n_samples,) = signal.shape
-        else:
+        signal = np.asarray(signal)
+        if signal.dtype.kind not in ("i", "u", "f"):
+            raise ValueError(
+                "L1Potts requires a real-valued numeric signal, got dtype "
+                "{}.".format(signal.dtype)
+            )
+        signal = np.atleast_1d(signal.astype(float, copy=False).squeeze())
+        if signal.ndim != 1:
             raise BadSegmentationParameters("L1Potts only accepts 1D signals.")
-        self.n_samples = n_samples
-        self.signal = signal
-        return self
-    
-    def predict(self, pen, weights=None):
-        
-        f = self.signal
-        
+        if signal.size == 0:
+            raise BadSegmentationParameters("L1Potts requires a non-empty signal.")
+        if not np.all(np.isfinite(signal)):
+            raise ValueError("signal must contain only finite values (no NaN or Inf).")
+        n_samples = signal.shape[0]
+
         if weights is None:
-            weights = np.ones_like(f)
+            weights = np.ones(n_samples, dtype=float)
+        else:
+            weights = np.asarray(weights)
+            if weights.dtype.kind not in ("i", "u", "f"):
+                raise ValueError(
+                    "weights must be real-valued numeric, got dtype "
+                    "{}.".format(weights.dtype)
+                )
+            weights = weights.astype(float, copy=False)
+            if weights.shape != (n_samples,):
+                raise ValueError(
+                    "weights must have shape ({},), got {}.".format(
+                        n_samples, weights.shape
+                    )
+                )
+            if not np.all(np.isfinite(weights)):
+                raise ValueError(
+                    "weights must contain only finite values (no NaN or Inf)."
+                )
+            if np.any(weights < 0):
+                raise ValueError("weights must be non-negative.")
 
-        N = len(f)
-        v = np.unique(f)
+        # Defensive copies: shield the solver from later mutations of the
+        # caller's arrays. Cheap (16 * n_samples bytes total).
+        self.signal = signal.copy()
+        self.n_samples = n_samples
+        self._weights = weights.copy()
+        self._levels = np.unique(self.signal)
+        return self
 
-        d = lambda x,y: np.abs(x - y)
-        K = len(v)
-        B = np.zeros((K, N))
+    def predict(self, pen):
+        """Return the optimal breakpoints.
 
-        # tabulation
-        B[:, 0] = d(v, f[0]) * weights[0]
-        for n in range(1, N):
-            z = np.min(B[:, n - 1])
-            B[:, n] = d(v, f[n]) * weights[n] + np.minimum(z + pen, B[:, n - 1])
-
-        # backtracking
-        u = np.zeros(N)
-        l = np.argmin(B[:, N - 1])
-        u[N - 1] = v[l]
-        for n in range(N - 2, -1, -1):
-            B[l, n] -= pen
-            l = np.argmin(B[:, n])
-            u[n] = v[l]
-
-        brkps_np = np.where(np.diff(u) != 0)[0] + 1
-        
-        # convert to same format ruptures uses
-        brkps = brkps_np.tolist() + [N]
-        return brkps
-    
-    def fit_predict(self, signal, pen):
-        """Fit to the signal and return the optimal breakpoints.
-
-        Helper method to call fit and predict once
+        Must be called after the fit method. The breakpoints are associated
+        with the signal passed to ``fit``.
 
         Args:
-            signal (array): signal. Shape (n_samples)
-            pen (float): penalty value (>0)
+            pen (float): jump penalty (>0). May be ``+inf`` to disallow jumps.
+
+        Raises:
+            RuntimeError: if called before ``fit``.
+            ValueError: if ``pen`` is not a positive number (or NaN).
+
+        Returns:
+            list: sorted list of breakpoints (last entry is ``n_samples``).
+        """
+        if self.signal is None:
+            raise RuntimeError("predict() called before fit(); call fit(signal) first.")
+        try:
+            pen = float(pen)
+        except (TypeError, ValueError):
+            raise ValueError(
+                "pen must be a positive real number, got {!r}.".format(pen)
+            )
+        if not pen > 0:
+            raise ValueError("pen must be positive, got {!r}.".format(pen))
+
+        signal = self.signal
+        weights = self._weights
+        levels = self._levels
+        n_samples = self.n_samples
+        n_levels = levels.shape[0]
+
+        # Forward DP. dp[k] is the running cost of segmenting signal[:n+1]
+        # ending at level levels[k]. Only the previous column is kept.
+        # parents[k, n] == 1 means the optimum entering (levels[k], n) was
+        # reached via a jump (best previous level + pen). parents[:, 0] is
+        # unused.
+        # prev_argmin[n] is argmin_k dp[k] right after step n; used during
+        # backtracking to identify the level taken when a jump is made.
+        parents = np.zeros((n_levels, n_samples), dtype=np.uint8)
+        prev_argmin = np.empty(n_samples, dtype=np.intp)
+
+        dp = np.abs(levels - signal[0]) * weights[0]
+        prev_argmin[0] = int(np.argmin(dp))
+        for n in range(1, n_samples):
+            jump_cost = dp.min() + pen
+            take_jump = jump_cost < dp
+            parents[:, n] = take_jump
+            dp = np.abs(levels - signal[n]) * weights[n] + np.where(
+                take_jump, jump_cost, dp
+            )
+            prev_argmin[n] = int(np.argmin(dp))
+
+        # Backtracking. Walk backwards, recording a breakpoint each time the
+        # level changes between consecutive samples.
+        level = int(prev_argmin[n_samples - 1])
+        bkps = [n_samples]
+        for n in range(n_samples - 1, 0, -1):
+            new_level = int(prev_argmin[n - 1]) if parents[level, n] else level
+            if new_level != level:
+                bkps.append(n)
+            level = new_level
+        bkps.reverse()
+        return bkps
+
+    def fit_predict(self, signal, pen, weights=None):
+        """Fit to the signal and return the optimal breakpoints.
+
+        Helper method to call fit and predict once.
+
+        Args:
+            signal (array): signal. Shape (n_samples,) or (n_samples, 1).
+            pen (float): jump penalty (>0)
+            weights (array, optional): per-sample non-negative weights.
 
         Returns:
             list: sorted list of breakpoints
         """
-        self.fit(signal)
+        self.fit(signal, weights=weights)
         return self.predict(pen)
 
     def _compute_functional_value(self, bkps, pen):
-        """
-        Compute the functional value of the L1 Potts model.
+        """Compute the L1 Potts functional value for a given segmentation.
+
+        Uses the (weighted) median of each segment, which is the optimal
+        constant level for the L1 fit. Helper for comparing solvers; not
+        part of the public API.
         """
         functional_value = pen * (len(bkps) - 1)
+        weights = self._weights
         bkps = [0] + bkps
-        
         for i in range(len(bkps) - 1):
-            segment = self.signal[bkps[i]:bkps[i + 1]]
-            functional_value += np.sum(np.abs(np.median(segment) - segment))
-            
+            seg = self.signal[bkps[i] : bkps[i + 1]]
+            seg_w = weights[bkps[i] : bkps[i + 1]]
+            level = _weighted_median(seg, seg_w)
+            functional_value += float(np.sum(seg_w * np.abs(seg - level)))
         return functional_value
-    
-# example usage and comparison with ruptures Pelt method
-if __name__ == "__main__":
-    import ruptures as rpt
-    import time
-    
-    # Generate a synthetic signal
-    n, dim = 2000, 1
-    n_bkps, sigma = 10, 0.2
-    signal, bkps = rpt.pw_constant(n, dim, n_bkps, noise_std=sigma, seed=1)
-    pen = 0.5
 
-    # L1Potts (This algorithm is not implemented in ruptures yet)
-    l1potts = L1Potts()
-    l1potts.fit(signal)
-    
-    time_start = time.time()
-    potts_brkps = l1potts.predict(pen)
-    time_potts = time.time() - time_start
-    
-    # Compare with Pelt method
-    costL1 = rpt.costs.CostL1()
-    costL1.min_size = 1
-    algo = rpt.Pelt(custom_cost=costL1, min_size=1, jump=1).fit(signal)
-    
-    time_start = time.time()
-    pelt_bkps = algo.predict(pen=pen)
-    time_pelt = time.time() - time_start
 
-    print("+++Execution times+++")
-    print("Pelt:    ", time_pelt)
-    print("L1Potts: ", time_potts)
-    print("Speedup: ", time_pelt / time_potts)
-    print("----------------")
-    
-    # compare the functional values
-    fval_pelt = l1potts._compute_functional_value(pelt_bkps, pen)
-    fval_l1potts = l1potts._compute_functional_value(potts_brkps, pen)
-    print("+++Functional values+++")
-    print("Pelt:    ", fval_pelt)
-    print("L1Potts: ", fval_l1potts)
-    print("Difference in functional values: ", fval_pelt - fval_l1potts)
-    print("----------------")
-    
-    # Important note: the breakpoints might be different as the solution of the optimization problem is not unique in general
-    # if the breakpoints are different, both solutions are optimal in the sense of the model as they give the same minimal functional value
-    print("+++Breakpoints+++")
-    print("Pelt:    ", pelt_bkps)
-    print("L1Potts: ", potts_brkps)
+def _weighted_median(values, weights):
+    """Lower weighted median of ``values`` with non-negative ``weights``.
 
-    
+    Returns the smallest value v such that the cumulative weight of the
+    samples at or below v is at least half of the total weight. Falls
+    back to the unweighted middle element if the total weight is zero.
+    """
+    order = np.argsort(values, kind="stable")
+    sorted_vals = values[order]
+    sorted_w = weights[order]
+    csum = np.cumsum(sorted_w)
+    total = csum[-1]
+    if total <= 0:
+        return float(sorted_vals[len(sorted_vals) // 2])
+    idx = int(np.searchsorted(csum, total / 2.0, side="left"))
+    if idx >= sorted_vals.shape[0]:
+        idx = sorted_vals.shape[0] - 1
+    return float(sorted_vals[idx])

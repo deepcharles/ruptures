@@ -49,6 +49,7 @@ nav:
       - 'Binary segmentation': user-guide/detection/binseg.md
       - 'Bottom-up segmentation': user-guide/detection/bottomup.md
       - 'Window sliding segmentation': user-guide/detection/window.md
+      - 'L1 Potts': user-guide/detection/l1potts.md
     - Cost functions:
       - 'CostL1': user-guide/costs/costl1.md
       - 'CostL2': user-guide/costs/costl2.md
@@ -92,6 +93,7 @@ nav:
           - Binseg: code-reference/detection/binseg-reference.md
           - BottomUp: code-reference/detection/bottomup-reference.md
           - Window: code-reference/detection/window-reference.md
+          - L1Potts: code-reference/detection/l1potts-reference.md
       - Cost functions:
           - 'CostL1': code-reference/costs/costl1-reference.md
           - 'CostL2': code-reference/costs/costl2-reference.md
