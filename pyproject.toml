@@ -5,7 +5,7 @@ requires = [
     "wheel",
     "Cython>=0.28.5",
     "setuptools_scm[toml]>=3.4",  # https://scikit-hep.org/developer/packaging#git-tags-official-pypa-method
-    "oldest-supported-numpy",  # https://github.com/scipy/oldest-supported-numpy
+    "numpy>=2.0.0",  # https://numpy.org/doc/stable/dev/depending_on_numpy.html
     "scipy>=0.19.1",
 ]
 build-backend = "setuptools.build_meta"
