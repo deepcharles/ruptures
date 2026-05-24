@@ -1,7 +1,8 @@
 import numpy as np
+import scipy
 import pytest
 from ruptures import Binseg
-from ruptures.costs import CostLinear, CostNormal, cost_factory
+from ruptures.costs import CostLinear, CostNormal, CostRbf, cost_factory
 from ruptures.costs.costml import CostMl
 from ruptures.datasets import pw_constant
 from ruptures.exceptions import NotEnoughPoints
@@ -237,3 +238,51 @@ def test_costl2_small_data():
         "got {computed_break_dict}.",
     )
     assert expected_break_dict == computed_break_dict, err_msg
+
+
+@pytest.mark.parametrize("explicit", (True, False))
+def test_costrbf_explicit_implicit(explicit):
+    """Test if the cost RBF use a valid kernel."""
+
+    rng = np.random.default_rng(seed=123567890)
+
+    data = rng.normal(size=(2048, 3))
+    examinated = slice(512, 1024)
+    gamma = 1.5
+    cost = CostRbf(quadratic_precompute=explicit, gamma=gamma)
+    cost.fit(data)
+
+    dist_sq = scipy.spatial.distance.squareform(
+        scipy.spatial.distance.pdist(data[examinated], "sqeuclidean")
+    )
+    gram = np.exp(-gamma * dist_sq)
+    assert np.allclose(gram, cost.gram[examinated, examinated])
+
+
+@pytest.mark.parametrize(
+    "n_samples_explicit",
+    [
+        (n_samples, explicit)
+        for n_samples in (5, 100, 2_000, 50_000, 1_000_000, 20_000_000)
+        for explicit in (True, False)
+        if explicit is False or n_samples < 1000
+    ],
+)
+def test_cost_rbf_gamma_heuristic(n_samples_explicit):
+    """Test if the heuristic formula works as expected for computing median in
+    cost RBF."""
+
+    n_samples, explicit = n_samples_explicit
+    cost = CostRbf(quadratic_precompute=explicit)
+    cost.fit(np.array(np.arange(n_samples), dtype=np.float64)[:, None])
+    dist_median_from_heuristic = cost.gamma ** (-0.5)
+    dist_median_from_asympto_formula = (1 - 0.5**0.5) * n_samples
+
+    # two source of errors:
+    # - absolute error of 1 is allowed (median of integers)
+    # - relative error of 1e-3 is allowed
+    absolute_error = np.abs(
+        dist_median_from_heuristic - dist_median_from_asympto_formula
+    )
+    relative_error = absolute_error / dist_median_from_asympto_formula
+    assert absolute_error <= 1 or relative_error <= 1e-3
