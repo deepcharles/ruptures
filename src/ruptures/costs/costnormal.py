@@ -1,5 +1,8 @@
 r"""Gaussian process changes (CostNormal)"""
 
+from typing import Optional
+from numpy.typing import NDArray
+from typing_extensions import Self
 import warnings
 
 import numpy as np
@@ -13,7 +16,7 @@ class CostNormal(BaseCost):
 
     model = "normal"
 
-    def __init__(self, add_small_diag=True):
+    def __init__(self, add_small_diag: Optional[bool] = True) -> None:
         """Initialize the object.
 
         Args:
@@ -32,7 +35,7 @@ class CostNormal(BaseCost):
                 UserWarning,
             )
 
-    def fit(self, signal) -> "CostNormal":
+    def fit(self, signal: NDArray[np.number]) -> Self:
         """Set parameters of the instance.
 
         Args:
@@ -49,7 +52,7 @@ class CostNormal(BaseCost):
         self.n_samples, self.n_dims = self.signal.shape
         return self
 
-    def error(self, start, end) -> float:
+    def error(self, start: int, end: int) -> float:
         """Return the approximation cost on the segment [start:end].
 
         Args:

@@ -1,6 +1,10 @@
 r"""Linear model change."""
 
+from typing_extensions import Self
+
+import numpy as np
 from numpy.linalg import lstsq
+from numpy.typing import NDArray
 
 from ruptures.base import BaseCost
 from ruptures.costs import NotEnoughPoints
@@ -11,13 +15,13 @@ class CostLinear(BaseCost):
 
     model = "linear"
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize the object."""
         self.signal = None
         self.covar = None
         self.min_size = 2
 
-    def fit(self, signal) -> "CostLinear":
+    def fit(self, signal: NDArray[np.number]) -> Self:
         """Set parameters of the instance.
 
         The first column contains the observed variable. The other columns contains the covariates.
@@ -34,7 +38,7 @@ class CostLinear(BaseCost):
         self.covar = signal[:, 1:]
         return self
 
-    def error(self, start, end) -> float:
+    def error(self, start: int, end: int) -> float:
         """Return the approximation cost on the segment [start:end].
 
         Args:

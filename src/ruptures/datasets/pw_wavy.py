@@ -1,13 +1,20 @@
 """Piecewise sinusoidal (pw_wavy)"""
 
 from itertools import cycle
+from typing import Optional
 
 import numpy as np
 
+from numpy.typing import NDArray
 from ruptures.utils import draw_bkps
 
 
-def pw_wavy(n_samples=200, n_bkps=3, noise_std=None, seed=None):
+def pw_wavy(
+    n_samples: int = 200,
+    n_bkps: int = 3,
+    noise_std: Optional[float] = None,
+    seed: Optional[int] = None,
+) -> tuple[NDArray[np.floating], list[int]]:
     """Return a 1D piecewise wavy signal and the associated changepoints.
 
     Args:

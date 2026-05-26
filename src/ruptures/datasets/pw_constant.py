@@ -1,13 +1,20 @@
 """Piecewise constant signal (with noise)"""
 
+from typing import Optional
 import numpy as np
 
+from numpy.typing import NDArray
 from ruptures.utils import draw_bkps
 
 
 def pw_constant(
-    n_samples=200, n_features=1, n_bkps=3, noise_std=None, delta=(1, 10), seed=None
-):
+    n_samples: int = 200,
+    n_features: int = 1,
+    n_bkps: int = 3,
+    noise_std: Optional[float] = None,
+    delta: tuple[int, int] = (1, 10),
+    seed: Optional[int] = None,
+) -> tuple[NDArray[np.number], list[int]]:
     """Return a piecewise constant signal and the associated changepoints.
 
     Args:

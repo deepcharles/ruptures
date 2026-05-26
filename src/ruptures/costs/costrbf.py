@@ -1,6 +1,9 @@
 r"""Kernelized mean change."""
 
+from typing import Optional
+from typing_extensions import Self
 import numpy as np
+from numpy.typing import NDArray
 from scipy.spatial.distance import pdist, squareform
 
 from ruptures.exceptions import NotEnoughPoints
@@ -12,14 +15,14 @@ class CostRbf(BaseCost):
 
     model = "rbf"
 
-    def __init__(self, gamma=None):
+    def __init__(self, gamma: Optional[float] = None) -> None:
         """Initialize the object."""
         self.min_size = 1
         self.gamma = gamma
         self._gram = None
 
     @property
-    def gram(self):
+    def gram(self) -> NDArray[np.number]:
         """Generate the gram matrix (lazy loading).
 
         Only access this function after a `.fit()` (otherwise
@@ -39,7 +42,7 @@ class CostRbf(BaseCost):
             self._gram = np.exp(squareform(-K))
         return self._gram
 
-    def fit(self, signal) -> "CostRbf":
+    def fit(self, signal: NDArray[np.number]) -> Self:
         """Sets parameters of the instance.
 
         Args:
@@ -61,7 +64,7 @@ class CostRbf(BaseCost):
 
         return self
 
-    def error(self, start, end) -> float:
+    def error(self, start: int, end: int) -> float:
         """Return the approximation cost on the segment [start:end].
 
         Args:

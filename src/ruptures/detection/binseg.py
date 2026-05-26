@@ -1,8 +1,11 @@
 r"""Binary segmentation."""
 
 from functools import lru_cache
+from typing import Any, Optional, Union
+from typing_extensions import Self
 
 import numpy as np
+from numpy.typing import NDArray
 from ruptures.base import BaseCost, BaseEstimator
 from ruptures.costs import cost_factory
 from ruptures.exceptions import BadSegmentationParameters
@@ -12,7 +15,14 @@ from ruptures.utils import pairwise, sanity_check
 class Binseg(BaseEstimator):
     """Binary segmentation."""
 
-    def __init__(self, model="l2", custom_cost=None, min_size=2, jump=5, params=None):
+    def __init__(
+        self,
+        model: str = "l2",
+        custom_cost: Optional[BaseCost] = None,
+        min_size: int = 2,
+        jump: int = 5,
+        params: Optional[dict[str, Any]] = None,
+    ) -> None:
         """Initialize a Binseg instance.
 
         Args:
@@ -34,7 +44,12 @@ class Binseg(BaseEstimator):
         self.n_samples = None
         self.signal = None
 
-    def _seg(self, n_bkps=None, pen=None, epsilon=None):
+    def _seg(
+        self,
+        n_bkps: Optional[int] = None,
+        pen: Optional[float] = None,
+        epsilon: Optional[float] = None,
+    ) -> dict[tuple[int, int], float]:
         """Computes the binary segmentation.
 
         The stopping rule depends on the parameter passed to the function.
@@ -81,7 +96,7 @@ class Binseg(BaseEstimator):
         return partition
 
     @lru_cache(maxsize=None)
-    def single_bkp(self, start, end):
+    def single_bkp(self, start: int, end: int) -> tuple[Union[int, None], float]:
         """Return the optimal breakpoint of [start:end] (if it exists)."""
         segment_cost = self.cost.error(start, end)
         if np.isinf(segment_cost) and segment_cost < 0:  # if cost is -inf
@@ -101,7 +116,7 @@ class Binseg(BaseEstimator):
             return None, 0
         return bkp, gain
 
-    def fit(self, signal) -> "Binseg":
+    def fit(self, signal: NDArray[np.number]) -> Self:
         """Compute params to segment signal.
 
         Args:
@@ -121,7 +136,12 @@ class Binseg(BaseEstimator):
 
         return self
 
-    def predict(self, n_bkps=None, pen=None, epsilon=None):
+    def predict(
+        self,
+        n_bkps: Optional[int] = None,
+        pen: Optional[float] = None,
+        epsilon: Optional[float] = None,
+    ) -> list[int]:
         """Return the optimal breakpoints.
 
         Must be called after the fit method. The breakpoints are associated with the
@@ -157,7 +177,13 @@ class Binseg(BaseEstimator):
         bkps = sorted(e for s, e in partition.keys())
         return bkps
 
-    def fit_predict(self, signal, n_bkps=None, pen=None, epsilon=None):
+    def fit_predict(
+        self,
+        signal: NDArray[np.number],
+        n_bkps: Optional[int] = None,
+        pen: Optional[float] = None,
+        epsilon: Optional[float] = None,
+    ) -> list[int]:
         """Fit to the signal and return the optimal breakpoints.
 
         Helper method to call fit and predict once

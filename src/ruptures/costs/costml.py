@@ -1,7 +1,11 @@
 r"""Change detection with a Mahalanobis-type metric."""
 
 import numpy as np
+from numpy.typing import NDArray
+
 from numpy.linalg import inv
+from typing import Optional
+from typing_extensions import Self
 
 from ruptures.base import BaseCost
 from ruptures.exceptions import NotEnoughPoints
@@ -12,7 +16,7 @@ class CostMl(BaseCost):
 
     model = "mahalanobis"
 
-    def __init__(self, metric=None):
+    def __init__(self, metric: Optional[NDArray[np.number]] = None) -> None:
         """Create a new instance.
 
         Args:
@@ -25,7 +29,7 @@ class CostMl(BaseCost):
         self.gram = None
         self.min_size = 2
 
-    def fit(self, signal) -> "CostMl":
+    def fit(self, signal: NDArray[np.number]) -> Self:
         """Set parameters of the instance.
 
         Args:
@@ -47,7 +51,7 @@ class CostMl(BaseCost):
 
         return self
 
-    def error(self, start, end):
+    def error(self, start: int, end: int) -> float:
         """Return the approximation cost on the segment [start:end].
 
         Args:
