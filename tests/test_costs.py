@@ -3,6 +3,7 @@ import pytest
 from ruptures import Binseg
 from ruptures.costs import CostLinear, CostNormal, cost_factory
 from ruptures.costs.costml import CostMl
+from ruptures.costs.costgfssl2 import CostGFSSL2
 from ruptures.datasets import pw_constant
 from ruptures.exceptions import NotEnoughPoints
 
@@ -237,3 +238,27 @@ def test_costl2_small_data():
         "got {computed_break_dict}.",
     )
     assert expected_break_dict == computed_break_dict, err_msg
+
+
+def test_costgfssl2(signal_bkps_5D_noisy):
+    """Test the GFSS cost over a very simple star graph for a signal with one
+    mean change."""
+    signal, bkps = signal_bkps_5D_noisy
+    n_samples = signal.shape[0]
+    star_graph_laplacian_mat = np.array(
+        [
+            [4, -1, -1, -1, -1],
+            [-1, 1, 0, 0, 0],
+            [-1, 0, 1, 0, 0],
+            [-1, 0, 0, 1, 0],
+            [-1, 0, 0, 0, 1],
+        ]
+    )
+    cut_sparsity = 1
+    c = CostGFSSL2(star_graph_laplacian_mat, cut_sparsity).fit(signal)
+    c.error(0, n_samples // 2)
+    c.error(100, n_samples)
+    c.error(10, n_samples // 4)
+    c.sum_of_costs(bkps)
+    with pytest.raises(NotEnoughPoints):
+        c.error(10, 10)
