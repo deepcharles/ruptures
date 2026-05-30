@@ -6,6 +6,7 @@ from ruptures.metrics import (
     meantime,
     precision_recall,
     randindex,
+    adjusted_randindex,
 )
 from ruptures.metrics.sanity_check import BadPartitions
 
@@ -28,6 +29,14 @@ def test_randindex(b_mb):
     m = randindex(b, mb)
     assert 1 > m > 0
     m = randindex(b, b)
+    assert m == 1
+
+
+def test_adjusted_randindex(b_mb):
+    b, mb = b_mb
+    m = adjusted_randindex(b, mb)
+    assert 1 > m > -0.5
+    m = adjusted_randindex(b, b)
     assert m == 1
 
 

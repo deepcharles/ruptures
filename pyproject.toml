@@ -7,6 +7,7 @@ requires = [
     "setuptools_scm[toml]>=3.4",  # https://scikit-hep.org/developer/packaging#git-tags-official-pypa-method
     "numpy>=2.0.0",  # https://numpy.org/doc/stable/dev/depending_on_numpy.html
     "scipy>=0.19.1",
+    "scikit-learn>=1.0",
 ]
 build-backend = "setuptools.build_meta"
 

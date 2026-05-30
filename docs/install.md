@@ -1,6 +1,6 @@
 # Installation
 
-This library requires Python >=3.6 and the following packages: `numpy`, `scipy` and `matplotlib` (the last one is optional and only for display purposes).
+This library requires Python >=3.6 and the following packages: `numpy`, `scipy`, `scikit-learn` and `matplotlib` (the last one is optional and only for display purposes).
 You can either install the latest stable release or the development version.
 
 ## Stable release
