@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 from ruptures import Binseg
-from ruptures.costs import CostLinear, CostNormal, cost_factory
+from ruptures.costs import CostLinear, CostNormal, CostRbf, cost_factory
 from ruptures.costs.costml import CostMl
 from ruptures.datasets import pw_constant
 from ruptures.exceptions import NotEnoughPoints
@@ -237,3 +237,58 @@ def test_costl2_small_data():
         "got {computed_break_dict}.",
     )
     assert expected_break_dict == computed_break_dict, err_msg
+
+
+@pytest.mark.parametrize("cost_name", cost_names)
+def test_costs_refit_matches_fresh_fit(cost_name):
+    """Refitting a cost on a new signal must not reuse state cached from the
+    previous signal (#372)."""
+    signal1, _ = pw_constant(n_features=1, noise_std=1, seed=111111)
+    signal2, bkps2 = pw_constant(n_features=1, noise_std=1, seed=222222)
+
+    reused = cost_factory(cost_name)
+    reused.fit(signal1)
+    reused.error(10, 50)
+    reused.fit(signal2)
+
+    fresh = cost_factory(cost_name)
+    fresh.fit(signal2)
+
+    assert reused.sum_of_costs(bkps2) == pytest.approx(fresh.sum_of_costs(bkps2))
+
+
+def test_costrbf_refit_gamma():
+    """The median-heuristic gamma is recomputed for each fitted signal, while a
+    user-supplied gamma is kept (#372)."""
+    signal1, _ = pw_constant(n_features=1, noise_std=1, seed=111111)
+    signal2, _ = pw_constant(n_features=1, noise_std=3, seed=222222)
+
+    reused = CostRbf()
+    reused.fit(signal1)
+    reused.fit(signal2)
+    fresh = CostRbf()
+    fresh.fit(signal2)
+    assert reused.gamma == pytest.approx(fresh.gamma)
+
+    custom = CostRbf(gamma=0.5)
+    custom.fit(signal1)
+    custom.fit(signal2)
+    assert custom.gamma == 0.5
+
+
+@pytest.mark.parametrize("cost_name", ["rbf", "cosine"])
+def test_detection_refit_matches_fresh_fit(cost_name):
+    """Reusing a detection instance on a second signal gives the same
+    breakpoints as a fresh instance (#372)."""
+    signal1, _ = pw_constant(n_features=1, noise_std=1, seed=111111)
+    signal2, _ = pw_constant(n_features=1, noise_std=1, seed=222222)
+
+    reused = Binseg(model=cost_name)
+    reused.fit(signal1)
+    reused.predict(n_bkps=3)
+    reused.fit(signal2)
+
+    fresh = Binseg(model=cost_name)
+    fresh.fit(signal2)
+
+    assert reused.predict(n_bkps=3) == fresh.predict(n_bkps=3)

@@ -19,6 +19,7 @@ class CostRbf(BaseCost):
         """Initialize the object."""
         self.min_size = 1
         self.gamma = gamma
+        self.has_custom_gamma = False if gamma is None else True
         self._gram = None
 
     @property
@@ -55,6 +56,12 @@ class CostRbf(BaseCost):
             self.signal = signal.reshape(-1, 1)
         else:
             self.signal = signal
+
+        # The gram matrix and the median-heuristic gamma depend on the signal;
+        # discard values computed for a previously fitted signal.
+        self._gram = None
+        if self.has_custom_gamma is False:
+            self.gamma = None
 
         # If gamma is none, set it using the median heuristic.
         # This heuristic involves computing the gram matrix which is lazy loaded

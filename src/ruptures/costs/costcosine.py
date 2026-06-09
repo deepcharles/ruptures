@@ -43,6 +43,11 @@ class CostCosine(BaseCost):
             self.signal = signal.reshape(-1, 1)
         else:
             self.signal = signal
+
+        # The gram matrix depends on the signal; discard the one computed for
+        # a previously fitted signal.
+        self._gram = None
+
         return self
 
     def error(self, start: int, end: int) -> float:
