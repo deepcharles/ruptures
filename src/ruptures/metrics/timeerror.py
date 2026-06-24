@@ -17,11 +17,18 @@ def meantime(true_bkps, my_bkps):
             partition)
 
     Returns:
-        float: mean time error.
+        float: mean time error.  Returns ``np.inf`` when ``my_bkps`` contains
+        no intermediate changepoints (i.e. it predicts a single segment) but
+        ``true_bkps`` does.
     """
     sanity_check(true_bkps, my_bkps)
     true_bkps_arr = np.array(true_bkps[:-1]).reshape(-1, 1)
     my_bkps_arr = np.array(my_bkps[:-1]).reshape(-1, 1)
+    if my_bkps_arr.size == 0 or true_bkps_arr.size == 0:
+        # At least one partition has no intermediate changepoints.
+        if my_bkps_arr.size == 0 and true_bkps_arr.size == 0:
+            return 0.0
+        return np.inf
     pw_dist = cdist(true_bkps_arr, my_bkps_arr)
 
     dist_from_true = pw_dist.min(axis=0)
