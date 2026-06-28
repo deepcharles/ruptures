@@ -1,7 +1,8 @@
 """Tests for the EDivisive change point detection algorithm.
 
-Reference: Matteson & James (2014) "A Nonparametric Approach for Multiple
-Change Point Analysis of Multivariate Data", JASA 109(505):334-345.
+Reference: Matteson & James (2014) "A Nonparametric Approach for
+Multiple Change Point Analysis of Multivariate Data", JASA
+109(505):334-345.
 """
 
 import numpy as np
@@ -25,11 +26,13 @@ def rng():
 @pytest.fixture(scope="module")
 def signal_1d_two_bkps(rng):
     """Piecewise-constant 1-D signal with two clear change points."""
-    s = np.concatenate([
-        rng.normal(0.0, 0.5, 100),
-        rng.normal(5.0, 0.5, 100),
-        rng.normal(0.0, 0.5, 100),
-    ])
+    s = np.concatenate(
+        [
+            rng.normal(0.0, 0.5, 100),
+            rng.normal(5.0, 0.5, 100),
+            rng.normal(0.0, 0.5, 100),
+        ]
+    )
     return s, [100, 200, 300]
 
 
@@ -165,8 +168,7 @@ def test_q_stat_increases_with_separation():
     n = 100
     results = {}
     for delta in [0.5, 2.0, 5.0]:
-        signal = np.concatenate([rng.normal(0.0, 1.0, n),
-                                 rng.normal(delta, 1.0, n)])
+        signal = np.concatenate([rng.normal(0.0, 1.0, n), rng.normal(delta, 1.0, n)])
         algo = EDivisive(n_perms=0).fit(signal)
         _, q = algo._best_split(0, 2 * n)
         results[delta] = q
@@ -195,7 +197,7 @@ def test_best_split_exact_midpoint():
 
 
 def test_alpha_2(signal_1d_two_bkps):
-    """alpha=2 (squared distances) should still detect the change points."""
+    """Alpha=2 (squared distances) should still detect the change points."""
     signal, _ = signal_1d_two_bkps
     bkps = EDivisive(alpha=2.0, n_perms=0).fit_predict(signal, n_bkps=2)
     assert len(bkps) == 3
@@ -216,10 +218,12 @@ def test_alpha_0_5(signal_1d_two_bkps):
 
 def test_perm_test_rejects_null_for_clear_change(rng):
     """Permutation test must detect a 10-sigma shift at ~position 100."""
-    signal = np.concatenate([
-        rng.normal(0.0, 1.0, 100),
-        rng.normal(10.0, 1.0, 100),
-    ])
+    signal = np.concatenate(
+        [
+            rng.normal(0.0, 1.0, 100),
+            rng.normal(10.0, 1.0, 100),
+        ]
+    )
     bkps = EDivisive(n_perms=200, sig_level=0.05).fit_predict(signal)
     # The true change point at 100 must appear in the result (within ±5).
     assert any(abs(b - 100) <= 5 for b in bkps), f"Breakpoints: {bkps}"

@@ -180,9 +180,7 @@ class EDivisive(BaseEstimator):
                 permutation test can produce a valid segmentation.
         """
         if self.signal is None:
-            raise BadSegmentationParameters(
-                "Call fit() before predict()."
-            )
+            raise BadSegmentationParameters("Call fit() before predict().")
 
         assert self.n_samples is not None
 
