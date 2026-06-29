@@ -6,4 +6,5 @@ from .dynp import Dynp
 from .kernelcpd import KernelCPD
 from .l1potts import L1Potts
 from .pelt import Pelt
+from .wbs import WBS
 from .window import Window
