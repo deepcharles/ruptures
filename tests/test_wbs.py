@@ -124,9 +124,7 @@ def test_seed_gives_same_result(signal_1d):
 def test_different_seeds_may_differ(signal_1d):
     """Two different seeds should not always give identical results."""
     signal, _ = signal_1d
-    results = {
-        tuple(WBS(seed=s).fit_predict(signal, n_bkps=5)) for s in range(10)
-    }
+    results = {tuple(WBS(seed=s).fit_predict(signal, n_bkps=5)) for s in range(10)}
     # With 10 different seeds there should be at least 2 distinct results
     # (this could theoretically fail but is astronomically unlikely)
     assert len(results) >= 2

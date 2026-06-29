@@ -100,8 +100,9 @@ class WBS(BaseEstimator):
     def single_bkp(self, start: int, end: int) -> tuple[Union[int, None], float]:
         """Return the best breakpoint in ``[start, end)`` and its gain.
 
-        Identical to :class:`~ruptures.detection.Binseg`'s implementation so
-        that the per-segment optimum is computed and cached in the same way.
+        Identical to :class:`~ruptures.detection.Binseg`'s
+        implementation so that the per-segment optimum is computed and
+        cached in the same way.
         """
         segment_cost = self.cost.error(start, end)
         if np.isinf(segment_cost) and segment_cost < 0:
@@ -120,15 +121,15 @@ class WBS(BaseEstimator):
         gain, bkp = max(gain_list)
         return bkp, gain
 
-    def _best_candidate(
-        self, start: int, end: int
-    ) -> tuple[Union[int, None], float]:
-        """Find the best split candidate across all sub-intervals within [start, end).
+    def _best_candidate(self, start: int, end: int) -> tuple[Union[int, None], float]:
+        """Find the best split candidate across all sub-intervals within
+        [start, end).
 
         For each pre-drawn random interval that lies entirely within
-        ``[start, end)``, compute the optimal split point; return the one
-        with the highest gain.  Falls back to ``single_bkp(start, end)`` when
-        no drawn interval is contained in the current segment.
+        ``[start, end)``, compute the optimal split point; return the
+        one with the highest gain.  Falls back to ``single_bkp(start,
+        end)`` when no drawn interval is contained in the current
+        segment.
         """
         best_bkp, best_gain = None, 0.0
         for s, e in self._sub_intervals:
@@ -162,8 +163,7 @@ class WBS(BaseEstimator):
         while not stop:
             stop = True
             new_bkps = [
-                self._best_candidate(start, end)
-                for start, end in pairwise([0] + bkps)
+                self._best_candidate(start, end) for start, end in pairwise([0] + bkps)
             ]
             bkp, gain = max(new_bkps, key=lambda x: x[1])
 
