@@ -36,7 +36,13 @@ class Dynp(BaseEstimator):
             jump (int, optional): subsample (one every *jump* points).
             params (dict, optional): a dictionary of parameters for the cost instance.
         """
-        if custom_cost is not None and isinstance(custom_cost, BaseCost):
+        if custom_cost is not None:
+            if not isinstance(custom_cost, BaseCost):
+                raise TypeError(
+                    "custom_cost must be an instance of ruptures.base.BaseCost, "
+                    f"got {type(custom_cost).__name__!r}. If you passed a cost "
+                    "class, instantiate it: custom_cost=MyCost()."
+                )
             self.cost = custom_cost
         else:
             self.model_name = model
