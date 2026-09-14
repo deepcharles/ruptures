@@ -1,6 +1,5 @@
 r"""Pelt."""
 
-from math import floor
 from typing import Any, Optional
 from typing_extensions import Self
 
@@ -48,49 +47,61 @@ class Pelt(BaseEstimator):
         self.n_samples = None
 
     def _seg(self, pen: float) -> dict[tuple[int, int], float]:
-        """Computes the segmentation for a given penalty using PELT (or a list
-        of penalties).
+        """Compute the optimal penalized partition with delayed pruning.
+
+        A start dominated at ``s`` stays eligible until ``s + min_size``.
+        Only then can ``s`` legally start the replacement segment.
+        As in the usual PELT rule, this requires the cost inequality
+        ``C(r, u) >= C(r, s) + C(s, u)`` on legal segments.
 
         Args:
-            penalty (float): penalty value
+            pen (float): Penalty per segment. This differs from a penalty per
+                change point by the same constant for every partition.
 
         Returns:
-            dict: partition dict {(start, end): cost value,...}
+            dict: Mapping from segment bounds to segment cost plus penalty.
         """
-        # initialization
-        # partitions[t] contains the optimal partition of signal[0:t]
-        partitions = dict()  # this dict will be recursively filled
-        partitions[0] = {(0, 0): 0}
+        partitions = {0: {(0, 0): 0}}
         admissible = []
+        prune_at = {}
 
-        # Recursion
-        ind = [k for k in range(0, self.n_samples, self.jump) if k >= self.min_size]
-        ind += [self.n_samples]
-        for bkp in ind:
-            # adding a point to the admissible set from the previous loop.
-            new_adm_pt = floor((bkp - self.min_size) / self.jump)
-            new_adm_pt *= self.jump
-            admissible.append(new_adm_pt)
+        endpoints = [
+            k for k in range(0, self.n_samples, self.jump) if k >= self.min_size
+        ]
+        endpoints.append(self.n_samples)
 
-            subproblems = list()
-            for t in admissible:
-                # left partition
-                try:
-                    tmp_partition = partitions[t].copy()
-                except KeyError:  # no partition of 0:t exists
-                    continue
-                # we update with the right partition
-                tmp_partition.update({(t, bkp): self.cost.error(t, bkp) + pen})
-                subproblems.append(tmp_partition)
+        # Each possible start enters once, only after a legal final segment
+        # can follow it. Exclude n: it cannot start a nonempty segment.
+        pending = iter([0] + endpoints[:-1])
+        next_start = next(pending, None)
 
-            # finding the optimal partition
-            partitions[bkp] = min(subproblems, key=lambda d: sum(d.values()))
-            # trimming the admissible set
+        for bkp in endpoints:
+            while next_start is not None and next_start <= bkp - self.min_size:
+                admissible.append(next_start)
+                next_start = next(pending, None)
+
+            # A witness s can replace a start only at endpoints u >= s+m.
+            # Compare sample coordinates, not the number of grid iterations;
+            # the final endpoint can lie off the jump grid.
             admissible = [
-                t
-                for t, partition in zip(admissible, subproblems)
-                if sum(partition.values()) <= sum(partitions[bkp].values()) + pen
+                t for t in admissible if t not in prune_at or bkp < prune_at[t]
             ]
+
+            candidates = []
+            for t in admissible:
+                partition = partitions[t].copy()
+                partition[(t, bkp)] = self.cost.error(t, bkp) + pen
+                candidates.append((t, partition, sum(partition.values())))
+
+            _, best_partition, best_value = min(candidates, key=lambda item: item[2])
+            partitions[bkp] = best_partition
+
+            if bkp != self.n_samples:
+                for t, _, value in candidates:
+                    if value > best_value + pen:
+                        # Endpoints increase, so the first witness gives the
+                        # earliest safe expiry. Later witnesses cannot extend it.
+                        prune_at.setdefault(t, bkp + self.min_size)
 
         best_partition = partitions[self.n_samples]
         del best_partition[(0, 0)]
