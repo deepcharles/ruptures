@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 from ruptures import Binseg
-from ruptures.costs import CostLinear, CostNormal, cost_factory
+from ruptures.costs import CostL2, CostLinear, CostNormal, cost_factory
 from ruptures.costs.costml import CostMl
 from ruptures.datasets import pw_constant
 from ruptures.exceptions import NotEnoughPoints
@@ -237,3 +237,28 @@ def test_costl2_small_data():
         "got {computed_break_dict}.",
     )
     assert expected_break_dict == computed_break_dict, err_msg
+
+
+@pytest.mark.parametrize("n_features", [1, 5])
+def test_costl2_matches_variance(n_features):
+    """Prefix sums give the same costs as computing each segment's variance."""
+    rng = np.random.default_rng(12345)
+    signal = rng.normal(size=(100, n_features))
+    if n_features == 1:
+        signal = signal.ravel()
+    cost = CostL2().fit(signal)
+
+    for start, end in [(0, 100), (3, 87), (42, 43), (91, 100)]:
+        expected = signal[start:end].var(axis=0).sum() * (end - start)
+        assert cost.error(start, end) == pytest.approx(expected)
+
+
+def test_costl2_large_offset():
+    """Centering keeps prefix-sum costs accurate for offset signals."""
+    rng = np.random.default_rng(54321)
+    signal = 1e12 + rng.normal(size=(100, 3))
+    cost = CostL2().fit(signal)
+
+    for start, end in [(0, 100), (3, 87), (42, 43), (91, 100)]:
+        expected = signal[start:end].var(axis=0).sum() * (end - start)
+        assert cost.error(start, end) == pytest.approx(expected, rel=1e-6, abs=1e-9)
