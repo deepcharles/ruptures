@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
-from ruptures import Binseg
-from ruptures.costs import CostLinear, CostNormal, cost_factory
+from ruptures import Binseg, Dynp
+from ruptures.costs import CostAR, CostLinear, CostNormal, cost_factory
 from ruptures.costs.costml import CostMl
 from ruptures.datasets import pw_constant
 from ruptures.exceptions import NotEnoughPoints
@@ -237,3 +237,33 @@ def test_costl2_small_data():
         "got {computed_break_dict}.",
     )
     assert expected_break_dict == computed_break_dict, err_msg
+
+
+@pytest.mark.parametrize("n_samples", [2, 4, 8])
+@pytest.mark.parametrize("n_regressors", [2, 4, 9])
+def test_costlinear_rank_deficient(n_samples, n_regressors):
+    """Redundant regressors must not erase the least-squares error."""
+    y = np.arange(n_samples, dtype=float)
+    signal = np.c_[y, np.ones((n_samples, n_regressors))]
+    cost = CostLinear().fit(signal)
+    expected = np.sum((y - y.mean()) ** 2)
+    assert cost.error(0, n_samples) == pytest.approx(expected)
+
+
+def test_costlinear_redundant_intercept_segmentation():
+    """Equivalent regressors must give the same change point."""
+    y = np.r_[np.zeros(10), np.full(10, 3.0)]
+    for n_regressors in [1, 2]:
+        signal = np.c_[y, np.ones((20, n_regressors))]
+        result = Dynp(model="linear", min_size=3, jump=1).fit_predict(signal, n_bkps=1)
+        assert result == [10, 20]
+
+
+@pytest.mark.parametrize("order", [1, 4, 8])
+def test_costar_rank_deficient(order):
+    """A nonzero innovation after silence must have a nonzero cost."""
+    signal = np.r_[np.zeros(19), 1.0]
+    cost = CostAR(order=order).fit(signal)
+    # All lagged samples are zero, so only the intercept can explain the data.
+    expected = np.sum((signal - signal.mean()) ** 2)
+    assert cost.error(0, signal.size) == pytest.approx(expected)
