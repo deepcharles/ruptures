@@ -46,7 +46,10 @@ class CostMl(BaseCost):
             covar = np.cov(s_.T)
             self.metric = inv(covar.reshape(1, 1) if covar.size == 1 else covar)
 
-        self.gram = s_.dot(self.metric).dot(s_.T)
+        # Segment costs are translation invariant; centering avoids cancellation
+        # between large Gram-matrix sums for signals with a large offset.
+        centered = s_ - s_.mean(axis=0)
+        self.gram = centered.dot(self.metric).dot(centered.T)
         self.signal = s_
 
         return self

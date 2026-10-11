@@ -237,3 +237,29 @@ def test_costl2_small_data():
         "got {computed_break_dict}.",
     )
     assert expected_break_dict == computed_break_dict, err_msg
+
+
+@pytest.mark.parametrize("offset", [0.0, 1e8, 1e10])
+@pytest.mark.parametrize("metric", [None, np.array([[2.0]])])
+def test_mahalanobis_translation_invariance(offset, metric):
+    signal = np.arange(6, dtype=float) + offset
+    original = signal.copy()
+    cost = CostMl(metric=metric).fit(signal)
+    # Sum of squared deviations is 17.5 for all points and 2 for [1, 2, 3].
+    # The fitted sample variance is 3.5; a custom metric scales SSE by 2.
+    scale = 1 / 3.5 if metric is None else 2.0
+    assert cost.error(0, 6) == pytest.approx(17.5 * scale)
+    assert cost.error(1, 4) == pytest.approx(2.0 * scale)
+    np.testing.assert_array_equal(signal, original)
+    np.testing.assert_array_equal(cost.signal[:, 0], original)
+
+
+@pytest.mark.parametrize(
+    "metric,expected",
+    [(None, (6.0, 4.0)), (np.array([[2.0, 0.5], [0.5, 3.0]]), (5.0, 3.0))],
+)
+def test_mahalanobis_multivariate_offset(metric, expected):
+    signal = np.array([[0.0, 0.0], [1.0, 0.0], [0.0, 1.0], [1.0, 1.0]])
+    cost = CostMl(metric=metric).fit(signal + [1e10, -1e10])
+    assert cost.error(0, 4) == pytest.approx(expected[0])
+    assert cost.error(1, 4) == pytest.approx(expected[1])
