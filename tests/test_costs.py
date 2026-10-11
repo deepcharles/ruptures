@@ -237,3 +237,34 @@ def test_costl2_small_data():
         "got {computed_break_dict}.",
     )
     assert expected_break_dict == computed_break_dict, err_msg
+
+
+@pytest.mark.parametrize(
+    "signal",
+    [
+        np.array([[1.0, 0.0], [2.0, 0.0], [3.0, 0.0]]),
+        np.array([[1.0, 0.0], [0.0, 2.0], [-3.0, 0.0], [0.0, -4.0]]),
+        np.array([1.0, -2.0, 3.0, 4.0]),
+    ],
+)
+def test_costcosine_matches_normalized_scatter(signal):
+    cost = cost_factory("cosine").fit(signal)
+    vectors = signal.reshape(len(signal), -1)
+    normalized = vectors / np.linalg.norm(vectors, axis=1, keepdims=True)
+    np.testing.assert_allclose(cost.gram, normalized @ normalized.T, atol=1e-14)
+    for start in range(len(signal)):
+        for end in range(start + 1, len(signal) + 1):
+            segment = normalized[start:end]
+            expected = np.square(segment - segment.mean(axis=0)).sum()
+            assert cost.error(start, end) == pytest.approx(expected, abs=1e-14)
+
+
+def test_costcosine_penalized_segmentation():
+    from ruptures import Pelt
+
+    signal = np.array([[1.0, 0.0]] * 10 + [[0.0, 1.0]] * 10)
+    # The cost reduction is 10, so a penalty of 9.5 should retain the change.
+    assert Pelt(model="cosine", min_size=2, jump=1).fit_predict(signal, pen=9.5) == [
+        10,
+        20,
+    ]
