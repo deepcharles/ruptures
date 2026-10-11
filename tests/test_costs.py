@@ -237,3 +237,31 @@ def test_costl2_small_data():
         "got {computed_break_dict}.",
     )
     assert expected_break_dict == computed_break_dict, err_msg
+
+
+@pytest.mark.parametrize(
+    "dtype",
+    [np.uint8, np.uint16, np.uint32, np.uint64, np.int8, np.int16, np.int32, np.int64],
+)
+@pytest.mark.parametrize("n_features", [1, 2])
+@pytest.mark.parametrize("start", [0, 1])
+def test_clinear_integer_ramp(dtype, n_features, start):
+    step = 2**61 if np.dtype(dtype).itemsize == 8 else int(np.iinfo(dtype).max) // 3
+    if np.issubdtype(dtype, np.unsignedinteger):
+        values = [3 * step, 2 * step, step, 0]
+    else:
+        values = [3 * step, step, -step, -3 * step]
+    signal = np.array(values, dtype=dtype)
+    if n_features == 2:
+        signal = np.column_stack([signal, signal[::-1]])
+    original = signal.copy()
+    cost = cost_factory("clinear").fit(signal)
+    # Equally spaced points lie exactly on the endpoint chord.
+    assert cost.error(start, 4) == pytest.approx(0.0)
+    np.testing.assert_array_equal(signal, original)
+    if np.dtype(dtype).itemsize < 8:
+        noisy = signal.copy()
+        noisy[1] += 1
+        assert cost_factory("clinear").fit(noisy).error(start, 4) == pytest.approx(
+            n_features
+        )
