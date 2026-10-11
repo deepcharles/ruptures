@@ -1,3 +1,4 @@
+import numpy as np
 import pytest
 
 from ruptures.metrics import (
@@ -63,3 +64,23 @@ def test_exception(b_mb, metric):
         m = metric([10, 10, 500], [10, 500])
     with pytest.raises(BadPartitions):
         m = metric([10, 500], [10, 501])
+
+
+@pytest.mark.parametrize(
+    "dtype,n_samples",
+    [
+        (int, 50000),
+        (np.int32, 50000),
+        (np.uint32, 100000),
+        (np.int64, 4000000000),
+        (np.uint64, 10000000000),
+    ],
+)
+def test_randindex_integer_breakpoints(dtype, n_samples):
+    # Two equal segments versus one: only within-segment pairs agree.
+    expected = (n_samples - 2) / (2 * (n_samples - 1))
+    split = [dtype(n_samples // 2), dtype(n_samples)]
+    whole = [dtype(n_samples)]
+    assert randindex(split, whole) == pytest.approx(expected)
+    assert randindex(whole, split) == pytest.approx(expected)
+    assert randindex(split, split) == 1.0
