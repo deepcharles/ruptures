@@ -27,7 +27,7 @@ class CostCosine(BaseCost):
         `self.signal` is not defined).
         """
         if self._gram is None:
-            self._gram = squareform(1 - pdist(self.signal, metric="cosine"))
+            self._gram = 1 - squareform(pdist(self.signal, metric="cosine"))
         return self._gram
 
     def fit(self, signal: NDArray[np.number]) -> Self:
