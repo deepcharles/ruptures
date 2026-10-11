@@ -1,5 +1,7 @@
 r"""Rand index (`randindex`)"""
 
+from numbers import Integral
+
 from ruptures.metrics.sanity_check import sanity_check
 
 
@@ -23,9 +25,10 @@ def randindex(bkps1, bkps2):
         float: Rand index
     """
     sanity_check(bkps1, bkps2)
-    n_samples = bkps1[-1]
-    bkps1_with_0 = [0] + bkps1
-    bkps2_with_0 = [0] + bkps2
+    # Use Python integers to avoid fixed-width overflow in pair counts.
+    bkps1_with_0 = [0] + [int(b) if isinstance(b, Integral) else b for b in bkps1]
+    bkps2_with_0 = [0] + [int(b) if isinstance(b, Integral) else b for b in bkps2]
+    n_samples = bkps1_with_0[-1]
     n_bkps1 = len(bkps1)
     n_bkps2 = len(bkps2)
 
