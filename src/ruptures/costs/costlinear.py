@@ -54,5 +54,7 @@ class CostLinear(BaseCost):
         if end - start < self.min_size:
             raise NotEnoughPoints
         y, X = self.signal[start:end], self.covar[start:end]
-        _, residual, _, _ = lstsq(X, y, rcond=None)
+        coef, residual, _, _ = lstsq(X, y, rcond=None)
+        if residual.size == 0:
+            residual = np.sum(np.abs(y - X @ coef) ** 2, axis=0)
         return residual.sum()
