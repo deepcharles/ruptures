@@ -55,8 +55,15 @@ class CostCLinear(BaseCost):
             start = 1
 
         sub = self.signal[start:end]
-        slope = (self.signal[end - 1] - self.signal[start - 1]) / (end - start)
-        intercept = self.signal[start - 1]
+        left = self.signal[start - 1]
+        right = self.signal[end - 1]
+        if np.issubdtype(self.signal.dtype, np.integer):
+            # Subtract as Python integers before converting to floating point.
+            delta = right.astype(object) - left.astype(object)
+            slope = delta.astype(np.float64) / (end - start)
+        else:
+            slope = (right - left) / (end - start)
+        intercept = left
         approx = slope.reshape(-1, 1) * np.arange(
             1, end - start + 1
         ) + intercept.reshape(-1, 1)
