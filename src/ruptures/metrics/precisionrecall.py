@@ -26,12 +26,15 @@ def precision_recall(true_bkps, my_bkps, margin=10):
         return 0, 0
 
     used = set()
-    true_pos = set(
-        true_b
-        for true_b, my_b in product(true_bkps[:-1], my_bkps[:-1])
-        if my_b - margin < true_b < my_b + margin
-        and not (my_b in used or used.add(my_b))
-    )
+    true_pos = set()
+    for true_b, my_b in product(true_bkps[:-1], my_bkps[:-1]):
+        if (
+            my_b - margin < true_b < my_b + margin
+            and true_b not in true_pos
+            and my_b not in used
+        ):
+            true_pos.add(true_b)
+            used.add(my_b)
 
     tp_ = len(true_pos)
     precision = tp_ / (len(my_bkps) - 1)
