@@ -16,6 +16,13 @@ $$
 
 and $c(y_{0..b}):=c(y_{1..b})$ (by convention).
 
+On the segment $a..b$, the approximation is the straight line joining the samples $y_{a-1}$ (the last sample of the previous segment) and $y_{b-1}$ (the last sample of the segment), which is why these two samples appear in the formula.
+Consecutive segments share an end point, so the approximation is continuous at the change points.
+
+!!! note "`CostCLinear` or `CostLinear`?"
+    [`CostCLinear`][ruptures.costs.costclinear.CostCLinear] uses no covariates: the signal is approximated as a function of time, with continuity at the change points.
+    To regress an observed variable on covariates that you supply, with no continuity constraint at the change points, use [`CostLinear`][ruptures.costs.costlinear.CostLinear] instead.
+
 ## Usage
 
 Start with the usual imports and create a signal with piecewise linear trends.
