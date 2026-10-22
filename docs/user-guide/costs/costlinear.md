@@ -20,6 +20,11 @@ $$
 c(y_{I}) = \min_{\delta\in\mathbb{R}^p} \sum_{t\in I} \|y_t - \delta' x_t \|_2^2.
 $$
 
+!!! note "`CostLinear` or `CostCLinear`?"
+    [`CostLinear`][ruptures.costs.costlinear.CostLinear] regresses the observed variable $y_t$ on covariates $x_t$ that you supply (as the extra columns of the signal).
+    The regression is fitted independently on each segment, so the fitted values do not have to join at the change points.
+    To approximate the signal itself by straight lines over time that are continuous at the change points, without any covariates, use [`CostCLinear`][ruptures.costs.costclinear.CostCLinear] instead.
+
 ## Usage
 
 Start with the usual imports and create a signal with piecewise linear trends.
