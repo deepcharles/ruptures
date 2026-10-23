@@ -133,7 +133,7 @@ class BottomUp(BaseEstimator):
                 if gain < pen:
                     stop = False
             elif epsilon is not None:
-                if sum(leaf_tmp.val for leaf_tmp in leaves) < epsilon:
+                if sum(leaf_tmp.val for leaf_tmp in leaves) + gain <= epsilon:
                     stop = False
 
             if not stop:
