@@ -7,6 +7,24 @@ from ruptures.datasets import pw_constant
 from ruptures.exceptions import NotEnoughPoints
 
 
+def test_clinear_irregular_timestamps():
+    elapsed = np.array([0, 1, 4, 5, 11, 20])
+    signal = np.column_stack((elapsed * 2.0, 1.0 - elapsed))
+    times = 2**60 + elapsed
+    cost = cost_factory(model="clinear", timestamps=times).fit(signal)
+    assert cost.error(0, 6) == pytest.approx(0)
+    assert cost.error(2, 6) == pytest.approx(0)
+    assert cost_factory(model="clinear").fit(signal).error(0, 6) > 0
+    signal[3, 0] += 2
+    assert cost.error(2, 6) == pytest.approx(4)
+
+
+@pytest.mark.parametrize("times", [[0, 1], [0, 1, 1], [0, np.nan, 2], [[1, 2, 3]]])
+def test_clinear_invalid_timestamps(times):
+    with pytest.raises(ValueError, match="timestamps"):
+        cost_factory(model="clinear", timestamps=times).fit(np.ones(3))
+
+
 @pytest.fixture(scope="module")
 def signal_bkps_1D():
     signal, bkps = pw_constant(n_features=1, seed=1234567890)
