@@ -18,6 +18,15 @@ and $c(y_{0..b}):=c(y_{1..b})$ (by convention).
 
 ## Usage
 
+For irregularly sampled data, pass the numeric observation times through the
+cost parameters. Interpolation then uses elapsed time between the segment
+endpoints. Each observation contributes one squared residual, and breakpoints
+are returned as row indices.
+
+```python
+algo = rpt.Pelt(model="clinear", params={"timestamps": times}).fit(signal)
+```
+
 Start with the usual imports and create a signal with piecewise linear trends.
 
 ```python
