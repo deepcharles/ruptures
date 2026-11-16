@@ -16,7 +16,8 @@ class CostCLinear(BaseCost):
     model = "clinear"
 
     def __init__(self, timestamps: Optional[ArrayLike] = None) -> None:
-        """Use numeric sample times for interpolation, or row positions by default."""
+        """Use numeric sample times for interpolation, or row positions by
+        default."""
         self.signal = None
         self.min_size = 3
         self._timestamps = None
