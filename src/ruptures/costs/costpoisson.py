@@ -10,13 +10,15 @@ from ruptures.exceptions import NotEnoughPoints
 
 
 class CostPoisson(BaseCost):
-    """Poisson negative log likelihood, up to a segmentation-independent constant."""
+    """Poisson negative log likelihood, up to a segmentation-independent
+    constant."""
 
     model = "poisson"
     min_size = 1
 
     def fit(self, signal: NDArray[np.number]) -> Self:
-        """Fit a univariate or multivariate count signal sampled at equal exposures."""
+        """Fit a univariate or multivariate count signal sampled at equal
+        exposures."""
         signal = np.asarray(signal)
         if signal.ndim not in (1, 2) or signal.dtype.kind not in "uif":
             raise ValueError("Expected a one- or two-dimensional array of counts.")
