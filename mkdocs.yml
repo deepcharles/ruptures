@@ -52,6 +52,7 @@ nav:
       - 'L1 Potts': user-guide/detection/l1potts.md
     - Cost functions:
       - 'CostL1': user-guide/costs/costl1.md
+      - 'CostPoisson': user-guide/costs/costpoisson.md
       - 'CostL2': user-guide/costs/costl2.md
       - 'CostNormal': user-guide/costs/costnormal.md
       - 'CostRbf': user-guide/costs/costrbf.md
@@ -96,6 +97,7 @@ nav:
           - L1Potts: code-reference/detection/l1potts-reference.md
       - Cost functions:
           - 'CostL1': code-reference/costs/costl1-reference.md
+          - 'CostPoisson': code-reference/costs/costpoisson-reference.md
           - 'CostL2': code-reference/costs/costl2-reference.md
           - 'CostNormal': code-reference/costs/costnormal-reference.md
           - 'CostRbf': code-reference/costs/costrbf-reference.md
